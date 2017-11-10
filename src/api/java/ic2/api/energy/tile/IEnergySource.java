@@ -35,4 +35,3 @@ public interface IEnergySource extends IEnergyEmitter {
 	 */
 	int getSourceTier();
 }
-

@@ -50,4 +50,3 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	 */
 	void removeConductor();
 }
-

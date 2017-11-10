@@ -15,221 +15,179 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class TileEntityRefractorySpout extends TileEntityFoundry
-{
-  protected class FluidHandler implements IFluidHandler
-  {
-    private IFluidTankProperties[] props;
-    
-    public FluidHandler()
-    {
-      props = new IFluidTankProperties[0];
-    }
+public class TileEntityRefractorySpout extends TileEntityFoundry {
+	protected class FluidHandler implements IFluidHandler {
+		private IFluidTankProperties[] props;
 
-    @Override
-    public IFluidTankProperties[] getTankProperties()
-    {
-      return props;
-    }
+		public FluidHandler() {
+			props = new IFluidTankProperties[0];
+		}
 
-    @Override
-    public int fill(FluidStack resource, boolean doFill)
-    {
-      return 0;
-    }
+		@Override
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
+		}
 
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain)
-    {
-      return null;
-    }
+		@Override
+		public int fill(FluidStack resource, boolean doFill) {
+			return 0;
+		}
 
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain)
-    {
-      return null;
-    }    
-  }
+		@Override
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			return null;
+		}
 
-  
-  private FluidTank fluid_moved;
-  private IFluidHandler fluid_handler;
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			return null;
+		}
+	}
 
-  private int pour_length;
-  private int next_move;
+	private FluidTank fluid_moved;
+	private IFluidHandler fluid_handler;
 
-  public TileEntityRefractorySpout()
-  {
+	private int pour_length;
+	private int next_move;
 
-    next_move = 2;
+	public TileEntityRefractorySpout() {
 
-    fluid_moved = new FluidTank(10);
-    pour_length = 0;
-    fluid_handler = new FluidHandler();
-  }
-  
-  @Override
-  protected IFluidHandler getFluidHandler(EnumFacing facing)
-  {
-    EnumFacing side = worldObj.getBlockState(getPos()).getValue(BlockRefractorySpout.FACING).facing;
-    return (facing == EnumFacing.DOWN || facing == side)?fluid_handler:null;
-  }
-  
-  public int getPourLength()
-  {
-    return pour_length;
-  }
-  
-  @Override
-  public void readFromNBT(NBTTagCompound compund)
-  {
-    super.readFromNBT(compund);
+		next_move = 2;
 
-    if(compund.hasKey("next_move"))
-    {
-      next_move = compund.getInteger("next_move");
-    }
-    if(compund.hasKey("pour_length"))
-    {
-      pour_length = compund.getInteger("pour_length");
-    }
-  }
+		fluid_moved = new FluidTank(10);
+		pour_length = 0;
+		fluid_handler = new FluidHandler();
+	}
 
-  @Override
-  public NBTTagCompound writeToNBT(NBTTagCompound compound)
-  {
-    if(compound == null)
-    {
-      compound = new NBTTagCompound();
-    }
-    super.writeToNBT(compound);
-    compound.setInteger("next_move", next_move);
-    compound.setInteger("pour_length", pour_length);
-    return compound;
-  }
+	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		EnumFacing side = worldObj.getBlockState(getPos()).getValue(BlockRefractorySpout.FACING).facing;
+		return (facing == EnumFacing.DOWN || facing == side) ? fluid_handler : null;
+	}
 
-  @Override
-  public int getSizeInventory()
-  {
-    return 0;
-  }
+	public int getPourLength() {
+		return pour_length;
+	}
 
-  @Override
-  public boolean isItemValidForSlot(int i, ItemStack itemstack)
-  {
-    return false;
-  }
+	@Override
+	public void readFromNBT(NBTTagCompound compund) {
+		super.readFromNBT(compund);
 
-  @Override
-  protected void updateClient()
-  {
+		if (compund.hasKey("next_move")) {
+			next_move = compund.getInteger("next_move");
+		}
+		if (compund.hasKey("pour_length")) {
+			pour_length = compund.getInteger("pour_length");
+		}
+	}
 
-  }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("next_move", next_move);
+		compound.setInteger("pour_length", pour_length);
+		return compound;
+	}
 
-  @Override
-  public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-  {
-    return oldState.getBlock() != newSate.getBlock();
-  }
+	@Override
+	public int getSizeInventory() {
+		return 0;
+	}
 
-  static private boolean areFluidStacksEqual(FluidStack a,FluidStack b)
-  {
-    if(a == null)
-    {
-      return b == null;
-    }
-    if(b == null)
-    {
-      return false;
-    }
-    
-    return a.isFluidStackIdentical(b);
-  }
-  
-  @Override
-  protected void updateServer()
-  {
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return false;
+	}
 
-    if(--next_move == 0)
-    {
-      next_move = 2;
-      FluidStack last_moved = fluid_moved.getFluid();
-      fluid_moved.setFluid(null);
+	@Override
+	protected void updateClient() {
 
-      // Get fluid from the back.
-      if(worldObj.getBlockState(getPos()).getValue(BlockFoundrySidedMachine.STATE) == BlockFoundrySidedMachine.EnumMachineState.ON)
-      {
+	}
 
-        FluidStack drained = null;
-        EnumFacing side = worldObj.getBlockState(getPos()).getValue(BlockRefractorySpout.FACING).facing;
-        TileEntity source = worldObj.getTileEntity(getPos().add(side.getDirectionVec()));
-        IFluidHandler hsource = null;
-        side = side.getOpposite();
-        if(source != null && source.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side))
-        {
-          hsource = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
-          drained = hsource.drain(10, false);
-        }
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return oldState.getBlock() != newSate.getBlock();
+	}
 
-        // Fill to the bottom.
-        if(drained != null)
-        {
-          int down = 0;
-          while(true)
-          {
-            BlockPos pos = getPos().down(++down);
-            if(pos.getY() < 0)
-            {
-              break;
-            }
-            IBlockState state = worldObj.getBlockState(pos);
-            if(state.getBlock().isAir(state, worldObj, pos))
-            {
-              continue;
-            }
-            TileEntity dest = worldObj.getTileEntity(pos);
-            if(dest != null && dest.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,EnumFacing.UP))
-            {
-              IFluidHandler hdest = dest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
-              if(drained != null)
-              {
-                drained.amount = hdest.fill(drained, false);
-                if(drained.amount > 0)
-                {
-                  hsource.drain(drained.amount, true);
-                  hdest.fill(drained, true);
-                  fluid_moved.setFluid(drained.copy());
-                  pour_length = down - 1;
-                  updateValue("pour_length", pour_length);
-                }
-              }
-            }
-            break;
-          }
-        }
-      }
-      if(!areFluidStacksEqual(fluid_moved.getFluid(), last_moved))
-      {
-        updateTank(0);
-      }
-    }
-  }
+	static private boolean areFluidStacksEqual(FluidStack a, FluidStack b) {
+		if (a == null) { return b == null; }
+		if (b == null) { return false; }
 
-  @Override
-  public FluidTank getTank(int slot)
-  {
-    return fluid_moved;
-  }
+		return a.isFluidStackIdentical(b);
+	}
 
-  @Override
-  public int getTankCount()
-  {
-    return 1;
-  }
+	@Override
+	protected void updateServer() {
 
-  @Override
-  protected void onInitialize()
-  {
+		if (--next_move == 0) {
+			next_move = 2;
+			FluidStack last_moved = fluid_moved.getFluid();
+			fluid_moved.setFluid(null);
 
-  }
+			// Get fluid from the back.
+			if (worldObj.getBlockState(getPos()).getValue(BlockFoundrySidedMachine.STATE) == BlockFoundrySidedMachine.EnumMachineState.ON) {
+
+				FluidStack drained = null;
+				EnumFacing side = worldObj.getBlockState(getPos()).getValue(BlockRefractorySpout.FACING).facing;
+				TileEntity source = worldObj.getTileEntity(getPos().add(side.getDirectionVec()));
+				IFluidHandler hsource = null;
+				side = side.getOpposite();
+				if (source != null && source.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)) {
+					hsource = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+					drained = hsource.drain(10, false);
+				}
+
+				// Fill to the bottom.
+				if (drained != null) {
+					int down = 0;
+					while (true) {
+						BlockPos pos = getPos().down(++down);
+						if (pos.getY() < 0) {
+							break;
+						}
+						IBlockState state = worldObj.getBlockState(pos);
+						if (state.getBlock().isAir(state, worldObj, pos)) {
+							continue;
+						}
+						TileEntity dest = worldObj.getTileEntity(pos);
+						if (dest != null && dest.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+							IFluidHandler hdest = dest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
+							if (drained != null) {
+								drained.amount = hdest.fill(drained, false);
+								if (drained.amount > 0) {
+									hsource.drain(drained.amount, true);
+									hdest.fill(drained, true);
+									fluid_moved.setFluid(drained.copy());
+									pour_length = down - 1;
+									updateValue("pour_length", pour_length);
+								}
+							}
+						}
+						break;
+					}
+				}
+			}
+			if (!areFluidStacksEqual(fluid_moved.getFluid(), last_moved)) {
+				updateTank(0);
+			}
+		}
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return fluid_moved;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 1;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
 }

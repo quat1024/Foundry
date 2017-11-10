@@ -29,246 +29,206 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-public class MeltingJEI
-{
+public class MeltingJEI {
 
-  static public class Wrapper implements IRecipeWrapper
-  {
-    @Nonnull
-    private final IDrawable temp;
-    
-    private final IMeltingRecipe recipe;
-    
+	static public class Wrapper implements IRecipeWrapper {
+		@Nonnull
+		private final IDrawable temp;
 
-    public Wrapper(IJeiHelpers helpers,@Nonnull IMeltingRecipe recipe)
-    {
-      this.recipe = recipe;
-      ResourceLocation background_location = new ResourceLocation("foundry", "textures/gui/crucible.png");
+		private final IMeltingRecipe recipe;
 
-      if(helpers != null)
-      {
-        temp = helpers.getGuiHelper().createDrawable(background_location, 176, 53,
-            (recipe.getMeltingPoint() * 100 - TileEntityMeltingCrucibleBasic.TEMP_MIN) * 54 / (500000 - TileEntityMeltingCrucibleBasic.TEMP_MIN), 12);
-      } else
-      {
-        temp = null;
-      }
-    }
+		public Wrapper(IJeiHelpers helpers, @Nonnull IMeltingRecipe recipe) {
+			this.recipe = recipe;
+			ResourceLocation background_location = new ResourceLocation("foundry", "textures/gui/crucible.png");
 
-    @Override
-    @Deprecated
-    public List<List<ItemStack>> getInputs()
-    {
-      return null;
-    }
+			if (helpers != null) {
+				temp = helpers.getGuiHelper().createDrawable(background_location, 176, 53, (recipe.getMeltingPoint() * 100 - TileEntityMeltingCrucibleBasic.TEMP_MIN) * 54 / (500000 - TileEntityMeltingCrucibleBasic.TEMP_MIN), 12);
+			} else {
+				temp = null;
+			}
+		}
 
-    @Override
-    @Deprecated
-    public List<ItemStack> getOutputs()
-    {
-      return null;
-    }
+		@Override
+		@Deprecated
+		public List<List<ItemStack>> getInputs() {
+			return null;
+		}
 
-    @Override
-    @Deprecated
-    public List<FluidStack> getFluidInputs()
-    {
-      return null;
-    }
+		@Override
+		@Deprecated
+		public List<ItemStack> getOutputs() {
+			return null;
+		}
 
-    @Override
-    @Deprecated
-    public List<FluidStack> getFluidOutputs()
-    {
-      return Collections.singletonList(recipe.getOutput());
-    }
+		@Override
+		@Deprecated
+		public List<FluidStack> getFluidInputs() {
+			return null;
+		}
 
-    @Override
-    @Deprecated
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-    }
+		@Override
+		@Deprecated
+		public List<FluidStack> getFluidOutputs() {
+			return Collections.singletonList(recipe.getOutput());
+		}
 
-    @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY)
-    {
-      return null;
-    }
+		@Override
+		@Deprecated
+		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
+		}
 
-    @Override
-    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
-    {
-      if(temp != null)
-      {
-        temp.draw(minecraft,11,41);
-      }
-      minecraft.fontRendererObj.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
-    }
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return null;
+		}
 
-    @Override
-    public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
-    {
-      return false;
-    }
+		@Override
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+			if (temp != null) {
+				temp.draw(minecraft, 11, 41);
+			}
+			minecraft.fontRendererObj.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
+		}
 
-    @Override
-    public void getIngredients(IIngredients ingredients)
-    {
-      ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
-      ingredients.setOutput(FluidStack.class, recipe.getOutput());
-    }
-    
-    @Override
-    public boolean equals(Object other)
-    {
-      return recipe == other;
-    }
-  }
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
+		}
 
-  static public class Category implements IRecipeCategory<Wrapper>
-  {
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
+			ingredients.setOutput(FluidStack.class, recipe.getOutput());
+		}
 
-    protected final ResourceLocation backgroundLocation;
-    @Nonnull
-    protected final IDrawableAnimated arrow;
-    @Nonnull
-    private final IDrawable background;
-    @Nonnull
-    private final String localizedName;
-    @Nonnull
-    private final IDrawable tank_overlay;
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+	}
 
+	static public class Category implements IRecipeCategory<Wrapper> {
 
-    public Category(IJeiHelpers helpers)
-    {
-      IGuiHelper guiHelper = helpers.getGuiHelper();
-      backgroundLocation = new ResourceLocation("foundry", "textures/gui/crucible.png");
+		protected final ResourceLocation backgroundLocation;
+		@Nonnull
+		protected final IDrawableAnimated arrow;
+		@Nonnull
+		private final IDrawable background;
+		@Nonnull
+		private final String localizedName;
+		@Nonnull
+		private final IDrawable tank_overlay;
 
+		public Category(IJeiHelpers helpers) {
+			IGuiHelper guiHelper = helpers.getGuiHelper();
+			backgroundLocation = new ResourceLocation("foundry", "textures/gui/crucible.png");
 
-      IDrawableStatic arrowDrawable = guiHelper.createDrawable(backgroundLocation, 176, 78, 24, 17);
-      this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+			IDrawableStatic arrowDrawable = guiHelper.createDrawable(backgroundLocation, 176, 78, 24, 17);
+			this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
 
-      ResourceLocation location = new ResourceLocation("foundry", "textures/gui/crucible.png");
-      background = guiHelper.createDrawable(location, 30, 16, 94, 54);
-      tank_overlay = guiHelper.createDrawable(location, 176, 0, 16, 47);
-      localizedName = Translator.translateToLocal("gui.jei.melting");
+			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/crucible.png");
+			background = guiHelper.createDrawable(location, 30, 16, 94, 54);
+			tank_overlay = guiHelper.createDrawable(location, 176, 0, 16, 47);
+			localizedName = Translator.translateToLocal("gui.jei.melting");
 
-    }
+		}
 
-    @Override
-    @Nonnull
-    public IDrawable getBackground()
-    {
-      return background;
-    }
+		@Override
+		@Nonnull
+		public IDrawable getBackground() {
+			return background;
+		}
 
-    @Override
-    public void drawExtras(Minecraft minecraft)
-    {
+		@Override
+		public void drawExtras(Minecraft minecraft) {
 
-    }
+		}
 
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-      arrow.draw(minecraft, 49, 7);
-    }
+		@Override
+		public void drawAnimations(Minecraft minecraft) {
+			arrow.draw(minecraft, 49, 7);
+		}
 
-    @Override
-    public String getTitle()
-    {
-      return localizedName;
-    }
+		@Override
+		public String getTitle() {
+			return localizedName;
+		}
 
-    @Nonnull
-    @Override
-    public String getUid()
-    {
-      return "foundry.melting";
-    }
+		@Nonnull
+		@Override
+		public String getUid() {
+			return "foundry.melting";
+		}
 
-    @Override
-    @Deprecated
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper)
-    {
+		@Override
+		@Deprecated
+		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
 
-    }
+		}
 
-    @Override
-    public IDrawable getIcon()
-    {
-      return null;
-    }
+		@Override
+		public IDrawable getIcon() {
+			return null;
+		}
 
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, Wrapper recipeWrapper, IIngredients ingredients)
-    {
-      IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-      IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+		@Override
+		public void setRecipe(IRecipeLayout recipeLayout, Wrapper recipeWrapper, IIngredients ingredients) {
+			IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+			IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-      guiItemStacks.init(0, true, 24, 6);
-      guiFluidStacks.init(1, false, 77, 6, 16, GuiMeltingCrucible.TANK_HEIGHT, FoundryAPI.CRUCIBLE_TANK_CAPACITY,false,tank_overlay);
-      guiItemStacks.set(0,ingredients.getInputs(ItemStack.class).get(0));
-      guiFluidStacks.set(1,ingredients.getOutputs(FluidStack.class).get(0));
-    }
+			guiItemStacks.init(0, true, 24, 6);
+			guiFluidStacks.init(1, false, 77, 6, 16, GuiMeltingCrucible.TANK_HEIGHT, FoundryAPI.CRUCIBLE_TANK_CAPACITY, false, tank_overlay);
+			guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
+			guiFluidStacks.set(1, ingredients.getOutputs(FluidStack.class).get(0));
+		}
 
-    @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY)
-    {
-      return Collections.emptyList();
-    }
-  }
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+	}
 
-  static public class Handler implements IRecipeHandler<Wrapper>
-  {
-    @Override
-    @Nonnull
-    public Class<Wrapper> getRecipeClass()
-    {
-      return Wrapper.class;
-    }
+	static public class Handler implements IRecipeHandler<Wrapper> {
+		@Override
+		@Nonnull
+		public Class<Wrapper> getRecipeClass() {
+			return Wrapper.class;
+		}
 
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid()
-    {
-      return "foundry.melting";
-    }
+		@Nonnull
+		@Override
+		public String getRecipeCategoryUid() {
+			return "foundry.melting";
+		}
 
-    @Override
-    @Nonnull
-    public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe)
-    {
-      return recipe;
-    }
+		@Override
+		@Nonnull
+		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
+			return recipe;
+		}
 
-    @Override
-    public boolean isRecipeValid(@Nonnull Wrapper recipe)
-    {
-      return true;
-    }
+		@Override
+		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
+			return true;
+		}
 
-    @Override
-    public String getRecipeCategoryUid(Wrapper recipe)
-    {
-      return "foundry.melting";
-    }
-  }
+		@Override
+		public String getRecipeCategoryUid(Wrapper recipe) {
+			return "foundry.melting";
+		}
+	}
 
-  static public List<Wrapper> getRecipes(IJeiHelpers helpers)
-  {
-    List<Wrapper> recipes = new ArrayList<Wrapper>();
+	static public List<Wrapper> getRecipes(IJeiHelpers helpers) {
+		List<Wrapper> recipes = new ArrayList<Wrapper>();
 
-    for(IMeltingRecipe recipe : MeltingRecipeManager.instance.getRecipes())
-    {
-      List<ItemStack> input = recipe.getInput().getItems();
+		for (IMeltingRecipe recipe : MeltingRecipeManager.instance.getRecipes()) {
+			List<ItemStack> input = recipe.getInput().getItems();
 
-      if(!input.isEmpty())
-      {
-        recipes.add(new Wrapper(helpers, recipe));
-      }
-    }
+			if (!input.isEmpty()) {
+				recipes.add(new Wrapper(helpers, recipe));
+			}
+		}
 
-    return recipes;
-  }
+		return recipes;
+	}
 }

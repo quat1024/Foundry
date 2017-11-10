@@ -23,4 +23,3 @@ public class EnergyTileLoadEvent extends EnergyTileEvent {
 		super(energyTile1);
 	}
 }
-

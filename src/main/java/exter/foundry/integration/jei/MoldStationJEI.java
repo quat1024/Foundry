@@ -26,265 +26,225 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
+public class MoldStationJEI {
+	static public class Wrapper implements IRecipeWrapper {
+		private final IMoldRecipe recipe;
 
-public class MoldStationJEI
-{
-  static public class Wrapper implements IRecipeWrapper
-  {
-    private final IMoldRecipe recipe;
+		private final IDrawable[] carve_drawables;
 
-    private final IDrawable[] carve_drawables;
-    
-    public Wrapper(IDrawable[] carve_drawables,IMoldRecipe recipe)
-    {
-      this.carve_drawables = carve_drawables;
-      this.recipe = recipe;
-    }
+		public Wrapper(IDrawable[] carve_drawables, IMoldRecipe recipe) {
+			this.carve_drawables = carve_drawables;
+			this.recipe = recipe;
+		}
 
-    @Deprecated
-    @Override
-    public List<List<ItemStack>> getInputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public List<List<ItemStack>> getInputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public List<ItemStack> getOutputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public List<ItemStack> getOutputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public List<FluidStack> getFluidInputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public List<FluidStack> getFluidInputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public List<FluidStack> getFluidOutputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public List<FluidStack> getFluidOutputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
+		@Deprecated
+		@Override
+		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
-    }
+		}
 
-    @Override
-    public List<String> getTooltipStrings(int mx, int my)
-    {
-      int width = recipe.getWidth();
-      int height = recipe.getHeight();
-      if(mx >= 7 && mx < 73 && my >= 7 && my < 73)
-      {
-        int x = (mx - 7) / 11 - (3 - FoundryMiscUtils.divCeil(width,2));
-        int y = (my - 7) / 11 - (3 - FoundryMiscUtils.divCeil(height,2));
+		@Override
+		public List<String> getTooltipStrings(int mx, int my) {
+			int width = recipe.getWidth();
+			int height = recipe.getHeight();
+			if (mx >= 7 && mx < 73 && my >= 7 && my < 73) {
+				int x = (mx - 7) / 11 - (3 - FoundryMiscUtils.divCeil(width, 2));
+				int y = (my - 7) / 11 - (3 - FoundryMiscUtils.divCeil(height, 2));
 
-        int depth = 0;
-        if(x >= 0 && x < width && y >= 0 && y < height)
-        {
-          depth = recipe.getRecipeGrid()[y * width + x];
-        }
-        return Collections.singletonList("Depth: " + depth);
-      }
-      return null;
-    }
+				int depth = 0;
+				if (x >= 0 && x < width && y >= 0 && y < height) {
+					depth = recipe.getRecipeGrid()[y * width + x];
+				}
+				return Collections.singletonList("Depth: " + depth);
+			}
+			return null;
+		}
 
-    @Override
-    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
-    {
-      if(carve_drawables != null)
-      {
-        int width = recipe.getWidth();
-        int height = recipe.getHeight();
-        int[] grid = recipe.getRecipeGrid();
+		@Override
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+			if (carve_drawables != null) {
+				int width = recipe.getWidth();
+				int height = recipe.getHeight();
+				int[] grid = recipe.getRecipeGrid();
 
-        int left = (3 - FoundryMiscUtils.divCeil(width,2));
-        int top = (3 - FoundryMiscUtils.divCeil(height,2));
-        
-        for(int y = 0; y < height; y++)
-        {
-          for(int x = 0; x < width; x++)
-          {
-            int i = grid[y*width + x];
-            if(i > 0)
-            {
-              carve_drawables[i - 1].draw(minecraft, 7 + (x + left) * 11, 7 + (y + top) * 11);
-            }
-          }
-        }
-      }
-    }
+				int left = (3 - FoundryMiscUtils.divCeil(width, 2));
+				int top = (3 - FoundryMiscUtils.divCeil(height, 2));
 
-    @Override
-    public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
-    {
-      return false;
-    }
+				for (int y = 0; y < height; y++) {
+					for (int x = 0; x < width; x++) {
+						int i = grid[y * width + x];
+						if (i > 0) {
+							carve_drawables[i - 1].draw(minecraft, 7 + (x + left) * 11, 7 + (y + top) * 11);
+						}
+					}
+				}
+			}
+		}
 
-    @Override
-    public void getIngredients(IIngredients ingredients)
-    {
-      ingredients.setOutput(ItemStack.class, recipe.getOutput());
-    }
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
+		}
 
-    @Override
-    public boolean equals(Object other)
-    {
-      return recipe == other;
-    }
-  }
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setOutput(ItemStack.class, recipe.getOutput());
+		}
 
-  static public class Category implements IRecipeCategory<Wrapper>
-  {
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+	}
 
-    protected final ResourceLocation background_location;
-    @Nonnull
-    protected final IDrawableAnimated arrow;
-    @Nonnull
-    private final IDrawable background;
-    @Nonnull
-    private final String localizedName;
+	static public class Category implements IRecipeCategory<Wrapper> {
 
-    @Nonnull
-    private final IDrawable grid_drawable;
+		protected final ResourceLocation background_location;
+		@Nonnull
+		protected final IDrawableAnimated arrow;
+		@Nonnull
+		private final IDrawable background;
+		@Nonnull
+		private final String localizedName;
 
-    public Category(IJeiHelpers helpers)
-    {
-      IGuiHelper guiHelper = helpers.getGuiHelper();
-      background_location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
+		@Nonnull
+		private final IDrawable grid_drawable;
 
-      grid_drawable = guiHelper.createDrawable(background_location, 176, 31, 76, 76);
-      
-      IDrawableStatic arrowDrawable = guiHelper.createDrawable(background_location, 176, 14, 24, 17);
-      arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+		public Category(IJeiHelpers helpers) {
+			IGuiHelper guiHelper = helpers.getGuiHelper();
+			background_location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
 
-      ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
-      background = guiHelper.createDrawable(location, 36, 14, 133, 81);
-      localizedName = Translator.translateToLocal("gui.jei.mold");
-    }
+			grid_drawable = guiHelper.createDrawable(background_location, 176, 31, 76, 76);
 
-    @Override
-    @Nonnull
-    public IDrawable getBackground()
-    {
-      return background;
-    }
+			IDrawableStatic arrowDrawable = guiHelper.createDrawable(background_location, 176, 14, 24, 17);
+			arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
 
-    @Override
-    public void drawExtras(Minecraft minecraft)
-    {
-      grid_drawable.draw(minecraft, 2, 2);
-    }
+			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
+			background = guiHelper.createDrawable(location, 36, 14, 133, 81);
+			localizedName = Translator.translateToLocal("gui.jei.mold");
+		}
 
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-      arrow.draw(minecraft, 81, 25);
-    }
+		@Override
+		@Nonnull
+		public IDrawable getBackground() {
+			return background;
+		}
 
-    @Nonnull
-    @Override
-    public String getTitle()
-    {
-      return localizedName;
-    }
+		@Override
+		public void drawExtras(Minecraft minecraft) {
+			grid_drawable.draw(minecraft, 2, 2);
+		}
 
-    @Nonnull
-    @Override
-    public String getUid()
-    {
-      return "foundry.mold";
-    }
+		@Override
+		public void drawAnimations(Minecraft minecraft) {
+			arrow.draw(minecraft, 81, 25);
+		}
 
-    @Deprecated
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper)
-    {
+		@Nonnull
+		@Override
+		public String getTitle() {
+			return localizedName;
+		}
 
-    }
+		@Nonnull
+		@Override
+		public String getUid() {
+			return "foundry.mold";
+		}
 
-    @Override
-    public IDrawable getIcon()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
 
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, Wrapper recipeWrapper, IIngredients ingredients)
-    {
-      IGuiItemStackGroup gui_items = recipeLayout.getItemStacks();
+		}
 
-      gui_items.init(0, false, 110, 23);
-      gui_items.set(0, ingredients.getOutputs(ItemStack.class).get(0));
-    }
+		@Override
+		public IDrawable getIcon() {
+			return null;
+		}
 
-    @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY)
-    {
-      return Collections.emptyList();
-    }
-  }
+		@Override
+		public void setRecipe(IRecipeLayout recipeLayout, Wrapper recipeWrapper, IIngredients ingredients) {
+			IGuiItemStackGroup gui_items = recipeLayout.getItemStacks();
 
-  static public class Handler implements IRecipeHandler<Wrapper>
-  {
-    
-    @Override
-    @Nonnull
-    public Class<Wrapper> getRecipeClass()
-    {
-      return Wrapper.class;
-    }
+			gui_items.init(0, false, 110, 23);
+			gui_items.set(0, ingredients.getOutputs(ItemStack.class).get(0));
+		}
 
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid()
-    {
-      return "foundry.mold";
-    }
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+	}
 
-    @Override
-    @Nonnull
-    public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe)
-    {
-      return recipe;
-    }
+	static public class Handler implements IRecipeHandler<Wrapper> {
 
-    @Override
-    public boolean isRecipeValid(@Nonnull Wrapper recipe)
-    {
-      return true;
-    }
+		@Override
+		@Nonnull
+		public Class<Wrapper> getRecipeClass() {
+			return Wrapper.class;
+		}
 
-    @Override
-    public String getRecipeCategoryUid(Wrapper recipe)
-    {
-       return "foundry.mold";
-    }
-  }
+		@Nonnull
+		@Override
+		public String getRecipeCategoryUid() {
+			return "foundry.mold";
+		}
 
-  static public List<Wrapper> getRecipes(IJeiHelpers helpers)
-  {
-    IGuiHelper guiHelper = helpers.getGuiHelper();
-    IDrawable[] carve_drawables = new IDrawable[4];
-    ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
-    for(int i = 0; i < 4; i++)
-    {
-      carve_drawables[i] = guiHelper.createDrawable(location, 176, 107 + i * 11, 11, 11);
-    }
-    List<Wrapper> recipes = new ArrayList<Wrapper>();
+		@Override
+		@Nonnull
+		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
+			return recipe;
+		}
 
-    for(IMoldRecipe recipe : MoldRecipeManager.instance.getRecipes())
-    {
-      recipes.add(new Wrapper(carve_drawables,recipe));
-    }
+		@Override
+		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
+			return true;
+		}
 
-    return recipes;
-  }
+		@Override
+		public String getRecipeCategoryUid(Wrapper recipe) {
+			return "foundry.mold";
+		}
+	}
+
+	static public List<Wrapper> getRecipes(IJeiHelpers helpers) {
+		IGuiHelper guiHelper = helpers.getGuiHelper();
+		IDrawable[] carve_drawables = new IDrawable[4];
+		ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
+		for (int i = 0; i < 4; i++) {
+			carve_drawables[i] = guiHelper.createDrawable(location, 176, 107 + i * 11, 11, 11);
+		}
+		List<Wrapper> recipes = new ArrayList<Wrapper>();
+
+		for (IMoldRecipe recipe : MoldRecipeManager.instance.getRecipes()) {
+			recipes.add(new Wrapper(carve_drawables, recipe));
+		}
+
+		return recipes;
+	}
 }

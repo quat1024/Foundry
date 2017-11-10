@@ -29,235 +29,199 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
+public class InfuserJEI {
 
-public class InfuserJEI
-{
+	static public class Wrapper implements IRecipeWrapper {
+		private final IInfuserRecipe recipe;
 
-  static public class Wrapper implements IRecipeWrapper
-  {
-    private final IInfuserRecipe recipe;
+		public Wrapper(IInfuserRecipe recipe) {
+			this.recipe = recipe;
+		}
 
-    public Wrapper(IInfuserRecipe recipe)
-    {
-      this.recipe = recipe;
-    }
+		@Deprecated
+		@Override
+		public List<List<ItemStack>> getInputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public List<List<ItemStack>> getInputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public List<ItemStack> getOutputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public List<ItemStack> getOutputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public List<FluidStack> getFluidInputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public List<FluidStack> getFluidInputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public List<FluidStack> getFluidOutputs() {
+			return null;
+		}
 
-    @Deprecated
-    @Override
-    public List<FluidStack> getFluidOutputs()
-    {
-      return null;
-    }
+		@Deprecated
+		@Override
+		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
+		}
 
-    @Deprecated
-    @Override
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
+		@Override
+		public List<String> getTooltipStrings(int x, int y) {
+			return null;
+		}
 
-    }
+		@Override
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+			minecraft.fontRendererObj.drawString(recipe.getEnergyNeeded() / TileEntityFoundryPowered.RATIO_FE + " FE", 0, 38, 0);
+		}
 
-    @Override
-    public List<String> getTooltipStrings(int x, int y)
-    {
-      return null;
-    }
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
+		}
 
-    @Override
-    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
-    {
-      minecraft.fontRendererObj.drawString(recipe.getEnergyNeeded() / TileEntityFoundryPowered.RATIO_FE + " FE", 0, 38, 0);
-    }
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInput(FluidStack.class, recipe.getInputFluid());
+			ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
+			ingredients.setOutput(FluidStack.class, recipe.getOutput());
+		}
 
-    @Override
-    public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
-    {
-      return false;
-    }
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+	}
 
-    @Override
-    public void getIngredients(IIngredients ingredients)
-    {
-      ingredients.setInput(FluidStack.class, recipe.getInputFluid());
-      ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
-      ingredients.setOutput(FluidStack.class, recipe.getOutput());
-    }
+	static public class Category implements IRecipeCategory<Wrapper> {
 
-    @Override
-    public boolean equals(Object other)
-    {
-      return recipe == other;
-    }
-  }
+		protected final ResourceLocation background_location;
+		@Nonnull
+		private final IDrawable background;
+		@Nonnull
+		private final String localizedName;
+		@Nonnull
+		private final IDrawable tank_overlay;
 
-  static public class Category implements IRecipeCategory<Wrapper>
-  {
+		@Nonnull
+		protected final IDrawableAnimated arrow;
 
-    protected final ResourceLocation background_location;
-    @Nonnull
-    private final IDrawable background;
-    @Nonnull
-    private final String localizedName;
-    @Nonnull
-    private final IDrawable tank_overlay;
-    
-    @Nonnull
-    protected final IDrawableAnimated arrow;
-    
-    public Category(IJeiHelpers helpers)
-    {
-      IGuiHelper guiHelper = helpers.getGuiHelper();
-      background_location = new ResourceLocation("foundry", "textures/gui/infuser.png");
-      
-      
-      IDrawableStatic arrowDrawable = guiHelper.createDrawable(background_location, 176, 53, 24, 17);
-      arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+		public Category(IJeiHelpers helpers) {
+			IGuiHelper guiHelper = helpers.getGuiHelper();
+			background_location = new ResourceLocation("foundry", "textures/gui/infuser.png");
 
-      ResourceLocation location = new ResourceLocation("foundry", "textures/gui/infuser.png");
-      background = guiHelper.createDrawable(location, 15, 41, 137, 51);
-      tank_overlay = guiHelper.createDrawable(location, 176, 0, 16, 47);
-      localizedName = Translator.translateToLocal("gui.jei.infuser");
+			IDrawableStatic arrowDrawable = guiHelper.createDrawable(background_location, 176, 53, 24, 17);
+			arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
 
-    }
+			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/infuser.png");
+			background = guiHelper.createDrawable(location, 15, 41, 137, 51);
+			tank_overlay = guiHelper.createDrawable(location, 176, 0, 16, 47);
+			localizedName = Translator.translateToLocal("gui.jei.infuser");
 
-    @Override
-    @Nonnull
-    public IDrawable getBackground()
-    {
-      return background;
-    }
+		}
 
-    @Override
-    public void drawExtras(Minecraft minecraft)
-    {
-    }
+		@Override
+		@Nonnull
+		public IDrawable getBackground() {
+			return background;
+		}
 
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-      arrow.draw(minecraft, 34, 18);
-    }
+		@Override
+		public void drawExtras(Minecraft minecraft) {
+		}
 
-    @Nonnull
-    @Override
-    public String getTitle()
-    {
-      return localizedName;
-    }
+		@Override
+		public void drawAnimations(Minecraft minecraft) {
+			arrow.draw(minecraft, 34, 18);
+		}
 
-    @Nonnull
-    @Override
-    public String getUid()
-    {
-      return "foundry.infuser";
-    }
+		@Nonnull
+		@Override
+		public String getTitle() {
+			return localizedName;
+		}
 
-    @Override
-    @Deprecated
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper)
-    {
+		@Nonnull
+		@Override
+		public String getUid() {
+			return "foundry.infuser";
+		}
 
-    }
+		@Override
+		@Deprecated
+		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
 
-    @Override
-    public IDrawable getIcon()
-    {
-      return null;
-    }
+		}
 
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, Wrapper recipeWrapper, IIngredients ingredients)
-    {
-      IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+		@Override
+		public IDrawable getIcon() {
+			return null;
+		}
 
-      guiFluidStacks.init(0, true, 59, 2, 16, GuiMetalInfuser.TANK_HEIGHT, FoundryAPI.INFUSER_TANK_CAPACITY,false,tank_overlay);
-      guiFluidStacks.init(1, false, 108, 2, 16, GuiMetalInfuser.TANK_HEIGHT, FoundryAPI.INFUSER_TANK_CAPACITY,false,tank_overlay);
-      guiFluidStacks.set(0, ingredients.getInputs(FluidStack.class).get(0));
-      guiFluidStacks.set(1, ingredients.getOutputs(FluidStack.class).get(0));
+		@Override
+		public void setRecipe(IRecipeLayout recipeLayout, Wrapper recipeWrapper, IIngredients ingredients) {
+			IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-      IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+			guiFluidStacks.init(0, true, 59, 2, 16, GuiMetalInfuser.TANK_HEIGHT, FoundryAPI.INFUSER_TANK_CAPACITY, false, tank_overlay);
+			guiFluidStacks.init(1, false, 108, 2, 16, GuiMetalInfuser.TANK_HEIGHT, FoundryAPI.INFUSER_TANK_CAPACITY, false, tank_overlay);
+			guiFluidStacks.set(0, ingredients.getInputs(FluidStack.class).get(0));
+			guiFluidStacks.set(1, ingredients.getOutputs(FluidStack.class).get(0));
 
-      guiItemStacks.init(0, true, 14, 17);
-      guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
-    }
+			IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-    @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY)
-    {
-      return Collections.emptyList();
-    }
-  }
+			guiItemStacks.init(0, true, 14, 17);
+			guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
+		}
 
-  static public class Handler implements IRecipeHandler<Wrapper>
-  {
-    @Override
-    @Nonnull
-    public Class<Wrapper> getRecipeClass()
-    {
-      return Wrapper.class;
-    }
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+	}
 
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid()
-    {
-      return "foundry.infuser";
-    }
+	static public class Handler implements IRecipeHandler<Wrapper> {
+		@Override
+		@Nonnull
+		public Class<Wrapper> getRecipeClass() {
+			return Wrapper.class;
+		}
 
-    @Override
-    @Nonnull
-    public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe)
-    {
-      return recipe;
-    }
+		@Nonnull
+		@Override
+		public String getRecipeCategoryUid() {
+			return "foundry.infuser";
+		}
 
-    @Override
-    public boolean isRecipeValid(@Nonnull Wrapper recipe)
-    {
-      return true;
-    }
+		@Override
+		@Nonnull
+		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
+			return recipe;
+		}
 
-    @Override
-    public String getRecipeCategoryUid(Wrapper recipe)
-    {
-      return "foundry.infuser";
-    }
-  }
+		@Override
+		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
+			return true;
+		}
 
-  static public List<Wrapper> getRecipes()
-  {
-    List<Wrapper> recipes = new ArrayList<Wrapper>();
+		@Override
+		public String getRecipeCategoryUid(Wrapper recipe) {
+			return "foundry.infuser";
+		}
+	}
 
-    for(IInfuserRecipe recipe : InfuserRecipeManager.instance.getRecipes())
-    {
-      List<ItemStack> input = recipe.getInput().getItems();
-      if(!input.isEmpty())
-      {
-        recipes.add(new Wrapper(recipe));
-      }
-    }
+	static public List<Wrapper> getRecipes() {
+		List<Wrapper> recipes = new ArrayList<Wrapper>();
 
-    return recipes;
-  }
+		for (IInfuserRecipe recipe : InfuserRecipeManager.instance.getRecipes()) {
+			List<ItemStack> input = recipe.getInput().getItems();
+			if (!input.isEmpty()) {
+				recipes.add(new Wrapper(recipe));
+			}
+		}
+
+		return recipes;
+	}
 }

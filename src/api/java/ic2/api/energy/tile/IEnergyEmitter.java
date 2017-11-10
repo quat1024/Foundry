@@ -23,4 +23,3 @@ public interface IEnergyEmitter extends IEnergyTile {
 	 */
 	boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing side);
 }
-

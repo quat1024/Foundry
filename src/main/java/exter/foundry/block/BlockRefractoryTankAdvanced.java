@@ -3,8 +3,6 @@ package exter.foundry.block;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import exter.foundry.ModFoundry;
 import exter.foundry.creativetab.FoundryTabMachines;
 import exter.foundry.proxy.CommonFoundryProxy;
@@ -28,131 +26,111 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockRefractoryTankAdvanced extends BlockContainer implements ISpoutPourDepth
-{
+public class BlockRefractoryTankAdvanced extends BlockContainer implements ISpoutPourDepth {
 
-  private Random rand = new Random();
-  
+	private Random rand = new Random();
 
-  public BlockRefractoryTankAdvanced()
-  {
-    super(Material.IRON);
-    setSoundType(SoundType.STONE);
-    setCreativeTab(FoundryTabMachines.tab);
-    setHardness(1.0F);
-    setResistance(8.0F);
-    setUnlocalizedName("foundry.refractoryTankAdvanced");
-    setRegistryName("infernoTank");
-  }
-  
+	public BlockRefractoryTankAdvanced() {
+		super(Material.IRON);
+		setSoundType(SoundType.STONE);
+		setCreativeTab(FoundryTabMachines.tab);
+		setHardness(1.0F);
+		setResistance(8.0F);
+		setUnlocalizedName("foundry.refractoryTankAdvanced");
+		setRegistryName("infernoTank");
+	}
 
-  @Override
-  public TileEntity createNewTileEntity(World world, int meta)
-  {
-    return new TileEntityRefractoryTankAdvanced();
-  }
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityRefractoryTankAdvanced();
+	}
 
-  @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block)
-  {
-    TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
 
-    if(te != null)
-    {
-      te.updateRedstone();
-    }
-  }
+		if (te != null) {
+			te.updateRedstone();
+		}
+	}
 
-  @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitx, float hity, float hitz)
-  {
-    if(world.isRemote)
-    {
-      return true;
-    } else
-    {
-      player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
-      return true;
-    }
-  }
-  
-  @Override
-  public void breakBlock(World world, BlockPos pos, IBlockState state)
-  {
-    TileEntity te = world.getTileEntity(pos);
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitx, float hity, float hitz) {
+		if (world.isRemote) {
+			return true;
+		} else {
+			player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
+			return true;
+		}
+	}
 
-    if(te != null && (te instanceof TileEntityFoundry) && !world.isRemote)
-    {
-      TileEntityFoundry tef = (TileEntityFoundry) te;
-      int i;
-      for(i = 0; i < tef.getSizeInventory(); i++)
-      {
-        ItemStack is = tef.getStackInSlot(i);
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
 
-        if(is != null && is.stackSize > 0)
-        {
-          double drop_x = (rand.nextFloat() * 0.3) + 0.35;
-          double drop_y = (rand.nextFloat() * 0.3) + 0.35;
-          double drop_z = (rand.nextFloat() * 0.3) + 0.35;
-          EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
-          entityitem.setPickupDelay(10);
+		if (te != null && (te instanceof TileEntityFoundry) && !world.isRemote) {
+			TileEntityFoundry tef = (TileEntityFoundry) te;
+			int i;
+			for (i = 0; i < tef.getSizeInventory(); i++) {
+				ItemStack is = tef.getStackInSlot(i);
 
-          world.spawnEntityInWorld(entityitem);
-        }
-      }
-    }
-    world.removeTileEntity(pos);
-    super.breakBlock(world, pos, state);
-  }
+				if (is != null && is.stackSize > 0) {
+					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
+					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
+					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
+					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
+					entityitem.setPickupDelay(10);
 
-  @Override
-  public EnumBlockRenderType getRenderType(IBlockState state)
-  {
-    return EnumBlockRenderType.MODEL;
-  }
+					world.spawnEntityInWorld(entityitem);
+				}
+			}
+		}
+		world.removeTileEntity(pos);
+		super.breakBlock(world, pos, state);
+	}
 
-  @Override
-  public boolean isFullCube(IBlockState state)
-  {
-    return false;
-  }
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
+	}
 
-  @Override
-  public boolean isOpaqueCube(IBlockState state)
-  {
-    return false;
-  }
-  
-  @Override
-  public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-  {
-    return true;
-  }
-  
-  @SideOnly(Side.CLIENT)
-  public BlockRenderLayer getBlockLayer()
-  {
-      return BlockRenderLayer.CUTOUT;
-  }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-  @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
-  {
-    return true;
-  }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-  @SideOnly(Side.CLIENT)
-  @Override
-  public int getSpoutPourDepth(World world, BlockPos pos, IBlockState state)
-  {
-    return 2;
-  }
-  
-  @SideOnly(Side.CLIENT)
-  @Override
-  public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
-  {
-    FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryTankAdvanced", tooltip);
-  }
+	@Override
+	public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getSpoutPourDepth(World world, BlockPos pos, IBlockState state) {
+		return 2;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryTankAdvanced", tooltip);
+	}
 }

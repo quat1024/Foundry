@@ -6,24 +6,20 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class FoundryTabMaterials extends CreativeTabs
-{
-  public static FoundryTabMaterials tab = new FoundryTabMaterials();
+public class FoundryTabMaterials extends CreativeTabs {
+	public static FoundryTabMaterials tab = new FoundryTabMaterials();
 
-  private FoundryTabMaterials()
-  {
-    super("foundryMaterials");
-  }
-  
-  @Override
-  public ItemStack getIconItemStack()
-  {
-    return FoundryItems.component(ItemComponent.SubItem.REFRACTORYCLAY);
-  }
+	private FoundryTabMaterials() {
+		super("foundryMaterials");
+	}
 
-  @Override
-  public Item getTabIconItem()
-  {
-    return null;
-  }
+	@Override
+	public ItemStack getIconItemStack() {
+		return FoundryItems.component(ItemComponent.SubItem.REFRACTORYCLAY);
+	}
+
+	@Override
+	public Item getTabIconItem() {
+		return null;
+	}
 }

@@ -42,4 +42,3 @@ public interface IEnergySink extends IEnergyAcceptor {
 	 */
 	double injectEnergy(EnumFacing directionFrom, double amount, double voltage);
 }
-

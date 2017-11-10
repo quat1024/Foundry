@@ -1,6 +1,5 @@
 package ic2.api.energy;
 
-
 /**
  * Provides access to the energy network.
  * 
@@ -15,4 +14,3 @@ public final class EnergyNet {
 	 */
 	public static IEnergyNet instance;
 }
-

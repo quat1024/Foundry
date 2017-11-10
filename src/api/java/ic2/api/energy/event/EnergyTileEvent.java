@@ -1,9 +1,8 @@
 package ic2.api.energy.event;
 
-import net.minecraftforge.event.world.WorldEvent;
-
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.IEnergyTile;
+import net.minecraftforge.event.world.WorldEvent;
 
 /**
  * Base class for energy net events, don't use it directly.
@@ -21,4 +20,3 @@ public class EnergyTileEvent extends WorldEvent {
 
 	public final IEnergyTile tile;
 }
-

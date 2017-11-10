@@ -18,90 +18,74 @@ import net.minecraftforge.fluids.FluidRegistry;
 /**
  * Utility class for registering a metal's corresponding block, items, fluid, and recipes.
  */
-public class LiquidMetalRegistry implements IFluidRegistry
-{
-  private Map<String,FluidLiquidMetal> registry;
-  
-  static public LiquidMetalRegistry instance = new LiquidMetalRegistry();
-  
-  private LiquidMetalRegistry()
-  {
-    registry = new HashMap<String,FluidLiquidMetal>();
-    MinecraftForge.EVENT_BUS.register(this);
-  }
+public class LiquidMetalRegistry implements IFluidRegistry {
+	private Map<String, FluidLiquidMetal> registry;
 
-  /**
-   * Helper method to register a metal's fluid, and block.
-   * @param metal_name Name of the metal e.g: "Copper" for "oreCopper" in the Ore Dictionary.
-   */
-  public FluidLiquidMetal registerLiquidMetal(String metal_name,int temperature,int luminosity)
-  {
-    return registerLiquidMetal(metal_name,temperature,luminosity,"liquid" + metal_name,0xFFFFFF);
-  }
+	static public LiquidMetalRegistry instance = new LiquidMetalRegistry();
 
-  /**
-   * Helper method to register a metal's fluid, and block.
-   * @param metal_name Name of the metal e.g: "Copper" for "oreCopper" in the Ore Dictionary.
-   */
-  public FluidLiquidMetal registerLiquidMetal(String metal_name,int temperature,int luminosity,String texture,int color)
-  {
-    FluidLiquidMetal fluid = new FluidLiquidMetal("liquid" + metal_name,
-        new ResourceLocation("foundry","blocks/" + texture + "_still"),
-        new ResourceLocation("foundry","blocks/" + texture + "_flow"),
-        color, false, temperature,luminosity);
-    FluidRegistry.registerFluid(fluid);
+	private LiquidMetalRegistry() {
+		registry = new HashMap<String, FluidLiquidMetal>();
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
-    String block_name = "block" + metal_name;
-    Object solid = FoundryMiscUtils.getModItemFromOreDictionary("substratum", block_name);
-    if(solid == null)
-    {
-      solid = block_name;
-    }
+	/**
+	 * Helper method to register a metal's fluid, and block.
+	 * @param metal_name Name of the metal e.g: "Copper" for "oreCopper" in the Ore Dictionary.
+	 */
+	public FluidLiquidMetal registerLiquidMetal(String metal_name, int temperature, int luminosity) {
+		return registerLiquidMetal(metal_name, temperature, luminosity, "liquid" + metal_name, 0xFFFFFF);
+	}
 
-    Block liquid_block = new BlockLiquidMetal(fluid, "liquid" + metal_name, solid);
-    FoundryBlocks.register(liquid_block);
+	/**
+	 * Helper method to register a metal's fluid, and block.
+	 * @param metal_name Name of the metal e.g: "Copper" for "oreCopper" in the Ore Dictionary.
+	 */
+	public FluidLiquidMetal registerLiquidMetal(String metal_name, int temperature, int luminosity, String texture, int color) {
+		FluidLiquidMetal fluid = new FluidLiquidMetal("liquid" + metal_name, new ResourceLocation("foundry", "blocks/" + texture + "_still"), new ResourceLocation("foundry", "blocks/" + texture + "_flow"), color, false, temperature, luminosity);
+		FluidRegistry.registerFluid(fluid);
 
-    fluid.setBlock(liquid_block);
-    
-    registry.put(metal_name, fluid);
-    return fluid;
-  }
+		String block_name = "block" + metal_name;
+		Object solid = FoundryMiscUtils.getModItemFromOreDictionary("substratum", block_name);
+		if (solid == null) {
+			solid = block_name;
+		}
 
-  public FluidLiquidMetal registerSpecialLiquidMetal(String metal_name,int temperature,int luminosity, ItemStack solid)
-  {
-    return registerSpecialLiquidMetal(metal_name,temperature,luminosity,"liquid" + metal_name,0xFFFFFF, solid);
-  }
+		Block liquid_block = new BlockLiquidMetal(fluid, "liquid" + metal_name, solid);
+		FoundryBlocks.register(liquid_block);
 
-  public FluidLiquidMetal registerSpecialLiquidMetal(String metal_name,int temperature,int luminosity,String texture,int color, ItemStack solid)
-  {
-    FluidLiquidMetal fluid = new FluidLiquidMetal("liquid" + metal_name,
-        new ResourceLocation("foundry","blocks/" + texture + "_still"),
-        new ResourceLocation("foundry","blocks/" + texture + "_flow"),
-        color, true, temperature, luminosity);
-    FluidRegistry.registerFluid(fluid);
+		fluid.setBlock(liquid_block);
 
-    Block liquid_block = new BlockLiquidMetal(fluid, "liquid" + metal_name, solid);
-    FoundryBlocks.register(liquid_block);
+		registry.put(metal_name, fluid);
+		return fluid;
+	}
 
-    fluid.setBlock(liquid_block);
-    
-    registry.put(metal_name, fluid);
-    return fluid;
-  }
+	public FluidLiquidMetal registerSpecialLiquidMetal(String metal_name, int temperature, int luminosity, ItemStack solid) {
+		return registerSpecialLiquidMetal(metal_name, temperature, luminosity, "liquid" + metal_name, 0xFFFFFF, solid);
+	}
 
-  @Override
-  public FluidLiquidMetal getFluid(String name)
-  {
-    return registry.get(name);
-  }
+	public FluidLiquidMetal registerSpecialLiquidMetal(String metal_name, int temperature, int luminosity, String texture, int color, ItemStack solid) {
+		FluidLiquidMetal fluid = new FluidLiquidMetal("liquid" + metal_name, new ResourceLocation("foundry", "blocks/" + texture + "_still"), new ResourceLocation("foundry", "blocks/" + texture + "_flow"), color, true, temperature, luminosity);
+		FluidRegistry.registerFluid(fluid);
 
-  public Map<String,FluidLiquidMetal> getFluids()
-  {
-    return Collections.unmodifiableMap(registry);
-  }
+		Block liquid_block = new BlockLiquidMetal(fluid, "liquid" + metal_name, solid);
+		FoundryBlocks.register(liquid_block);
 
-  public Set<String> getFluidNames()
-  {
-    return Collections.unmodifiableSet(registry.keySet());
-  }
+		fluid.setBlock(liquid_block);
+
+		registry.put(metal_name, fluid);
+		return fluid;
+	}
+
+	@Override
+	public FluidLiquidMetal getFluid(String name) {
+		return registry.get(name);
+	}
+
+	public Map<String, FluidLiquidMetal> getFluids() {
+		return Collections.unmodifiableMap(registry);
+	}
+
+	public Set<String> getFluidNames() {
+		return Collections.unmodifiableSet(registry.keySet());
+	}
 }

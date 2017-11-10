@@ -17,74 +17,65 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "exter.foundry.integration.IModIntegration", modid = "MineTweaker3")
-public class ModIntegrationMinetweaker implements IModIntegration
-{
-  
-  @Optional.Method(modid = "MineTweaker3")
-  @Override
-  public void onPreInit(Configuration config)
-  {
-    
-  }
+public class ModIntegrationMinetweaker implements IModIntegration {
 
-  @Optional.Method(modid = "MineTweaker3")
-  @Override
-  public void onInit()
-  {
-    MineTweakerAPI.registerBracketHandler(new OreStackBracketHandler());
-    MineTweakerAPI.registerClass(MTMeltingHandler.class);
-    MineTweakerAPI.registerClass(MTCastingHandler.class);
-    MineTweakerAPI.registerClass(MTCastingTableHandler.class);
-    MineTweakerAPI.registerClass(MTAlloyMixerHandler.class);
-    MineTweakerAPI.registerClass(MTAlloyFurnaceHandler.class);
-    MineTweakerAPI.registerClass(MTAlloyingCurcibleHandler.class);
-    MineTweakerAPI.registerClass(MTAtomizerHandler.class);
-    MineTweakerAPI.registerClass(MTInfuserHandler.class);
-    MineTweakerAPI.registerClass(MTMoldStationHandler.class);
-  }
+	@Optional.Method(modid = "MineTweaker3")
+	@Override
+	public void onPreInit(Configuration config) {
 
-  @Optional.Method(modid = "MineTweaker3")
-  @Override
-  public void onPostInit()
-  {
+	}
 
-  }
+	@Optional.Method(modid = "MineTweaker3")
+	@Override
+	public void onInit() {
+		MineTweakerAPI.registerBracketHandler(new OreStackBracketHandler());
+		MineTweakerAPI.registerClass(MTMeltingHandler.class);
+		MineTweakerAPI.registerClass(MTCastingHandler.class);
+		MineTweakerAPI.registerClass(MTCastingTableHandler.class);
+		MineTweakerAPI.registerClass(MTAlloyMixerHandler.class);
+		MineTweakerAPI.registerClass(MTAlloyFurnaceHandler.class);
+		MineTweakerAPI.registerClass(MTAlloyingCurcibleHandler.class);
+		MineTweakerAPI.registerClass(MTAtomizerHandler.class);
+		MineTweakerAPI.registerClass(MTInfuserHandler.class);
+		MineTweakerAPI.registerClass(MTMoldStationHandler.class);
+	}
 
-  @Optional.Method(modid = "MineTweaker3")
-  @Override
-  public String getName()
-  {
-    return "minetweaker";
-  }
+	@Optional.Method(modid = "MineTweaker3")
+	@Override
+	public void onPostInit() {
 
-  @Optional.Method(modid = "MineTweaker3")
-  @Override
-  public void onAfterPostInit()
-  {
+	}
 
-  }
+	@Optional.Method(modid = "MineTweaker3")
+	@Override
+	public String getName() {
+		return "minetweaker";
+	}
 
-  @Optional.Method(modid = "MineTweaker3")
-  @SideOnly(Side.CLIENT)
-  @Override
-  public void onClientPreInit()
-  {
-    
-  }
+	@Optional.Method(modid = "MineTweaker3")
+	@Override
+	public void onAfterPostInit() {
 
-  @Optional.Method(modid = "MineTweaker3")
-  @SideOnly(Side.CLIENT)
-  @Override
-  public void onClientInit()
-  {
-    
-  }
+	}
 
-  @Optional.Method(modid = "MineTweaker3")
-  @SideOnly(Side.CLIENT)
-  @Override
-  public void onClientPostInit()
-  {
-    
-  }
+	@Optional.Method(modid = "MineTweaker3")
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientPreInit() {
+
+	}
+
+	@Optional.Method(modid = "MineTweaker3")
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientInit() {
+
+	}
+
+	@Optional.Method(modid = "MineTweaker3")
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientPostInit() {
+
+	}
 }

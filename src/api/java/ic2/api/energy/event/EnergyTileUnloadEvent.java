@@ -24,4 +24,3 @@ public class EnergyTileUnloadEvent extends EnergyTileEvent {
 		super(energyTile1);
 	}
 }
-

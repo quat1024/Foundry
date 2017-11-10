@@ -3,13 +3,6 @@ package exter.foundry.proxy;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import exter.foundry.block.BlockCastingTable;
 import exter.foundry.block.BlockComponent;
 import exter.foundry.block.BlockFoundryMachine;
@@ -30,11 +23,11 @@ import exter.foundry.tileentity.TileEntityCastingTableBlock;
 import exter.foundry.tileentity.TileEntityCastingTableIngot;
 import exter.foundry.tileentity.TileEntityCastingTablePlate;
 import exter.foundry.tileentity.TileEntityCastingTableRod;
-import exter.foundry.tileentity.TileEntityRefractoryTankBasic;
-import exter.foundry.tileentity.TileEntityRefractoryTankStandard;
-import exter.foundry.tileentity.TileEntityRefractoryTankAdvanced;
 import exter.foundry.tileentity.TileEntityRefractoryHopper;
 import exter.foundry.tileentity.TileEntityRefractorySpout;
+import exter.foundry.tileentity.TileEntityRefractoryTankAdvanced;
+import exter.foundry.tileentity.TileEntityRefractoryTankBasic;
+import exter.foundry.tileentity.TileEntityRefractoryTankStandard;
 import exter.foundry.tileentity.renderer.CastingTableRenderer;
 import exter.foundry.tileentity.renderer.CastingTableRendererBlock;
 import exter.foundry.tileentity.renderer.HopperRenderer;
@@ -53,189 +46,164 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ClientFoundryProxy extends CommonFoundryProxy
-{
-  static private class LiquidMetalItemMeshDefinition implements ItemMeshDefinition
-  {
-    private ModelResourceLocation model;
-    
-    LiquidMetalItemMeshDefinition(String name)
-    {
-      model = new ModelResourceLocation("foundry:liquid" + name);
-    }
-    
-    @Override
-    public ModelResourceLocation getModelLocation(ItemStack stack)
-    {
-      return model;
-    }    
-  } 
-  
-  
-  private void registerItemModel(Block block,String name)
-  {
-    registerItemModel(Item.getItemFromBlock(block), name);
-  }
+public class ClientFoundryProxy extends CommonFoundryProxy {
+	static private class LiquidMetalItemMeshDefinition implements ItemMeshDefinition {
+		private ModelResourceLocation model;
 
-  private void registerItemModel(Block block,String name,int meta)
-  {
-    registerItemModel(Item.getItemFromBlock(block), name, meta);
-  }
+		LiquidMetalItemMeshDefinition(String name) {
+			model = new ModelResourceLocation("foundry:liquid" + name);
+		}
 
-  private void registerItemModel(Item item,String name)
-  {
-    Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-    .register(item, 0,
-      new ModelResourceLocation("foundry:" + name, "inventory"));
-  }
+		@Override
+		public ModelResourceLocation getModelLocation(ItemStack stack) {
+			return model;
+		}
+	}
 
-  private void registerItemModel(Item item,String name,int meta)
-  {
-    name = "foundry:" + name;
-    ModelBakery.registerItemVariants(item, new ResourceLocation(name));
-    Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-    .register(item, meta, new ModelResourceLocation(name, "inventory"));
-  }
+	private void registerItemModel(Block block, String name) {
+		registerItemModel(Item.getItemFromBlock(block), name);
+	}
 
-  @Override
-  public void preInit()
-  {
-    ModelLoaderRegistry.registerLoader(RFCModel.Loader.instance);
-    MaterialRegistry.instance.initIcons();
-    for(Map.Entry<String,FluidLiquidMetal> e:LiquidMetalRegistry.instance.getFluids().entrySet())
-    {
-      Fluid fluid = e.getValue();
-      Block block = fluid.getBlock();
-      Item item = Item.getItemFromBlock(block);
-      String name = e.getKey();
-      ModelBakery.registerItemVariants(item);
-      ModelLoader.setCustomMeshDefinition( item, new LiquidMetalItemMeshDefinition(name));
-      ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockFluidBase.LEVEL).build());
-    }
-    RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, 
-        new IRenderFactory<EntitySkeleton>() { @Override public Render<EntitySkeleton> createRenderFor(RenderManager manager) { return new RenderSkeleton(manager); }});
-    ModIntegrationManager.clientPreInit();
-  }
+	private void registerItemModel(Block block, String name, int meta) {
+		registerItemModel(Item.getItemFromBlock(block), name, meta);
+	}
 
-  
-  @Override
-  public void init()
-  {
-    for(BlockFoundryMachine.EnumMachine m:BlockFoundryMachine.EnumMachine.values())
-    {
-      registerItemModel(FoundryBlocks.block_machine,m.model,m.id);
-    }
-    for(BlockCastingTable.EnumTable m:BlockCastingTable.EnumTable.values())
-    {
-      registerItemModel(FoundryBlocks.block_casting_table,m.model,m.id);
-    }
+	private void registerItemModel(Item item, String name) {
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation("foundry:" + name, "inventory"));
+	}
 
-    registerItemModel(FoundryBlocks.block_refractory_glass,"refractoryGlass");
-    registerItemModel(FoundryBlocks.block_alloy_furnace,"alloyFurnace");
-    registerItemModel(FoundryBlocks.block_mold_station,"moldStation");
-    registerItemModel(FoundryBlocks.block_refractory_hopper,"refractoryHopper");
-    registerItemModel(FoundryBlocks.block_burner_heater,"burnerHeater");
-    registerItemModel(FoundryBlocks.block_refractory_spout,"refractorySpout");
-    registerItemModel(FoundryBlocks.block_refractory_tank_basic,"refractoryTank");
-    registerItemModel(FoundryBlocks.block_refractory_tank_standard,"refractoryTankStandard");
-    registerItemModel(FoundryBlocks.block_refractory_tank_advanced,"infernoTank");
-    registerItemModel(FoundryBlocks.block_cauldron_bronze,"bronzeCauldron");
-    if(FoundryConfig.block_cokeoven)
-    {
-      registerItemModel(FoundryBlocks.block_coke_oven,"cokeOven");
-    }
+	private void registerItemModel(Item item, String name, int meta) {
+		name = "foundry:" + name;
+		ModelBakery.registerItemVariants(item, new ResourceLocation(name));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(name, "inventory"));
+	}
 
-    for(BlockComponent.EnumVariant v:BlockComponent.EnumVariant.values())
-    {
-      registerItemModel(FoundryBlocks.block_component,v.model, v.id);
-    }
+	@Override
+	public void preInit() {
+		ModelLoaderRegistry.registerLoader(RFCModel.Loader.instance);
+		MaterialRegistry.instance.initIcons();
+		for (Map.Entry<String, FluidLiquidMetal> e : LiquidMetalRegistry.instance.getFluids().entrySet()) {
+			Fluid fluid = e.getValue();
+			Block block = fluid.getBlock();
+			Item item = Item.getItemFromBlock(block);
+			String name = e.getKey();
+			ModelBakery.registerItemVariants(item);
+			ModelLoader.setCustomMeshDefinition(item, new LiquidMetalItemMeshDefinition(name));
+			ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockFluidBase.LEVEL).build());
+		}
+		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, new IRenderFactory<EntitySkeleton>() {
+			@Override
+			public Render<EntitySkeleton> createRenderFor(RenderManager manager) {
+				return new RenderSkeleton(manager);
+			}
+		});
+		ModIntegrationManager.clientPreInit();
+	}
 
+	@Override
+	public void init() {
+		for (BlockFoundryMachine.EnumMachine m : BlockFoundryMachine.EnumMachine.values()) {
+			registerItemModel(FoundryBlocks.block_machine, m.model, m.id);
+		}
+		for (BlockCastingTable.EnumTable m : BlockCastingTable.EnumTable.values()) {
+			registerItemModel(FoundryBlocks.block_casting_table, m.model, m.id);
+		}
 
-    for(ItemComponent.SubItem c:ItemComponent.SubItem.values())
-    {
-      registerItemModel(FoundryItems.item_component,c.name, c.id);
-    }
+		registerItemModel(FoundryBlocks.block_refractory_glass, "refractoryGlass");
+		registerItemModel(FoundryBlocks.block_alloy_furnace, "alloyFurnace");
+		registerItemModel(FoundryBlocks.block_mold_station, "moldStation");
+		registerItemModel(FoundryBlocks.block_refractory_hopper, "refractoryHopper");
+		registerItemModel(FoundryBlocks.block_burner_heater, "burnerHeater");
+		registerItemModel(FoundryBlocks.block_refractory_spout, "refractorySpout");
+		registerItemModel(FoundryBlocks.block_refractory_tank_basic, "refractoryTank");
+		registerItemModel(FoundryBlocks.block_refractory_tank_standard, "refractoryTankStandard");
+		registerItemModel(FoundryBlocks.block_refractory_tank_advanced, "infernoTank");
+		registerItemModel(FoundryBlocks.block_cauldron_bronze, "bronzeCauldron");
+		if (FoundryConfig.block_cokeoven) {
+			registerItemModel(FoundryBlocks.block_coke_oven, "cokeOven");
+		}
 
-    for(ItemMold.SubItem m:ItemMold.SubItem.values())
-    {
-      registerItemModel(FoundryItems.item_mold,m.name, m.id);
-    }
+		for (BlockComponent.EnumVariant v : BlockComponent.EnumVariant.values()) {
+			registerItemModel(FoundryBlocks.block_component, v.model, v.id);
+		}
 
-    registerItemModel(FoundryItems.item_revolver,"revolver",0);
-    registerItemModel(FoundryItems.item_shotgun,"shotgun",0);
-    registerItemModel(FoundryItems.item_round,"roundNormal",0);
-    registerItemModel(FoundryItems.item_round_hollow,"roundHollow",0);
-    registerItemModel(FoundryItems.item_round_jacketed,"roundJacketed",0);
-    registerItemModel(FoundryItems.item_round_fire,"roundFire",0);
-    registerItemModel(FoundryItems.item_round_poison,"roundPoison",0);
-    registerItemModel(FoundryItems.item_round_ap,"roundAP",0);
-    registerItemModel(FoundryItems.item_round_lumium,"roundLumium",0);
-    registerItemModel(FoundryItems.item_round_snow,"roundSnow",0);
-    registerItemModel(FoundryItems.item_shell,"shellNormal",0);
-    registerItemModel(FoundryItems.item_shell_ap,"shellAP",0);
-    registerItemModel(FoundryItems.item_shell_lumium,"shellLumium",0);
-    registerItemModel(FoundryItems.item_container,"container",0);
+		for (ItemComponent.SubItem c : ItemComponent.SubItem.values()) {
+			registerItemModel(FoundryItems.item_component, c.name, c.id);
+		}
 
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableIngot.class, new CastingTableRenderer(6,10,4,12,9,12,"foundry:blocks/castingtable_top_ingot"));
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTablePlate.class, new CastingTableRenderer(3,13,3,13,11,12,"foundry:blocks/castingtable_top_plate"));
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableRod.class, new CastingTableRenderer(7,9,2,14,10,12,"foundry:blocks/castingtable_top_rod"));
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableBlock.class, new CastingTableRendererBlock());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractorySpout.class, new SpoutRenderer());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryHopper.class, new HopperRenderer());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankBasic.class, new TankRenderer());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankStandard.class, new TankRenderer());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankAdvanced.class, new TankRenderer());
-    
-    
-    ModIntegrationManager.clientInit();
-  }
-  
+		for (ItemMold.SubItem m : ItemMold.SubItem.values()) {
+			registerItemModel(FoundryItems.item_mold, m.name, m.id);
+		}
 
-  @Override
-  public void postInit()
-  {
-    for(OreDictMaterial material : OreDictMaterial.MATERIALS)
-    {
-      List<ItemStack> ores = OreDictionary.getOres(material.default_prefix + material.suffix);
-      if(ores.size() > 0)
-      {
-        MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
-      } else
-      {
-        for(OreDictType type : OreDictType.TYPES)
-        {
-          ores = OreDictionary.getOres(type.prefix + material.suffix);
-          if(ores.size() > 0)
-          {
-            MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
-            break;
-          }
-        }
-      }
-    }
+		registerItemModel(FoundryItems.item_revolver, "revolver", 0);
+		registerItemModel(FoundryItems.item_shotgun, "shotgun", 0);
+		registerItemModel(FoundryItems.item_round, "roundNormal", 0);
+		registerItemModel(FoundryItems.item_round_hollow, "roundHollow", 0);
+		registerItemModel(FoundryItems.item_round_jacketed, "roundJacketed", 0);
+		registerItemModel(FoundryItems.item_round_fire, "roundFire", 0);
+		registerItemModel(FoundryItems.item_round_poison, "roundPoison", 0);
+		registerItemModel(FoundryItems.item_round_ap, "roundAP", 0);
+		registerItemModel(FoundryItems.item_round_lumium, "roundLumium", 0);
+		registerItemModel(FoundryItems.item_round_snow, "roundSnow", 0);
+		registerItemModel(FoundryItems.item_shell, "shellNormal", 0);
+		registerItemModel(FoundryItems.item_shell_ap, "shellAP", 0);
+		registerItemModel(FoundryItems.item_shell_lumium, "shellLumium", 0);
+		registerItemModel(FoundryItems.item_container, "container", 0);
 
-    for(OreDictType type : OreDictType.TYPES)
-    {
-      List<ItemStack> ores = OreDictionary.getOres(type.prefix + type.default_suffix);
-      if(ores.size() > 0)
-      {
-        MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
-      } else
-      {
-        for(OreDictMaterial material : OreDictMaterial.MATERIALS)
-        {
-          ores = OreDictionary.getOres(type.prefix + material.suffix);
-          if(ores.size() > 0)
-          {
-            MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
-            break;
-          }
-        }
-      }
-    }
-    ModIntegrationManager.clientPostInit();
-  }
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableIngot.class, new CastingTableRenderer(6, 10, 4, 12, 9, 12, "foundry:blocks/castingtable_top_ingot"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTablePlate.class, new CastingTableRenderer(3, 13, 3, 13, 11, 12, "foundry:blocks/castingtable_top_plate"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableRod.class, new CastingTableRenderer(7, 9, 2, 14, 10, 12, "foundry:blocks/castingtable_top_rod"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableBlock.class, new CastingTableRendererBlock());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractorySpout.class, new SpoutRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryHopper.class, new HopperRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankBasic.class, new TankRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankStandard.class, new TankRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankAdvanced.class, new TankRenderer());
+
+		ModIntegrationManager.clientInit();
+	}
+
+	@Override
+	public void postInit() {
+		for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
+			List<ItemStack> ores = OreDictionary.getOres(material.default_prefix + material.suffix);
+			if (ores.size() > 0) {
+				MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
+			} else {
+				for (OreDictType type : OreDictType.TYPES) {
+					ores = OreDictionary.getOres(type.prefix + material.suffix);
+					if (ores.size() > 0) {
+						MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
+						break;
+					}
+				}
+			}
+		}
+
+		for (OreDictType type : OreDictType.TYPES) {
+			List<ItemStack> ores = OreDictionary.getOres(type.prefix + type.default_suffix);
+			if (ores.size() > 0) {
+				MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
+			} else {
+				for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
+					ores = OreDictionary.getOres(type.prefix + material.suffix);
+					if (ores.size() > 0) {
+						MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
+						break;
+					}
+				}
+			}
+		}
+		ModIntegrationManager.clientPostInit();
+	}
 
 }

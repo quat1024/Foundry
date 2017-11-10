@@ -22,4 +22,3 @@ public interface IEnergyAcceptor extends IEnergyTile {
 	 */
 	boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side);
 }
-

@@ -14,122 +14,97 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.foundry.CastingTable")
-public class MTCastingTableHandler
-{
-  public static class CastingTableAction extends AddRemoveAction
-  {
-    
-    ICastingTableRecipe recipe;
-    
-    public CastingTableAction(ICastingTableRecipe recipe)
-    {
-      this.recipe = recipe;
-    }
-    
-    @Override
-    protected void add()
-    {
-      CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).put(recipe.getInput().getFluid().getName(), recipe);
-      MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingTableJEI.Wrapper(recipe));
-    }
+public class MTCastingTableHandler {
+	public static class CastingTableAction extends AddRemoveAction {
 
-    @Override
-    protected void remove()
-    {
-      CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
-      MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingTableJEI.Wrapper(recipe));
-    }
+		ICastingTableRecipe recipe;
 
-    @Override
-    public String getRecipeType()
-    {
-      return "casting table";
-    }
+		public CastingTableAction(ICastingTableRecipe recipe) {
+			this.recipe = recipe;
+		}
 
-    @Override
-    public String getDescription()
-    {
-      return String.format("( %s, %s ) -> %s",
-          MTHelper.getFluidDescription(recipe.getInput()),
-          recipe.getTableType().toString(),
-          MTHelper.getItemDescription(recipe.getOutput()));
-    }
-  }
+		@Override
+		protected void add() {
+			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).put(recipe.getInput().getFluid().getName(), recipe);
+			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingTableJEI.Wrapper(recipe));
+		}
 
-  static private void addRecipe(IItemStack output,ILiquidStack input,ICastingTableRecipe.TableType table)
-  {
-    ItemStackMatcher out = new ItemStackMatcher(MineTweakerMC.getItemStack(output));
-    FluidStack in = MineTweakerMC.getLiquidStack(input);
-    CastingTableRecipe recipe;
-    try
-    {
-      recipe = new CastingTableRecipe( out, in, table);
-    } catch(IllegalArgumentException e)
-    {
-      MineTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
-      return;
-    }
-    MineTweakerAPI.apply((new CastingTableAction(recipe).action_add));
-  }
+		@Override
+		protected void remove() {
+			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
+			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingTableJEI.Wrapper(recipe));
+		}
 
-  @ZenMethod
-  static public void addIngotRecipe(IItemStack output,ILiquidStack input)
-  {
-    addRecipe(output,input,ICastingTableRecipe.TableType.INGOT);
-  }
+		@Override
+		public String getRecipeType() {
+			return "casting table";
+		}
 
-  @ZenMethod
-  static public void addPlateRecipe(IItemStack output,ILiquidStack input)
-  {
-    addRecipe(output,input,ICastingTableRecipe.TableType.PLATE);
-  }
+		@Override
+		public String getDescription() {
+			return String.format("( %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInput()), recipe.getTableType().toString(), MTHelper.getItemDescription(recipe.getOutput()));
+		}
+	}
 
-  @ZenMethod
-  static public void addRodRecipe(IItemStack output,ILiquidStack input)
-  {
-    addRecipe(output,input,ICastingTableRecipe.TableType.ROD);
-  }
-  
-  @ZenMethod
-  static public void addBlockRecipe(IItemStack output,ILiquidStack input)
-  {
-    addRecipe(output,input,ICastingTableRecipe.TableType.BLOCK);
-  }
+	static private void addRecipe(IItemStack output, ILiquidStack input, ICastingTableRecipe.TableType table) {
+		ItemStackMatcher out = new ItemStackMatcher(MineTweakerMC.getItemStack(output));
+		FluidStack in = MineTweakerMC.getLiquidStack(input);
+		CastingTableRecipe recipe;
+		try {
+			recipe = new CastingTableRecipe(out, in, table);
+		} catch (IllegalArgumentException e) {
+			MineTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
+			return;
+		}
+		MineTweakerAPI.apply((new CastingTableAction(recipe).action_add));
+	}
 
-  static public void removeRecipe(ILiquidStack input, ICastingTableRecipe.TableType table)
-  {
-    ICastingTableRecipe recipe = CastingTableRecipeManager.instance.findRecipe(
-        MineTweakerMC.getLiquidStack(input),
-        table);
-    if(recipe == null)
-    {
-      MineTweakerAPI.logWarning("Casting table recipe not found.");
-      return;
-    }
-    MineTweakerAPI.apply((new CastingTableAction(recipe)).action_remove);
-  }
+	@ZenMethod
+	static public void addIngotRecipe(IItemStack output, ILiquidStack input) {
+		addRecipe(output, input, ICastingTableRecipe.TableType.INGOT);
+	}
 
-  @ZenMethod
-  static public void removeIngotRecipe(ILiquidStack input)
-  {
-    removeRecipe(input,ICastingTableRecipe.TableType.INGOT);
-  }
-  
-  @ZenMethod
-  static public void removePlateRecipe(ILiquidStack input)
-  {
-    removeRecipe(input,ICastingTableRecipe.TableType.PLATE);
-  }
-  
-  @ZenMethod
-  static public void removeRodRecipe(ILiquidStack input)
-  {
-    removeRecipe(input,ICastingTableRecipe.TableType.ROD);
-  }
+	@ZenMethod
+	static public void addPlateRecipe(IItemStack output, ILiquidStack input) {
+		addRecipe(output, input, ICastingTableRecipe.TableType.PLATE);
+	}
 
-  @ZenMethod
-  static public void removeBlockRecipe(ILiquidStack input)
-  {
-    removeRecipe(input,ICastingTableRecipe.TableType.BLOCK);
-  }
+	@ZenMethod
+	static public void addRodRecipe(IItemStack output, ILiquidStack input) {
+		addRecipe(output, input, ICastingTableRecipe.TableType.ROD);
+	}
+
+	@ZenMethod
+	static public void addBlockRecipe(IItemStack output, ILiquidStack input) {
+		addRecipe(output, input, ICastingTableRecipe.TableType.BLOCK);
+	}
+
+	static public void removeRecipe(ILiquidStack input, ICastingTableRecipe.TableType table) {
+		ICastingTableRecipe recipe = CastingTableRecipeManager.instance.findRecipe(MineTweakerMC.getLiquidStack(input), table);
+		if (recipe == null) {
+			MineTweakerAPI.logWarning("Casting table recipe not found.");
+			return;
+		}
+		MineTweakerAPI.apply((new CastingTableAction(recipe)).action_remove);
+	}
+
+	@ZenMethod
+	static public void removeIngotRecipe(ILiquidStack input) {
+		removeRecipe(input, ICastingTableRecipe.TableType.INGOT);
+	}
+
+	@ZenMethod
+	static public void removePlateRecipe(ILiquidStack input) {
+		removeRecipe(input, ICastingTableRecipe.TableType.PLATE);
+	}
+
+	@ZenMethod
+	static public void removeRodRecipe(ILiquidStack input) {
+		removeRecipe(input, ICastingTableRecipe.TableType.ROD);
+	}
+
+	@ZenMethod
+	static public void removeBlockRecipe(ILiquidStack input) {
+		removeRecipe(input, ICastingTableRecipe.TableType.BLOCK);
+	}
 }

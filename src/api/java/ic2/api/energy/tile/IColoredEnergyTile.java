@@ -17,5 +17,4 @@ public interface IColoredEnergyTile extends IEnergyTile {
 	 */
 	EnumDyeColor getColor(EnumFacing side);
 
-
 }

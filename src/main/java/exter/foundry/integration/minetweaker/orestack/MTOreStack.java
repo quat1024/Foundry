@@ -15,119 +15,100 @@ import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.player.IPlayer;
 import net.minecraft.item.ItemStack;
 
-public class MTOreStack implements IIngredient
-{
-  private final OreMatcher stack;
+public class MTOreStack implements IIngredient {
+	private final OreMatcher stack;
 
-  public MTOreStack(OreMatcher stack)
-  {
-    this.stack = stack; 
-  }
+	public MTOreStack(OreMatcher stack) {
+		this.stack = stack;
+	}
 
-  @Override
-  public IIngredient amount(int amount)
-  {
-    return new MTOreStack(new OreMatcher(stack.getOreName(),stack.getAmount() * amount));
-  }
+	@Override
+	public IIngredient amount(int amount) {
+		return new MTOreStack(new OreMatcher(stack.getOreName(), stack.getAmount() * amount));
+	}
 
-  @Override
-  public IItemStack applyTransform(IItemStack arg0, IPlayer arg1)
-  {
-    return null;
-  }
+	@Override
+	public IItemStack applyTransform(IItemStack arg0, IPlayer arg1) {
+		return null;
+	}
 
+	@Override
+	public boolean contains(IIngredient ingredient) {
+		List<IItemStack> items = ingredient.getItems();
+		for (IItemStack item : items) {
+			if (!matches(item)) return false;
+		}
 
-  @Override
-  public boolean contains(IIngredient ingredient) {
-    List<IItemStack> items = ingredient.getItems();
-    for (IItemStack item : items) {
-      if (!matches(item))
-        return false;
-    }
+		return true;
+	}
 
-    return true;
-  }
-  @Override
-  public int getAmount()
-  {
-    return stack.getAmount();
-  }
+	@Override
+	public int getAmount() {
+		return stack.getAmount();
+	}
 
-  @Override
-  public Object getInternal()
-  {
-    return stack;
-  }
+	@Override
+	public Object getInternal() {
+		return stack;
+	}
 
-  @Override
-  public List<IItemStack> getItems()
-  {
-    List<IItemStack> result = new ArrayList<IItemStack>();
-    for (ItemStack item : stack.getItems())
-    {
-      result.add(MineTweakerMC.getIItemStack(item));
-    }
-    return result;
-  }
+	@Override
+	public List<IItemStack> getItems() {
+		List<IItemStack> result = new ArrayList<IItemStack>();
+		for (ItemStack item : stack.getItems()) {
+			result.add(MineTweakerMC.getIItemStack(item));
+		}
+		return result;
+	}
 
-  @Override
-  public List<ILiquidStack> getLiquids()
-  {
-    return Collections.emptyList();
-  }
+	@Override
+	public List<ILiquidStack> getLiquids() {
+		return Collections.emptyList();
+	}
 
-  @Override
-  public String getMark()
-  {
-    return null;
-  }
+	@Override
+	public String getMark() {
+		return null;
+	}
 
-  @Override
-  public boolean hasTransformers()
-  {
-    return false;
-  }
+	@Override
+	public boolean hasTransformers() {
+		return false;
+	}
 
-  @Override
-  public IIngredient marked(String arg0)
-  {
-    return this;
-  }
+	@Override
+	public IIngredient marked(String arg0) {
+		return this;
+	}
 
-  @Override
-  public boolean matches(IItemStack iitem)
-  {
-    ItemStack item = MineTweakerMC.getItemStack(iitem);
-    return stack.apply(item);
-  }
+	@Override
+	public boolean matches(IItemStack iitem) {
+		ItemStack item = MineTweakerMC.getItemStack(iitem);
+		return stack.apply(item);
+	}
 
-  @Override
-  public boolean matches(ILiquidStack arg0)
-  {
-    return false;
-  }
+	@Override
+	public boolean matches(ILiquidStack arg0) {
+		return false;
+	}
 
-  @Override
-  public IIngredient only(IItemCondition arg0)
-  {
-    return this;
-  }
+	@Override
+	public IIngredient only(IItemCondition arg0) {
+		return this;
+	}
 
-  @Override
-  public IIngredient or(IIngredient ingredient)
-  {
-    return new IngredientOr(this, ingredient);
-  }
+	@Override
+	public IIngredient or(IIngredient ingredient) {
+		return new IngredientOr(this, ingredient);
+	}
 
-  @Override
-  public IIngredient transform(IItemTransformer arg0)
-  {
-    return this;
-  }
+	@Override
+	public IIngredient transform(IItemTransformer arg0) {
+		return this;
+	}
 
-  @Override
-  public boolean matchesExact(IItemStack iitem)
-  {
-    return matches(iitem);
-  }
+	@Override
+	public boolean matchesExact(IItemStack iitem) {
+		return matches(iitem);
+	}
 }

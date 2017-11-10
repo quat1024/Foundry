@@ -43,20 +43,20 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 		return this;
 	}
 
-	public ItemEnergyContainer  setMaxTransfer(int maxTransfer) {
+	public ItemEnergyContainer setMaxTransfer(int maxTransfer) {
 
 		setMaxReceive(maxTransfer);
 		setMaxExtract(maxTransfer);
 		return this;
 	}
 
-	public ItemEnergyContainer  setMaxReceive(int maxReceive) {
+	public ItemEnergyContainer setMaxReceive(int maxReceive) {
 
 		this.maxReceive = maxReceive;
 		return this;
 	}
 
-	public ItemEnergyContainer  setMaxExtract(int maxExtract) {
+	public ItemEnergyContainer setMaxExtract(int maxExtract) {
 
 		this.maxExtract = maxExtract;
 		return this;
@@ -82,9 +82,7 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
-			return 0;
-		}
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) { return 0; }
 		int energy = container.getTagCompound().getInteger("Energy");
 		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 
@@ -98,9 +96,7 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 	@Override
 	public int getEnergyStored(ItemStack container) {
 
-		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
-			return 0;
-		}
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) { return 0; }
 		return container.getTagCompound().getInteger("Energy");
 	}
 
