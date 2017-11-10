@@ -52,8 +52,8 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 		if (compund.hasKey("progress")) {
 			progress = compund.getInteger("progress");
 		}
-		if (worldObj != null && !worldObj.isRemote) {
-			((BlockCokeOven) getBlockType()).setMachineState(worldObj, getPos(), worldObj.getBlockState(getPos()), progress > 0);
+		if (world != null && !world.isRemote) {
+			((BlockCokeOven) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), progress > 0);
 		}
 	}
 
@@ -93,10 +93,10 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 
 	private boolean canBake() {
 		if (getTemperature() <= BAKE_TEMP) { return false; }
-		ItemStack input = inventory[INVENTORY_INPUT];
-		ItemStack output = inventory[INVENTORY_OUTPUT];
+		ItemStack input = inventory.get(INVENTORY_INPUT);
+		ItemStack output = inventory.get(INVENTORY_OUTPUT);
 		if (input == null || input.getItem() != Items.COAL || input.getMetadata() != 0) { return false; }
-		if (output != null && output.getItem() != FoundryItems.item_component && output.getMetadata() != ItemComponent.SubItem.COAL_COKE.id && output.stackSize == output.getMaxStackSize()) { return false; }
+		if (output != null && output.getItem() != FoundryItems.item_component && output.getMetadata() != ItemComponent.SubItem.COAL_COKE.id && output.getCount() == output.getMaxStackSize()) { return false; }
 		return true;
 	}
 
@@ -110,10 +110,10 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 		int increment = heat - BAKE_TEMP;
 		progress += increment;
 		if (progress >= BAKE_TIME) {
-			if (inventory[INVENTORY_OUTPUT] == null) {
-				inventory[INVENTORY_OUTPUT] = FoundryItems.component(ItemComponent.SubItem.COAL_COKE);
+			if (inventory.get(INVENTORY_OUTPUT).isEmpty()) {
+				inventory.set(INVENTORY_OUTPUT, FoundryItems.component(ItemComponent.SubItem.COAL_COKE));
 			} else {
-				inventory[INVENTORY_OUTPUT].stackSize++;
+				inventory.get(INVENTORY_OUTPUT).grow(1);
 			}
 			progress = 0;
 			decrStackSize(INVENTORY_INPUT, 1);
@@ -131,7 +131,7 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 
 		if (last_progress != progress) {
 			if (last_progress * progress == 0) {
-				((BlockCokeOven) getBlockType()).setMachineState(worldObj, getPos(), worldObj.getBlockState(getPos()), progress > 0);
+				((BlockCokeOven) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), progress > 0);
 			}
 			updateValue("progress", progress);
 		}

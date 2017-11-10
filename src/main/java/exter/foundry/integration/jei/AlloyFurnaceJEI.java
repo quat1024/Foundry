@@ -25,7 +25,6 @@ import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 public class AlloyFurnaceJEI {
 
@@ -35,36 +34,6 @@ public class AlloyFurnaceJEI {
 
 		public Wrapper(@Nonnull IAlloyFurnaceRecipe recipe) {
 			this.recipe = recipe;
-		}
-
-		@Override
-		@Deprecated
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<FluidStack> getFluidOutputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
 		}
 
 		@Override
@@ -129,11 +98,6 @@ public class AlloyFurnaceJEI {
 
 		@Override
 		public void drawExtras(Minecraft minecraft) {
-
-		}
-
-		@Override
-		public void drawAnimations(Minecraft minecraft) {
 			flame.draw(minecraft, 18, 20);
 			arrow.draw(minecraft, 50, 19);
 		}
@@ -148,12 +112,6 @@ public class AlloyFurnaceJEI {
 		@Override
 		public String getUid() {
 			return "foundry.alloyfurnace";
-		}
-
-		@Override
-		@Deprecated
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
 		}
 
 		@Override
@@ -178,6 +136,12 @@ public class AlloyFurnaceJEI {
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String getModName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 	static public class Handler implements IRecipeHandler<Wrapper> {
@@ -185,12 +149,6 @@ public class AlloyFurnaceJEI {
 		@Nonnull
 		public Class<Wrapper> getRecipeClass() {
 			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid() {
-			return "foundry.alloyfurnace";
 		}
 
 		@Override

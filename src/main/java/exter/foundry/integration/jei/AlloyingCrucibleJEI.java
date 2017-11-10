@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableList;
 
+import exter.foundry.ModFoundry;
 import exter.foundry.api.recipe.IAlloyingCrucibleRecipe;
 import exter.foundry.gui.GuiAlloyingCrucible;
 import exter.foundry.recipes.manager.AlloyingCrucibleRecipeManager;
@@ -33,36 +34,6 @@ public class AlloyingCrucibleJEI {
 
 		public Wrapper(IAlloyingCrucibleRecipe recipe) {
 			this.recipe = recipe;
-		}
-
-		@Deprecated
-		@Override
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
 		}
 
 		@Override
@@ -123,11 +94,6 @@ public class AlloyingCrucibleJEI {
 
 		}
 
-		@Override
-		public void drawAnimations(Minecraft minecraft) {
-
-		}
-
 		@Nonnull
 		@Override
 		public String getTitle() {
@@ -140,12 +106,6 @@ public class AlloyingCrucibleJEI {
 			return "foundry.alloyingcrucible";
 		}
 
-		@Deprecated
-		@Override
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
-		}
-
 		@Override
 		public IDrawable getIcon() {
 			return null;
@@ -155,7 +115,7 @@ public class AlloyingCrucibleJEI {
 		public void setRecipe(IRecipeLayout recipeLayout, Wrapper recipeWrapper, IIngredients ingredients) {
 			IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-			FluidStack out = ingredients.getOutputs(FluidStack.class).get(0);
+			FluidStack out = ingredients.getOutputs(FluidStack.class).get(0).get(0);
 			List<FluidStack> in_a = ingredients.getInputs(FluidStack.class).get(0);
 			List<FluidStack> in_b = ingredients.getInputs(FluidStack.class).get(1);
 
@@ -173,6 +133,11 @@ public class AlloyingCrucibleJEI {
 		@Override
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
+		}
+
+		@Override
+		public String getModName() {
+			return ModFoundry.MODID;
 		}
 	}
 

@@ -43,7 +43,7 @@ public class ContainerCokeOven extends Container {
 	}
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-		return te_oven.isUseableByPlayer(par1EntityPlayer);
+		return te_oven.isUsableByPlayer(par1EntityPlayer);
 	}
 
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
@@ -55,20 +55,20 @@ public class ContainerCokeOven extends Container {
 			slot_stack = stack.copy();
 
 			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
-				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 1, false)) { return null; }
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 1, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
-				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return null; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return null; }
+				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
 
-			if (stack.stackSize == 0) {
-				slot.putStack((ItemStack) null);
+			if (stack.getCount() == 0) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
 
-			if (stack.stackSize == slot_stack.stackSize) { return null; }
+			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
 
-			slot.onPickupFromSlot(player, stack);
+			slot.onTake(player, stack);
 		}
 
 		return slot_stack;

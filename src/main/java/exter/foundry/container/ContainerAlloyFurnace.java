@@ -47,7 +47,7 @@ public class ContainerAlloyFurnace extends Container {
 	}
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-		return te_alloyfurnace.isUseableByPlayer(par1EntityPlayer);
+		return te_alloyfurnace.isUsableByPlayer(par1EntityPlayer);
 	}
 
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {

@@ -6,10 +6,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
 public class InventoryFirearm implements IInventory {
-	protected ItemStack[] items;
+	protected NonNullList<ItemStack> items;
 
 	protected ItemStack firearm;
 
@@ -18,39 +19,38 @@ public class InventoryFirearm implements IInventory {
 	public InventoryFirearm(ItemStack firearm_item, InventoryPlayer player, int size) {
 		firearm = firearm_item;
 		player_inv = player;
-		items = new ItemStack[size];
+		items = NonNullList.withSize(size, ItemStack.EMPTY);
 		int i;
-		for (i = 0; i < items.length; i++) {
-			items[i] = ((ItemFirearm) firearm.getItem()).getAmmo(firearm, i);
+		for (i = 0; i < items.size(); i++) {
+			items.set(i, ((ItemFirearm) firearm.getItem()).getAmmo(firearm, i));
 		}
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return items.length;
+		return items.size();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return items[slot];
+		return items.get(slot);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (items[slot] != null) {
+		if (!items.get(slot).isEmpty()) {
 			ItemStack is;
 
-			if (items[slot].stackSize <= amount) {
-				is = items[slot];
-				items[slot] = null;
+			if (items.get(slot).getCount() <= amount) {
+				is = items.get(slot);
+				items.set(slot, ItemStack.EMPTY);
 				markDirty();
 				return is;
 			} else {
-				is = items[slot].splitStack(amount);
+				is = items.get(slot).splitStack(amount);
 
-				if (items[slot].stackSize == 0) {
-					items[slot] = null;
-				}
+				if (items.get(slot).getCount() == 0) {
+					items.set(slot, ItemStack.EMPTY);				}
 
 				markDirty();
 				return is;
@@ -62,20 +62,19 @@ public class InventoryFirearm implements IInventory {
 
 	@Override
 	public ItemStack removeStackFromSlot(int slot) {
-		ItemStack ammo = items[slot];
-		if (ammo != null) {
-			items[slot] = null;
+		ItemStack ammo = items.get(slot);
+		if (!ammo.isEmpty()) {
+			items.set(slot, ItemStack.EMPTY);
 			return ammo;
 		} else {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		items[slot] = stack;
-
-		if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-			stack.stackSize = this.getInventoryStackLimit();
+		items.set(slot, stack);
+		if (stack.getCount() > this.getInventoryStackLimit()) {
+			stack.setCount(this.getInventoryStackLimit());
 		}
 		markDirty();
 	}
@@ -91,7 +90,7 @@ public class InventoryFirearm implements IInventory {
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
 		return true;
 	}
 
@@ -112,8 +111,8 @@ public class InventoryFirearm implements IInventory {
 
 	public void save() {
 		int i;
-		for (i = 0; i < items.length; i++) {
-			((ItemFirearm) firearm.getItem()).setAmmo(firearm, i, items[i]);
+		for (i = 0; i < items.size(); i++) {
+			((ItemFirearm) firearm.getItem()).setAmmo(firearm, i, items.get(i));
 		}
 		player_inv.setInventorySlotContents(player_inv.currentItem, firearm);
 	}
@@ -151,5 +150,11 @@ public class InventoryFirearm implements IInventory {
 	@Override
 	public void clear() {
 
+	}
+
+	@Override
+	public boolean isEmpty() {
+		for(ItemStack s : items) if(!s.isEmpty()) return false;
+		return true;
 	}
 }
