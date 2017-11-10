@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableList;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.api.recipe.IAlloyingCrucibleRecipe;
 import exter.foundry.gui.GuiAlloyingCrucible;
 import exter.foundry.recipes.manager.AlloyingCrucibleRecipeManager;
@@ -23,7 +23,6 @@ import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -137,7 +136,7 @@ public class AlloyingCrucibleJEI {
 
 		@Override
 		public String getModName() {
-			return ModFoundry.MODID;
+			return Foundry.MODID;
 		}
 	}
 
@@ -146,12 +145,6 @@ public class AlloyingCrucibleJEI {
 		@Nonnull
 		public Class<Wrapper> getRecipeClass() {
 			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid() {
-			return "foundry.alloyingcrucible";
 		}
 
 		@Override

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.network.MessageTileEntitySync;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -487,12 +487,12 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 	protected void sendPacketToNearbyPlayers(NBTTagCompound data) {
 		data.setInteger("dim", world.provider.getDimension());
-		ModFoundry.network_channel.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
+		Foundry.network_channel.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
 	}
 
 	protected void sendPacketToPlayer(NBTTagCompound data, EntityPlayerMP player) {
 		data.setInteger("dim", world.provider.getDimension());
-		ModFoundry.network_channel.sendTo(new MessageTileEntitySync(data), player);
+		Foundry.network_channel.sendTo(new MessageTileEntitySync(data), player);
 	}
 
 	@Override
@@ -598,7 +598,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		if (world.isRemote) {
 			super.writeToNBT(tag);
 			tag.setInteger("dim", world.provider.getDimension());
-			ModFoundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
+			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
 		}
 	}
 

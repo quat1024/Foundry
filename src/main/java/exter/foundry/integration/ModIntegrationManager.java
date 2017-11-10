@@ -3,7 +3,7 @@ package exter.foundry.integration;
 import java.util.HashMap;
 import java.util.Map;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.config.FoundryConfig;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,28 +27,28 @@ public final class ModIntegrationManager {
 
 	static public void preInit(Configuration config) {
 		for (IModIntegration m : integrations.values()) {
-			ModFoundry.log.info("PreInit integration: " + m.getName());
+			Foundry.log.info("PreInit integration: " + m.getName());
 			m.onPreInit(config);
 		}
 	}
 
 	static public void init() {
 		for (IModIntegration m : integrations.values()) {
-			ModFoundry.log.info("Init integration: " + m.getName());
+			Foundry.log.info("Init integration: " + m.getName());
 			m.onInit();
 		}
 	}
 
 	static public void postInit() {
 		for (IModIntegration m : integrations.values()) {
-			ModFoundry.log.info("PostInit integration: " + m.getName());
+			Foundry.log.info("PostInit integration: " + m.getName());
 			m.onPostInit();
 		}
 	}
 
 	static public void afterPostInit() {
 		for (IModIntegration m : integrations.values()) {
-			ModFoundry.log.info("AfterPostInit integration: " + m.getName());
+			Foundry.log.info("AfterPostInit integration: " + m.getName());
 			m.onAfterPostInit();
 		}
 	}

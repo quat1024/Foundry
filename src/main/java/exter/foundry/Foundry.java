@@ -76,14 +76,14 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = ModFoundry.MODID, name = ModFoundry.MODNAME, version = ModFoundry.MODVERSION, dependencies = "after:jei")
-public class ModFoundry {
+@Mod(modid = Foundry.MODID, name = Foundry.MODNAME, version = Foundry.MODVERSION, dependencies = "after:jei")
+public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
 	public static final String MODVERSION = "3.0.0";
 
 	@Instance(MODID)
-	public static ModFoundry instance;
+	public static Foundry instance;
 
 	// Says where the client and server 'proxy' code is loaded.
 	@SidedProxy(clientSide = "exter.foundry.proxy.ClientFoundryProxy", serverSide = "exter.foundry.proxy.CommonFoundryProxy")

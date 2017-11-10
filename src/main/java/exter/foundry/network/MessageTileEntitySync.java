@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.config.FoundryConfig;
 import exter.foundry.tileentity.TileEntityFoundry;
 import io.netty.buffer.ByteBuf;
@@ -45,7 +45,7 @@ public class MessageTileEntitySync implements IMessage {
 						tile.markDirty();
 					}
 				} else if (FoundryConfig.debug) {
-					ModFoundry.log.debug("TileEntitySync: Unexpected null tile at " + x + ", " + y + ", " + z + ", " + dim);
+					Foundry.log.debug("TileEntitySync: Unexpected null tile at " + x + ", " + y + ", " + z + ", " + dim);
 				}
 			}
 		}

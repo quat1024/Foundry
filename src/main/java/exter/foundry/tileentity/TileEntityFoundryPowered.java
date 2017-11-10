@@ -197,7 +197,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 
 	@Override
 	public void onChunkUnload() {
-		if(Loader.isModLoaded("ic2")) unloadEnet();
+		if (Loader.isModLoaded("ic2")) unloadEnet();
 	}
 
 	@Optional.Method(modid = "ic2")

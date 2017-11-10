@@ -3,7 +3,7 @@ package exter.foundry.block;
 import java.util.List;
 import java.util.Random;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabMachines;
 import exter.foundry.proxy.CommonFoundryProxy;
 import exter.foundry.tileentity.TileEntityFoundry;
@@ -63,7 +63,7 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 		if (world.isRemote) {
 			return true;
 		} else {
-			player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 	}

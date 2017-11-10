@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.IMeltingRecipe;
 import exter.foundry.gui.GuiMeltingCrucible;
@@ -150,7 +150,7 @@ public class MeltingJEI {
 
 		@Override
 		public String getModName() {
-			return ModFoundry.MODID;
+			return Foundry.MODID;
 		}
 	}
 

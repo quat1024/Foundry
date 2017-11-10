@@ -50,7 +50,8 @@ public class InventoryFirearm implements IInventory {
 				is = items.get(slot).splitStack(amount);
 
 				if (items.get(slot).getCount() == 0) {
-					items.set(slot, ItemStack.EMPTY);				}
+					items.set(slot, ItemStack.EMPTY);
+				}
 
 				markDirty();
 				return is;
@@ -154,7 +155,8 @@ public class InventoryFirearm implements IInventory {
 
 	@Override
 	public boolean isEmpty() {
-		for(ItemStack s : items) if(!s.isEmpty()) return false;
+		for (ItemStack s : items)
+			if (!s.isEmpty()) return false;
 		return true;
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.material.MaterialRegistry;
 import exter.foundry.network.MessageTileEntitySync;
 import io.netty.buffer.ByteBuf;
@@ -56,9 +56,9 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		}
 
 		public boolean matchesItem(ItemStack stack) {
-			ModFoundry.log.info("Item: " + stack.getUnlocalizedName());
-			ModFoundry.log.info("Material: " + MaterialRegistry.instance.getMaterial(stack));
-			ModFoundry.log.info("Type: " + MaterialRegistry.instance.getType(stack));
+			Foundry.log.info("Item: " + stack.getUnlocalizedName());
+			Foundry.log.info("Material: " + MaterialRegistry.instance.getMaterial(stack));
+			Foundry.log.info("Type: " + MaterialRegistry.instance.getType(stack));
 			if (!material.equals("_Any")) {
 				String stack_material = MaterialRegistry.instance.getMaterial(stack);
 				if (!material.equals(stack_material)) { return false; }
@@ -272,7 +272,7 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		writeRoutesToNBT(tag);
 		if (worldObj.isRemote) {
 			tag.setInteger("dim", worldObj.provider.getDimension());
-			ModFoundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
+			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
 		} else {
 			sendPacketToNearbyPlayers(tag);
 		}

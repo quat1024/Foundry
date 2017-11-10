@@ -3,7 +3,7 @@ package exter.foundry.block;
 import java.util.List;
 import java.util.Random;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.proxy.CommonFoundryProxy;
 import exter.foundry.tileentity.TileEntityCokeOven;
 import exter.foundry.util.FoundryMiscUtils;
@@ -37,7 +37,7 @@ public class BlockCokeOven extends BlockFoundrySidedMachine {
 		if (world.isRemote) {
 			return true;
 		} else {
-			player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_COKEOVEN, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_COKEOVEN, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 	}

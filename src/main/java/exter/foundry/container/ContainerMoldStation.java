@@ -50,11 +50,11 @@ public class ContainerMoldStation extends Container {
 	}
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-		return te_station.isUseableByPlayer(par1EntityPlayer);
+		return te_station.isUsableByPlayer(par1EntityPlayer);
 	}
 
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
-		ItemStack slot_stack = null;
+		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = (Slot) inventorySlots.get(slot_index);
 
 		if (slot != null && slot.getHasStack()) {
@@ -64,21 +64,21 @@ public class ContainerMoldStation extends Container {
 			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
 				if (TileEntityFurnace.isItemFuel(stack)) {
 					int s = SLOTS_TE + TileEntityMoldStation.SLOT_FUEL;
-					if (!mergeItemStack(stack, s, s + 1, false)) { return null; }
-				} else if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + TileEntityMoldStation.SLOT_BLOCK, false)) { return null; }
+					if (!mergeItemStack(stack, s, s + 1, false)) { return ItemStack.EMPTY; }
+				} else if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + TileEntityMoldStation.SLOT_BLOCK, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
-				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return null; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return null; }
+				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
 
-			if (stack.stackSize == 0) {
-				slot.putStack((ItemStack) null);
+			if (stack.getCount() == 0) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
 
-			if (stack.stackSize == slot_stack.stackSize) { return null; }
+			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
 
-			slot.onPickupFromSlot(player, stack);
+			slot.onTake(player, stack);
 		}
 
 		return slot_stack;

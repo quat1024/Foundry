@@ -3,7 +3,7 @@ package exter.foundry.block;
 import java.util.List;
 import java.util.Random;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabMachines;
 import exter.foundry.proxy.CommonFoundryProxy;
 import exter.foundry.tileentity.TileEntityAlloyMixer;
@@ -144,25 +144,25 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 			case CRUCIBLE_BASIC:
 			case CRUCIBLE_STANDARD:
 			case CRUCIBLE_ADVANCED:
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_CRUCIBLE, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_CRUCIBLE, world, pos.getX(), pos.getY(), pos.getZ());
 				break;
 			case CASTER:
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_CASTER, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_CASTER, world, pos.getX(), pos.getY(), pos.getZ());
 				break;
 			case ALLOYMIXER:
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_ALLOYMIXER, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_ALLOYMIXER, world, pos.getX(), pos.getY(), pos.getZ());
 				break;
 			case INFUSER:
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_INFUSER, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_INFUSER, world, pos.getX(), pos.getY(), pos.getZ());
 				break;
 			case MATERIALROUTER:
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_MATERIALROUTER, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_MATERIALROUTER, world, pos.getX(), pos.getY(), pos.getZ());
 				break;
 			case ATOMIZER:
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_ATOMIZER, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_ATOMIZER, world, pos.getX(), pos.getY(), pos.getZ());
 				break;
 			case ALLOYING_CRUCIBLE:
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_ALLOYINGCRUCIBLE, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_ALLOYINGCRUCIBLE, world, pos.getX(), pos.getY(), pos.getZ());
 				break;
 			default:
 				return false;

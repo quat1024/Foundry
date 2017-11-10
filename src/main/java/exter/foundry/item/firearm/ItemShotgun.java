@@ -2,7 +2,7 @@ package exter.foundry.item.firearm;
 
 import java.util.List;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.item.FoundryItems;
 import exter.foundry.proxy.CommonFoundryProxy;
@@ -92,7 +92,7 @@ public class ItemShotgun extends ItemFirearm {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
 			if (!world.isRemote) {
-				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_SHOTGUN, world, 0, 0, 0);
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_SHOTGUN, world, 0, 0, 0);
 			}
 		} else {
 			player.setActiveHand(hand);

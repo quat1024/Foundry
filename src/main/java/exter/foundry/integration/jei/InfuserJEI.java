@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import exter.foundry.ModFoundry;
+import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.IInfuserRecipe;
 import exter.foundry.gui.GuiMetalInfuser;
@@ -144,7 +144,7 @@ public class InfuserJEI {
 
 		@Override
 		public String getModName() {
-			return ModFoundry.MODNAME;
+			return Foundry.MODNAME;
 		}
 	}
 

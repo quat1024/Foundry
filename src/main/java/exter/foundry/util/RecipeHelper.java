@@ -2,8 +2,8 @@ package exter.foundry.util;
 
 import java.util.List;
 
+import exter.foundry.Foundry;
 import exter.foundry.FoundryRegistry;
-import exter.foundry.ModFoundry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,8 +21,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public class RecipeHelper {
 
 	private static int j = 0;
-	private static final String MODID = ModFoundry.MODID;
-	private static final String MODNAME = ModFoundry.MODNAME;
+	private static final String MODID = Foundry.MODID;
+	private static final String MODNAME = Foundry.MODNAME;
 	public static final List<IRecipe> recipeList = FoundryRegistry.RECIPES;
 
 	/*
