@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import exter.foundry.ModFoundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.IMeltingRecipe;
 import exter.foundry.gui.GuiMeltingCrucible;
@@ -49,35 +50,6 @@ public class MeltingJEI {
 		}
 
 		@Override
-		@Deprecated
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<FluidStack> getFluidOutputs() {
-			return Collections.singletonList(recipe.getOutput());
-		}
-
-		@Override
-		@Deprecated
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-		}
-
-		@Override
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return null;
 		}
@@ -87,7 +59,7 @@ public class MeltingJEI {
 			if (temp != null) {
 				temp.draw(minecraft, 11, 41);
 			}
-			minecraft.fontRendererObj.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
+			minecraft.fontRenderer.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
 		}
 
 		@Override
@@ -141,11 +113,6 @@ public class MeltingJEI {
 
 		@Override
 		public void drawExtras(Minecraft minecraft) {
-
-		}
-
-		@Override
-		public void drawAnimations(Minecraft minecraft) {
 			arrow.draw(minecraft, 49, 7);
 		}
 
@@ -158,12 +125,6 @@ public class MeltingJEI {
 		@Override
 		public String getUid() {
 			return "foundry.melting";
-		}
-
-		@Override
-		@Deprecated
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
 		}
 
 		@Override
@@ -186,6 +147,11 @@ public class MeltingJEI {
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String getModName() {
+			return ModFoundry.MODID;
+		}
 	}
 
 	static public class Handler implements IRecipeHandler<Wrapper> {
@@ -193,12 +159,6 @@ public class MeltingJEI {
 		@Nonnull
 		public Class<Wrapper> getRecipeClass() {
 			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid() {
-			return "foundry.melting";
 		}
 
 		@Override

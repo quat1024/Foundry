@@ -2,13 +2,10 @@ package exter.foundry.tileentity;
 
 import java.lang.reflect.InvocationTargetException;
 
-import cofh.api.energy.IEnergyReceiver;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
-import net.darkhax.tesla.api.ITeslaConsumer;
-import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,16 +18,8 @@ import net.minecraftforge.fml.common.Optional;
 /**
  * Base class for all machines.
  */
-@Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")
-public abstract class TileEntityFoundryPowered extends TileEntityFoundry implements IEnergyReceiver, IEnergySink {
-	@Optional.Interface(iface = "net.darkhax.tesla.api.ITeslaConsumer", modid = "Tesla")
-	private class TeslaConsumer implements ITeslaConsumer {
-		@Optional.Method(modid = "Tesla")
-		@Override
-		public long givePower(long power, boolean simulated) {
-			return receiveFoundryEnergy(power * RATIO_TESLA, !simulated, false) / RATIO_TESLA;
-		}
-	}
+@Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "ic2")
+public abstract class TileEntityFoundryPowered extends TileEntityFoundry implements IEnergySink {
 
 	private class ForgeEnergyConsumer implements IEnergyStorage {
 
@@ -77,17 +66,9 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 	static public int RATIO_EU = 40;
 
 	private long energy_stored;
-
-	private final TeslaConsumer tesla;
 	private final ForgeEnergyConsumer fe;
 
 	public TileEntityFoundryPowered() {
-		super();
-		if (Loader.isModLoaded("Tesla")) {
-			tesla = new TeslaConsumer();
-		} else {
-			tesla = null;
-		}
 		fe = new ForgeEnergyConsumer();
 		update_energy = false;
 		update_energy_tick = true;
@@ -104,7 +85,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		if (do_receive) {
 			energy_stored += en;
 			if (en > 0) {
-				if (update_energy && !worldObj.isRemote) {
+				if (update_energy && !world.isRemote) {
 					update_energy_tick = true;
 				}
 			}
@@ -170,7 +151,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 			} catch (InvocationTargetException e) {
 				throw new RuntimeException(e);
 			} catch (NoSuchMethodException e) {
-				if (Loader.isModLoaded("IC2")) { throw new RuntimeException(e); }
+				if (Loader.isModLoaded("ic2")) { throw new RuntimeException(e); }
 			} catch (SecurityException e) {
 				throw new RuntimeException(e);
 			}
@@ -193,34 +174,11 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 	}
 
 	public void updateRedstone() {
-		redstone_signal = worldObj.isBlockIndirectlyGettingPowered(getPos()) > 0;
-	}
-
-	@Override
-	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-		return (int) (receiveFoundryEnergy(maxReceive * RATIO_RF, !simulate, false) / RATIO_RF);
-	}
-
-	@Override
-	public boolean canConnectEnergy(EnumFacing from) {
-		return true;
-	}
-
-	@Override
-	public int getEnergyStored(EnumFacing from) {
-		return (int) getStoredFoundryEnergy() / RATIO_RF;
-	}
-
-	@Override
-	public int getMaxEnergyStored(EnumFacing from) {
-		return (int) getFoundryEnergyCapacity() / RATIO_RF;
+		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		if (tesla != null) {
-			if (hasTeslaCapability(cap, facing)) { return true; }
-		}
 		if (cap == CapabilityEnergy.ENERGY) {
 			return true;
 		} else {
@@ -230,10 +188,6 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 
 	@Override
 	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (tesla != null) {
-			T tcap = getTeslaCapability(cap, facing);
-			if (tcap != null) { return tcap; }
-		}
 		if (cap == CapabilityEnergy.ENERGY) {
 			return CapabilityEnergy.ENERGY.cast(fe);
 		} else {
@@ -241,38 +195,12 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 	}
 
-	@Optional.Method(modid = "Tesla")
-	private <T> boolean hasTeslaCapability(Capability<T> cap, EnumFacing facing) {
-		return cap == TeslaCapabilities.CAPABILITY_CONSUMER;
-	}
-
-	@Optional.Method(modid = "Tesla")
-	private <T> T getTeslaCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == TeslaCapabilities.CAPABILITY_CONSUMER) {
-			return TeslaCapabilities.CAPABILITY_CONSUMER.cast(tesla);
-		} else {
-			return null;
-		}
-	}
-
 	@Override
 	public void onChunkUnload() {
-		try {
-			getClass().getMethod("unloadEnet").invoke(this);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalArgumentException e) {
-			throw new RuntimeException(e);
-		} catch (InvocationTargetException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchMethodException e) {
-			if (Loader.isModLoaded("IC2")) { throw new RuntimeException(e); }
-		} catch (SecurityException e) {
-			throw new RuntimeException(e);
-		}
+		if(Loader.isModLoaded("ic2")) unloadEnet();
 	}
 
-	@Optional.Method(modid = "IC2")
+	@Optional.Method(modid = "ic2")
 	public void unloadEnet() {
 		if (added_enet) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
@@ -280,7 +208,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 	}
 
-	@Optional.Method(modid = "IC2")
+	@Optional.Method(modid = "ic2")
 	public void loadEnet() {
 		if (!added_enet && !getWorld().isRemote) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
@@ -288,13 +216,13 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 	}
 
-	@Optional.Method(modid = "IC2")
+	@Optional.Method(modid = "ic2")
 	@Override
 	public double getDemandedEnergy() {
 		return (double) (getFoundryEnergyCapacity() - getStoredFoundryEnergy()) / RATIO_EU;
 	}
 
-	@Optional.Method(modid = "IC2")
+	@Optional.Method(modid = "ic2")
 	@Override
 	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
 		double use_amount = Math.max(Math.min(amount, getDemandedEnergy()), 0);
@@ -302,13 +230,13 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		return amount - receiveEU(use_amount, true);
 	}
 
-	@Optional.Method(modid = "IC2")
+	@Optional.Method(modid = "ic2")
 	@Override
 	public int getSinkTier() {
 		return 1;
 	}
 
-	@Optional.Method(modid = "IC2")
+	@Optional.Method(modid = "ic2")
 	@Override
 	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction) {
 		return true;
