@@ -111,7 +111,7 @@ public class TileEntityMeltingCrucibleBasic extends TileEntityFoundryHeatable {
 			return;
 		}
 
-		if (!current_recipe.matchesRecipe(inventory[INVENTORY_INPUT])) {
+		if (!current_recipe.matchesRecipe(inventory.get(INVENTORY_INPUT))) {
 			progress = 0;
 			current_recipe = null;
 		}
@@ -157,7 +157,7 @@ public class TileEntityMeltingCrucibleBasic extends TileEntityFoundryHeatable {
 
 		checkCurrentRecipe();
 		if (current_recipe == null) {
-			current_recipe = MeltingRecipeManager.instance.findRecipe(inventory[INVENTORY_INPUT]);
+			current_recipe = MeltingRecipeManager.INSTANCE.findRecipe(inventory.get(INVENTORY_INPUT));
 		}
 
 		doMeltingProgress();

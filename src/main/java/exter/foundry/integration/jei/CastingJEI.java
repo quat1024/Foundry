@@ -1,6 +1,5 @@
 package exter.foundry.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.ICastingRecipe;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.gui.GuiMetalCaster;
-import exter.foundry.recipes.manager.CastingRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.gui.IDrawable;
@@ -24,10 +22,9 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -94,7 +91,7 @@ public class CastingJEI {
 			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/caster.png");
 			background = guiHelper.createDrawable(location, 38, 16, 68, 54);
 			tank_overlay = guiHelper.createDrawable(location, 176, 0, 16, 47);
-			localizedName = Translator.translateToLocal("gui.jei.casting");
+			localizedName = I18n.format("gui.jei.casting");
 
 		}
 
@@ -118,7 +115,7 @@ public class CastingJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.casting";
+			return FoundryJEIConstants.CAST_UID;
 		}
 
 		@Override
@@ -150,43 +147,5 @@ public class CastingJEI {
 		public String getModName() {
 			return Foundry.MODID;
 		}
-	}
-
-	static public class Handler implements IRecipeHandler<Wrapper> {
-		@Override
-		@Nonnull
-		public Class<Wrapper> getRecipeClass() {
-			return Wrapper.class;
-		}
-
-		@Override
-		@Nonnull
-		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
-			return recipe;
-		}
-
-		@Override
-		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
-			return true;
-		}
-
-		@Override
-		public String getRecipeCategoryUid(Wrapper recipe) {
-			return "foundry.casting";
-		}
-	}
-
-	static public List<Wrapper> getRecipes() {
-		List<Wrapper> recipes = new ArrayList<Wrapper>();
-
-		for (ICastingRecipe recipe : CastingRecipeManager.instance.getRecipes()) {
-			ItemStack output = recipe.getOutput();
-
-			if (output != null) {
-				recipes.add(new Wrapper(recipe));
-			}
-		}
-
-		return recipes;
 	}
 }

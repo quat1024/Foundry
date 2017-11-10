@@ -129,7 +129,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		for (MeltingRecipe recipe : TinkerRegistry.getAllMeltingRecipies()) {
 
 			for (ItemStack stack : recipe.input.getInputs()) {
-				if (MeltingRecipeManager.instance.findRecipe(stack) == null) {
+				if (MeltingRecipeManager.INSTANCE.findRecipe(stack) == null) {
 					FluidStack result = recipe.output;
 					String mapped = liquid_map.get(result.getFluid().getName());
 					if (mapped != null) {
@@ -141,7 +141,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 							mapped_liquid = new FluidStack(LiquidMetalRegistry.instance.getFluid(mapped), FoundryMiscUtils.divCeil(result.amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
 						}
 						if (mapped_liquid.amount <= 6000) {
-							MeltingRecipeManager.instance.addRecipe(new ItemStackMatcher(stack), mapped_liquid);
+							MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stack), mapped_liquid);
 						}
 					} else {
 						if (result.amount <= 6000) {
@@ -149,7 +149,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 							if (temp < 350) {
 								temp = 350;
 							}
-							MeltingRecipeManager.instance.addRecipe(new ItemStackMatcher(stack), result, temp);
+							MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stack), result, temp);
 						}
 					}
 				}

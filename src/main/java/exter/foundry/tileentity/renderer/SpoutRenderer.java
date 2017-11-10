@@ -3,7 +3,6 @@ package exter.foundry.tileentity.renderer;
 import org.lwjgl.opengl.GL11;
 
 import exter.foundry.block.BlockFoundrySidedMachine;
-import exter.foundry.block.BlockRefractorySpout;
 import exter.foundry.tileentity.TileEntityRefractorySpout;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

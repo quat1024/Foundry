@@ -12,10 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MeltingRecipeManager implements IMeltingRecipeManager {
-	public List<IMeltingRecipe> recipes;
 
-	public static final MeltingRecipeManager instance = new MeltingRecipeManager();
+	public static final MeltingRecipeManager INSTANCE = new MeltingRecipeManager();
 
+	private List<IMeltingRecipe> recipes;
+	
 	private MeltingRecipeManager() {
 		recipes = new ArrayList<IMeltingRecipe>();
 	}

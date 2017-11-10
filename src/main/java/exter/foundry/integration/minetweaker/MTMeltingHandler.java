@@ -25,13 +25,13 @@ public class MTMeltingHandler {
 
 		@Override
 		protected void add() {
-			MeltingRecipeManager.instance.recipes.add(recipe);
+			MeltingRecipeManager.INSTANCE.recipes.add(recipe);
 			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new MeltingJEI.Wrapper(null, recipe));
 		}
 
 		@Override
 		protected void remove() {
-			MeltingRecipeManager.instance.recipes.remove(recipe);
+			MeltingRecipeManager.INSTANCE.recipes.remove(recipe);
 			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new MeltingJEI.Wrapper(null, recipe));
 		}
 
@@ -67,7 +67,7 @@ public class MTMeltingHandler {
 
 	@ZenMethod
 	static public void removeRecipe(IItemStack input) {
-		IMeltingRecipe recipe = MeltingRecipeManager.instance.findRecipe(CraftTweakerMC.getItemStack(input));
+		IMeltingRecipe recipe = MeltingRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getItemStack(input));
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Melting recipe not found.");
 			return;

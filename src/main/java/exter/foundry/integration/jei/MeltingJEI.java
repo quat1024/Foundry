@@ -1,6 +1,5 @@
 package exter.foundry.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,9 +9,7 @@ import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.IMeltingRecipe;
 import exter.foundry.gui.GuiMeltingCrucible;
-import exter.foundry.recipes.manager.MeltingRecipeManager;
 import exter.foundry.tileentity.TileEntityFoundryHeatable;
-import exter.foundry.tileentity.TileEntityMeltingCrucibleBasic;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.gui.IDrawable;
@@ -23,31 +20,27 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.util.Translator;
+import mezz.jei.gui.elements.DrawableResource;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MeltingJEI {
 
-	static public class Wrapper implements IRecipeWrapper {
-		@Nonnull
+	public static class Wrapper implements IRecipeWrapper {
+		
 		private final IDrawable temp;
 
 		private final IMeltingRecipe recipe;
 
-		public Wrapper(IJeiHelpers helpers, @Nonnull IMeltingRecipe recipe) {
+		public Wrapper(IMeltingRecipe recipe) {
 			this.recipe = recipe;
 			ResourceLocation background_location = new ResourceLocation("foundry", "textures/gui/crucible.png");
+			temp = new DrawableResource(background_location, 176, 53, (recipe.getMeltingPoint() * 100 - TileEntityFoundryHeatable.TEMP_MIN) * 54 / (500000 - TileEntityFoundryHeatable.TEMP_MIN), 12, 0, 0, 0, 0, 256, 256);
 
-			if (helpers != null) {
-				temp = helpers.getGuiHelper().createDrawable(background_location, 176, 53, (recipe.getMeltingPoint() * 100 - TileEntityFoundryHeatable.TEMP_MIN) * 54 / (500000 - TileEntityFoundryHeatable.TEMP_MIN), 12);
-			} else {
-				temp = null;
-			}
 		}
 
 		@Override
@@ -60,7 +53,8 @@ public class MeltingJEI {
 			if (temp != null) {
 				temp.draw(minecraft, 11, 41);
 			}
-			minecraft.fontRenderer.drawString(recipe.getMeltingPoint() + " Â°K", 14, 28, 0);
+			
+			minecraft.fontRenderer.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
 		}
 
 		@Override
@@ -102,7 +96,7 @@ public class MeltingJEI {
 			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/crucible.png");
 			background = guiHelper.createDrawable(location, 30, 16, 94, 54);
 			tank_overlay = guiHelper.createDrawable(location, 176, 0, 16, 47);
-			localizedName = Translator.translateToLocal("gui.jei.melting");
+			localizedName = I18n.format("gui.jei.melting");
 
 		}
 
@@ -125,7 +119,7 @@ public class MeltingJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.melting";
+			return FoundryJEIConstants.MELT_UID;
 		}
 
 		@Override
@@ -153,43 +147,5 @@ public class MeltingJEI {
 		public String getModName() {
 			return Foundry.MODID;
 		}
-	}
-
-	static public class Handler implements IRecipeHandler<Wrapper> {
-		@Override
-		@Nonnull
-		public Class<Wrapper> getRecipeClass() {
-			return Wrapper.class;
-		}
-
-		@Override
-		@Nonnull
-		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
-			return recipe;
-		}
-
-		@Override
-		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
-			return true;
-		}
-
-		@Override
-		public String getRecipeCategoryUid(Wrapper recipe) {
-			return "foundry.melting";
-		}
-	}
-
-	static public List<Wrapper> getRecipes(IJeiHelpers helpers) {
-		List<Wrapper> recipes = new ArrayList<Wrapper>();
-
-		for (IMeltingRecipe recipe : MeltingRecipeManager.instance.getRecipes()) {
-			List<ItemStack> input = recipe.getInput().getItems();
-
-			if (!input.isEmpty()) {
-				recipes.add(new Wrapper(helpers, recipe));
-			}
-		}
-
-		return recipes;
 	}
 }

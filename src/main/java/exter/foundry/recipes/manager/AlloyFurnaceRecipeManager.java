@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public class AlloyFurnaceRecipeManager implements IAlloyFurnaceRecipeManager {
 	public List<IAlloyFurnaceRecipe> recipes;
 
-	public static final AlloyFurnaceRecipeManager instance = new AlloyFurnaceRecipeManager();
+	public static final AlloyFurnaceRecipeManager INSTANCE = new AlloyFurnaceRecipeManager();
 
 	private AlloyFurnaceRecipeManager() {
 		recipes = new ArrayList<IAlloyFurnaceRecipe>();

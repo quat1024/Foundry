@@ -1,7 +1,5 @@
 package exter.foundry.gui;
 
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
 
 import exter.foundry.container.ContainerRevolver;

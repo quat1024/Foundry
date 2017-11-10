@@ -23,13 +23,13 @@ public class MTAlloyFurnaceHandler {
 
 		@Override
 		protected void add() {
-			AlloyFurnaceRecipeManager.instance.recipes.add(recipe);
+			AlloyFurnaceRecipeManager.INSTANCE.recipes.add(recipe);
 			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
-			AlloyFurnaceRecipeManager.instance.recipes.remove(recipe);
+			AlloyFurnaceRecipeManager.INSTANCE.recipes.remove(recipe);
 			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
 		}
 
@@ -59,7 +59,7 @@ public class MTAlloyFurnaceHandler {
 	@ZenMethod
 	static public void removeRecipe(IItemStack input_a, IItemStack input_b) {
 
-		IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.instance.findRecipe(CraftTweakerMC.getItemStack(input_a), CraftTweakerMC.getItemStack(input_b));
+		IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getItemStack(input_a), CraftTweakerMC.getItemStack(input_b));
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Alloy furnace recipe not found.");
 			return;

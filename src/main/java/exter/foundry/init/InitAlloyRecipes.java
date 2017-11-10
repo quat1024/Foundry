@@ -24,7 +24,7 @@ public class InitAlloyRecipes {
 	static private void addSimpleAlloy(String output, String input_a, int amount_a, String input_b, int amount_b) {
 		ItemStack alloy_ingot = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "ingot" + output, amount_a + amount_b);
 		if (alloy_ingot != null) {
-			AlloyFurnaceRecipeManager.instance.addRecipe(alloy_ingot, new IItemMatcher[] { new OreMatcher("ingot" + input_a, amount_a), new OreMatcher("dust" + input_a, amount_a) }, new IItemMatcher[] { new OreMatcher("ingot" + input_b, amount_b), new OreMatcher("dust" + input_b, amount_b) });
+			AlloyFurnaceRecipeManager.INSTANCE.addRecipe(alloy_ingot, new IItemMatcher[] { new OreMatcher("ingot" + input_a, amount_a), new OreMatcher("dust" + input_a, amount_a) }, new IItemMatcher[] { new OreMatcher("ingot" + input_b, amount_b), new OreMatcher("dust" + input_b, amount_b) });
 		}
 
 		Fluid fluid_out = LiquidMetalRegistry.instance.getFluid(output);
@@ -38,7 +38,7 @@ public class InitAlloyRecipes {
 
 	static public void init() {
 
-		AlloyFurnaceRecipeManager.instance.addRecipe(new ItemStack(FoundryBlocks.block_refractory_glass), new ItemStackMatcher(Blocks.SAND), new ItemStackMatcher(Items.CLAY_BALL));
+		AlloyFurnaceRecipeManager.INSTANCE.addRecipe(new ItemStack(FoundryBlocks.block_refractory_glass), new ItemStackMatcher(Blocks.SAND), new ItemStackMatcher(Items.CLAY_BALL));
 
 		addSimpleAlloy("Bronze", "Copper", 3, "Tin", 1);
 

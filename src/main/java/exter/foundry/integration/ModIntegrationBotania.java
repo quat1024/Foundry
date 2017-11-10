@@ -65,9 +65,9 @@ public class ModIntegrationBotania implements IModIntegration {
 		ItemStack elementium_block = getItemStack("storage", 2);
 		ItemStack mold_block = FoundryItems.mold(ItemMold.SubItem.BLOCK);
 
-		MeltingRecipeManager.instance.addRecipe(new ItemStackMatcher(manasteel_block), new FluidStack(liquid_manasteel, FoundryAPI.FLUID_AMOUNT_BLOCK));
-		MeltingRecipeManager.instance.addRecipe(new ItemStackMatcher(terrasteel_block), new FluidStack(liquid_terrasteel, FoundryAPI.FLUID_AMOUNT_BLOCK));
-		MeltingRecipeManager.instance.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.FLUID_AMOUNT_BLOCK));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(manasteel_block), new FluidStack(liquid_manasteel, FoundryAPI.FLUID_AMOUNT_BLOCK));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(terrasteel_block), new FluidStack(liquid_terrasteel, FoundryAPI.FLUID_AMOUNT_BLOCK));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.FLUID_AMOUNT_BLOCK));
 
 		CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(manasteel_block), new FluidStack(liquid_manasteel, FoundryAPI.FLUID_AMOUNT_BLOCK), mold_block, null);
 		CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(terrasteel_block), new FluidStack(liquid_terrasteel, FoundryAPI.FLUID_AMOUNT_BLOCK), mold_block, null);

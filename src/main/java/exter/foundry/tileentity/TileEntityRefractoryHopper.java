@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import exter.foundry.block.BlockRefractoryHopper;
-import exter.foundry.block.BlockRefractoryHopper.EnumHopperFacing;
 import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

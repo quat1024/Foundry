@@ -222,9 +222,9 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		boolean reversed = false;
 		IAlloyFurnaceRecipe recipe = null;
 		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
-			recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
+			recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
 			if (recipe == null) {
-				recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
+				recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
 				if (recipe != null) {
 					reversed = true;
 				}
@@ -290,9 +290,9 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	@Override
 	public boolean canSmelt() {
 		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
-			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
+			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
 			if (recipe == null) {
-				recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
+				recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
 			}
 			if (recipe == null) { return false; }
 			ItemStack output = recipe.getOutput();

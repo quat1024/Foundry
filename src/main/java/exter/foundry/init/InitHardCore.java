@@ -41,7 +41,7 @@ public class InitHardCore {
 		for (String ore_name : OreDictionary.getOreNames()) {
 			if (ore_name.startsWith(prefix)) {
 				for (ItemStack item : OreDictionary.getOres(ore_name)) {
-					if (MeltingRecipeManager.instance.findRecipe(item) != null) {
+					if (MeltingRecipeManager.INSTANCE.findRecipe(item) != null) {
 						for (int i = 0; i < 9; i++) {
 							grid.setInventorySlotContents(i, item);
 						}
@@ -74,7 +74,7 @@ public class InitHardCore {
 				Map.Entry<ItemStack, ItemStack> recipe = iter.next();
 				Set<String> ore_names = FoundryMiscUtils.getAllItemOreDictionaryNames(recipe.getValue());
 				for (String name : ore_names) {
-					if (name.startsWith("ingot") && !FoundryConfig.hardcore_furnace_keep_ingots.contains(name) && MeltingRecipeManager.instance.findRecipe(recipe.getValue()) != null) {
+					if (name.startsWith("ingot") && !FoundryConfig.hardcore_furnace_keep_ingots.contains(name) && MeltingRecipeManager.INSTANCE.findRecipe(recipe.getValue()) != null) {
 						iter.remove();
 						break;
 					}
@@ -83,18 +83,18 @@ public class InitHardCore {
 
 			// Remove alloy furnace recipes as well.
 			List<IAlloyFurnaceRecipe> remove = new ArrayList<IAlloyFurnaceRecipe>();
-			for (IAlloyFurnaceRecipe recipe : AlloyFurnaceRecipeManager.instance.getRecipes()) {
+			for (IAlloyFurnaceRecipe recipe : AlloyFurnaceRecipeManager.INSTANCE.getRecipes()) {
 				ItemStack output = recipe.getOutput();
 				Set<String> ore_names = FoundryMiscUtils.getAllItemOreDictionaryNames(output);
 				for (String name : ore_names) {
-					if (name.startsWith("ingot") && !FoundryConfig.hardcore_furnace_keep_ingots.contains(name) && MeltingRecipeManager.instance.findRecipe(output) != null) {
+					if (name.startsWith("ingot") && !FoundryConfig.hardcore_furnace_keep_ingots.contains(name) && MeltingRecipeManager.INSTANCE.findRecipe(output) != null) {
 						remove.add(recipe);
 						break;
 					}
 				}
 			}
 			for (IAlloyFurnaceRecipe recipe : remove) {
-				AlloyFurnaceRecipeManager.instance.removeRecipe(recipe);
+				AlloyFurnaceRecipeManager.INSTANCE.removeRecipe(recipe);
 			}
 		}
 	}

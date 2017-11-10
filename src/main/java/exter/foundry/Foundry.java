@@ -108,12 +108,12 @@ public class Foundry {
 
 		FoundryAPI.fluids = LiquidMetalRegistry.instance;
 
-		FoundryAPI.recipes_melting = MeltingRecipeManager.instance;
+		FoundryAPI.recipes_melting = MeltingRecipeManager.INSTANCE;
 		FoundryAPI.recipes_casting = CastingRecipeManager.instance;
 		FoundryAPI.recipes_casting_table = CastingTableRecipeManager.instance;
 		FoundryAPI.recipes_alloymixer = AlloyMixerRecipeManager.instance;
 		FoundryAPI.recipes_infuser = InfuserRecipeManager.instance;
-		FoundryAPI.recipes_alloyfurnace = AlloyFurnaceRecipeManager.instance;
+		FoundryAPI.recipes_alloyfurnace = AlloyFurnaceRecipeManager.INSTANCE;
 		FoundryAPI.recipes_atomizer = AtomizerRecipeManager.instance;
 		FoundryAPI.recipes_mold = MoldRecipeManager.instance;
 		FoundryAPI.recipes_alloyingcrucible = AlloyingCrucibleRecipeManager.instance;
