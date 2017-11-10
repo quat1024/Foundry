@@ -48,7 +48,7 @@ public class ContainerMeltingCrucible extends Container {
 	}
 
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
-		ItemStack slot_stack = null;
+		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = (Slot) inventorySlots.get(slot_index);
 
 		if (slot != null && slot.getHasStack()) {
@@ -56,12 +56,12 @@ public class ContainerMeltingCrucible extends Container {
 			slot_stack = stack.copy();
 
 			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
-				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 1, false)) { return null; }
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 1, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
-				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return null; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return null; }
+				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
 
-			if (stack.getCount() == 0) {
+			if (stack.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();

@@ -99,7 +99,7 @@ public class ContainerMetalCaster extends Container {
 				output_slot.onSlotChanged();
 			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
 
-			if (stack.getCount() == 0) {
+			if (stack.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();

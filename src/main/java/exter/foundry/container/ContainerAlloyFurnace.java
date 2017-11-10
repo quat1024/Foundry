@@ -51,7 +51,7 @@ public class ContainerAlloyFurnace extends Container {
 	}
 
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
-		ItemStack slot_stack = null;
+		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = (Slot) inventorySlots.get(slot_index);
 
 		if (slot != null && slot.getHasStack()) {
@@ -61,11 +61,11 @@ public class ContainerAlloyFurnace extends Container {
 			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
 				if (TileEntityFurnace.isItemFuel(stack)) {
 					int s = SLOTS_TE + TileEntityAlloyFurnace.SLOT_FUEL;
-					if (!mergeItemStack(stack, s, s + 1, false)) { return null; }
-				} else if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + TileEntityAlloyFurnace.SLOT_INPUT_B + 1, false)) { return null; }
+					if (!mergeItemStack(stack, s, s + 1, false)) { return ItemStack.EMPTY; }
+				} else if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + TileEntityAlloyFurnace.SLOT_INPUT_B + 1, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
-				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return null; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return null; }
+				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
 
 			if (stack.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
