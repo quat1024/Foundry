@@ -8,6 +8,7 @@ import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -91,7 +92,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		switch (facing) {
 		case EAST:
 			return getDefaultState().withProperty(FACING, EnumMachineFacing.WEST).withProperty(STATE, EnumMachineState.ON);
@@ -139,7 +140,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
@@ -154,7 +155,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		EnumFacing facing = state.getValue(FACING).facing;
 
 		if (!world.isSideSolid(pos.offset(facing), facing.getOpposite(), true)) {
@@ -164,7 +165,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hit_x, float hit_y, float hit_z) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hit_x, float hit_y, float hit_z) {
 		if (world.isRemote) {
 			return true;
 		} else {
@@ -182,7 +183,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractorySpout", tooltip);
 	}
 }

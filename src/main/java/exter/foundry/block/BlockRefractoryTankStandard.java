@@ -15,6 +15,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -49,7 +50,7 @@ public class BlockRefractoryTankStandard extends BlockContainer implements ISpou
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
 
 		if (te != null) {
@@ -58,7 +59,7 @@ public class BlockRefractoryTankStandard extends BlockContainer implements ISpou
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitx, float hity, float hitz) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitx, float hity, float hitz) {
 		if (world.isRemote) {
 			return true;
 		} else {
@@ -77,14 +78,14 @@ public class BlockRefractoryTankStandard extends BlockContainer implements ISpou
 			for (i = 0; i < tef.getSizeInventory(); i++) {
 				ItemStack is = tef.getStackInSlot(i);
 
-				if (is != null && is.stackSize > 0) {
+				if (!is.isEmpty()) {
 					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
-					world.spawnEntityInWorld(entityitem);
+					world.spawnEntity(entityitem);
 				}
 			}
 		}
@@ -130,7 +131,7 @@ public class BlockRefractoryTankStandard extends BlockContainer implements ISpou
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryTankStandard", tooltip);
 	}
 }

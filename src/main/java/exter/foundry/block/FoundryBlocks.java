@@ -1,11 +1,11 @@
 package exter.foundry.block;
 
+import exter.foundry.FoundryRegistry;
 import exter.foundry.config.FoundryConfig;
 import exter.foundry.item.ItemBlockMulti;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class FoundryBlocks {
 	static public BlockComponent block_component;
@@ -27,13 +27,13 @@ public class FoundryBlocks {
 	static public BlockCauldronBronze block_cauldron_bronze;
 
 	static public void register(Block block) {
-		GameRegistry.register(block);
-		GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+		FoundryRegistry.BLOCKS.add(block);
+		FoundryRegistry.ITEMS.add(new ItemBlock(block).setRegistryName(block.getRegistryName()));
 	}
 
 	static private <T extends Block & IBlockVariants> void registerMulti(T block) {
-		GameRegistry.register(block);
-		GameRegistry.register(new ItemBlockMulti(block).setRegistryName(block.getRegistryName()));
+		FoundryRegistry.BLOCKS.add(block);
+		FoundryRegistry.ITEMS.add(new ItemBlockMulti(block).setRegistryName(block.getRegistryName()));
 	}
 
 	static public void registerBlocks(Configuration config) {

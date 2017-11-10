@@ -1,5 +1,6 @@
 package exter.foundry.item;
 
+import exter.foundry.FoundryRegistry;
 import exter.foundry.item.ammo.ItemRoundAP;
 import exter.foundry.item.ammo.ItemRoundFire;
 import exter.foundry.item.ammo.ItemRoundHollow;
@@ -15,7 +16,6 @@ import exter.foundry.item.firearm.ItemRevolver;
 import exter.foundry.item.firearm.ItemShotgun;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class FoundryItems {
@@ -55,24 +55,22 @@ public class FoundryItems {
 		item_shell_lumium = new ItemShellLumium();
 		item_container = new ItemRefractoryFluidContainer();
 
-		GameRegistry.register(item_component);
-		GameRegistry.register(item_mold);
-		GameRegistry.register(item_revolver);
-		GameRegistry.register(item_shotgun);
-		GameRegistry.register(item_round);
-		GameRegistry.register(item_round_jacketed);
-		GameRegistry.register(item_round_hollow);
-		GameRegistry.register(item_round_fire);
-		GameRegistry.register(item_round_poison);
-		GameRegistry.register(item_round_ap);
-		GameRegistry.register(item_round_lumium);
-		GameRegistry.register(item_round_snow);
-		GameRegistry.register(item_shell);
-		GameRegistry.register(item_shell_ap);
-		GameRegistry.register(item_shell_lumium);
-		GameRegistry.register(item_container);
-
-		GameRegistry.registerFuelHandler(item_component);
+		FoundryRegistry.ITEMS.add(item_component);
+		FoundryRegistry.ITEMS.add(item_mold);
+		FoundryRegistry.ITEMS.add(item_revolver);
+		FoundryRegistry.ITEMS.add(item_shotgun);
+		FoundryRegistry.ITEMS.add(item_round);
+		FoundryRegistry.ITEMS.add(item_round_jacketed);
+		FoundryRegistry.ITEMS.add(item_round_hollow);
+		FoundryRegistry.ITEMS.add(item_round_fire);
+		FoundryRegistry.ITEMS.add(item_round_poison);
+		FoundryRegistry.ITEMS.add(item_round_ap);
+		FoundryRegistry.ITEMS.add(item_round_lumium);
+		FoundryRegistry.ITEMS.add(item_round_snow);
+		FoundryRegistry.ITEMS.add(item_shell);
+		FoundryRegistry.ITEMS.add(item_shell_ap);
+		FoundryRegistry.ITEMS.add(item_shell_lumium);
+		FoundryRegistry.ITEMS.add(item_container);
 
 		OreDictionary.registerOre("fuelCoke", component(ItemComponent.SubItem.COAL_COKE));
 	}

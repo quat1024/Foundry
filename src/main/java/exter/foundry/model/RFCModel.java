@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
@@ -11,8 +13,6 @@ import javax.vecmath.Vector4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -35,17 +35,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
-import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RFCModel implements IModel {
-	static private final class BakedItemModel implements IPerspectiveAwareModel {
+	static private final class BakedItemModel implements IBakedModel {
 		private final class RFCOverride extends ItemOverrideList {
 			public RFCOverride() {
 				super(ImmutableList.<ItemOverride>of());
@@ -135,7 +134,7 @@ public class RFCModel implements IModel {
 
 		@Override
 		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType type) {
-			Pair<? extends IBakedModel, Matrix4f> pair = IPerspectiveAwareModel.MapWrapper.handlePerspective(this, transforms, type);
+			Pair<? extends IBakedModel, Matrix4f> pair = PerspectiveMapWrapper.handlePerspective(this, transforms, type);
 			if (type == TransformType.GUI && !isCulled && pair.getRight() == null) {
 				return Pair.of(otherModel, null);
 			} else if (type != TransformType.GUI && isCulled) { return Pair.of(otherModel, pair.getRight()); }
@@ -143,7 +142,7 @@ public class RFCModel implements IModel {
 		}
 	}
 
-	static private final class SimpleBakedModel implements IPerspectiveAwareModel {
+	static private final class SimpleBakedModel implements IBakedModel {
 		private final ImmutableList<BakedQuad> quads;
 		private final TextureAtlasSprite particle;
 		private final ImmutableMap<TransformType, TRSRTransformation> transforms;
@@ -191,18 +190,18 @@ public class RFCModel implements IModel {
 
 		@Override
 		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType type) {
-			return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, transforms, type);
+			return PerspectiveMapWrapper.handlePerspective(this, transforms, type);
 		}
 	}
 
 	@Override
-	public IBakedModel bake(IModelState state, final VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-		Optional<TRSRTransformation> transform = state.apply(Optional.<IModelPart>absent());
+	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+		Optional<TRSRTransformation> transform = state.apply(Optional.empty());
 		ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
 		builder.addAll(getQuadsForSprite(0, bakedTextureGetter.apply(texture_bg), format, transform));
 		builder.addAll(getQuadsForSprite(2, bakedTextureGetter.apply(texture_fg), format, transform));
 
-		ImmutableMap<TransformType, TRSRTransformation> map = IPerspectiveAwareModel.MapWrapper.getTransforms(state);
+		ImmutableMap<TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(state);
 		return new BakedItemModel(builder.build(), bakedTextureGetter.apply(texture_fg), map, null, bakedTextureGetter, format, transform);
 	}
 

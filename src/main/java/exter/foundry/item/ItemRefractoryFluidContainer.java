@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,6 +20,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
@@ -166,20 +168,21 @@ public class ItemRefractoryFluidContainer extends Item {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
-		list.add(fromFluidStack(null));
-		Map<String, Fluid> fluids = FluidRegistry.getRegisteredFluids();
-		for (Fluid f : fluids.values()) {
-			if (f != null) {
-				list.add(fromFluidStack(new FluidStack(f, Fluid.BUCKET_VOLUME)));
+	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tabs)) {
+			list.add(fromFluidStack(null));
+			Map<String, Fluid> fluids = FluidRegistry.getRegisteredFluids();
+			for (Fluid f : fluids.values()) {
+				if (f != null) {
+					list.add(fromFluidStack(new FluidStack(f, Fluid.BUCKET_VOLUME)));
+				}
 			}
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4) {
+	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag par4) {
 		FluidStack fluid = getFluid(stack);
 		if (fluid == null) {
 			list.add(TextFormatting.BLUE + "Empty");
@@ -190,23 +193,24 @@ public class ItemRefractoryFluidContainer extends Item {
 	}
 
 	private boolean splitStack(ItemStack stack, EntityPlayer player) {
-		if (stack.stackSize == 1) { return true; }
+		if (stack.getCount() == 1) { return true; }
 		if (player.capabilities.isCreativeMode) { return false; }
 
 		ItemStack rest_stack = stack.copy();
-		rest_stack.stackSize--;
+		rest_stack.shrink(1);
 		int slot = player.inventory.getFirstEmptyStack();
 		if (slot >= 0) {
 			player.inventory.setInventorySlotContents(slot, rest_stack);
 			player.inventory.markDirty();
-			stack.stackSize = 1;
+			stack.setCount(1);
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		FluidStack fluid = getFluid(stack);
 		RayTraceResult obj = rayTrace(world, player, fluid == null || fluid.amount == 0);
 
@@ -322,7 +326,7 @@ public class ItemRefractoryFluidContainer extends Item {
 	}
 
 	public FluidStack drain(ItemStack stack, int amount, boolean doDrain) {
-		if (stack.stackSize > 1) { return null; }
+		if (stack.getCount() > 1) { return null; }
 		FluidStack fluid = getFluid(stack);
 
 		if (fluid == null) { return null; }
@@ -345,7 +349,7 @@ public class ItemRefractoryFluidContainer extends Item {
 	}
 
 	private int fill(ItemStack stack, FluidStack fluid, boolean do_fill, boolean ignore_stacksize) {
-		if (!ignore_stacksize && stack.stackSize > 1) { return 0; }
+		if (!ignore_stacksize && stack.getCount() > 1) { return 0; }
 		FluidStack container_fluid = getFluid(stack);
 
 		if (!do_fill) {

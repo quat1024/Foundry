@@ -1,18 +1,17 @@
 package exter.foundry.item;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import exter.foundry.creativetab.FoundryTabMaterials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.IFuelHandler;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemComponent extends Item implements IFuelHandler {
+public class ItemComponent extends Item {
 	static public enum SubItem {
 		HEATINGCOIL(0, "componentHeatingCoil"),
 		REFRACTORYCLAY(1, "componentRefractoryClay"),
@@ -73,14 +72,14 @@ public class ItemComponent extends Item implements IFuelHandler {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-		for (SubItem c : SubItem.values()) {
+	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tabs)) for (SubItem c : SubItem.values()) {
 			list.add(new ItemStack(this, 1, c.id));
 		}
 	}
 
 	@Override
-	public int getBurnTime(ItemStack fuel) {
+	public int getItemBurnTime(ItemStack fuel) {
 		if (fuel.getItem() == this && fuel.getMetadata() == SubItem.COAL_COKE.id) { return 3200; }
 		return 0;
 	}

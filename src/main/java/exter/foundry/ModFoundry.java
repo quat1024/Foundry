@@ -60,6 +60,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -93,6 +94,7 @@ public class ModFoundry {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(new FoundryRegistry());
 		log = event.getModLog();
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();

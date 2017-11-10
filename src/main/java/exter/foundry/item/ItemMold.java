@@ -1,13 +1,13 @@
 package exter.foundry.item;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import exter.foundry.creativetab.FoundryTabMolds;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -77,8 +77,8 @@ public class ItemMold extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-		for (SubItem m : SubItem.values()) {
+	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tabs)) for (SubItem m : SubItem.values()) {
 			ItemStack itemstack = new ItemStack(this, 1, m.id);
 			list.add(itemstack);
 		}

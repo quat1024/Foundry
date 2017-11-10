@@ -221,7 +221,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 			list.add(new ItemStack(this, 1, m.id));
 		}
 	}
-	
+
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);

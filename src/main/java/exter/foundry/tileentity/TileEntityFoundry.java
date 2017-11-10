@@ -692,10 +692,11 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 			return super.getCapability(cap, facing);
 		}
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
-		for(ItemStack s : inventory) if(!s.isEmpty()) return false;
+		for (ItemStack s : inventory)
+			if (!s.isEmpty()) return false;
 		return true;
 	}
 }
