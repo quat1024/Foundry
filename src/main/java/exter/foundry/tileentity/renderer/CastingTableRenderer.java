@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import exter.foundry.tileentity.TileEntityCastingTableBase;
 import exter.foundry.util.hashstack.HashableItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,7 +17,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
@@ -56,7 +56,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 			int b = 0;
 			int count = 0;
 			for (EnumFacing facing : facings) {
-				List<BakedQuad> quads = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, getWorld(), Minecraft.getMinecraft().thePlayer).getQuads(null, facing, 0);
+				List<BakedQuad> quads = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, getWorld(), Minecraft.getMinecraft().player).getQuads(null, facing, 0);
 				if (quads != null) {
 					for (BakedQuad q : quads) {
 						TextureAtlasSprite texture = q.getSprite();
@@ -105,7 +105,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityCastingTableBase te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityCastingTableBase te, double x, double y, double z, float partialTicks, int destroyStage, float a) {
 		FluidStack fluid = te.getTank(0).getFluid();
 		GL11.glPushMatrix();
 		GlStateManager.disableLighting();
@@ -131,7 +131,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 			if (fluid != null) {
 				GlStateManager.depthMask(false);
 			}
-			VertexBuffer tessellator = Tessellator.getInstance().getBuffer();
+			BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
 			tessellator.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 			tessellator.pos(left, high, bottom).tex(min_u, max_v).color(red, green, blue, alpha).endVertex();
 			tessellator.pos(right, high, bottom).tex(max_u, max_v).color(red, green, blue, alpha).endVertex();
@@ -165,7 +165,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 			double max_u = texture.getInterpolatedU(right * 16);
 			double max_v = texture.getInterpolatedV(bottom * 16);
 			double fluid_z = (double) fluid.amount / te.getTank(0).getCapacity() * (high - low) + low;
-			VertexBuffer tessellator = Tessellator.getInstance().getBuffer();
+			BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
 			tessellator.begin(7, DefaultVertexFormats.BLOCK);
 			tessellator.pos(left, fluid_z, bottom).color(red, green, blue, alpha).tex(min_u, max_v).lightmap(l1, l2).endVertex();
 			tessellator.pos(right, fluid_z, bottom).color(red, green, blue, alpha).tex(max_u, max_v).lightmap(l1, l2).endVertex();

@@ -67,7 +67,7 @@ public class FoundryMiscUtils {
 		for (ItemStack is : OreDictionary.getOres(orename)) {
 			if (is.getItem().getRegistryName().getResourceDomain().equals(modid)) {
 				is = is.copy();
-				is.stackSize = amount;
+				is.setCount(amount);
 				return is;
 			}
 		}

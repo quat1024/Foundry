@@ -3,7 +3,6 @@ package exter.foundry.creativetab;
 import exter.foundry.item.FoundryItems;
 import exter.foundry.item.ItemComponent;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class FoundryTabMaterials extends CreativeTabs {
@@ -14,12 +13,8 @@ public class FoundryTabMaterials extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getIconItemStack() {
+	public ItemStack getTabIconItem() {
 		return FoundryItems.component(ItemComponent.SubItem.REFRACTORYCLAY);
 	}
 
-	@Override
-	public Item getTabIconItem() {
-		return null;
-	}
 }

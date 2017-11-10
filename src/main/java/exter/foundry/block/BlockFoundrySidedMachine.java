@@ -151,7 +151,7 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack item) {
-		int dir = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		int dir = MathHelper.floor((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
 		EnumMachineFacing facing = EnumMachineFacing.NORTH;
 		if (dir == 0) {
@@ -179,14 +179,14 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 			for (i = 0; i < tef.getSizeInventory(); i++) {
 				ItemStack is = tef.getStackInSlot(i);
 
-				if (is != null && is.stackSize > 0) {
+				if (!is.isEmpty()) {
 					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
-					world.spawnEntityInWorld(entityitem);
+					world.spawnEntity(entityitem);
 				}
 			}
 		}

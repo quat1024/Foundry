@@ -9,7 +9,6 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -28,7 +27,7 @@ public class EntitySkeletonGun extends EntitySkeleton {
 
 	@Override
 	public void setItemStackToSlot(EntityEquipmentSlot slot, ItemStack item) {
-		if (slot != EntityEquipmentSlot.MAINHAND || worldObj.isRemote) {
+		if (slot != EntityEquipmentSlot.MAINHAND || world.isRemote) {
 			super.setItemStackToSlot(slot, item);
 		}
 	}
@@ -45,17 +44,17 @@ public class EntitySkeletonGun extends EntitySkeleton {
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
-		float damage = (float) this.worldObj.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
+		float damage = (float) this.world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
 		if (getHeldItem(EnumHand.MAIN_HAND).getItem() == FoundryItems.item_shotgun) {
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				playSound(FoundrySounds.sound_shotgun_fire, 0.9F, 1F);
 			}
-			ItemFirearm.shoot(new ItemStack(FoundryItems.item_shell), worldObj, this, target, 6, 0.4f, damage);
+			ItemFirearm.shoot(new ItemStack(FoundryItems.item_shell), world, this, target, 6, 0.4f, damage);
 		} else {
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				playSound(FoundrySounds.sound_revolver_fire, 0.9F, 1F);
 			}
-			ItemFirearm.shoot(new ItemStack(FoundryItems.item_round), worldObj, this, target, 1, 0.015f, damage);
+			ItemFirearm.shoot(new ItemStack(FoundryItems.item_round), world, this, target, 1, 0.015f, damage);
 		}
 	}
 
@@ -71,11 +70,6 @@ public class EntitySkeletonGun extends EntitySkeleton {
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		super.setEquipmentBasedOnDifficulty(difficulty);
 		setGun();
-	}
-
-	@Override
-	public void setSkeletonType(SkeletonType type) {
-		super.setSkeletonType(SkeletonType.NORMAL);
 	}
 
 	@Override

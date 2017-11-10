@@ -25,15 +25,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -119,14 +120,14 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 			for (i = 0; i < tef.getSizeInventory(); i++) {
 				ItemStack is = tef.getStackInSlot(i);
 
-				if (is != null && is.stackSize > 0) {
+				if (!is.isEmpty()) {
 					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
-					world.spawnEntityInWorld(entityitem);
+					world.spawnEntity(entityitem);
 				}
 			}
 		}
@@ -135,7 +136,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hit_x, float hit_y, float hit_z) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hit_x, float hit_y, float hit_z) {
 		if (world.isRemote) {
 			return true;
 		} else {
@@ -207,17 +208,15 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		return getMetaFromState(state);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list) {
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
 		for (EnumMachine m : EnumMachine.values()) {
-			list.add(new ItemStack(item, 1, m.id));
+			list.add(new ItemStack(this, 1, m.id));
 		}
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
 
 		if (te != null) {
@@ -241,7 +240,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		FoundryMiscUtils.localizeTooltip("tooltip.foundry.machine." + getStateFromMeta(stack.getMetadata()).getValue(MACHINE).name, tooltip);
 	}
 }

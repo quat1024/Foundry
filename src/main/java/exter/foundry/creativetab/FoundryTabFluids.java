@@ -2,7 +2,6 @@ package exter.foundry.creativetab;
 
 import exter.foundry.item.FoundryItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class FoundryTabFluids extends CreativeTabs {
@@ -13,12 +12,8 @@ public class FoundryTabFluids extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getIconItemStack() {
+	public ItemStack getTabIconItem() {
 		return FoundryItems.item_container.empty(1);
 	}
 
-	@Override
-	public Item getTabIconItem() {
-		return null;
-	}
 }

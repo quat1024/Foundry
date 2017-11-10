@@ -90,8 +90,8 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		if (tag.hasKey("ItemBurnTime")) {
 			item_burn_time = tag.getInteger("ItemBurnTime");
 		}
-		if (worldObj != null && !worldObj.isRemote) {
-			((BlockAlloyFurnace) getBlockType()).setMachineState(worldObj, getPos(), worldObj.getBlockState(getPos()), burn_time > 0);
+		if (world != null && !world.isRemote) {
+			((BlockAlloyFurnace) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), burn_time > 0);
 		}
 	}
 
@@ -123,7 +123,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.worldObj.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
+		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
 	}
 
 	@Override
@@ -255,7 +255,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 
 		if (last_burn_time != burn_time || update_burn_times) {
 			if (last_burn_time * burn_time == 0) {
-				((BlockAlloyFurnace) getBlockType()).setMachineState(worldObj, getPos(), worldObj.getBlockState(getPos()), burn_time > 0);
+				((BlockAlloyFurnace) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), burn_time > 0);
 			}
 			updateValue("BurnTime", burn_time);
 		}
@@ -295,7 +295,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 			}
 			if (recipe == null) { return false; }
 			ItemStack output = recipe.getOutput();
-			ItemStack inv_output = inventory[SLOT_OUTPUT];
+			ItemStack inv_output = inventory.get(SLOT_OUTPUT);
 			if (inv_output != null && (!inv_output.isItemEqual(output) || inv_output.stackSize - output.stackSize > inv_output.getMaxStackSize())) { return false; }
 			return true;
 		}
@@ -311,7 +311,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	@Optional.Method(modid = "Botania")
 	@Override
 	public void boostBurnTime() {
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			burn_time = 200;
 			item_burn_time = 199;
 			update_burn_times = true;

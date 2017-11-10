@@ -111,13 +111,13 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
-		super.neighborChanged(state, world, pos, block);
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		super.neighborChanged(state, world, pos, block, fromPos);
 		checkForHarden(world, pos, state);
 	}
 
 	private IBlockState getBlockStateFromItemStack(ItemStack stack) {
-		Block block = ((ItemBlock) (stack.getItem())).block;
+		Block block = ((ItemBlock) (stack.getItem())).getBlock();
 		int meta = stack.getMetadata();
 		for (IBlockState state : block.getBlockState().getValidStates()) {
 			if (state != null && block.damageDropped(state) == meta) { return state; }
@@ -179,7 +179,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 		}
 		if (!entity.isImmuneToFire()) {
 			if (!(entity instanceof EntityItem)) {
-				entity.attackEntityFrom(DamageSource.lava, 4);
+				entity.attackEntityFrom(DamageSource.LAVA, 4);
 			}
 			entity.setFire(15);
 		}

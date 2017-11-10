@@ -1,8 +1,5 @@
 package exter.foundry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.logging.log4j.Logger;
 
 import exter.foundry.api.FoundryAPI;
@@ -59,7 +56,6 @@ import exter.foundry.tileentity.TileEntityRefractoryTankAdvanced;
 import exter.foundry.tileentity.TileEntityRefractoryTankBasic;
 import exter.foundry.tileentity.TileEntityRefractoryTankStandard;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -78,11 +74,11 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = ModFoundry.MODID, name = ModFoundry.MODNAME, version = ModFoundry.MODVERSION, dependencies = "required-after:Forge@[12.18.2.2125,);" + "required-after:substratum@[1.8.2.1,);" + "after:JEI@[3.14.7.416,)")
+@Mod(modid = ModFoundry.MODID, name = ModFoundry.MODNAME, version = ModFoundry.MODVERSION, dependencies = "after:jei")
 public class ModFoundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "2.2.3.0";
+	public static final String MODVERSION = "3.0.0";
 
 	@Instance(MODID)
 	public static ModFoundry instance;
@@ -176,44 +172,10 @@ public class ModFoundry {
 
 		InitRecipes.init();
 
-		EntityRegistry.registerModEntity(EntitySkeletonGun.class, "gunSkeleton", 0, this, 80, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("foundry", "gun_skeleton"), EntitySkeletonGun.class, "gunSkeleton", 0, this, 80, 1, true);
 		LootTableList.register(new ResourceLocation("foundry", "gun_skeleton"));
 
-		List<Biome> biomes = new ArrayList<Biome>();
-		for (BiomeDictionary.Type type : BiomeDictionary.Type.values()) {
-			for (Biome bio : BiomeDictionary.getBiomesForType(type)) {
-				if (!biomes.contains(bio)) {
-					biomes.add(bio);
-				}
-			}
-		}
-		for (Biome bio : BiomeDictionary.getBiomesForType(BiomeDictionary.Type.END)) {
-			if (biomes.contains(bio)) {
-				biomes.remove(bio);
-			}
-		}
-		for (Biome bio : BiomeDictionary.getBiomesForType(BiomeDictionary.Type.NETHER)) {
-			if (biomes.contains(bio)) {
-				biomes.remove(bio);
-			}
-		}
-
-		List<Biome> toremove = new ArrayList<Biome>();
-		for (Biome bio : biomes) {
-			boolean remove = true;
-			for (Biome.SpawnListEntry e : (List<Biome.SpawnListEntry>) bio.getSpawnableList(EnumCreatureType.MONSTER)) {
-				if (e.entityClass == EntitySkeleton.class) {
-					remove = false;
-					break;
-				}
-			}
-			if (remove) {
-				toremove.add(bio);
-			}
-		}
-		biomes.removeAll(toremove);
-
-		EntityRegistry.addSpawn(EntitySkeletonGun.class, 8, 1, 2, EnumCreatureType.MONSTER, biomes.toArray(new Biome[0]));
+		EntityRegistry.addSpawn(EntitySkeletonGun.class, 8, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS).toArray(new Biome[0]));
 
 		proxy.init();
 	}

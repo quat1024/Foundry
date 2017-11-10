@@ -4,13 +4,13 @@ import org.lwjgl.opengl.GL11;
 
 import exter.foundry.tileentity.TileEntityRefractoryHopper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class HopperRenderer extends TileEntitySpecialRenderer<TileEntityRefractoryHopper> {
 
 	@Override
-	public void renderTileEntityAt(TileEntityRefractoryHopper te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityRefractoryHopper te, double x, double y, double z, float partialTicks, int destroyStage, float a) {
 		FluidStack fluid = te.getTank(0).getFluid();
 		BlockPos pos = te.getPos().up();
 		World world = te.getWorld();
@@ -52,7 +52,7 @@ public class HopperRenderer extends TileEntitySpecialRenderer<TileEntityRefracto
 			double max_u = texture.getInterpolatedU(14.005);
 			double max_v = texture.getInterpolatedV(14.005);
 			double fluid_z = (double) (fluid.amount - 80) / (te.getTank(0).getCapacity() - 80) * 4.75 + 11;
-			VertexBuffer tessellator = Tessellator.getInstance().getBuffer();
+			BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
 			tessellator.begin(7, DefaultVertexFormats.BLOCK);
 			tessellator.pos(1.995 / 16, fluid_z / 16, 14.005 / 16).color(red, green, blue, alpha).tex(min_u, max_v).lightmap(l1, l2).endVertex();
 			tessellator.pos(14.005 / 16, fluid_z / 16, 14.005 / 16).color(red, green, blue, alpha).tex(max_u, max_v).lightmap(l1, l2).endVertex();

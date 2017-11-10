@@ -25,12 +25,12 @@ public class ItemStackMatcher implements IItemMatcher {
 
 	@Override
 	public boolean apply(ItemStack input) {
-		return ItemStack.areItemsEqual(match, input) && ItemStack.areItemStackTagsEqual(input, match) && input.stackSize >= match.stackSize;
+		return ItemStack.areItemsEqual(match, input) && ItemStack.areItemStackTagsEqual(input, match) && input.getCount() >= match.getCount();
 	}
 
 	@Override
 	public int getAmount() {
-		return match.stackSize;
+		return match.getCount();
 	}
 
 	@Override

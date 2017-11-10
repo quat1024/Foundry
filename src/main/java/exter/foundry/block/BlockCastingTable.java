@@ -20,17 +20,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -119,7 +118,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
@@ -147,14 +146,14 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 			if (tef.getProgress() == 0) {
 				ItemStack is = tef.getStackInSlot(0);
 
-				if (is != null && is.stackSize > 0) {
+				if (!is.isEmpty()) {
 					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
-					world.spawnEntityInWorld(entityitem);
+					world.spawnEntity(entityitem);
 				}
 			}
 		}
@@ -170,23 +169,19 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 			if (te_ct.getProgress() == 0) {
 				ItemStack is = te_ct.getStackInSlot(0);
 
-				if (is != null && is.stackSize > 0) {
+				if (is.isEmpty()) {
 					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.9375, pos.getZ() + 0.5, is);
 					entityitem.setPickupDelay(1);
 
-					world.spawnEntityInWorld(entityitem);
+					world.spawnEntity(entityitem);
 					te_ct.setInventorySlotContents(0, null);
-
-					if (state.getValue(TABLE) == EnumTable.INGOT && is.getItem() == Items.IRON_INGOT) {
-						player.addStat(AchievementList.ACQUIRE_IRON);
-					}
 				}
 			}
 		}
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hit_x, float hit_y, float hit_z) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hit_x, float hit_y, float hit_z) {
 		if (world.isRemote) {
 			return true;
 		} else {
@@ -220,17 +215,15 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 		return getMetaFromState(state);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list) {
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
 		for (EnumTable m : EnumTable.values()) {
-			list.add(new ItemStack(item, 1, m.id));
+			list.add(new ItemStack(this, 1, m.id));
 		}
 	}
-
+	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
 
 		if (te != null) {
@@ -260,7 +253,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		FoundryMiscUtils.localizeTooltip("tooltip.foundry.castingTable." + getStateFromMeta(stack.getMetadata()).getValue(TABLE).name, tooltip);
 	}
 }

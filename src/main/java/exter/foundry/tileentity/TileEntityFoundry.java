@@ -18,6 +18,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -119,30 +120,30 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 		@Override
 		public final ItemStack getStackInSlot(int slot) {
-			return inventory[slot];
+			return getStackInSlot(slot);
 		}
 
 		@Override
 		public final ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if (!insert_slots.contains(slot) || !canInsert(slot, stack)) { return stack; }
-			ItemStack is = inventory[slot];
+			ItemStack is = getStackInSlot(slot);
 			if (is == null) {
 				if (!simulate) {
-					inventory[slot] = stack.copy();
+					setStackInSlot(slot, stack.copy());
 					updateInventoryItem(slot);
 					markDirty();
 				}
 				return null;
 			} else if (is.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(is, stack)) {
-				if (stack.stackSize + is.stackSize > is.getMaxStackSize()) {
+				if (stack.getCount() + is.getCount() > is.getMaxStackSize()) {
 					stack = stack.copy();
-					stack.stackSize = stack.stackSize - is.getMaxStackSize() + is.stackSize;
+					stack.setCount(stack.getCount() - is.getMaxStackSize() + is.getCount());
 					if (!simulate) {
-						is.stackSize = is.getMaxStackSize();
+						is.setCount(is.getMaxStackSize());
 					}
 				} else {
 					if (!simulate) {
-						is.stackSize += stack.stackSize;
+						is.grow(stack.getCount());
 					}
 					stack = null;
 				}
@@ -158,22 +159,27 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		@Override
 		public final ItemStack extractItem(int slot, int amount, boolean simulate) {
 			if (!extract_slots.contains(slot) || !canExtract(slot)) { return null; }
-			ItemStack is = inventory[slot];
-			if (is == null) { return null; }
-			if (amount > is.stackSize) {
-				amount = is.stackSize;
+			ItemStack is = getStackInSlot(slot);
+			if (is.isEmpty()) { return ItemStack.EMPTY; }
+			if (amount > is.getCount()) {
+				amount = is.getCount();
 			}
 			if (!simulate) {
-				is.stackSize -= amount;
-				if (is.stackSize == 0) {
-					inventory[slot] = null;
+				is.shrink(amount);
+				if (is.isEmpty()) {
+					setStackInSlot(slot, ItemStack.EMPTY);
 				}
 				updateInventoryItem(slot);
 				markDirty();
 			}
 			is = is.copy();
-			is.stackSize = amount;
+			is.setCount(amount);
 			return is;
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			return TileEntityFoundry.this.getInventoryStackLimit();
 		}
 	}
 
@@ -201,9 +207,9 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		}
 
 		public void update() {
-			if (container_timer > 0) { return; }
+			if (container_timer > 0) return;
 			ItemStack stack = getStackInSlot(slot);
-			if (stack == null || stack.stackSize > 1) { return; }
+			if (stack.getCount() > 1) return;
 
 			FluidTank tank = getTank(tank_slot);
 			if (fill) {
@@ -246,7 +252,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 	protected boolean last_redstone_signal;
 	protected boolean redstone_signal;
-	protected final ItemStack[] inventory;
+	protected final NonNullList<ItemStack> inventory;
 
 	private int container_timer;
 
@@ -270,60 +276,60 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		redstone_signal = false;
 		initialized = false;
 		mode = RedstoneMode.RSMODE_IGNORE;
-		inventory = new ItemStack[getSizeInventory()];
+		inventory = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
 		container_timer = 0;
 	}
 
 	@Override
 	public final ItemStack getStackInSlot(int slot) {
-		return inventory[slot];
+		return inventory.get(slot);
+	}
+
+	private void setStackInSlot(int slot, ItemStack stack) {
+		inventory.set(slot, stack);
 	}
 
 	@Override
 	public final ItemStack decrStackSize(int slot, int amount) {
-		if (inventory[slot] != null) {
+		if (!getStackInSlot(slot).isEmpty()) {
 			ItemStack is;
 
-			if (inventory[slot].stackSize <= amount) {
-				is = inventory[slot];
-				inventory[slot] = null;
+			if (getStackInSlot(slot).getCount() <= amount) {
+				is = getStackInSlot(slot);
+				setStackInSlot(slot, ItemStack.EMPTY);
 				updateInventoryItem(slot);
 				markDirty();
 				return is;
 			} else {
-				is = inventory[slot].splitStack(amount);
-
-				if (inventory[slot].stackSize == 0) {
-					inventory[slot] = null;
-				}
+				is = getStackInSlot(slot).splitStack(amount);
 				updateInventoryItem(slot);
 				markDirty();
 				return is;
 			}
 		} else {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int slot) {
-		if (inventory[slot] != null) {
-			ItemStack is = inventory[slot];
-			inventory[slot] = null;
+		if (!getStackInSlot(slot).isEmpty()) {
+			ItemStack is = getStackInSlot(slot);
+			setStackInSlot(slot, ItemStack.EMPTY);
 			updateInventoryItem(slot);
 			markDirty();
 			return is;
 		} else {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
 	@Override
 	public final void setInventorySlotContents(int slot, ItemStack stack) {
-		inventory[slot] = stack;
+		setStackInSlot(slot, stack);
 
-		if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-			stack.stackSize = this.getInventoryStackLimit();
+		if (stack.getCount() > this.getInventoryStackLimit()) {
+			stack.setCount(this.getInventoryStackLimit());
 		}
 		updateInventoryItem(slot);
 		markDirty();
@@ -354,7 +360,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void updateTank(int slot) {
-		if (worldObj.isRemote) { return; }
+		if (world.isRemote) { return; }
 		if (update_packet == null) {
 			update_packet = new NBTTagCompound();
 			super.writeToNBT(update_packet);
@@ -363,7 +369,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void updateInventoryItem(int slot) {
-		if (worldObj.isRemote) { return; }
+		if (world.isRemote) { return; }
 		if (update_packet == null) {
 			update_packet = new NBTTagCompound();
 			super.writeToNBT(update_packet);
@@ -378,7 +384,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void writeInventoryItemToNBT(NBTTagCompound compound, int slot) {
-		ItemStack is = inventory[slot];
+		ItemStack is = getStackInSlot(slot);
 		NBTTagCompound tag = new NBTTagCompound();
 		if (is != null) {
 			tag.setBoolean("empty", false);
@@ -408,9 +414,9 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 			if (tag != null) {
 				ItemStack stack = null;
 				if (!tag.getBoolean("empty")) {
-					stack = ItemStack.loadItemStackFromNBT(tag);
+					stack = new ItemStack(tag);
 				}
-				inventory[i] = stack;
+				inventory.set(i, stack);
 			}
 		}
 		if (compound.hasKey("rsmode")) {
@@ -444,7 +450,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void updateValue(String name, int value) {
-		if (worldObj.isRemote) { return; }
+		if (world.isRemote) { return; }
 		if (update_packet == null) {
 			update_packet = new NBTTagCompound();
 			super.writeToNBT(update_packet);
@@ -453,7 +459,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void updateValue(String name, long value) {
-		if (worldObj.isRemote) { return; }
+		if (world.isRemote) { return; }
 		if (update_packet == null) {
 			update_packet = new NBTTagCompound();
 			super.writeToNBT(update_packet);
@@ -462,7 +468,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void updateValue(String name, boolean value) {
-		if (worldObj.isRemote) { return; }
+		if (world.isRemote) { return; }
 		if (update_packet == null) {
 			update_packet = new NBTTagCompound();
 			super.writeToNBT(update_packet);
@@ -471,7 +477,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void updateNBTTag(String name, NBTTagCompound compound) {
-		if (worldObj.isRemote) { return; }
+		if (world.isRemote) { return; }
 		if (update_packet == null) {
 			update_packet = new NBTTagCompound();
 			super.writeToNBT(update_packet);
@@ -480,12 +486,12 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected void sendPacketToNearbyPlayers(NBTTagCompound data) {
-		data.setInteger("dim", worldObj.provider.getDimension());
-		ModFoundry.network_channel.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(worldObj.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
+		data.setInteger("dim", world.provider.getDimension());
+		ModFoundry.network_channel.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
 	}
 
 	protected void sendPacketToPlayer(NBTTagCompound data, EntityPlayerMP player) {
-		data.setInteger("dim", worldObj.provider.getDimension());
+		data.setInteger("dim", world.provider.getDimension());
 		ModFoundry.network_channel.sendTo(new MessageTileEntitySync(data), player);
 	}
 
@@ -497,7 +503,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 			initialized = true;
 		}
 
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			if (update_packet == null) {
 				update_packet = new NBTTagCompound();
 				super.writeToNBT(update_packet);
@@ -523,19 +529,19 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	@Override
 	public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		super.onDataPacket(net, pkt);
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			readFromNBT(pkt.getNbtCompound());
 		}
-		//worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+		//world.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
 	public void updateRedstone() {
-		redstone_signal = worldObj.isBlockIndirectlyGettingPowered(getPos()) > 0;
+		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return worldObj.getTileEntity(getPos()) != this ? false : player.getDistanceSq(getPos()) <= 64.0D;
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return world.getTileEntity(getPos()) != this ? false : player.getDistanceSq(getPos()) <= 64.0D;
 	}
 
 	@Override
@@ -580,7 +586,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	public void setRedstoneMode(RedstoneMode new_mode) {
 		if (mode != new_mode) {
 			mode = new_mode;
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("rsmode", mode.id);
 				sendToServer(tag);
@@ -589,16 +595,16 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected void sendToServer(NBTTagCompound tag) {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			super.writeToNBT(tag);
-			tag.setInteger("dim", worldObj.provider.getDimension());
+			tag.setInteger("dim", world.provider.getDimension());
 			ModFoundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
 		}
 	}
 
 	@Override
 	public void openInventory(EntityPlayer player) {
-		if (!worldObj.isRemote && player instanceof EntityPlayerMP) {
+		if (!world.isRemote && player instanceof EntityPlayerMP) {
 			NBTTagCompound tag = writeToNBT(null);
 			sendPacketToPlayer(tag, (EntityPlayerMP) player);
 		}
@@ -606,7 +612,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 	@Override
 	public void closeInventory(EntityPlayer player) {
-		if (!worldObj.isRemote && player instanceof EntityPlayerMP) {
+		if (!world.isRemote && player instanceof EntityPlayerMP) {
 			NBTTagCompound tag = new NBTTagCompound();
 			super.writeToNBT(tag);
 			tag.setInteger("rsmode", mode.id);
@@ -685,5 +691,11 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		} else {
 			return super.getCapability(cap, facing);
 		}
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		for(ItemStack s : inventory) if(!s.isEmpty()) return false;
+		return true;
 	}
 }

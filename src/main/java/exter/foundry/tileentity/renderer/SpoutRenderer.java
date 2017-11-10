@@ -6,13 +6,13 @@ import exter.foundry.block.BlockRefractorySpout;
 import exter.foundry.tileentity.TileEntityRefractorySpout;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +47,7 @@ public class SpoutRenderer extends TileEntitySpecialRenderer<TileEntityRefractor
 		y2 /= 16;
 		z /= 16;
 
-		VertexBuffer tessellator = Tessellator.getInstance().getBuffer();
+		BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
 		tessellator.begin(7, DefaultVertexFormats.BLOCK);
 		switch (facing) {
 		case EAST:
@@ -76,7 +76,7 @@ public class SpoutRenderer extends TileEntitySpecialRenderer<TileEntityRefractor
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityRefractorySpout te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityRefractorySpout te, double x, double y, double z, float partialTicks, int destroyStage, float a) {
 		FluidStack fluid = te.getTank(1).getFluid();
 		if (fluid != null) {
 			GL11.glPushMatrix();

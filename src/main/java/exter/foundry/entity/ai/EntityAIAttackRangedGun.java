@@ -6,7 +6,7 @@ import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class EntityAIAttackRangedGun extends EntityAIAttackRangedBow {
+public class EntityAIAttackRangedGun extends EntityAIAttackRangedBow<EntitySkeletonGun> {
 	private final EntitySkeletonGun entity;
 
 	public EntityAIAttackRangedGun(EntitySkeletonGun skeleton, double speedAmplifier, int delay, float maxDistance) {

@@ -67,15 +67,15 @@ public class ContainerAlloyFurnace extends Container {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return null; }
 			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return null; }
 
-			if (stack.stackSize == 0) {
-				slot.putStack((ItemStack) null);
+			if (stack.isEmpty()) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
 
-			if (stack.stackSize == slot_stack.stackSize) { return null; }
+			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
 
-			slot.onPickupFromSlot(player, stack);
+			slot.onTake(player, stack);
 		}
 
 		return slot_stack;

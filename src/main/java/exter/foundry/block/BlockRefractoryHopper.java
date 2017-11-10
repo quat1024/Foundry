@@ -16,6 +16,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -114,7 +115,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		switch (facing) {
 		case EAST:
 			return getDefaultState().withProperty(FACING, EnumHopperFacing.WEST);
@@ -136,7 +137,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
 
 		if (te != null) {
@@ -145,7 +146,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitx, float hity, float hitz) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitx, float hity, float hitz) {
 		if (world.isRemote) {
 			return true;
 		} else {
@@ -164,14 +165,14 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 			for (i = 0; i < tef.getSizeInventory(); i++) {
 				ItemStack is = tef.getStackInSlot(i);
 
-				if (is != null && is.stackSize > 0) {
+				if (!is.isEmpty()) {
 					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
 					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
-					world.spawnEntityInWorld(entityitem);
+					world.spawnEntity(entityitem);
 				}
 			}
 		}
@@ -207,7 +208,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryHopper", tooltip);
 	}
 }

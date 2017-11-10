@@ -4,13 +4,13 @@ import org.lwjgl.opengl.GL11;
 
 import exter.foundry.tileentity.TileEntityRefractoryTankBasic;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -38,7 +38,7 @@ public class TankRenderer extends TileEntitySpecialRenderer<TileEntityRefractory
 		y2 /= 16;
 		z /= 16;
 
-		VertexBuffer tessellator = Tessellator.getInstance().getBuffer();
+		BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
 		tessellator.begin(7, DefaultVertexFormats.BLOCK);
 		switch (facing) {
 		case EAST:
@@ -82,7 +82,7 @@ public class TankRenderer extends TileEntitySpecialRenderer<TileEntityRefractory
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityRefractoryTankBasic te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityRefractoryTankBasic te, double x, double y, double z, float partialTicks, int destroyStage, float a) {
 		FluidStack fluid = te.getTank(0).getFluid();
 		if (fluid != null && fluid.amount > 50) {
 			GL11.glPushMatrix();
