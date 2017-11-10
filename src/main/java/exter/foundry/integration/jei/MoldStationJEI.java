@@ -24,7 +24,6 @@ import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 public class MoldStationJEI {
 	static public class Wrapper implements IRecipeWrapper {
@@ -35,36 +34,6 @@ public class MoldStationJEI {
 		public Wrapper(IDrawable[] carve_drawables, IMoldRecipe recipe) {
 			this.carve_drawables = carve_drawables;
 			this.recipe = recipe;
-		}
-
-		@Deprecated
-		@Override
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
 		}
 
 		@Override
@@ -157,10 +126,6 @@ public class MoldStationJEI {
 		@Override
 		public void drawExtras(Minecraft minecraft) {
 			grid_drawable.draw(minecraft, 2, 2);
-		}
-
-		@Override
-		public void drawAnimations(Minecraft minecraft) {
 			arrow.draw(minecraft, 81, 25);
 		}
 
@@ -174,12 +139,6 @@ public class MoldStationJEI {
 		@Override
 		public String getUid() {
 			return "foundry.mold";
-		}
-
-		@Deprecated
-		@Override
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
 		}
 
 		@Override
@@ -199,6 +158,12 @@ public class MoldStationJEI {
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String getModName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 	static public class Handler implements IRecipeHandler<Wrapper> {
@@ -207,12 +172,6 @@ public class MoldStationJEI {
 		@Nonnull
 		public Class<Wrapper> getRecipeClass() {
 			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid() {
-			return "foundry.mold";
 		}
 
 		@Override

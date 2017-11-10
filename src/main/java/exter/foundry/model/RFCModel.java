@@ -100,18 +100,22 @@ public class RFCModel implements IModel {
 			}
 		}
 
+		@Override
 		public boolean isAmbientOcclusion() {
 			return true;
 		}
 
+		@Override
 		public boolean isGui3d() {
 			return false;
 		}
 
+		@Override
 		public boolean isBuiltInRenderer() {
 			return false;
 		}
 
+		@Override
 		public TextureAtlasSprite getParticleTexture() {
 			return particle;
 		}
@@ -168,6 +172,7 @@ public class RFCModel implements IModel {
 			return false;
 		}
 
+		@Override
 		public TextureAtlasSprite getParticleTexture() {
 			return particle;
 		}
@@ -425,7 +430,7 @@ public class RFCModel implements IModel {
 					break;
 				}
 			case NORMAL:
-				builder.put(e, (float) side.getFrontOffsetX(), (float) side.getFrontOffsetY(), (float) side.getFrontOffsetZ(), 0f);
+				builder.put(e, side.getFrontOffsetX(), side.getFrontOffsetY(), side.getFrontOffsetZ(), 0f);
 				break;
 			default:
 				builder.put(e);
@@ -441,14 +446,17 @@ public class RFCModel implements IModel {
 
 		}
 
+		@Override
 		public void onResourceManagerReload(IResourceManager resourceManager) {
 
 		}
 
+		@Override
 		public boolean accepts(ResourceLocation modelLocation) {
 			return modelLocation.getResourceDomain().equals("foundry") && (modelLocation.getResourcePath().equals("container") || modelLocation.getResourcePath().endsWith("/container"));
 		}
 
+		@Override
 		public IModel loadModel(ResourceLocation modelLocation) {
 			return RFCModel.instance;
 		}

@@ -135,6 +135,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		return compound;
 	}
 
+	@Override
 	protected void onInitialize() {
 		update_energy_tick = true;
 	}
@@ -173,6 +174,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 	}
 
+	@Override
 	public void updateRedstone() {
 		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
 	}

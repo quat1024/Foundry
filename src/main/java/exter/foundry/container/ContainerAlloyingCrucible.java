@@ -47,10 +47,12 @@ public class ContainerAlloyingCrucible extends Container {
 		}
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_alloyingcrucible.isUsableByPlayer(par1EntityPlayer);
 	}
 
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
 		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slot_index);

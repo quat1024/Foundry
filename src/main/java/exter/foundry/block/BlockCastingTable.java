@@ -105,7 +105,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumTable) state.getValue(TABLE)).id;
+		return state.getValue(TABLE).id;
 	}
 
 	@Override

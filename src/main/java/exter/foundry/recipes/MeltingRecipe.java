@@ -37,10 +37,12 @@ public class MeltingRecipe implements IMeltingRecipe {
 		melting_speed = speed;
 	}
 
+	@Override
 	public IItemMatcher getInput() {
 		return solid;
 	}
 
+	@Override
 	public FluidStack getOutput() {
 		return fluid.copy();
 	}

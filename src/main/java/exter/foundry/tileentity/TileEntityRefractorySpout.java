@@ -61,7 +61,7 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 
 	@Override
 	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		EnumFacing side = world.getBlockState(getPos()).getValue(BlockRefractorySpout.FACING).facing;
+		EnumFacing side = world.getBlockState(getPos()).getValue(BlockFoundrySidedMachine.FACING).facing;
 		return (facing == EnumFacing.DOWN || facing == side) ? fluid_handler : null;
 	}
 
@@ -131,7 +131,7 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 			if (world.getBlockState(getPos()).getValue(BlockFoundrySidedMachine.STATE) == BlockFoundrySidedMachine.EnumMachineState.ON) {
 
 				FluidStack drained = null;
-				EnumFacing side = world.getBlockState(getPos()).getValue(BlockRefractorySpout.FACING).facing;
+				EnumFacing side = world.getBlockState(getPos()).getValue(BlockFoundrySidedMachine.FACING).facing;
 				TileEntity source = world.getTileEntity(getPos().add(side.getDirectionVec()));
 				IFluidHandler hsource = null;
 				side = side.getOpposite();

@@ -46,6 +46,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 		setRegistryName("refractorySpout");
 	}
 
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		switch (state.getValue(FACING)) {
 		case EAST:

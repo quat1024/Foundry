@@ -247,7 +247,7 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 
 			// Fill to the sides/bottom
 			if (tank.getFluid() != null && tank.getFluid().amount > 0) {
-				EnumFacing side = ((EnumHopperFacing) world.getBlockState(getPos()).getValue(BlockRefractoryHopper.FACING)).facing;
+				EnumFacing side = world.getBlockState(getPos()).getValue(BlockRefractoryHopper.FACING).facing;
 				TileEntity dest = world.getTileEntity(getPos().add(side.getDirectionVec()));
 				side = side.getOpposite();
 				if (dest != null && dest.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)) {

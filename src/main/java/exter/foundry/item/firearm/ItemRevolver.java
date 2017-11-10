@@ -138,6 +138,7 @@ public class ItemRevolver extends ItemFirearm {
 		return true;
 	}
 
+	@Override
 	public void setAmmo(ItemStack stack, int slot, ItemStack ammo) {
 		if (stack.getItem() != this) { throw new IllegalArgumentException("Stack is not a revolver"); }
 		if (slot < 0 || slot > 7) { throw new IllegalArgumentException("Slot index not in range: " + slot); }
@@ -157,6 +158,7 @@ public class ItemRevolver extends ItemFirearm {
 		tag.setTag("Slot_" + slot, ammo_tag);
 	}
 
+	@Override
 	public ItemStack getAmmo(ItemStack stack, int slot) {
 		if (stack.getItem() != this) { throw new IllegalArgumentException("Stack is not a revolver"); }
 		if (slot < 0 || slot > 7) { throw new IllegalArgumentException("Slot index not in range: " + slot); }

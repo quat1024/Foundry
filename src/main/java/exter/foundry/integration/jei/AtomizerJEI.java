@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableList;
 
+import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.IAtomizerRecipe;
 import exter.foundry.gui.GuiMetalAtomizer;
@@ -41,36 +42,6 @@ public class AtomizerJEI {
 
 		public Wrapper(@Nonnull IAtomizerRecipe recipe) {
 			this.recipe = recipe;
-		}
-
-		@Override
-		@Deprecated
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public List<FluidStack> getFluidOutputs() {
-			return null;
-		}
-
-		@Override
-		@Deprecated
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
 		}
 
 		@Override
@@ -136,12 +107,6 @@ public class AtomizerJEI {
 			arrow.draw(minecraft, 52, 18);
 		}
 
-		@Override
-		@Deprecated
-		public void drawAnimations(Minecraft minecraft) {
-
-		}
-
 		@Nonnull
 		@Override
 		public String getTitle() {
@@ -152,12 +117,6 @@ public class AtomizerJEI {
 		@Override
 		public String getUid() {
 			return "foundry.atomizer";
-		}
-
-		@Override
-		@Deprecated
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
 		}
 
 		@Override
@@ -182,6 +141,11 @@ public class AtomizerJEI {
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
+		}
 	}
 
 	static public class Handler implements IRecipeHandler<Wrapper> {
@@ -189,12 +153,6 @@ public class AtomizerJEI {
 		@Nonnull
 		public Class<Wrapper> getRecipeClass() {
 			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid() {
-			return "foundry.atomizer";
 		}
 
 		@Override

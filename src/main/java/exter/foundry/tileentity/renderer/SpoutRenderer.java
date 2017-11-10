@@ -2,6 +2,7 @@ package exter.foundry.tileentity.renderer;
 
 import org.lwjgl.opengl.GL11;
 
+import exter.foundry.block.BlockFoundrySidedMachine;
 import exter.foundry.block.BlockRefractorySpout;
 import exter.foundry.tileentity.TileEntityRefractorySpout;
 import net.minecraft.block.state.IBlockState;
@@ -88,7 +89,7 @@ public class SpoutRenderer extends TileEntitySpecialRenderer<TileEntityRefractor
 			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.resetColor();
 			GlStateManager.translate((float) (x + 0.5), (float) y, (float) (z + 0.5));
-			switch (te.getWorld().getBlockState(te.getPos()).getValue(BlockRefractorySpout.FACING)) {
+			switch (te.getWorld().getBlockState(te.getPos()).getValue(BlockFoundrySidedMachine.FACING)) {
 			case EAST:
 				GlStateManager.rotate(270, 0, 1, 0);
 				break;

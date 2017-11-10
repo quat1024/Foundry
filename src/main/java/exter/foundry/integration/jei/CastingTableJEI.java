@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import exter.foundry.Foundry;
 import exter.foundry.api.recipe.ICastingTableRecipe;
 import exter.foundry.block.BlockCastingTable;
 import exter.foundry.block.FoundryBlocks;
@@ -36,36 +37,6 @@ public class CastingTableJEI {
 		public Wrapper(ICastingTableRecipe recipe) {
 			this.recipe = recipe;
 			this.name = recipe.getTableType().name().toLowerCase();
-		}
-
-		@Deprecated
-		@Override
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidOutputs() {
-			return Collections.emptyList();
-		}
-
-		@Deprecated
-		@Override
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
 		}
 
 		@Override
@@ -130,11 +101,6 @@ public class CastingTableJEI {
 
 		}
 
-		@Override
-		public void drawAnimations(Minecraft minecraft) {
-
-		}
-
 		@Nonnull
 		@Override
 		public String getTitle() {
@@ -145,12 +111,6 @@ public class CastingTableJEI {
 		@Override
 		public String getUid() {
 			return "foundry.casting_table." + name;
-		}
-
-		@Override
-		@Deprecated
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
 		}
 
 		@Override
@@ -179,6 +139,11 @@ public class CastingTableJEI {
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
+		}
 	}
 
 	static public class Handler implements IRecipeHandler<Wrapper> {
@@ -186,12 +151,6 @@ public class CastingTableJEI {
 		@Nonnull
 		public Class<Wrapper> getRecipeClass() {
 			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid() {
-			return "foundry.casting_table";
 		}
 
 		@Override

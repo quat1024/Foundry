@@ -205,21 +205,21 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 	}
 
 	private void routeItem(int in_slot, int out_slot) {
-		ItemStack input = inventory[in_slot];
-		ItemStack output = inventory[out_slot];
+		ItemStack input = inventory.get(in_slot);
+		ItemStack output = inventory.get(out_slot);
 		if (output == null) {
-			inventory[out_slot] = input;
-			inventory[in_slot] = null;
+			inventory.set(out_slot, input);
+			inventory.set(in_slot, ItemStack.EMPTY);
 			updateInventoryItem(in_slot);
 			updateInventoryItem(out_slot);
 		} else {
 			if (!output.isItemEqual(input) || !ItemStack.areItemStackTagsEqual(output, input)) { return; }
-			int transfer = output.getMaxStackSize() - output.stackSize;
-			if (transfer > input.stackSize) {
-				transfer = input.stackSize;
+			int transfer = output.getMaxStackSize() - output.getCount();
+			if (transfer > input.getCount()) {
+				transfer = input.getCount();
 			}
 			decrStackSize(in_slot, transfer);
-			inventory[out_slot].stackSize += transfer;
+			inventory.get(out_slot).grow(transfer);
 			updateInventoryItem(in_slot);
 			updateInventoryItem(out_slot);
 		}
@@ -234,7 +234,7 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 	protected void updateServer() {
 		if (input_index % 4 == 0) {
 			int i = input_index / 4;
-			ItemStack input = inventory[i];
+			ItemStack input = inventory.get(i);
 			if (input != null) {
 				for (Route r : routes) {
 					if (r.matchesItem(input)) {
@@ -270,8 +270,8 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		NBTTagCompound tag = new NBTTagCompound();
 		writeTileToNBT(tag);
 		writeRoutesToNBT(tag);
-		if (worldObj.isRemote) {
-			tag.setInteger("dim", worldObj.provider.getDimension());
+		if (world.isRemote) {
+			tag.setInteger("dim", world.provider.getDimension());
 			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
 		} else {
 			sendPacketToNearbyPlayers(tag);

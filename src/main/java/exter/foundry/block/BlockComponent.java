@@ -62,7 +62,7 @@ public class BlockComponent extends Block implements IBlockVariants {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumVariant) state.getValue(VARIANT)).id;
+		return state.getValue(VARIANT).id;
 	}
 
 	@Override

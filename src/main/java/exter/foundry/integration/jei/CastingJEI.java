@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableList;
 
+import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.ICastingRecipe;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
@@ -39,36 +40,6 @@ public class CastingJEI {
 
 		public Wrapper(ICastingRecipe recipe) {
 			this.recipe = recipe;
-		}
-
-		@Deprecated
-		@Override
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
 		}
 
 		@Override
@@ -135,11 +106,6 @@ public class CastingJEI {
 
 		@Override
 		public void drawExtras(Minecraft minecraft) {
-
-		}
-
-		@Override
-		public void drawAnimations(Minecraft minecraft) {
 			arrow.draw(minecraft, 22, 35);
 		}
 
@@ -153,12 +119,6 @@ public class CastingJEI {
 		@Override
 		public String getUid() {
 			return "foundry.casting";
-		}
-
-		@Override
-		@Deprecated
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
 		}
 
 		@Override
@@ -185,6 +145,11 @@ public class CastingJEI {
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
+		}
 	}
 
 	static public class Handler implements IRecipeHandler<Wrapper> {
@@ -192,12 +157,6 @@ public class CastingJEI {
 		@Nonnull
 		public Class<Wrapper> getRecipeClass() {
 			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid() {
-			return "foundry.casting";
 		}
 
 		@Override

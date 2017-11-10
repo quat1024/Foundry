@@ -63,6 +63,7 @@ public class GuiMoldStation extends GuiFoundry {
 		te_ms = af;
 	}
 
+	@Override
 	public void initGui() {
 		super.initGui();
 		int window_x = (width - xSize) / 2;

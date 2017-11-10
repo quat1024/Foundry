@@ -113,6 +113,7 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 		return true;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;

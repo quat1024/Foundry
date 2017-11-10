@@ -44,7 +44,7 @@ public class EntitySkeletonGun extends EntitySkeleton {
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
-		float damage = (float) this.world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
+		float damage = this.world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
 		if (getHeldItem(EnumHand.MAIN_HAND).getItem() == FoundryItems.item_shotgun) {
 			if (!world.isRemote) {
 				playSound(FoundrySounds.sound_shotgun_fire, 0.9F, 1F);

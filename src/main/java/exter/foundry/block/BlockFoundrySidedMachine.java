@@ -114,8 +114,8 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		EnumMachineState fstate = (EnumMachineState) state.getValue(STATE);
-		EnumMachineFacing facing = (EnumMachineFacing) state.getValue(FACING);
+		EnumMachineState fstate = state.getValue(STATE);
+		EnumMachineFacing facing = state.getValue(FACING);
 		return fstate.id << 2 | facing.id;
 	}
 
@@ -151,7 +151,7 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack item) {
-		int dir = MathHelper.floor((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		int dir = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		EnumMachineFacing facing = EnumMachineFacing.NORTH;
 		if (dir == 0) {

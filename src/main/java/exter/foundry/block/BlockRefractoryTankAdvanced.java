@@ -113,6 +113,7 @@ public class BlockRefractoryTankAdvanced extends BlockContainer implements ISpou
 		return true;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;

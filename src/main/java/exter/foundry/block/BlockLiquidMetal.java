@@ -70,23 +70,23 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 
 		if (world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.AIR && !world.getBlockState(pos.add(0, 1, 0)).isOpaqueCube()) {
 			if (rand.nextInt(100) == 0) {
-				dx = (double) ((float) pos.getX() + rand.nextFloat());
-				dy = (double) pos.getY() + state.getBoundingBox(world, pos).maxY;
-				dz = (double) ((float) pos.getZ() + rand.nextFloat());
+				dx = pos.getX() + rand.nextFloat();
+				dy = pos.getY() + state.getBoundingBox(world, pos).maxY;
+				dz = pos.getZ() + rand.nextFloat();
 				world.spawnParticle(EnumParticleTypes.LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 				world.playSound(dx, dy, dz, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 			}
 
 			if (rand.nextInt(200) == 0) {
-				world.playSound((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+				world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 			}
 		}
 
 		BlockPos down = pos.down();
 		if (rand.nextInt(10) == 0 && world.getBlockState(down).isSideSolid(world, down, EnumFacing.UP) && !world.getBlockState(pos.add(0, -1, 0)).getMaterial().blocksMovement()) {
-			dx = (double) ((float) pos.getX() + rand.nextFloat());
-			dy = (double) pos.getY() - 1.05D;
-			dz = (double) ((float) pos.getZ() + rand.nextFloat());
+			dx = pos.getX() + rand.nextFloat();
+			dy = pos.getY() - 1.05D;
+			dz = pos.getZ() + rand.nextFloat();
 
 			world.spawnParticle(EnumParticleTypes.DRIP_LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
@@ -164,7 +164,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 			world.setBlockState(pos, solid_state);
 			world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 2.6f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8f, false);
 			for (i = 0; i < 8; i++) {
-				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double) pos.getX() + Math.random(), (double) pos.getY() + 1.2D, (double) pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + Math.random(), pos.getY() + 1.2D, pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D);
 			}
 			return true;
 		}

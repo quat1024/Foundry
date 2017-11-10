@@ -89,6 +89,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		setRegistryName("refractoryHopper");
 	}
 
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return state.getValue(FACING) == EnumHopperFacing.DOWN ? FULL_BLOCK_AABB : AABB_SIDES;
 	}
@@ -111,7 +112,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumHopperFacing) state.getValue(FACING)).id;
+		return state.getValue(FACING).id;
 	}
 
 	@Override

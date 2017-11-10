@@ -51,29 +51,29 @@ public class BlockBurnerHeater extends BlockFoundrySidedMachine {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 		if (state.getValue(STATE) == EnumMachineState.ON) {
-			EnumMachineFacing facing = (EnumMachineFacing) state.getValue(FACING);
-			float f = (float) pos.getX() + 0.5F;
-			float f1 = (float) pos.getY() + 0.125F + random.nextFloat() * 5.0F / 16.0F;
-			float f2 = (float) pos.getZ() + 0.5F;
+			EnumMachineFacing facing = state.getValue(FACING);
+			float f = pos.getX() + 0.5F;
+			float f1 = pos.getY() + 0.125F + random.nextFloat() * 5.0F / 16.0F;
+			float f2 = pos.getZ() + 0.5F;
 			float f3 = 0.52F;
 			float f4 = random.nextFloat() * 0.6F - 0.3F;
 
 			switch (facing) {
 			case NORTH:
-				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f4), (double) f1, (double) (f2 - f3), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f4), (double) f1, (double) (f2 - f3), 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, f + f4, f1, f2 - f3, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.FLAME, f + f4, f1, f2 - f3, 0.0D, 0.0D, 0.0D);
 				break;
 			case EAST:
-				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, f + f3, f1, f2 + f4, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.FLAME, f + f3, f1, f2 + f4, 0.0D, 0.0D, 0.0D);
 				break;
 			case WEST:
-				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f - f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle(EnumParticleTypes.FLAME, (double) (f - f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, f - f3, f1, f2 + f4, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.FLAME, f - f3, f1, f2 + f4, 0.0D, 0.0D, 0.0D);
 				break;
 			case SOUTH:
-				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f4), (double) f1, (double) (f2 + f3), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f4), (double) f1, (double) (f2 + f3), 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, f + f4, f1, f2 + f3, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.FLAME, f + f4, f1, f2 + f3, 0.0D, 0.0D, 0.0D);
 				break;
 			}
 		}

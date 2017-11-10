@@ -22,6 +22,7 @@ public class BlockRefractoryGlass extends BlockBreakable {
 		setRegistryName("refractoryGlass");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
@@ -30,14 +31,17 @@ public class BlockRefractoryGlass extends BlockBreakable {
 	/**
 	 * Returns the quantity of items to drop on block destruction.
 	 */
+	@Override
 	public int quantityDropped(Random random) {
 		return 0;
 	}
 
+	@Override
 	protected boolean canSilkHarvest() {
 		return true;
 	}
 
+	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}

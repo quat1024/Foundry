@@ -107,7 +107,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumMachine) state.getValue(MACHINE)).id;
+		return state.getValue(MACHINE).id;
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		if (world.isRemote) {
 			return true;
 		} else {
-			switch ((EnumMachine) state.getValue(MACHINE)) {
+			switch (state.getValue(MACHINE)) {
 			case CRUCIBLE_BASIC:
 			case CRUCIBLE_STANDARD:
 			case CRUCIBLE_ADVANCED:

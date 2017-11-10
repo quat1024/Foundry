@@ -20,13 +20,13 @@ public class MTHelper {
 		} else {
 			ItemStack stack = ((ItemStackMatcher) obj).getItem();
 			ResourceLocation item = stack.getItem().getRegistryName();
-			return String.format("I(%s:%s:%d,%d)", item.getResourceDomain(), item.getResourcePath(), stack.getItemDamage(), stack.stackSize);
+			return String.format("I(%s:%s:%d,%d)", item.getResourceDomain(), item.getResourcePath(), stack.getItemDamage(), stack.getCount());
 		}
 	}
 
 	static public String getItemDescription(ItemStack stack) {
 		ResourceLocation item = stack.getItem().getRegistryName();
-		return String.format("I(%s:%s:%d,%d)", item.getResourceDomain(), item.getResourcePath(), stack.getItemDamage(), stack.stackSize);
+		return String.format("I(%s:%s:%d,%d)", item.getResourceDomain(), item.getResourcePath(), stack.getItemDamage(), stack.getCount());
 	}
 
 	static public String getFluidDescription(FluidStack stack) {
