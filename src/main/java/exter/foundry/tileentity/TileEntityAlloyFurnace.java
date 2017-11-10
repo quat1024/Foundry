@@ -122,7 +122,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
 		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
 	}
 
@@ -179,8 +179,8 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 
 	private boolean canOutput(IAlloyFurnaceRecipe recipe) {
 		ItemStack output = recipe.getOutput();
-		ItemStack inv_output = inventory[SLOT_OUTPUT];
-		return inv_output == null || (inv_output.isItemEqual(output) && inv_output.stackSize - output.stackSize <= inv_output.getMaxStackSize());
+		ItemStack inv_output = getStackInSlot(SLOT_OUTPUT);
+		return (inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize());
 	}
 
 	private void doSmelt(IAlloyFurnaceRecipe recipe, boolean reversed) {

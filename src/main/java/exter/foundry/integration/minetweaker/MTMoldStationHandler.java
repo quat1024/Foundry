@@ -1,11 +1,11 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.api.item.IItemStack;
 import exter.foundry.api.recipe.IMoldRecipe;
 import exter.foundry.integration.jei.MoldStationJEI;
 import exter.foundry.recipes.MoldRecipe;
 import exter.foundry.recipes.manager.MoldRecipeManager;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

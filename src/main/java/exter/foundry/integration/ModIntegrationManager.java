@@ -12,35 +12,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class ModIntegrationManager {
 	static private Map<String, IModIntegration> integrations = new HashMap<String, IModIntegration>();
 
-	static public Object construct(Class<? extends IModIntegration> clazz) {
-		try {
-			return clazz.getConstructor().newInstance();
-		} catch (ReflectiveOperationException e) {
-			ModFoundry.log.error("Error initializing mod integration:", e);
-		} catch (IllegalArgumentException e) {
-			ModFoundry.log.error("Error initializing mod integration:", e);
-		} catch (SecurityException e) {
-			ModFoundry.log.error("Error initializing mod integration:", e);
-		} catch (LinkageError e) {
-			ModFoundry.log.error("Error initializing mod integration:", e);
-		}
-		return null;
-	}
-
 	static public IModIntegration getIntegration(String name) {
 		return integrations.get(name);
 	}
 
-	static public void registerIntegration(Configuration config, Class<? extends IModIntegration> mod_class) {
-		Object mod = construct(mod_class);
-		if (mod instanceof IModIntegration) {
-			IModIntegration imod = (IModIntegration) mod;
-			String name = imod.getName();
-			boolean enable = FoundryConfig.getAndRemove(config, "integration", "enable." + name, true);
-			enable = config.getBoolean("enable", "integration." + name, true, "Enable/disable mod integration.");
-			if (enable) {
-				integrations.put(name, imod);
-			}
+	static public void registerIntegration(Configuration config, IModIntegration imod) {
+		String name = imod.getName();
+		boolean enable = FoundryConfig.getAndRemove(config, "integration", "enable." + name, true);
+		enable = config.getBoolean("enable", "integration." + name, true, "Enable/disable mod integration.");
+		if (enable) {
+			integrations.put(name, imod);
 		}
 	}
 

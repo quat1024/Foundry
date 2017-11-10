@@ -166,7 +166,6 @@ public class ItemRefractoryFluidContainer extends Item {
 		return FluidStack.loadFluidStackFromNBT(stack.getTagCompound());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tabs)) {

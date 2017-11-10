@@ -17,10 +17,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModIntegrationBotania implements IModIntegration {
+
+	public static final String BOTANIA = "botania";
+
 	private FluidLiquidMetal liquid_manasteel;
 	private FluidLiquidMetal liquid_terrasteel;
 	private FluidLiquidMetal liquid_elementium;
@@ -30,8 +34,8 @@ public class ModIntegrationBotania implements IModIntegration {
 	}
 
 	private ItemStack getItemStack(String name, int meta) {
-		Item item = Item.REGISTRY.getObject(new ResourceLocation("Botania", name));
-		if (item == null) { return null; }
+		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(BOTANIA, name));
+		if (item == null) { return ItemStack.EMPTY; }
 		return new ItemStack(item, 1, meta);
 	}
 
@@ -54,7 +58,7 @@ public class ModIntegrationBotania implements IModIntegration {
 
 	@Override
 	public void onPostInit() {
-		if (!Loader.isModLoaded("Botania")) { return; }
+		if (!Loader.isModLoaded(BOTANIA)) { return; }
 
 		ItemStack manasteel_block = getItemStack("storage", 0);
 		ItemStack terrasteel_block = getItemStack("storage", 1);
@@ -70,40 +74,40 @@ public class ModIntegrationBotania implements IModIntegration {
 		CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.FLUID_AMOUNT_BLOCK), mold_block, null);
 
 		if (FoundryConfig.recipe_equipment) {
-			ItemStack manasteel_pickaxe = getItemStack("manasteelPick");
-			ItemStack manasteel_axe = getItemStack("manasteelAxe");
-			ItemStack manasteel_shovel = getItemStack("manasteelShovel");
-			ItemStack manasteel_sword = getItemStack("manasteelSword");
+			ItemStack manasteel_pickaxe = getItemStack("manasteel_pick");
+			ItemStack manasteel_axe = getItemStack("manasteel_axe");
+			ItemStack manasteel_shovel = getItemStack("manasteel_shovel");
+			ItemStack manasteel_sword = getItemStack("manasteel_sword");
 
-			ItemStack manasteel_helmet = getItemStack("manasteelHelm");
-			ItemStack manasteel_chestplate = getItemStack("manasteelChest");
-			ItemStack manasteel_leggings = getItemStack("manasteelLegs");
-			ItemStack manasteel_boots = getItemStack("manasteelBoots");
+			ItemStack manasteel_helmet = getItemStack("manasteel_helm");
+			ItemStack manasteel_chestplate = getItemStack("manasteel_chest");
+			ItemStack manasteel_leggings = getItemStack("manasteel_legs");
+			ItemStack manasteel_boots = getItemStack("manasteel_boots");
 
-			ItemStack terrasteel_sword = getItemStack("terraSword");
+			ItemStack terrasteel_sword = getItemStack("terra_sword");
 
-			ItemStack elementium_pickaxe = getItemStack("elementiumPick");
-			ItemStack elementium_axe = getItemStack("elementiumAxe");
-			ItemStack elementium_shovel = getItemStack("elementiumShovel");
-			ItemStack elementium_sword = getItemStack("elementiumSword");
+			ItemStack elementium_pickaxe = getItemStack("elementium_pick");
+			ItemStack elementium_axe = getItemStack("elementium_axe");
+			ItemStack elementium_shovel = getItemStack("elementium_shovel");
+			ItemStack elementium_sword = getItemStack("elementium_sword");
 
-			ItemStack elementium_helmet = getItemStack("elementiumHelm");
-			ItemStack elementium_chestplate = getItemStack("elementiumChest");
-			ItemStack elementium_leggings = getItemStack("elementiumLegs");
-			ItemStack elementium_boots = getItemStack("elementiumBoots");
+			ItemStack elementium_helmet = getItemStack("elementium_helm");
+			ItemStack elementium_chestplate = getItemStack("elementium_chest");
+			ItemStack elementium_leggings = getItemStack("elementium_legs");
+			ItemStack elementium_boots = getItemStack("elementium_boots");
 
-			ItemStack livingwood_twig = getItemStack("manaResource", 3);
-			ItemStack dreamwood_twig = getItemStack("manaResource", 13);
+			ItemStack livingwood_twig = getItemStack("manaresource", 3);
+			ItemStack dreamwood_twig = getItemStack("manaresource", 13);
 
 			ItemStack livingsticks1 = livingwood_twig.copy();
 			ItemStack livingsticks2 = livingwood_twig.copy();
-			livingsticks2.stackSize = 2;
+			livingsticks2.setCount(2);
 			ItemStackMatcher extra_sticks1 = new ItemStackMatcher(livingsticks1);
 			ItemStackMatcher extra_sticks2 = new ItemStackMatcher(livingsticks2);
 
 			ItemStack dreamsticks1 = dreamwood_twig.copy();
 			ItemStack dreamsticks2 = dreamwood_twig.copy();
-			dreamsticks2.stackSize = 2;
+			dreamsticks2.setCount(2);
 			ItemStackMatcher extra_dreamsticks1 = new ItemStackMatcher(dreamsticks1);
 			ItemStackMatcher extra_dreamsticks2 = new ItemStackMatcher(dreamsticks2);
 
@@ -131,7 +135,7 @@ public class ModIntegrationBotania implements IModIntegration {
 
 	@Override
 	public String getName() {
-		return "Botania";
+		return BOTANIA;
 	}
 
 	@Override

@@ -1,13 +1,13 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import exter.foundry.api.recipe.IInfuserRecipe;
 import exter.foundry.integration.jei.InfuserJEI;
 import exter.foundry.recipes.InfuserRecipe;
 import exter.foundry.recipes.manager.InfuserRecipeManager;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

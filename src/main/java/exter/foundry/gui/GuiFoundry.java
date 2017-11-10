@@ -9,12 +9,12 @@ import exter.foundry.tileentity.TileEntityFoundry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -71,7 +71,7 @@ public abstract class GuiFoundry extends GuiContainer {
 	 * @param icon_y Y coordinate offset in the icon.
 	 */
 	private void drawTexturedModelRectFromIconPartial(int x, int y, TextureAtlasSprite icon, int width, int height, int icon_x, int icon_y, int color) {
-		VertexBuffer tessellator = Tessellator.getInstance().getBuffer();
+		BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
 
 		double min_u = icon.getInterpolatedU(icon_x);
 		double min_v = icon.getInterpolatedV(icon_y);

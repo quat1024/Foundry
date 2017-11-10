@@ -58,7 +58,7 @@ public class MessageTileEntitySync implements IMessage {
 			IThreadListener main_thread;
 			World world;
 			if (ctx.side == Side.SERVER) {
-				world = ctx.getServerHandler().playerEntity.worldObj;
+				world = ctx.getServerHandler().player.world;
 				main_thread = (WorldServer) world;
 			} else {
 				world = getClientWorld();
@@ -71,7 +71,7 @@ public class MessageTileEntitySync implements IMessage {
 
 	@SideOnly(Side.CLIENT)
 	static private World getClientWorld() {
-		return Minecraft.getMinecraft().theWorld;
+		return Minecraft.getMinecraft().world;
 	}
 
 	NBTTagCompound data;

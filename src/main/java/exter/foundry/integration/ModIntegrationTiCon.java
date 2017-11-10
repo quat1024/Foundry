@@ -20,14 +20,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
+import slimeknights.tconstruct.library.smeltery.CastingRecipe;
+import slimeknights.tconstruct.library.smeltery.ICastingRecipe;
+import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 
-@Optional.Interface(iface = "exter.foundry.integration.IModIntegration", modid = "tconstruct")
 public class ModIntegrationTiCon implements IModIntegration {
+
+	public static final String TIC = "tconstruct";
+
 	private Map<String, String> liquid_map;
 	private Map<String, String> reverse_liquid_map;
 
@@ -44,19 +48,16 @@ public class ModIntegrationTiCon implements IModIntegration {
 
 	static private final int INGOT_GCD = gcd(TICON_INGOT_AMOUNT, FoundryAPI.FLUID_AMOUNT_INGOT);
 
-	@Optional.Method(modid = "tconstruct")
 	@Override
 	public void onPreInit(Configuration config) {
 
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	@Override
 	public void onInit() {
 
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	private void createAlloyRecipe(AlloyRecipe mix, int index, List<FluidStack> inputs) {
 		if (index == mix.getFluids().size()) {
 			FluidStack[] in = new FluidStack[mix.getFluids().size()];
@@ -90,19 +91,16 @@ public class ModIntegrationTiCon implements IModIntegration {
 		createAlloyRecipe(mix, index + 1, in);
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	private void createAlloyRecipe(AlloyRecipe mix) {
 		if (mix.getFluids().size() > 4) { return; }
 		createAlloyRecipe(mix, 0, new ArrayList<FluidStack>());
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	@Override
 	public void onPostInit() {
 
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	@Override
 	public void onAfterPostInit() {
 		liquid_map = new HashMap<String, String>();
@@ -128,7 +126,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 
 		//Convert TiCon Smeltery recipes to Foundry ICF melting recipes (except those that have an existing recipe).
-		for (slimeknights.tconstruct.library.smeltery.MeltingRecipe recipe : TinkerRegistry.getAllMeltingRecipies()) {
+		for (MeltingRecipe recipe : TinkerRegistry.getAllMeltingRecipies()) {
 
 			for (ItemStack stack : recipe.input.getInputs()) {
 				if (MeltingRecipeManager.instance.findRecipe(stack) == null) {
@@ -167,10 +165,10 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 
 		//Convert TiCon table casting recipes to Foundry Metal Caster recipes.
-		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
+		for (ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
 			if (!icasting.consumesCast()) {
 				if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
-					slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
+					CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
 
 					if (casting.cast != null && !casting.consumesCast() && casting.getResult() != null) {
 						String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
@@ -259,27 +257,23 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	@Override
 	public String getName() {
 		return "TiCon";
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientPreInit() {
 
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientInit() {
 
 	}
 
-	@Optional.Method(modid = "tconstruct")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientPostInit() {

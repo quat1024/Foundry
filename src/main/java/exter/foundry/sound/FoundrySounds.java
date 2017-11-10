@@ -1,8 +1,8 @@
 package exter.foundry.sound;
 
+import exter.foundry.FoundryRegistry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class FoundrySounds {
 	static public SoundEvent sound_revolver_fire;
@@ -12,7 +12,7 @@ public class FoundrySounds {
 	static private SoundEvent register(String name) {
 		ResourceLocation res = new ResourceLocation(name);
 		SoundEvent sound = new SoundEvent(res).setRegistryName(res);
-		GameRegistry.register(sound);
+		FoundryRegistry.SOUNDS.add(sound);
 		return sound;
 	}
 

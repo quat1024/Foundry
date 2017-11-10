@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemCondition;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.IItemTransformer;
+import crafttweaker.api.item.IngredientOr;
+import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.player.IPlayer;
 import exter.foundry.api.recipe.matcher.OreMatcher;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemCondition;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.item.IItemTransformer;
-import minetweaker.api.item.IngredientOr;
-import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
-import minetweaker.api.player.IPlayer;
 import net.minecraft.item.ItemStack;
 
 public class MTOreStack implements IIngredient {

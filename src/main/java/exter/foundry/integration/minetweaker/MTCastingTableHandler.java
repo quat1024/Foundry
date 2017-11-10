@@ -1,13 +1,13 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import exter.foundry.api.recipe.ICastingTableRecipe;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.integration.jei.CastingTableJEI;
 import exter.foundry.recipes.CastingTableRecipe;
 import exter.foundry.recipes.manager.CastingTableRecipeManager;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;

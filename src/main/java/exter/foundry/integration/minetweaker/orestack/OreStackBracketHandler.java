@@ -2,12 +2,12 @@ package exter.foundry.integration.minetweaker.orestack;
 
 import java.util.List;
 
+import crafttweaker.annotations.BracketHandler;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IngredientAny;
+import crafttweaker.zenscript.IBracketHandler;
 import exter.foundry.api.recipe.matcher.OreMatcher;
-import minetweaker.IBracketHandler;
 import minetweaker.MineTweakerAPI;
-import minetweaker.annotations.BracketHandler;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IngredientAny;
 import stanhebben.zenscript.compiler.IEnvironmentGlobal;
 import stanhebben.zenscript.expression.ExpressionCallStatic;
 import stanhebben.zenscript.expression.ExpressionString;

@@ -1,5 +1,7 @@
 package exter.foundry.integration;
 
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.mc1120.CraftTweaker;
 import exter.foundry.integration.minetweaker.MTAlloyFurnaceHandler;
 import exter.foundry.integration.minetweaker.MTAlloyMixerHandler;
 import exter.foundry.integration.minetweaker.MTAlloyingCurcibleHandler;
@@ -10,69 +12,60 @@ import exter.foundry.integration.minetweaker.MTInfuserHandler;
 import exter.foundry.integration.minetweaker.MTMeltingHandler;
 import exter.foundry.integration.minetweaker.MTMoldStationHandler;
 import exter.foundry.integration.minetweaker.orestack.OreStackBracketHandler;
-import minetweaker.MineTweakerAPI;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Optional.Interface(iface = "exter.foundry.integration.IModIntegration", modid = "MineTweaker3")
 public class ModIntegrationMinetweaker implements IModIntegration {
 
-	@Optional.Method(modid = "MineTweaker3")
+	public static final String CRT = CraftTweaker.MODID;
+
 	@Override
 	public void onPreInit(Configuration config) {
 
 	}
 
-	@Optional.Method(modid = "MineTweaker3")
 	@Override
 	public void onInit() {
-		MineTweakerAPI.registerBracketHandler(new OreStackBracketHandler());
-		MineTweakerAPI.registerClass(MTMeltingHandler.class);
-		MineTweakerAPI.registerClass(MTCastingHandler.class);
-		MineTweakerAPI.registerClass(MTCastingTableHandler.class);
-		MineTweakerAPI.registerClass(MTAlloyMixerHandler.class);
-		MineTweakerAPI.registerClass(MTAlloyFurnaceHandler.class);
-		MineTweakerAPI.registerClass(MTAlloyingCurcibleHandler.class);
-		MineTweakerAPI.registerClass(MTAtomizerHandler.class);
-		MineTweakerAPI.registerClass(MTInfuserHandler.class);
-		MineTweakerAPI.registerClass(MTMoldStationHandler.class);
+		CraftTweakerAPI.registerBracketHandler(new OreStackBracketHandler());
+		CraftTweakerAPI.registerClass(MTMeltingHandler.class);
+		CraftTweakerAPI.registerClass(MTCastingHandler.class);
+		CraftTweakerAPI.registerClass(MTCastingTableHandler.class);
+		CraftTweakerAPI.registerClass(MTAlloyMixerHandler.class);
+		CraftTweakerAPI.registerClass(MTAlloyFurnaceHandler.class);
+		CraftTweakerAPI.registerClass(MTAlloyingCurcibleHandler.class);
+		CraftTweakerAPI.registerClass(MTAtomizerHandler.class);
+		CraftTweakerAPI.registerClass(MTInfuserHandler.class);
+		CraftTweakerAPI.registerClass(MTMoldStationHandler.class);
 	}
 
-	@Optional.Method(modid = "MineTweaker3")
 	@Override
 	public void onPostInit() {
 
 	}
 
-	@Optional.Method(modid = "MineTweaker3")
 	@Override
 	public String getName() {
-		return "minetweaker";
+		return CRT;
 	}
 
-	@Optional.Method(modid = "MineTweaker3")
 	@Override
 	public void onAfterPostInit() {
 
 	}
 
-	@Optional.Method(modid = "MineTweaker3")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientPreInit() {
 
 	}
 
-	@Optional.Method(modid = "MineTweaker3")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientInit() {
 
 	}
 
-	@Optional.Method(modid = "MineTweaker3")
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientPostInit() {

@@ -1,12 +1,12 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
 import exter.foundry.api.recipe.IAlloyFurnaceRecipe;
 import exter.foundry.integration.jei.AlloyFurnaceJEI;
 import exter.foundry.recipes.AlloyFurnaceRecipe;
 import exter.foundry.recipes.manager.AlloyFurnaceRecipeManager;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

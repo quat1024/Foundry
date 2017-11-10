@@ -62,6 +62,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -98,11 +99,12 @@ public class ModFoundry {
 		log = event.getModLog();
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
-		ModIntegrationManager.registerIntegration(config, ModIntegrationMinetweaker.class);
-		ModIntegrationManager.registerIntegration(config, ModIntegrationTiCon.class);
-		ModIntegrationManager.registerIntegration(config, ModIntegrationMolten.class);
-		ModIntegrationManager.registerIntegration(config, ModIntegrationEnderIO.class);
-		ModIntegrationManager.registerIntegration(config, ModIntegrationBotania.class);
+
+		if (Loader.isModLoaded("crafttweaker")) ModIntegrationManager.registerIntegration(config, new ModIntegrationMinetweaker());
+		if (Loader.isModLoaded("tconstruct")) ModIntegrationManager.registerIntegration(config, new ModIntegrationTiCon());
+		ModIntegrationManager.registerIntegration(config, new ModIntegrationMolten());
+		if (Loader.isModLoaded("enderio")) ModIntegrationManager.registerIntegration(config, new ModIntegrationEnderIO());
+		if (Loader.isModLoaded("botania")) ModIntegrationManager.registerIntegration(config, new ModIntegrationBotania());
 
 		FoundryAPI.fluids = LiquidMetalRegistry.instance;
 
@@ -127,7 +129,6 @@ public class ModFoundry {
 		FoundryBlocks.registerBlocks(config);
 
 		FoundryFluids.init();
-		InitRecipes.preInit();
 
 		ModIntegrationManager.preInit(config);
 

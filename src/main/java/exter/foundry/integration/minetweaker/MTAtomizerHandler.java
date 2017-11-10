@@ -1,13 +1,13 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import exter.foundry.api.recipe.IAtomizerRecipe;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.integration.jei.AtomizerJEI;
 import exter.foundry.recipes.AtomizerRecipe;
 import exter.foundry.recipes.manager.AtomizerRecipeManager;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

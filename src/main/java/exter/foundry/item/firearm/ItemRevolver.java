@@ -8,16 +8,17 @@ import exter.foundry.item.FoundryItems;
 import exter.foundry.proxy.CommonFoundryProxy;
 import exter.foundry.sound.FoundrySounds;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -89,7 +90,7 @@ public class ItemRevolver extends ItemFirearm {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
 			if (!world.isRemote) {
 				player.openGui(ModFoundry.instance, CommonFoundryProxy.GUI_REVOLVER, world, 0, 0, 0);
@@ -97,21 +98,20 @@ public class ItemRevolver extends ItemFirearm {
 		} else {
 			player.setActiveHand(hand);
 		}
-		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
-		list.add(empty());
-		list.add(loaded());
+	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tabs)) {
+			list.add(empty());
+			list.add(loaded());
+		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list, boolean par4) {
+	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag par4) {
 		if (GuiScreen.isShiftKeyDown()) {
 			NBTTagCompound tag = stack.getTagCompound();
 			if (tag == null) {
@@ -126,7 +126,7 @@ public class ItemRevolver extends ItemFirearm {
 				if (ammo_tag == null || ammo_tag.getBoolean("Empty")) {
 					list.add(TextFormatting.BLUE + "< Empty >");
 				} else {
-					ItemStack ammo = ItemStack.loadItemStackFromNBT(ammo_tag);
+					ItemStack ammo = new ItemStack(ammo_tag);
 					list.add(TextFormatting.BLUE + ammo.getDisplayName());
 				}
 			}
@@ -164,9 +164,9 @@ public class ItemRevolver extends ItemFirearm {
 		if (tag == null) { return null; }
 		NBTTagCompound ammo_tag = tag.getCompoundTag("Slot_" + slot);
 		if (ammo_tag == null || ammo_tag.getBoolean("Empty")) {
-			return null;
+			return ItemStack.EMPTY;
 		} else {
-			return ItemStack.loadItemStackFromNBT(ammo_tag);
+			return new ItemStack(ammo_tag);
 		}
 	}
 

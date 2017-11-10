@@ -16,10 +16,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 public class InitHardCore {
 	static private boolean hasOreDictionaryPrefix(ItemStack item, String prefix) {
@@ -44,7 +45,7 @@ public class InitHardCore {
 						for (int i = 0; i < 9; i++) {
 							grid.setInventorySlotContents(i, item);
 						}
-						for (IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
+						for (IRecipe recipe : ForgeRegistries.RECIPES) {
 							if (recipe.matches(grid, null) && hasOreDictionaryPrefix(recipe.getCraftingResult(grid), result_prefix)) {
 								remove.add(recipe);
 								break;
@@ -54,7 +55,8 @@ public class InitHardCore {
 				}
 			}
 		}
-		CraftingManager.getInstance().getRecipeList().removeAll(remove);
+		for (IRecipe rec : remove)
+			((IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES).remove(rec.getRegistryName());
 	}
 
 	static public void init() {

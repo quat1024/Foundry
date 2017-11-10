@@ -2,6 +2,7 @@ package exter.foundry;
 
 import java.util.List;
 
+import exter.foundry.init.InitRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -34,6 +35,7 @@ public class FoundryRegistry {
 
 	@SubscribeEvent
 	public void registerRecipes(Register<IRecipe> e) {
+		InitRecipes.preInit();
 		e.getRegistry().registerAll(RECIPES.toArray(new IRecipe[RECIPES.size()]));
 	}
 

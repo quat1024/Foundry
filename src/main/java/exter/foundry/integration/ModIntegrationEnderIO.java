@@ -19,10 +19,14 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModIntegrationEnderIO implements IModIntegration {
+
+	public static final String ENDERIO = "enderio";
+
 	private Fluid liquid_redstone_alloy;
 	private Fluid liquid_energetic_alloy;
 	private Fluid liquid_vibrant_alloy;
@@ -61,14 +65,14 @@ public class ModIntegrationEnderIO implements IModIntegration {
 	}
 
 	private ItemStack getItemStack(String name, int meta) {
-		Item item = Item.REGISTRY.getObject(new ResourceLocation("EnderIO", name));
+		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ENDERIO, name));
 		if (item == null) { return null; }
 		return new ItemStack(item, 1, meta);
 	}
 
 	@Override
 	public void onPostInit() {
-		if (!Loader.isModLoaded("EnderIO")) { return; }
+		if (!Loader.isModLoaded(ENDERIO)) { return; }
 
 		if (FoundryConfig.recipe_equipment) {
 			OreMatcher extra_sticks1 = new OreMatcher("stickWood", 1);
@@ -120,7 +124,7 @@ public class ModIntegrationEnderIO implements IModIntegration {
 
 	@Override
 	public String getName() {
-		return "EnderIO";
+		return ENDERIO;
 	}
 
 	@Override

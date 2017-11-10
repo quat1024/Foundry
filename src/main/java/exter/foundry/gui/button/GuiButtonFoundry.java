@@ -46,14 +46,14 @@ public class GuiButtonFoundry extends GuiButton {
 			int tex_x = texture_x;
 			int tex_y = texture_y;
 
-			if (x >= xPosition && y >= yPosition && x < xPosition + width && y < yPosition + height) {
+			if (x >= this.x && y >= this.y && x < this.x + width && y < this.y + height) {
 				tex_x = texture_mo_x;
 				tex_y = texture_mo_y;
 			}
 
-			drawTexturedModalRect(xPosition, yPosition, tex_x, tex_y, width, height);
+			drawTexturedModalRect(this.x, this.y, tex_x, tex_y, width, height);
 			if (icon_width > 0 && icon_height > 0) {
-				drawTexturedModalRect(xPosition + (width - icon_width) / 2, yPosition + (height - icon_height) / 2, icon_x, icon_y, icon_width, icon_height);
+				drawTexturedModalRect(this.x + (width - icon_width) / 2, this.y + (height - icon_height) / 2, icon_x, icon_y, icon_width, icon_height);
 			}
 		}
 	}

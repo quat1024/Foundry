@@ -1,11 +1,11 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.api.liquid.ILiquidStack;
 import exter.foundry.api.recipe.IAlloyMixerRecipe;
 import exter.foundry.integration.jei.AlloyMixerJEI;
 import exter.foundry.recipes.AlloyMixerRecipe;
 import exter.foundry.recipes.manager.AlloyMixerRecipeManager;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;

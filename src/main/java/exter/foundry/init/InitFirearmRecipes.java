@@ -9,11 +9,10 @@ import exter.foundry.item.ItemMold;
 import exter.foundry.recipes.manager.CastingRecipeManager;
 import exter.foundry.recipes.manager.MeltingRecipeManager;
 import exter.foundry.recipes.manager.MoldRecipeManager;
+import exter.foundry.util.RecipeHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class InitFirearmRecipes {
 	static public void init() {
@@ -100,30 +99,30 @@ public class InitFirearmRecipes {
 
 		ItemStack paper = new ItemStack(Items.PAPER);
 
-		GameRegistry.addRecipe(FoundryItems.item_revolver.empty(), "BD", " F", 'B', FoundryItems.component(ItemComponent.SubItem.GUN_BARREL), 'D', FoundryItems.component(ItemComponent.SubItem.REVOLVER_DRUM), 'F', FoundryItems.component(ItemComponent.SubItem.REVOLVER_FRAME));
+		RecipeHelper.addOldShaped(FoundryItems.item_revolver.empty(), "BD", " F", 'B', FoundryItems.component(ItemComponent.SubItem.GUN_BARREL), 'D', FoundryItems.component(ItemComponent.SubItem.REVOLVER_DRUM), 'F', FoundryItems.component(ItemComponent.SubItem.REVOLVER_FRAME));
 
-		GameRegistry.addRecipe(FoundryItems.item_shotgun.empty(), "BB ", " PF", 'B', FoundryItems.component(ItemComponent.SubItem.GUN_BARREL), 'P', FoundryItems.component(ItemComponent.SubItem.SHOTGUN_PUMP), 'F', FoundryItems.component(ItemComponent.SubItem.SHOTGUN_FRAME));
+		RecipeHelper.addOldShaped(FoundryItems.item_shotgun.empty(), "BB ", " PF", 'B', FoundryItems.component(ItemComponent.SubItem.GUN_BARREL), 'P', FoundryItems.component(ItemComponent.SubItem.SHOTGUN_PUMP), 'F', FoundryItems.component(ItemComponent.SubItem.SHOTGUN_FRAME));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_round, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING)));
+		RecipeHelper.addOldShaped(FoundryItems.item_round, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_round_hollow, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_HOLLOW), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING)));
+		RecipeHelper.addOldShaped(FoundryItems.item_round_hollow, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_HOLLOW), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_round_jacketed, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_JACKETED), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING)));
+		RecipeHelper.addOldShaped(FoundryItems.item_round_jacketed, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_JACKETED), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_round_fire, "B", "A", 'B', "dustSmallBlaze", 'A', FoundryItems.item_round_hollow));
+		RecipeHelper.addOldShaped(FoundryItems.item_round_fire, "B", "A", 'B', "dustSmallBlaze", 'A', FoundryItems.item_round_hollow);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_shell, "PAP", "PGP", "PCP", 'P', FoundryItems.component(ItemComponent.SubItem.AMMO_PELLET), 'A', paper, 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING_SHELL)));
+		RecipeHelper.addOldShaped(FoundryItems.item_shell, "PAP", "PGP", "PCP", 'P', FoundryItems.component(ItemComponent.SubItem.AMMO_PELLET), 'A', paper, 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING_SHELL));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_round_ap, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_STEEL), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING)));
+		RecipeHelper.addOldShaped(FoundryItems.item_round_ap, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_STEEL), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_round_lumium, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_LUMIUM), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING)));
+		RecipeHelper.addOldShaped(FoundryItems.item_round_lumium, "B", "G", "C", 'B', FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_LUMIUM), 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_shell_ap, "PAP", "PGP", "PCP", 'P', FoundryItems.component(ItemComponent.SubItem.AMMO_PELLET_STEEL), 'A', paper, 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING_SHELL)));
+		RecipeHelper.addOldShaped(FoundryItems.item_shell_ap, "PAP", "PGP", "PCP", 'P', FoundryItems.component(ItemComponent.SubItem.AMMO_PELLET_STEEL), 'A', paper, 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING_SHELL));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(FoundryItems.item_shell_lumium, "PAP", "PGP", "PCP", 'P', FoundryItems.component(ItemComponent.SubItem.AMMO_PELLET_LUMIUM), 'A', paper, 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING_SHELL)));
+		RecipeHelper.addOldShaped(FoundryItems.item_shell_lumium, "PAP", "PGP", "PCP", 'P', FoundryItems.component(ItemComponent.SubItem.AMMO_PELLET_LUMIUM), 'A', paper, 'G', "dustSmallGunpowder", 'C', FoundryItems.component(ItemComponent.SubItem.AMMO_CASING_SHELL));
 
-		GameRegistry.addShapelessRecipe(new ItemStack(FoundryItems.item_round_poison, 2), Items.SPIDER_EYE, FoundryItems.item_round_hollow, FoundryItems.item_round_hollow);
+		RecipeHelper.addOldShapeless(new ItemStack(FoundryItems.item_round_poison, 2), Items.SPIDER_EYE, FoundryItems.item_round_hollow, FoundryItems.item_round_hollow);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(FoundryItems.item_round_snow, 2), Items.SNOWBALL, FoundryItems.item_round_hollow, FoundryItems.item_round_hollow);
+		RecipeHelper.addOldShapeless(new ItemStack(FoundryItems.item_round_snow, 2), Items.SNOWBALL, FoundryItems.item_round_hollow, FoundryItems.item_round_hollow);
 	}
 }

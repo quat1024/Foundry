@@ -41,7 +41,7 @@ public abstract class ItemFirearm extends Item {
 		Vec3d start = new Vec3d(shooter.posX, shooter.posY + shooter.getEyeHeight() - 0.1, shooter.posZ);
 		Vec3d dir;
 		if (target != null) {
-			dir = new Vec3d(target.posX - start.xCoord, target.posY - start.yCoord, target.posZ - start.zCoord).normalize();
+			dir = new Vec3d(target.posX - start.x, target.posY - start.y, target.posZ - start.z).normalize();
 		} else {
 			float pitch = -shooter.rotationPitch;
 			float yaw = -shooter.rotationYaw;
@@ -53,14 +53,14 @@ public abstract class ItemFirearm extends Item {
 		}
 		Vec3d vspread = new Vec3d((random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1)).normalize();
 		spread = random.nextFloat() * spread;
-		dir = dir.addVector(vspread.xCoord * spread, vspread.yCoord * spread, vspread.zCoord * spread).normalize();
+		dir = dir.addVector(vspread.x * spread, vspread.y * spread, vspread.z * spread).normalize();
 
 		double distance = 150.0D;
 
-		Vec3d end = start.addVector(dir.xCoord * distance, dir.yCoord * distance, dir.zCoord * distance);
+		Vec3d end = start.addVector(dir.x * distance, dir.y * distance, dir.z * distance);
 
-		Vec3d tstart = new Vec3d(start.xCoord, start.yCoord, start.zCoord);
-		Vec3d tend = new Vec3d(end.xCoord, end.yCoord, end.zCoord);
+		Vec3d tstart = new Vec3d(start.x, start.y, start.z);
+		Vec3d tend = new Vec3d(end.x, end.y, end.z);
 		RayTraceResult obj = world.rayTraceBlocks(tstart, tend, false, true, false);
 
 		List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(shooter, shooter.getEntityBoundingBox().expand(150, 150, 150));
