@@ -1,12 +1,12 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IMoldRecipe;
 import exter.foundry.integration.jei.MoldStationJEI;
 import exter.foundry.recipes.MoldRecipe;
 import exter.foundry.recipes.manager.MoldRecipeManager;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -23,13 +23,13 @@ public class MTMoldStationHandler {
 		@Override
 		protected void add() {
 			MoldRecipeManager.instance.recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new MoldStationJEI.Wrapper(null, recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new MoldStationJEI.Wrapper(null, recipe));
 		}
 
 		@Override
 		protected void remove() {
 			MoldRecipeManager.instance.recipes.remove(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new MoldStationJEI.Wrapper(null, recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new MoldStationJEI.Wrapper(null, recipe));
 		}
 
 		@Override
@@ -58,25 +58,25 @@ public class MTMoldStationHandler {
 	static public void addRecipe(IItemStack output, int width, int height, int[] grid) {
 		IMoldRecipe recipe = null;
 		try {
-			recipe = new MoldRecipe(MineTweakerMC.getItemStack(output), width, height, grid);
+			recipe = new MoldRecipe(CraftTweakerMC.getItemStack(output), width, height, grid);
 		} catch (IllegalArgumentException e) {
-			MineTweakerAPI.logError("Invalid mold station recipe: " + e.getMessage());
+			CraftTweakerAPI.logError("Invalid mold station recipe: " + e.getMessage());
 			return;
 		}
-		MineTweakerAPI.apply((new MoldStationAction(recipe).action_add));
+		CraftTweakerAPI.apply((new MoldStationAction(recipe).action_add));
 	}
 
 	@ZenMethod
 	static public void removeRecipe(int[] grid) {
 		if (grid.length != 36) {
-			MineTweakerAPI.logWarning("Invalid mold station grid size: expected 36 instead of " + grid.length);
+			CraftTweakerAPI.logWarning("Invalid mold station grid size: expected 36 instead of " + grid.length);
 			return;
 		}
 		IMoldRecipe recipe = MoldRecipeManager.instance.findRecipe(grid);
 		if (recipe == null) {
-			MineTweakerAPI.logWarning("Mold station recipe not found.");
+			CraftTweakerAPI.logWarning("Mold station recipe not found.");
 			return;
 		}
-		MineTweakerAPI.apply((new MoldStationAction(recipe)).action_remove);
+		CraftTweakerAPI.apply((new MoldStationAction(recipe)).action_remove);
 	}
 }

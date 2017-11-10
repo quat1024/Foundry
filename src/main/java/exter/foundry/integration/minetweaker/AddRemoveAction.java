@@ -1,74 +1,34 @@
 package exter.foundry.integration.minetweaker;
 
-import minetweaker.IUndoableAction;
+import crafttweaker.IAction;
 
 abstract public class AddRemoveAction {
-	private final class Add implements IUndoableAction {
+	private final class Add implements IAction {
 		@Override
 		public void apply() {
 			add();
 		}
 
 		@Override
-		public boolean canUndo() {
-			return true;
-		}
-
-		@Override
-		public void undo() {
-			remove();
-		}
-
-		@Override
 		public String describe() {
 			return String.format("Adding %s recipe: %s", getRecipeType(), getDescription());
 		}
-
-		@Override
-		public String describeUndo() {
-			return String.format("Removing %s recipe: %s", getRecipeType(), getDescription());
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
-		}
 	}
 
-	private final class Remove implements IUndoableAction {
+	private final class Remove implements IAction {
 		@Override
 		public void apply() {
 			remove();
 		}
 
 		@Override
-		public boolean canUndo() {
-			return true;
-		}
-
-		@Override
-		public void undo() {
-			add();
-		}
-
-		@Override
 		public String describe() {
 			return String.format("Removing %s recipe: %s", getRecipeType(), getDescription());
 		}
-
-		@Override
-		public String describeUndo() {
-			return String.format("Adding %s recipe: %s", getRecipeType(), getDescription());
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
-		}
 	}
 
-	public final IUndoableAction action_add = new Add();
-	public final IUndoableAction action_remove = new Remove();
+	public final IAction action_add = new Add();
+	public final IAction action_remove = new Remove();
 
 	abstract protected void add();
 

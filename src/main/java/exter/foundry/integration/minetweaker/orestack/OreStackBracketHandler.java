@@ -2,12 +2,12 @@ package exter.foundry.integration.minetweaker.orestack;
 
 import java.util.List;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.BracketHandler;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IngredientAny;
 import crafttweaker.zenscript.IBracketHandler;
 import exter.foundry.api.recipe.matcher.OreMatcher;
-import minetweaker.MineTweakerAPI;
 import stanhebben.zenscript.compiler.IEnvironmentGlobal;
 import stanhebben.zenscript.expression.ExpressionCallStatic;
 import stanhebben.zenscript.expression.ExpressionString;
@@ -23,8 +23,8 @@ public class OreStackBracketHandler implements IBracketHandler {
 	private final IJavaMethod method;
 
 	public OreStackBracketHandler() {
-		symbolAny = MineTweakerAPI.getJavaStaticFieldSymbol(IngredientAny.class, "INSTANCE");
-		method = MineTweakerAPI.getJavaMethod(OreStackBracketHandler.class, "getOreStack", String.class);
+		symbolAny = CraftTweakerAPI.getJavaStaticFieldSymbol(IngredientAny.class, "INSTANCE");
+		method = CraftTweakerAPI.getJavaMethod(OreStackBracketHandler.class, "getOreStack", String.class);
 	}
 
 	public static IIngredient getOreStack(String name) {

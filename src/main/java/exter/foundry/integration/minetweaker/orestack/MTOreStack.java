@@ -10,9 +10,9 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.item.IItemTransformer;
 import crafttweaker.api.item.IngredientOr;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.player.IPlayer;
 import exter.foundry.api.recipe.matcher.OreMatcher;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.ItemStack;
 
 public class MTOreStack implements IIngredient {
@@ -56,7 +56,7 @@ public class MTOreStack implements IIngredient {
 	public List<IItemStack> getItems() {
 		List<IItemStack> result = new ArrayList<IItemStack>();
 		for (ItemStack item : stack.getItems()) {
-			result.add(MineTweakerMC.getIItemStack(item));
+			result.add(CraftTweakerMC.getIItemStack(item));
 		}
 		return result;
 	}
@@ -83,7 +83,7 @@ public class MTOreStack implements IIngredient {
 
 	@Override
 	public boolean matches(IItemStack iitem) {
-		ItemStack item = MineTweakerMC.getItemStack(iitem);
+		ItemStack item = CraftTweakerMC.getItemStack(iitem);
 		return stack.apply(item);
 	}
 
@@ -110,5 +110,10 @@ public class MTOreStack implements IIngredient {
 	@Override
 	public boolean matchesExact(IItemStack iitem) {
 		return matches(iitem);
+	}
+
+	@Override
+	public IItemStack[] getItemArray() {
+		return getItems().toArray(new IItemStack[0]);
 	}
 }

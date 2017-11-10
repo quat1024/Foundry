@@ -1,14 +1,14 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAtomizerRecipe;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.integration.jei.AtomizerJEI;
 import exter.foundry.recipes.AtomizerRecipe;
 import exter.foundry.recipes.manager.AtomizerRecipeManager;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -24,13 +24,13 @@ public class MTAtomizerHandler {
 		@Override
 		protected void add() {
 			AtomizerRecipeManager.instance.recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AtomizerJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AtomizerJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			AtomizerRecipeManager.instance.recipes.remove(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AtomizerJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AtomizerJEI.Wrapper(recipe));
 		}
 
 		@Override
@@ -48,21 +48,21 @@ public class MTAtomizerHandler {
 	static public void addRecipe(IItemStack output, ILiquidStack input) {
 		IAtomizerRecipe recipe = null;
 		try {
-			recipe = new AtomizerRecipe(new ItemStackMatcher(MineTweakerMC.getItemStack(output)), MineTweakerMC.getLiquidStack(input));
+			recipe = new AtomizerRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input));
 		} catch (IllegalArgumentException e) {
-			MineTweakerAPI.logError("Invalid atomizer recipe: " + e.getMessage());
+			CraftTweakerAPI.logError("Invalid atomizer recipe: " + e.getMessage());
 			return;
 		}
-		MineTweakerAPI.apply((new AtomizerAction(recipe).action_add));
+		CraftTweakerAPI.apply((new AtomizerAction(recipe).action_add));
 	}
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input) {
-		IAtomizerRecipe recipe = AtomizerRecipeManager.instance.findRecipe(MineTweakerMC.getLiquidStack(input));
+		IAtomizerRecipe recipe = AtomizerRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input));
 		if (recipe == null) {
-			MineTweakerAPI.logWarning("Atomizer recipe not found.");
+			CraftTweakerAPI.logWarning("Atomizer recipe not found.");
 			return;
 		}
-		MineTweakerAPI.apply((new AtomizerAction(recipe)).action_remove);
+		CraftTweakerAPI.apply((new AtomizerAction(recipe)).action_remove);
 	}
 }

@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.IItemHandler;
 import vazkii.botania.api.item.IExoflameHeatable;
 
-@Optional.Interface(iface = "vazkii.botania.api.item.IExoflameHeatable", modid = "Botania")
+@Optional.Interface(iface = "vazkii.botania.api.item.IExoflameHeatable", modid = "botania")
 public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedInventory, IExoflameHeatable {
 	public static final int SLOT_INPUT_A = 0;
 	public static final int SLOT_INPUT_B = 1;
@@ -199,10 +199,10 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 				decrStackSize(SLOT_INPUT_A, recipe.getInputA().getAmount());
 				decrStackSize(SLOT_INPUT_B, recipe.getInputB().getAmount());
 			}
-			if (inventory[SLOT_OUTPUT] == null) {
-				inventory[SLOT_OUTPUT] = output.copy();
+			if (getStackInSlot(SLOT_OUTPUT).isEmpty()) {
+				setStackInSlot(SLOT_OUTPUT, output.copy());
 			} else {
-				inventory[SLOT_OUTPUT].stackSize += output.stackSize;
+				getStackInSlot(SLOT_OUTPUT).grow(output.getCount());
 			}
 			updateInventoryItem(SLOT_OUTPUT);
 			markDirty();
@@ -221,10 +221,10 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 
 		boolean reversed = false;
 		IAlloyFurnaceRecipe recipe = null;
-		if (inventory[SLOT_INPUT_A] != null && inventory[SLOT_INPUT_B] != null) {
-			recipe = AlloyFurnaceRecipeManager.instance.findRecipe(inventory[SLOT_INPUT_A], inventory[SLOT_INPUT_B]);
+		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
+			recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
 			if (recipe == null) {
-				recipe = AlloyFurnaceRecipeManager.instance.findRecipe(inventory[SLOT_INPUT_B], inventory[SLOT_INPUT_A]);
+				recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
 				if (recipe != null) {
 					reversed = true;
 				}
@@ -232,11 +232,12 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		}
 
 		if (burn_time == 0 && recipe != null && canOutput(recipe)) {
-			item_burn_time = burn_time = TileEntityFurnace.getItemBurnTime(inventory[SLOT_FUEL]);
+			item_burn_time = burn_time = TileEntityFurnace.getItemBurnTime(getStackInSlot(SLOT_FUEL));
 			if (burn_time > 0) {
-				if (inventory[SLOT_FUEL] != null) {
-					if (--inventory[SLOT_FUEL].stackSize == 0) {
-						inventory[SLOT_FUEL] = inventory[SLOT_FUEL].getItem().getContainerItem(inventory[SLOT_FUEL]);
+				if (!getStackInSlot(SLOT_FUEL).isEmpty()) {
+					getStackInSlot(SLOT_FUEL).shrink(1);
+					if (getStackInSlot(SLOT_FUEL).getCount() == 0) {
+						setStackInSlot(SLOT_FUEL, getStackInSlot(SLOT_FUEL).getItem().getContainerItem(getStackInSlot(SLOT_FUEL)));
 					}
 					updateInventoryItem(SLOT_FUEL);
 				}
@@ -288,15 +289,15 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	@Optional.Method(modid = "Botania")
 	@Override
 	public boolean canSmelt() {
-		if (inventory[SLOT_INPUT_A] != null && inventory[SLOT_INPUT_B] != null) {
-			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.instance.findRecipe(inventory[SLOT_INPUT_A], inventory[SLOT_INPUT_B]);
+		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
+			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
 			if (recipe == null) {
-				recipe = AlloyFurnaceRecipeManager.instance.findRecipe(inventory[SLOT_INPUT_B], inventory[SLOT_INPUT_A]);
+				recipe = AlloyFurnaceRecipeManager.instance.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
 			}
 			if (recipe == null) { return false; }
 			ItemStack output = recipe.getOutput();
 			ItemStack inv_output = inventory.get(SLOT_OUTPUT);
-			if (inv_output != null && (!inv_output.isItemEqual(output) || inv_output.stackSize - output.stackSize > inv_output.getMaxStackSize())) { return false; }
+			if (inv_output != null && (!inv_output.isItemEqual(output) || inv_output.getCount() - output.getCount() > inv_output.getMaxStackSize())) { return false; }
 			return true;
 		}
 		return false;

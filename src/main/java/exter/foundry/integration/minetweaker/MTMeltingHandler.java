@@ -1,14 +1,14 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IMeltingRecipe;
 import exter.foundry.integration.jei.MeltingJEI;
 import exter.foundry.recipes.MeltingRecipe;
 import exter.foundry.recipes.manager.MeltingRecipeManager;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -26,13 +26,13 @@ public class MTMeltingHandler {
 		@Override
 		protected void add() {
 			MeltingRecipeManager.instance.recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new MeltingJEI.Wrapper(null, recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new MeltingJEI.Wrapper(null, recipe));
 		}
 
 		@Override
 		protected void remove() {
 			MeltingRecipeManager.instance.recipes.remove(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new MeltingJEI.Wrapper(null, recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new MeltingJEI.Wrapper(null, recipe));
 		}
 
 		@Override
@@ -57,21 +57,21 @@ public class MTMeltingHandler {
 		}
 		IMeltingRecipe recipe = null;
 		try {
-			recipe = new MeltingRecipe(MTHelper.getIngredient(input), MineTweakerMC.getLiquidStack(output), melting_point, speed);
+			recipe = new MeltingRecipe(MTHelper.getIngredient(input), CraftTweakerMC.getLiquidStack(output), melting_point, speed);
 		} catch (IllegalArgumentException e) {
-			MineTweakerAPI.logError("Invalid melting recipe.");
+			CraftTweakerAPI.logError("Invalid melting recipe.");
 			return;
 		}
-		MineTweakerAPI.apply((new MeltingAction(recipe).action_add));
+		CraftTweakerAPI.apply((new MeltingAction(recipe).action_add));
 	}
 
 	@ZenMethod
 	static public void removeRecipe(IItemStack input) {
-		IMeltingRecipe recipe = MeltingRecipeManager.instance.findRecipe(MineTweakerMC.getItemStack(input));
+		IMeltingRecipe recipe = MeltingRecipeManager.instance.findRecipe(CraftTweakerMC.getItemStack(input));
 		if (recipe == null) {
-			MineTweakerAPI.logWarning("Melting recipe not found.");
+			CraftTweakerAPI.logWarning("Melting recipe not found.");
 			return;
 		}
-		MineTweakerAPI.apply((new MeltingAction(recipe)).action_remove);
+		CraftTweakerAPI.apply((new MeltingAction(recipe)).action_remove);
 	}
 }

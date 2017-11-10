@@ -1,16 +1,16 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.ICastingRecipe;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.integration.jei.CastingJEI;
 import exter.foundry.recipes.CastingRecipe;
 import exter.foundry.recipes.manager.CastingRecipeManager;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -33,13 +33,13 @@ public class MTCastingHandler {
 			} else {
 				CastingRecipeManager.instance.recipes.add(recipe);
 			}
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			CastingRecipeManager.instance.recipes.remove(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingJEI.Wrapper(recipe));
 		}
 
 		@Override
@@ -91,47 +91,47 @@ public class MTCastingHandler {
 		}
 		ICastingRecipe recipe = null;
 		try {
-			recipe = new CastingRecipe(new ItemStackMatcher(MineTweakerMC.getItemStack(output)), MineTweakerMC.getLiquidStack(input), MineTweakerMC.getItemStack(mold), MTHelper.getIngredient(extra), speed);
+			recipe = new CastingRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), MTHelper.getIngredient(extra), speed);
 		} catch (IllegalArgumentException e) {
-			MineTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
+			CraftTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
 			return;
 		}
-		MineTweakerAPI.apply((new CastingAction(recipe).action_add));
+		CraftTweakerAPI.apply((new CastingAction(recipe).action_add));
 	}
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input, IItemStack mold, @Optional IItemStack extra) {
-		ICastingRecipe recipe = CastingRecipeManager.instance.findRecipe(MineTweakerMC.getLiquidStack(input), MineTweakerMC.getItemStack(mold), MineTweakerMC.getItemStack(extra));
+		ICastingRecipe recipe = CastingRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
 		if (recipe == null) {
-			MineTweakerAPI.logWarning("Casting recipe not found.");
+			CraftTweakerAPI.logWarning("Casting recipe not found.");
 			return;
 		}
-		MineTweakerAPI.apply((new CastingAction(recipe)).action_remove);
+		CraftTweakerAPI.apply((new CastingAction(recipe)).action_remove);
 	}
 
 	@ZenMethod
 	static public void addMold(IItemStack mold) {
-		ItemStack molditem = MineTweakerMC.getItemStack(mold);
+		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
 		if (molditem == null) {
-			MineTweakerAPI.logError("Invalid mold item");
+			CraftTweakerAPI.logError("Invalid mold item");
 			return;
 		}
-		MineTweakerAPI.apply((new MoldAction(molditem).action_add));
+		CraftTweakerAPI.apply((new MoldAction(molditem).action_add));
 	}
 
 	@ZenMethod
 	static public void removeMold(IItemStack mold) {
-		ItemStack molditem = MineTweakerMC.getItemStack(mold);
+		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
 		if (molditem == null) {
-			MineTweakerAPI.logWarning("Invalid mold item");
+			CraftTweakerAPI.logWarning("Invalid mold item");
 			return;
 		}
 		for (ItemStack m : CastingRecipeManager.instance.molds) {
 			if (m.isItemEqual(molditem) && ItemStack.areItemStacksEqual(m, molditem)) {
-				MineTweakerAPI.apply((new MoldAction(m)).action_remove);
+				CraftTweakerAPI.apply((new MoldAction(m)).action_remove);
 				return;
 			}
 		}
-		MineTweakerAPI.logWarning("Mold not found.");
+		CraftTweakerAPI.logWarning("Mold not found.");
 	}
 }

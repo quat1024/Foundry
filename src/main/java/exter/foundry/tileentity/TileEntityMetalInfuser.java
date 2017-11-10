@@ -130,7 +130,7 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 			return;
 		}
 
-		if (!current_recipe.matchesRecipe(getTank(TANK_INPUT).getFluid(), inventory[INVENTORY_SUBSTANCE_INPUT])) {
+		if (!current_recipe.matchesRecipe(getTank(TANK_INPUT).getFluid(), getStackInSlot(INVENTORY_SUBSTANCE_INPUT))) {
 			progress = 0;
 			extract_energy = 1;
 			current_recipe = null;
@@ -171,7 +171,7 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 		checkCurrentRecipe();
 
 		if (current_recipe == null) {
-			current_recipe = InfuserRecipeManager.instance.findRecipe(tanks[TANK_INPUT].getFluid(), inventory[INVENTORY_SUBSTANCE_INPUT]);
+			current_recipe = InfuserRecipeManager.instance.findRecipe(tanks[TANK_INPUT].getFluid(), getStackInSlot(INVENTORY_SUBSTANCE_INPUT));
 			progress = 0;
 		}
 

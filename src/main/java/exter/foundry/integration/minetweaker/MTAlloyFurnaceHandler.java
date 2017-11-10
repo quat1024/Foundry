@@ -1,13 +1,13 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAlloyFurnaceRecipe;
 import exter.foundry.integration.jei.AlloyFurnaceJEI;
 import exter.foundry.recipes.AlloyFurnaceRecipe;
 import exter.foundry.recipes.manager.AlloyFurnaceRecipeManager;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -24,13 +24,13 @@ public class MTAlloyFurnaceHandler {
 		@Override
 		protected void add() {
 			AlloyFurnaceRecipeManager.instance.recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			AlloyFurnaceRecipeManager.instance.recipes.remove(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
 		}
 
 		@Override
@@ -48,22 +48,22 @@ public class MTAlloyFurnaceHandler {
 	static public void addRecipe(IItemStack output, IIngredient input_a, IIngredient input_b) {
 		IAlloyFurnaceRecipe recipe = null;
 		try {
-			recipe = new AlloyFurnaceRecipe(MineTweakerMC.getItemStack(output), MTHelper.getIngredient(input_a), MTHelper.getIngredient(input_b));
+			recipe = new AlloyFurnaceRecipe(CraftTweakerMC.getItemStack(output), MTHelper.getIngredient(input_a), MTHelper.getIngredient(input_b));
 		} catch (IllegalArgumentException e) {
-			MineTweakerAPI.logError("Invalid alloy furnace recipe: " + e.getMessage());
+			CraftTweakerAPI.logError("Invalid alloy furnace recipe: " + e.getMessage());
 			return;
 		}
-		MineTweakerAPI.apply((new AlloyFurnaceAction(recipe).action_add));
+		CraftTweakerAPI.apply((new AlloyFurnaceAction(recipe).action_add));
 	}
 
 	@ZenMethod
 	static public void removeRecipe(IItemStack input_a, IItemStack input_b) {
 
-		IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.instance.findRecipe(MineTweakerMC.getItemStack(input_a), MineTweakerMC.getItemStack(input_b));
+		IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.instance.findRecipe(CraftTweakerMC.getItemStack(input_a), CraftTweakerMC.getItemStack(input_b));
 		if (recipe == null) {
-			MineTweakerAPI.logWarning("Alloy furnace recipe not found.");
+			CraftTweakerAPI.logWarning("Alloy furnace recipe not found.");
 			return;
 		}
-		MineTweakerAPI.apply((new AlloyFurnaceAction(recipe)).action_remove);
+		CraftTweakerAPI.apply((new AlloyFurnaceAction(recipe)).action_remove);
 	}
 }

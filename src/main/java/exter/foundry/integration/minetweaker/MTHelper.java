@@ -2,12 +2,12 @@ package exter.foundry.integration.minetweaker;
 
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.api.recipe.matcher.OreMatcher;
 import exter.foundry.integration.minetweaker.orestack.MTOreStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,7 +34,7 @@ public class MTHelper {
 	}
 
 	static public IItemMatcher getIngredient(IIngredient ingr) {
-		if (ingr instanceof IItemStack) { return new ItemStackMatcher(MineTweakerMC.getItemStack((IItemStack) ingr)); }
+		if (ingr instanceof IItemStack) { return new ItemStackMatcher(CraftTweakerMC.getItemStack((IItemStack) ingr)); }
 		if (ingr instanceof IOreDictEntry) { return new OreMatcher((String) ingr.getInternal()); }
 		if (ingr instanceof MTOreStack) { return (OreMatcher) ingr.getInternal(); }
 		return null;

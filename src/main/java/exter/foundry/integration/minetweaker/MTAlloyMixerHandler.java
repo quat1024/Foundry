@@ -1,12 +1,12 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAlloyMixerRecipe;
 import exter.foundry.integration.jei.AlloyMixerJEI;
 import exter.foundry.recipes.AlloyMixerRecipe;
 import exter.foundry.recipes.manager.AlloyMixerRecipeManager;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -24,13 +24,13 @@ public class MTAlloyMixerHandler {
 		@Override
 		protected void add() {
 			AlloyMixerRecipeManager.instance.recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyMixerJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyMixerJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			AlloyMixerRecipeManager.instance.recipes.remove(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyMixerJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyMixerJEI.Wrapper(recipe));
 		}
 
 		@Override
@@ -64,17 +64,17 @@ public class MTAlloyMixerHandler {
 
 		int i;
 		for (i = 0; i < inputs.length; i++) {
-			in[i] = MineTweakerMC.getLiquidStack(inputs[i]);
+			in[i] = CraftTweakerMC.getLiquidStack(inputs[i]);
 		}
 
 		IAlloyMixerRecipe recipe = null;
 		try {
 			recipe = new AlloyMixerRecipe(out, in);
 		} catch (IllegalArgumentException e) {
-			MineTweakerAPI.logError("Invalid alloy mixer recipe: " + e.getMessage());
+			CraftTweakerAPI.logError("Invalid alloy mixer recipe: " + e.getMessage());
 			return;
 		}
-		MineTweakerAPI.apply((new AlloyMixerAction(recipe).action_add));
+		CraftTweakerAPI.apply((new AlloyMixerAction(recipe).action_add));
 	}
 
 	@ZenMethod
@@ -83,14 +83,14 @@ public class MTAlloyMixerHandler {
 
 		int i;
 		for (i = 0; i < inputs.length; i++) {
-			in[i] = MineTweakerMC.getLiquidStack(inputs[i]);
+			in[i] = CraftTweakerMC.getLiquidStack(inputs[i]);
 		}
 
 		IAlloyMixerRecipe recipe = AlloyMixerRecipeManager.instance.findRecipe(in, null);
 		if (recipe == null) {
-			MineTweakerAPI.logWarning("Alloy mixer recipe not found.");
+			CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
 			return;
 		}
-		MineTweakerAPI.apply((new AlloyMixerAction(recipe)).action_remove);
+		CraftTweakerAPI.apply((new AlloyMixerAction(recipe)).action_remove);
 	}
 }

@@ -1,14 +1,14 @@
 package exter.foundry.integration.minetweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.ICastingTableRecipe;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.integration.jei.CastingTableJEI;
 import exter.foundry.recipes.CastingTableRecipe;
 import exter.foundry.recipes.manager.CastingTableRecipeManager;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -26,13 +26,13 @@ public class MTCastingTableHandler {
 		@Override
 		protected void add() {
 			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).put(recipe.getInput().getFluid().getName(), recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingTableJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingTableJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingTableJEI.Wrapper(recipe));
+			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingTableJEI.Wrapper(recipe));
 		}
 
 		@Override
@@ -47,16 +47,16 @@ public class MTCastingTableHandler {
 	}
 
 	static private void addRecipe(IItemStack output, ILiquidStack input, ICastingTableRecipe.TableType table) {
-		ItemStackMatcher out = new ItemStackMatcher(MineTweakerMC.getItemStack(output));
-		FluidStack in = MineTweakerMC.getLiquidStack(input);
+		ItemStackMatcher out = new ItemStackMatcher(CraftTweakerMC.getItemStack(output));
+		FluidStack in = CraftTweakerMC.getLiquidStack(input);
 		CastingTableRecipe recipe;
 		try {
 			recipe = new CastingTableRecipe(out, in, table);
 		} catch (IllegalArgumentException e) {
-			MineTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
+			CraftTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
 			return;
 		}
-		MineTweakerAPI.apply((new CastingTableAction(recipe).action_add));
+		CraftTweakerAPI.apply((new CastingTableAction(recipe).action_add));
 	}
 
 	@ZenMethod
@@ -80,12 +80,12 @@ public class MTCastingTableHandler {
 	}
 
 	static public void removeRecipe(ILiquidStack input, ICastingTableRecipe.TableType table) {
-		ICastingTableRecipe recipe = CastingTableRecipeManager.instance.findRecipe(MineTweakerMC.getLiquidStack(input), table);
+		ICastingTableRecipe recipe = CastingTableRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), table);
 		if (recipe == null) {
-			MineTweakerAPI.logWarning("Casting table recipe not found.");
+			CraftTweakerAPI.logWarning("Casting table recipe not found.");
 			return;
 		}
-		MineTweakerAPI.apply((new CastingTableAction(recipe)).action_remove);
+		CraftTweakerAPI.apply((new CastingTableAction(recipe)).action_remove);
 	}
 
 	@ZenMethod
