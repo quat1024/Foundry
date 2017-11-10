@@ -42,7 +42,7 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
-import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -100,9 +100,9 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 			ModelLoader.setCustomMeshDefinition(item, new LiquidMetalItemMeshDefinition(name));
 			ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockFluidBase.LEVEL).build());
 		}
-		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, new IRenderFactory<EntitySkeleton>() {
+		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, new IRenderFactory<EntitySkeletonGun>() {
 			@Override
-			public Render<EntitySkeleton> createRenderFor(RenderManager manager) {
+			public Render<AbstractSkeleton> createRenderFor(RenderManager manager) {
 				return new RenderSkeleton(manager);
 			}
 		});

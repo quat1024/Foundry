@@ -75,8 +75,8 @@ public class GuiMoldStation extends GuiFoundry {
 	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
-		fontRendererObj.drawString("Mold Station", 5, 6, 0x404040);
-		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Mold Station", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 	}
 
 	@Override
@@ -137,13 +137,13 @@ public class GuiMoldStation extends GuiFoundry {
 
 			List<String> currenttip = new ArrayList<String>();
 			currenttip.add("Depth: " + te_ms.getGridSlot(y * 6 + x));
-			drawHoveringText(currenttip, mousex, mousey, fontRendererObj);
+			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 
 		if (isPointInRegion(117, 15, button_fire.getWidth(), button_fire.getHeight(), mousex, mousey)) {
 			List<String> currenttip = new ArrayList<String>();
 			currenttip.add("Fire mold");
-			drawHoveringText(currenttip, mousex, mousey, fontRendererObj);
+			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 	}
 

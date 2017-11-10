@@ -43,8 +43,8 @@ public class GuiAlloyFurnace extends GuiFoundry {
 	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
-		fontRendererObj.drawString("Alloy Furnace", 5, 6, 0x404040);
-		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Alloy Furnace", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 
 	}
 

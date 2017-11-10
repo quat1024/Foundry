@@ -45,7 +45,7 @@ public abstract class GuiFoundry extends GuiContainer {
 			font = stack.getItem().getFontRenderer(stack);
 		}
 		if (font == null) {
-			font = fontRendererObj;
+			font = fontRenderer;
 		}
 		itemRender.renderItemAndEffectIntoGUI(stack, x, y);
 		itemRender.renderItemOverlayIntoGUI(font, stack, x, y, null);

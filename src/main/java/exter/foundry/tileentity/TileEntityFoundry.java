@@ -285,7 +285,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		return inventory.get(slot);
 	}
 
-	private void setStackInSlot(int slot, ItemStack stack) {
+	public void setStackInSlot(int slot, ItemStack stack) {
 		inventory.set(slot, stack);
 	}
 

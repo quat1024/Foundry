@@ -60,8 +60,8 @@ public class GuiCokeOven extends GuiFoundry {
 	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
-		fontRendererObj.drawString("Coke Oven", 5, 6, 0x404040);
-		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Coke Oven", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 
 	}
 
@@ -101,12 +101,12 @@ public class GuiCokeOven extends GuiFoundry {
 			if (bake > 0) {
 				currenttip.add("Bake: " + String.valueOf(bake) + " °K");
 			}
-			drawHoveringText(currenttip, mousex, mousey, fontRendererObj);
+			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.getWidth(), button_mode.getHeight(), mousex, mousey)) {
 			List<String> currenttip = new ArrayList<String>();
 			currenttip.add(getRedstoenModeText(te_oven.getRedstoneMode()));
-			drawHoveringText(currenttip, mousex, mousey, fontRendererObj);
+			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 	}
 

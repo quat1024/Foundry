@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import exter.foundry.ModFoundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.IInfuserRecipe;
 import exter.foundry.gui.GuiMetalInfuser;
@@ -38,36 +39,6 @@ public class InfuserJEI {
 			this.recipe = recipe;
 		}
 
-		@Deprecated
-		@Override
-		public List<List<ItemStack>> getInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<ItemStack> getOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidInputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public List<FluidStack> getFluidOutputs() {
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
-		}
-
 		@Override
 		public List<String> getTooltipStrings(int x, int y) {
 			return null;
@@ -75,7 +46,7 @@ public class InfuserJEI {
 
 		@Override
 		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-			minecraft.fontRendererObj.drawString(recipe.getEnergyNeeded() / TileEntityFoundryPowered.RATIO_FE + " FE", 0, 38, 0);
+			minecraft.fontRenderer.drawString(recipe.getEnergyNeeded() / TileEntityFoundryPowered.RATIO_FE + " FE", 0, 38, 0);
 		}
 
 		@Override
@@ -131,10 +102,6 @@ public class InfuserJEI {
 
 		@Override
 		public void drawExtras(Minecraft minecraft) {
-		}
-
-		@Override
-		public void drawAnimations(Minecraft minecraft) {
 			arrow.draw(minecraft, 34, 18);
 		}
 
@@ -148,12 +115,6 @@ public class InfuserJEI {
 		@Override
 		public String getUid() {
 			return "foundry.infuser";
-		}
-
-		@Override
-		@Deprecated
-		public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull Wrapper recipeWrapper) {
-
 		}
 
 		@Override
@@ -180,6 +141,11 @@ public class InfuserJEI {
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String getModName() {
+			return ModFoundry.MODNAME;
+		}
 	}
 
 	static public class Handler implements IRecipeHandler<Wrapper> {
@@ -191,7 +157,7 @@ public class InfuserJEI {
 
 		@Nonnull
 		@Override
-		public String getRecipeCategoryUid() {
+		public String getRecipeCategoryUid(Wrapper recipe) {
 			return "foundry.infuser";
 		}
 
@@ -204,11 +170,6 @@ public class InfuserJEI {
 		@Override
 		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
 			return true;
-		}
-
-		@Override
-		public String getRecipeCategoryUid(Wrapper recipe) {
-			return "foundry.infuser";
 		}
 	}
 

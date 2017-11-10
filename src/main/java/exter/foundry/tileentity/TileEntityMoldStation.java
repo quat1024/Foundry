@@ -79,14 +79,14 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 			has_block = tag.getBoolean("HasBlock");
 		}
 
-		if (worldObj != null && !worldObj.isRemote && has_block) {
+		if (world != null && !world.isRemote && has_block) {
 			if (grid_changed) {
 				current_recipe = null;
 			}
 			if (tag.hasKey("command_fire")) {
 				current_recipe = MoldRecipeManager.instance.findRecipe(grid);
 			}
-			((BlockMoldStation) getBlockType()).setMachineState(worldObj, getPos(), worldObj.getBlockState(getPos()), burn_time > 0);
+			((BlockMoldStation) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), burn_time > 0);
 		}
 	}
 
@@ -141,8 +141,8 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.worldObj.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
+	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
+		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
 	}
 
 	@Override
@@ -180,8 +180,8 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	}
 
 	private boolean canOutput(ItemStack output, int slot) {
-		ItemStack inv_output = inventory[slot];
-		return output == null || inv_output == null || (inv_output.isItemEqual(output) && inv_output.stackSize - output.stackSize <= inv_output.getMaxStackSize());
+		ItemStack inv_output = getStackInSlot(slot);
+		return (inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize());
 	}
 
 	private int getCarvedClayAmount() {
@@ -196,9 +196,9 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	private boolean canRecipeOutput() {
 		ItemStack output = current_recipe.getOutput();
 		int clay_amount = getCarvedClayAmount();
-		ItemStack slot_clay = inventory[SLOT_CLAY];
+		ItemStack slot_clay = getStackInSlot(SLOT_CLAY);
 
-		return canOutput(output, SLOT_OUTPUT) && (slot_clay == null || slot_clay.stackSize + clay_amount <= slot_clay.getMaxStackSize());
+		return canOutput(output, SLOT_OUTPUT) && (slot_clay == null || slot_clay.getCount() + clay_amount <= slot_clay.getMaxStackSize());
 	}
 
 	private void clearGrid() {
@@ -221,15 +221,15 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 		int clay = getCarvedClayAmount();
 		if (++progress == 200) {
 			progress = 0;
-			if (inventory[SLOT_OUTPUT] == null) {
-				inventory[SLOT_OUTPUT] = output.copy();
+			if (getStackInSlot(SLOT_OUTPUT).isEmpty()) {
+				setStackInSlot(SLOT_OUTPUT, output.copy());
 			} else {
-				inventory[SLOT_OUTPUT].stackSize += output.stackSize;
+				getStackInSlot(SLOT_OUTPUT).grow(output.getCount());
 			}
-			if (inventory[SLOT_CLAY] == null) {
-				inventory[SLOT_CLAY] = FoundryItems.component(ItemComponent.SubItem.REFRACTORYCLAY_SMALL, clay);
+			if (getStackInSlot(SLOT_CLAY) == null) {
+				setStackInSlot(SLOT_CLAY, FoundryItems.component(ItemComponent.SubItem.REFRACTORYCLAY_SMALL, clay));
 			} else {
-				inventory[SLOT_CLAY].stackSize += clay;
+				getStackInSlot(SLOT_CLAY).grow(clay);
 			}
 			updateInventoryItem(SLOT_OUTPUT);
 			updateInventoryItem(SLOT_CLAY);
@@ -260,11 +260,12 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 		}
 		if (has_block && progress >= 0) {
 			if (burn_time == 0 && current_recipe != null && canRecipeOutput()) {
-				item_burn_time = burn_time = TileEntityFurnace.getItemBurnTime(inventory[SLOT_FUEL]);
+				item_burn_time = burn_time = TileEntityFurnace.getItemBurnTime(getStackInSlot(SLOT_FUEL));
 				if (burn_time > 0) {
-					if (inventory[SLOT_FUEL] != null) {
-						if (--inventory[SLOT_FUEL].stackSize == 0) {
-							inventory[SLOT_FUEL] = inventory[SLOT_FUEL].getItem().getContainerItem(inventory[SLOT_FUEL]);
+					if (getStackInSlot(SLOT_FUEL) != null) {
+						getStackInSlot(SLOT_FUEL).shrink(1);
+						if (getStackInSlot(SLOT_FUEL).getCount() == 0) {
+							setStackInSlot(SLOT_FUEL, getStackInSlot(SLOT_FUEL).getItem().getContainerItem(getStackInSlot(SLOT_FUEL)));
 						}
 						updateInventoryItem(SLOT_FUEL);
 					}
@@ -284,7 +285,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 
 		if (last_burn_time != burn_time || update_burn_times) {
 			if (last_burn_time * burn_time == 0) {
-				((BlockMoldStation) getBlockType()).setMachineState(worldObj, getPos(), worldObj.getBlockState(getPos()), burn_time > 0);
+				((BlockMoldStation) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), burn_time > 0);
 			}
 			updateValue("BurnTime", burn_time);
 		}
@@ -315,7 +316,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	}
 
 	public void carve(int x1, int y1, int x2, int y2) {
-		if (worldObj.isRemote && has_block) {
+		if (world.isRemote && has_block) {
 			NBTTagCompound tag = new NBTTagCompound();
 			for (int j = y1; j <= y2; j++) {
 				for (int i = x1; i <= x2; i++) {
@@ -331,7 +332,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	}
 
 	public void mend(int x1, int y1, int x2, int y2) {
-		if (worldObj.isRemote && has_block) {
+		if (world.isRemote && has_block) {
 			NBTTagCompound tag = new NBTTagCompound();
 			for (int j = y1; j <= y2; j++) {
 				for (int i = x1; i <= x2; i++) {
@@ -347,7 +348,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	}
 
 	public void fire() {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setBoolean("command_fire", true);
 			sendToServer(tag);
@@ -369,7 +370,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	@Optional.Method(modid = "Botania")
 	@Override
 	public void boostBurnTime() {
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			burn_time = 200;
 			item_burn_time = 199;
 			update_burn_times = true;
