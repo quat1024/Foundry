@@ -5,7 +5,6 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAlloyFurnaceRecipe;
-import exter.foundry.integration.jei.AlloyFurnaceJEI;
 import exter.foundry.recipes.AlloyFurnaceRecipe;
 import exter.foundry.recipes.manager.AlloyFurnaceRecipeManager;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -24,13 +23,11 @@ public class MTAlloyFurnaceHandler {
 		@Override
 		protected void add() {
 			AlloyFurnaceRecipeManager.INSTANCE.recipes.add(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			AlloyFurnaceRecipeManager.INSTANCE.recipes.remove(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyFurnaceJEI.Wrapper(recipe));
 		}
 
 		@Override

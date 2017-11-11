@@ -6,7 +6,6 @@ import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.ICastingTableRecipe;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
-import exter.foundry.integration.jei.CastingTableJEI;
 import exter.foundry.recipes.CastingTableRecipe;
 import exter.foundry.recipes.manager.CastingTableRecipeManager;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,13 +25,11 @@ public class MTCastingTableHandler {
 		@Override
 		protected void add() {
 			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).put(recipe.getInput().getFluid().getName(), recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingTableJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingTableJEI.Wrapper(recipe));
 		}
 
 		@Override

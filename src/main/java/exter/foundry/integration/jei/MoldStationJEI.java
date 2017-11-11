@@ -32,9 +32,9 @@ public class MoldStationJEI {
 		public Wrapper(IMoldRecipe recipe) {
 			this.carve_drawables = new IDrawable[4];
 			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
-			for (int i = 0; i < 4; i++) 
+			for (int i = 0; i < 4; i++)
 				carve_drawables[i] = new DrawableResource(location, 176, 107 + i * 11, 11, 11, 0, 0, 0, 0, 256, 256);
-			
+
 			this.recipe = recipe;
 		}
 

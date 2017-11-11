@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class MeltingJEI {
 
 	public static class Wrapper implements IRecipeWrapper {
-		
+
 		private final IDrawable temp;
 
 		private final IMeltingRecipe recipe;
@@ -53,7 +53,7 @@ public class MeltingJEI {
 			if (temp != null) {
 				temp.draw(minecraft, 11, 41);
 			}
-			
+
 			minecraft.fontRenderer.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
 		}
 

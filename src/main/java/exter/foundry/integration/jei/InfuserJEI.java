@@ -1,6 +1,5 @@
 package exter.foundry.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.IInfuserRecipe;
 import exter.foundry.gui.GuiMetalInfuser;
-import exter.foundry.recipes.manager.InfuserRecipeManager;
 import exter.foundry.tileentity.TileEntityFoundryPowered;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
@@ -22,10 +20,9 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -90,7 +87,7 @@ public class InfuserJEI {
 			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/infuser.png");
 			background = guiHelper.createDrawable(location, 15, 41, 137, 51);
 			tank_overlay = guiHelper.createDrawable(location, 176, 0, 16, 47);
-			localizedName = Translator.translateToLocal("gui.jei.infuser");
+			localizedName = I18n.format("gui.jei.infuser");
 
 		}
 
@@ -114,7 +111,7 @@ public class InfuserJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.infuser";
+			return FoundryJEIConstants.INF_UID;
 		}
 
 		@Override

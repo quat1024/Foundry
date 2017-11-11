@@ -8,7 +8,6 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.ICastingRecipe;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
-import exter.foundry.integration.jei.CastingJEI;
 import exter.foundry.recipes.CastingRecipe;
 import exter.foundry.recipes.manager.CastingRecipeManager;
 import net.minecraft.item.ItemStack;
@@ -33,13 +32,11 @@ public class MTCastingHandler {
 			} else {
 				CastingRecipeManager.instance.recipes.add(recipe);
 			}
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CastingJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			CastingRecipeManager.instance.recipes.remove(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CastingJEI.Wrapper(recipe));
 		}
 
 		@Override

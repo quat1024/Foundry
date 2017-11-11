@@ -9,5 +9,6 @@ public class FoundryJEIConstants {
 	public static final String MOLD_UID = "foundry.mold";
 	public static final String AM_UID = "foundry.alloymixer";
 	public static final String ATOM_UID = "foundry.atomizer";
-	
+	public static final String AC_UID = "foundry.alloyingcrucible";
+
 }

@@ -4,7 +4,6 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAlloyMixerRecipe;
-import exter.foundry.integration.jei.AlloyMixerJEI;
 import exter.foundry.recipes.AlloyMixerRecipe;
 import exter.foundry.recipes.manager.AlloyMixerRecipeManager;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,13 +23,11 @@ public class MTAlloyMixerHandler {
 		@Override
 		protected void add() {
 			AlloyMixerRecipeManager.instance.recipes.add(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyMixerJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			AlloyMixerRecipeManager.instance.recipes.remove(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyMixerJEI.Wrapper(recipe));
 		}
 
 		@Override

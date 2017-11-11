@@ -6,7 +6,6 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IInfuserRecipe;
-import exter.foundry.integration.jei.InfuserJEI;
 import exter.foundry.recipes.InfuserRecipe;
 import exter.foundry.recipes.manager.InfuserRecipeManager;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -25,13 +24,11 @@ public class MTInfuserHandler {
 		@Override
 		protected void add() {
 			InfuserRecipeManager.instance.recipes.add(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new InfuserJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			InfuserRecipeManager.instance.recipes.remove(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new InfuserJEI.Wrapper(recipe));
 		}
 
 		@Override

@@ -4,7 +4,6 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IMoldRecipe;
-import exter.foundry.integration.jei.MoldStationJEI;
 import exter.foundry.recipes.MoldRecipe;
 import exter.foundry.recipes.manager.MoldRecipeManager;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -23,13 +22,11 @@ public class MTMoldStationHandler {
 		@Override
 		protected void add() {
 			MoldRecipeManager.instance.recipes.add(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new MoldStationJEI.Wrapper(null, recipe));
 		}
 
 		@Override
 		protected void remove() {
 			MoldRecipeManager.instance.recipes.remove(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new MoldStationJEI.Wrapper(null, recipe));
 		}
 
 		@Override

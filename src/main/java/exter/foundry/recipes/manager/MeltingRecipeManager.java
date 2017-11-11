@@ -16,7 +16,7 @@ public class MeltingRecipeManager implements IMeltingRecipeManager {
 	public static final MeltingRecipeManager INSTANCE = new MeltingRecipeManager();
 
 	private List<IMeltingRecipe> recipes;
-	
+
 	private MeltingRecipeManager() {
 		recipes = new ArrayList<IMeltingRecipe>();
 	}
@@ -54,7 +54,7 @@ public class MeltingRecipeManager implements IMeltingRecipeManager {
 	public void removeRecipe(IMeltingRecipe recipe) {
 		recipes.remove(recipe);
 	}
-	
+
 	public void addRecipe(IMeltingRecipe recipe) {
 		recipes.add(recipe);
 	}

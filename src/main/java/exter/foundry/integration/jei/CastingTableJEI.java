@@ -1,6 +1,5 @@
 package exter.foundry.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import exter.foundry.Foundry;
 import exter.foundry.api.recipe.ICastingTableRecipe;
 import exter.foundry.block.BlockCastingTable;
 import exter.foundry.block.FoundryBlocks;
-import exter.foundry.recipes.manager.CastingTableRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.gui.IDrawable;
@@ -19,18 +17,37 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
-import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CastingTableJEI {
 
-	static public class Wrapper implements IRecipeWrapper {
+	private final ItemStack table_item;
+	private final String name;
+	private final BlockCastingTable.EnumTable type;
+	private final String UID;
+
+	public CastingTableJEI(BlockCastingTable.EnumTable table) {
+		type = table;
+		table_item = FoundryBlocks.block_casting_table.asItemStack(table);
+		name = table.name;
+		UID = "foundry.casting_table." + name;
+	}
+
+	public BlockCastingTable.EnumTable getType() {
+		return type;
+	}
+
+	public String getUID() {
+		return UID;
+	}
+
+	public static class Wrapper implements IRecipeWrapper {
 		private final ICastingTableRecipe recipe;
 		private final String name;
 
@@ -87,7 +104,7 @@ public class CastingTableJEI {
 
 			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/casting_table_jei.png");
 			background = guiHelper.createDrawable(location, 0, 0, 74, 59);
-			localizedName = Translator.translateToLocal("gui.jei.casting_table." + name);
+			localizedName = I18n.format("gui.jei.casting_table." + name);
 		}
 
 		@Override
@@ -110,7 +127,7 @@ public class CastingTableJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.casting_table." + name;
+			return UID;
 		}
 
 		@Override
@@ -146,53 +163,4 @@ public class CastingTableJEI {
 		}
 	}
 
-	static public class Handler implements IRecipeHandler<Wrapper> {
-		@Override
-		@Nonnull
-		public Class<Wrapper> getRecipeClass() {
-			return Wrapper.class;
-		}
-
-		@Override
-		@Nonnull
-		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
-			return recipe;
-		}
-
-		@Override
-		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
-			return true;
-		}
-
-		@Override
-		public String getRecipeCategoryUid(Wrapper recipe) {
-			return "foundry.casting_table." + recipe.getName();
-		}
-	}
-
-	private final ItemStack table_item;
-	private final ICastingTableRecipe.TableType type;
-	private final String name;
-
-	public CastingTableJEI(BlockCastingTable.EnumTable table) {
-		table_item = FoundryBlocks.block_casting_table.asItemStack(table);
-		name = table.name;
-		type = table.type;
-	}
-
-	public List<Wrapper> getRecipes() {
-		List<Wrapper> recipes = new ArrayList<Wrapper>();
-
-		for (ICastingTableRecipe recipe : CastingTableRecipeManager.instance.getRecipes()) {
-			if (recipe.getTableType() == type) {
-				ItemStack output = recipe.getOutput();
-
-				if (output != null) {
-					recipes.add(new Wrapper(recipe));
-				}
-			}
-		}
-
-		return recipes;
-	}
 }

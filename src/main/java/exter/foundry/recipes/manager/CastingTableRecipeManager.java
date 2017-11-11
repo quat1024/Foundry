@@ -1,6 +1,7 @@
 package exter.foundry.recipes.manager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -49,5 +50,9 @@ public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 	@Override
 	public void removeRecipe(ICastingTableRecipe recipe) {
 		recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
+	}
+
+	public Collection<ICastingTableRecipe> getRecipes(ICastingTableRecipe.TableType type) {
+		return recipes.get(type).values();
 	}
 }

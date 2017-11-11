@@ -4,7 +4,6 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAlloyingCrucibleRecipe;
-import exter.foundry.integration.jei.AlloyingCrucibleJEI;
 import exter.foundry.recipes.AlloyingCrucibleRecipe;
 import exter.foundry.recipes.manager.AlloyingCrucibleRecipeManager;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,13 +23,11 @@ public class MTAlloyingCurcibleHandler {
 		@Override
 		protected void add() {
 			AlloyingCrucibleRecipeManager.instance.recipes.add(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new AlloyingCrucibleJEI.Wrapper(recipe));
 		}
 
 		@Override
 		protected void remove() {
 			AlloyingCrucibleRecipeManager.instance.recipes.remove(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new AlloyingCrucibleJEI.Wrapper(recipe));
 		}
 
 		@Override
