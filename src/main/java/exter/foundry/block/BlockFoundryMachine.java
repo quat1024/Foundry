@@ -41,8 +41,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFoundryMachine extends Block implements ITileEntityProvider, IBlockVariants {
-	private Random rand = new Random();
-
 	static public enum EnumMachine implements IStringSerializable {
 		CRUCIBLE_BASIC(0, "crucible_basic", "machineCrucibleBasic"),
 		CASTER(1, "caster", "machineCaster"),
@@ -55,8 +53,15 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		CRUCIBLE_STANDARD(8, "crucible_standard", "machineCrucibleStandard"),
 		ALLOYING_CRUCIBLE(9, "alloying_crucible", "machineAlloyingCrucible");
 
+		static public EnumMachine fromID(int num) {
+			for (EnumMachine m : values()) {
+				if (m.id == num) { return m; }
+			}
+			return null;
+		}
 		public final int id;
 		public final String name;
+
 		public final String model;
 
 		private EnumMachine(int id, String name, String model) {
@@ -74,16 +79,11 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		public String toString() {
 			return getName();
 		}
-
-		static public EnumMachine fromID(int num) {
-			for (EnumMachine m : values()) {
-				if (m.id == num) { return m; }
-			}
-			return null;
-		}
 	}
 
 	public static final PropertyEnum<EnumMachine> MACHINE = PropertyEnum.create("machine", EnumMachine.class);
+
+	private Random rand = new Random();
 
 	public BlockFoundryMachine() {
 		super(Material.IRON);
@@ -95,19 +95,14 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		setRegistryName("machine");
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, MACHINE);
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		FoundryMiscUtils.localizeTooltip("tooltip.foundry.machine." + getStateFromMeta(stack.getMetadata()).getValue(MACHINE).name, tooltip);
 	}
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(MACHINE, EnumMachine.fromID(meta));
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(MACHINE).id;
+	public ItemStack asItemStack(EnumMachine machine) {
+		return new ItemStack(this, 1, getMetaFromState(getDefaultState().withProperty(MACHINE, machine)));
 	}
 
 	@Override
@@ -133,6 +128,84 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		}
 		world.removeTileEntity(pos);
 		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, MACHINE);
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return this.createTileEntity(world, getStateFromMeta(meta));
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		switch (state.getValue(MACHINE)) {
+		case CRUCIBLE_BASIC:
+			return new TileEntityMeltingCrucibleBasic();
+		case CASTER:
+			return new TileEntityMetalCaster();
+		case ALLOYMIXER:
+			return new TileEntityAlloyMixer();
+		case INFUSER:
+			return new TileEntityMetalInfuser();
+		case MATERIALROUTER:
+			return new TileEntityMaterialRouter();
+		case ATOMIZER:
+			return new TileEntityMetalAtomizer();
+		case INDUCTIONHEATER:
+			return new TileEntityInductionHeater();
+		case CRUCIBLE_ADVANCED:
+			return new TileEntityMeltingCrucibleAdvanced();
+		case CRUCIBLE_STANDARD:
+			return new TileEntityMeltingCrucibleStandard();
+		case ALLOYING_CRUCIBLE:
+			return new TileEntityAlloyingCrucible();
+		}
+		return null;
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(MACHINE).id;
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(MACHINE, EnumMachine.fromID(meta));
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+		for (EnumMachine m : EnumMachine.values()) {
+			list.add(new ItemStack(this, 1, m.id));
+		}
+	}
+
+	@Override
+	public String getUnlocalizedName(int meta) {
+		return getUnlocalizedName() + "." + getStateFromMeta(meta).getValue(MACHINE).name;
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
+
+		if (te != null) {
+			te.updateRedstone();
+		}
 	}
 
 	@Override
@@ -169,78 +242,5 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 			}
 			return true;
 		}
-	}
-
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		switch (state.getValue(MACHINE)) {
-		case CRUCIBLE_BASIC:
-			return new TileEntityMeltingCrucibleBasic();
-		case CASTER:
-			return new TileEntityMetalCaster();
-		case ALLOYMIXER:
-			return new TileEntityAlloyMixer();
-		case INFUSER:
-			return new TileEntityMetalInfuser();
-		case MATERIALROUTER:
-			return new TileEntityMaterialRouter();
-		case ATOMIZER:
-			return new TileEntityMetalAtomizer();
-		case INDUCTIONHEATER:
-			return new TileEntityInductionHeater();
-		case CRUCIBLE_ADVANCED:
-			return new TileEntityMeltingCrucibleAdvanced();
-		case CRUCIBLE_STANDARD:
-			return new TileEntityMeltingCrucibleStandard();
-		case ALLOYING_CRUCIBLE:
-			return new TileEntityAlloyingCrucible();
-		}
-		return null;
-	}
-
-	@Override
-	public int damageDropped(IBlockState state) {
-		return getMetaFromState(state);
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-		for (EnumMachine m : EnumMachine.values()) {
-			list.add(new ItemStack(this, 1, m.id));
-		}
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
-
-		if (te != null) {
-			te.updateRedstone();
-		}
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return this.createTileEntity(world, getStateFromMeta(meta));
-	}
-
-	@Override
-	public String getUnlocalizedName(int meta) {
-		return getUnlocalizedName() + "." + getStateFromMeta(meta).getValue(MACHINE).name;
-	}
-
-	public ItemStack asItemStack(EnumMachine machine) {
-		return new ItemStack(this, 1, getMetaFromState(getDefaultState().withProperty(MACHINE, machine)));
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		FoundryMiscUtils.localizeTooltip("tooltip.foundry.machine." + getStateFromMeta(stack.getMetadata()).getValue(MACHINE).name, tooltip);
 	}
 }

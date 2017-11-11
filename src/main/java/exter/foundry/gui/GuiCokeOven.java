@@ -57,12 +57,23 @@ public class GuiCokeOven extends GuiFoundry {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
-		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
-
-		fontRenderer.drawString("Coke Oven", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
-
+	protected void actionPerformed(GuiButton button) {
+		if (button.id == button_mode.id) {
+			switch (te_oven.getRedstoneMode()) {
+			case RSMODE_IGNORE:
+				te_oven.setRedstoneMode(RedstoneMode.RSMODE_OFF);
+				break;
+			case RSMODE_OFF:
+				te_oven.setRedstoneMode(RedstoneMode.RSMODE_ON);
+				break;
+			case RSMODE_ON:
+				te_oven.setRedstoneMode(RedstoneMode.RSMODE_IGNORE);
+				break;
+			case RSMODE_PULSE:
+				te_oven.setRedstoneMode(RedstoneMode.RSMODE_IGNORE);
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -86,6 +97,15 @@ public class GuiCokeOven extends GuiFoundry {
 		if (progress > 0) {
 			drawTexturedModalRect(window_x + PROGRESS_X, window_y + PROGRESS_Y, PROGRESS_OVERLAY_X, PROGRESS_OVERLAY_Y, progress, PROGRESS_HEIGHT);
 		}
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
+		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
+
+		fontRenderer.drawString("Coke Oven", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+
 	}
 
 	@Override
@@ -122,25 +142,5 @@ public class GuiCokeOven extends GuiFoundry {
 		int window_y = (height - ySize) / 2;
 		button_mode = new GuiButtonFoundry(1, RSMODE_X + window_x, RSMODE_Y + window_y, 16, 15, GUI_TEXTURE, RSMODE_TEXTURE_X, RSMODE_TEXTURE_Y, RSMODE_TEXTURE_X + 16, RSMODE_TEXTURE_Y);
 		buttonList.add(button_mode);
-	}
-
-	@Override
-	protected void actionPerformed(GuiButton button) {
-		if (button.id == button_mode.id) {
-			switch (te_oven.getRedstoneMode()) {
-			case RSMODE_IGNORE:
-				te_oven.setRedstoneMode(RedstoneMode.RSMODE_OFF);
-				break;
-			case RSMODE_OFF:
-				te_oven.setRedstoneMode(RedstoneMode.RSMODE_ON);
-				break;
-			case RSMODE_ON:
-				te_oven.setRedstoneMode(RedstoneMode.RSMODE_IGNORE);
-				break;
-			case RSMODE_PULSE:
-				te_oven.setRedstoneMode(RedstoneMode.RSMODE_IGNORE);
-				break;
-			}
-		}
 	}
 }

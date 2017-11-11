@@ -35,8 +35,55 @@ public class ItemRevolver extends ItemFirearm {
 	}
 
 	@Override
-	public boolean getShareTag() {
-		return true;
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag par4) {
+		if (GuiScreen.isShiftKeyDown()) {
+			NBTTagCompound tag = stack.getTagCompound();
+			if (tag == null) {
+				tag = new NBTTagCompound();
+				stack.setTagCompound(tag);
+			}
+			int position = tag.getInteger("position");
+			int i;
+			for (i = 0; i < 8; i++) {
+				int j = (i + position) % 8;
+				NBTTagCompound ammo_tag = tag.getCompoundTag("Slot_" + j);
+				if (ammo_tag == null || ammo_tag.getBoolean("Empty")) {
+					list.add(TextFormatting.BLUE + "< Empty >");
+				} else {
+					ItemStack ammo = new ItemStack(ammo_tag);
+					list.add(TextFormatting.BLUE + ammo.getDisplayName());
+				}
+			}
+		}
+	}
+
+	public ItemStack empty() {
+		ItemStack stack = new ItemStack(this);
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("position", 0);
+		int i;
+		for (i = 0; i < 8; i++) {
+			NBTTagCompound slot = new NBTTagCompound();
+			slot.setBoolean("Empty", true);
+			nbt.setTag("Slot_" + i, slot);
+		}
+		stack.setTagCompound(nbt);
+		return stack;
+	}
+
+	@Override
+	public ItemStack getAmmo(ItemStack stack, int slot) {
+		if (stack.getItem() != this) { throw new IllegalArgumentException("Stack is not a revolver"); }
+		if (slot < 0 || slot > 7) { throw new IllegalArgumentException("Slot index not in range: " + slot); }
+		NBTTagCompound tag = stack.getTagCompound();
+		if (tag == null) { return null; }
+		NBTTagCompound ammo_tag = tag.getCompoundTag("Slot_" + slot);
+		if (ammo_tag == null || ammo_tag.getBoolean("Empty")) {
+			return ItemStack.EMPTY;
+		} else {
+			return new ItemStack(ammo_tag);
+		}
 	}
 
 	public int getPosition(ItemStack stack) {
@@ -48,15 +95,50 @@ public class ItemRevolver extends ItemFirearm {
 		return tag.getInteger("position");
 	}
 
-	public void setPosition(ItemStack stack, int position) {
-		if (stack.getItem() != this) { throw new IllegalArgumentException("Stack is not a revolver"); }
-		if (position < 0 || position > 7) { throw new IllegalArgumentException("Slot index not in range: " + position); }
-		NBTTagCompound tag = stack.getTagCompound();
-		if (tag == null) {
-			tag = new NBTTagCompound();
-			stack.setTagCompound(tag);
+	@Override
+	public boolean getShareTag() {
+		return true;
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
+		if (isInCreativeTab(tabs)) {
+			list.add(empty());
+			list.add(loaded());
 		}
-		tag.setInteger("position", position);
+	}
+
+	@Override
+	public boolean isFull3D() {
+		return true;
+	}
+
+	public ItemStack loaded() {
+		ItemStack stack = new ItemStack(this);
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("position", 0);
+		int i;
+		ItemStack ammo = new ItemStack(FoundryItems.item_round);
+		for (i = 0; i < 8; i++) {
+			NBTTagCompound slot = new NBTTagCompound();
+			slot.setBoolean("Empty", false);
+			ammo.writeToNBT(slot);
+			nbt.setTag("Slot_" + i, slot);
+		}
+		stack.setTagCompound(nbt);
+		return stack;
+	}
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (player.isSneaking()) {
+			if (!world.isRemote) {
+				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REVOLVER, world, 0, 0, 0);
+			}
+		} else {
+			player.setActiveHand(hand);
+		}
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -90,55 +172,6 @@ public class ItemRevolver extends ItemFirearm {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.isSneaking()) {
-			if (!world.isRemote) {
-				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REVOLVER, world, 0, 0, 0);
-			}
-		} else {
-			player.setActiveHand(hand);
-		}
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-	}
-
-	@Override
-	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tabs)) {
-			list.add(empty());
-			list.add(loaded());
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag par4) {
-		if (GuiScreen.isShiftKeyDown()) {
-			NBTTagCompound tag = stack.getTagCompound();
-			if (tag == null) {
-				tag = new NBTTagCompound();
-				stack.setTagCompound(tag);
-			}
-			int position = tag.getInteger("position");
-			int i;
-			for (i = 0; i < 8; i++) {
-				int j = (i + position) % 8;
-				NBTTagCompound ammo_tag = tag.getCompoundTag("Slot_" + j);
-				if (ammo_tag == null || ammo_tag.getBoolean("Empty")) {
-					list.add(TextFormatting.BLUE + "< Empty >");
-				} else {
-					ItemStack ammo = new ItemStack(ammo_tag);
-					list.add(TextFormatting.BLUE + ammo.getDisplayName());
-				}
-			}
-		}
-	}
-
-	@Override
-	public boolean isFull3D() {
-		return true;
-	}
-
-	@Override
 	public void setAmmo(ItemStack stack, int slot, ItemStack ammo) {
 		if (stack.getItem() != this) { throw new IllegalArgumentException("Stack is not a revolver"); }
 		if (slot < 0 || slot > 7) { throw new IllegalArgumentException("Slot index not in range: " + slot); }
@@ -158,47 +191,14 @@ public class ItemRevolver extends ItemFirearm {
 		tag.setTag("Slot_" + slot, ammo_tag);
 	}
 
-	@Override
-	public ItemStack getAmmo(ItemStack stack, int slot) {
+	public void setPosition(ItemStack stack, int position) {
 		if (stack.getItem() != this) { throw new IllegalArgumentException("Stack is not a revolver"); }
-		if (slot < 0 || slot > 7) { throw new IllegalArgumentException("Slot index not in range: " + slot); }
+		if (position < 0 || position > 7) { throw new IllegalArgumentException("Slot index not in range: " + position); }
 		NBTTagCompound tag = stack.getTagCompound();
-		if (tag == null) { return null; }
-		NBTTagCompound ammo_tag = tag.getCompoundTag("Slot_" + slot);
-		if (ammo_tag == null || ammo_tag.getBoolean("Empty")) {
-			return ItemStack.EMPTY;
-		} else {
-			return new ItemStack(ammo_tag);
+		if (tag == null) {
+			tag = new NBTTagCompound();
+			stack.setTagCompound(tag);
 		}
-	}
-
-	public ItemStack empty() {
-		ItemStack stack = new ItemStack(this);
-		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setInteger("position", 0);
-		int i;
-		for (i = 0; i < 8; i++) {
-			NBTTagCompound slot = new NBTTagCompound();
-			slot.setBoolean("Empty", true);
-			nbt.setTag("Slot_" + i, slot);
-		}
-		stack.setTagCompound(nbt);
-		return stack;
-	}
-
-	public ItemStack loaded() {
-		ItemStack stack = new ItemStack(this);
-		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setInteger("position", 0);
-		int i;
-		ItemStack ammo = new ItemStack(FoundryItems.item_round);
-		for (i = 0; i < 8; i++) {
-			NBTTagCompound slot = new NBTTagCompound();
-			slot.setBoolean("Empty", false);
-			ammo.writeToNBT(slot);
-			nbt.setTag("Slot_" + i, slot);
-		}
-		stack.setTagCompound(nbt);
-		return stack;
+		tag.setInteger("position", position);
 	}
 }

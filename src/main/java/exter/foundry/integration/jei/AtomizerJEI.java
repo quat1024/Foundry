@@ -31,43 +31,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class AtomizerJEI {
 
-	static public class Wrapper implements IRecipeWrapper {
-		@Nonnull
-		private final IAtomizerRecipe recipe;
-
-		private static final FluidStack WATER = new FluidStack(FluidRegistry.WATER, 50);
-
-		public Wrapper(@Nonnull IAtomizerRecipe recipe) {
-			this.recipe = recipe;
-		}
-
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return null;
-		}
-
-		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-		}
-
-		@Override
-		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-			return false;
-		}
-
-		@Override
-		public void getIngredients(IIngredients ingredients) {
-			ingredients.setInputs(FluidStack.class, ImmutableList.of(recipe.getInput(), WATER));
-			ingredients.setOutput(ItemStack.class, recipe.getOutput());
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return recipe == other;
-		}
-	}
-
 	static public class Category implements IRecipeCategory<Wrapper> {
 
 		protected final ResourceLocation backgroundLocation;
@@ -94,14 +57,24 @@ public class AtomizerJEI {
 		}
 
 		@Override
+		public void drawExtras(Minecraft minecraft) {
+			arrow.draw(minecraft, 52, 18);
+		}
+
+		@Override
 		@Nonnull
 		public IDrawable getBackground() {
 			return background;
 		}
 
 		@Override
-		public void drawExtras(Minecraft minecraft) {
-			arrow.draw(minecraft, 52, 18);
+		public IDrawable getIcon() {
+			return null;
+		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
 		}
 
 		@Nonnull
@@ -110,15 +83,15 @@ public class AtomizerJEI {
 			return localizedName;
 		}
 
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+
 		@Nonnull
 		@Override
 		public String getUid() {
 			return "foundry.atomizer";
-		}
-
-		@Override
-		public IDrawable getIcon() {
-			return null;
 		}
 
 		@Override
@@ -133,15 +106,42 @@ public class AtomizerJEI {
 			guiFluidStacks.set(1, ingredients.getInputs(FluidStack.class).get(0));
 			guiFluidStacks.set(2, ingredients.getInputs(FluidStack.class).get(1));
 		}
+	}
 
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return Collections.emptyList();
+	static public class Wrapper implements IRecipeWrapper {
+		private static final FluidStack WATER = new FluidStack(FluidRegistry.WATER, 50);
+
+		@Nonnull
+		private final IAtomizerRecipe recipe;
+
+		public Wrapper(@Nonnull IAtomizerRecipe recipe) {
+			this.recipe = recipe;
 		}
 
 		@Override
-		public String getModName() {
-			return Foundry.MODID;
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInputs(FluidStack.class, ImmutableList.of(recipe.getInput(), WATER));
+			ingredients.setOutput(ItemStack.class, recipe.getOutput());
+		}
+
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return null;
+		}
+
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
 		}
 	}
 }

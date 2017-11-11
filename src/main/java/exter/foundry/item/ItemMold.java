@@ -40,24 +40,24 @@ public class ItemMold extends Item {
 		SHOTGUN_PUMP(24, "moldShotgunPump"),
 		SHOTGUN_FRAME(25, "moldShotgunFrame");
 
-		public final int id;
-		public final String name;
-
 		static private final Map<Integer, SubItem> value_map = new HashMap<Integer, SubItem>();
-
-		SubItem(int id, String name) {
-			this.id = id;
-			this.name = name;
+		static {
+			for (SubItem sub : values()) {
+				value_map.put(sub.id, sub);
+			}
 		}
 
 		static public SubItem fromId(int id) {
 			return value_map.get(id);
 		}
 
-		static {
-			for (SubItem sub : values()) {
-				value_map.put(sub.id, sub);
-			}
+		public final int id;
+
+		public final String name;
+
+		SubItem(int id, String name) {
+			this.id = id;
+			this.name = name;
 		}
 	}
 
@@ -71,16 +71,16 @@ public class ItemMold extends Item {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
-		return "item.foundry." + SubItem.fromId(itemstack.getItemDamage()).name;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tabs)) for (SubItem m : SubItem.values()) {
 			ItemStack itemstack = new ItemStack(this, 1, m.id);
 			list.add(itemstack);
 		}
+	}
+
+	@Override
+	public String getUnlocalizedName(ItemStack itemstack) {
+		return "item.foundry." + SubItem.fromId(itemstack.getItemDamage()).name;
 	}
 }

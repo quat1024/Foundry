@@ -13,6 +13,13 @@ public class AtomizerRecipe implements IAtomizerRecipe {
 
 	private final IItemMatcher output;
 
+	public AtomizerRecipe(IItemMatcher result, FluidStack in_fluid) {
+		output = result;
+
+		if (in_fluid == null) { throw new IllegalArgumentException("Atomizer recipe input cannot be null"); }
+		fluid = in_fluid.copy();
+	}
+
 	@Override
 	public FluidStack getInput() {
 		return fluid.copy();
@@ -23,21 +30,14 @@ public class AtomizerRecipe implements IAtomizerRecipe {
 		return output.getItem();
 	}
 
-	public AtomizerRecipe(IItemMatcher result, FluidStack in_fluid) {
-		output = result;
-
-		if (in_fluid == null) { throw new IllegalArgumentException("Atomizer recipe input cannot be null"); }
-		fluid = in_fluid.copy();
+	@Override
+	public IItemMatcher getOutputMatcher() {
+		return output;
 	}
 
 	@Override
 	public boolean matchesRecipe(FluidStack fluid_stack) {
 		if (getOutput() == null) { return false; }
 		return fluid_stack != null && fluid_stack.containsFluid(fluid);
-	}
-
-	@Override
-	public IItemMatcher getOutputMatcher() {
-		return output;
 	}
 }

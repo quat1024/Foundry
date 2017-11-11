@@ -35,8 +35,13 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 		}
 
 		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			return null;
+		}
+
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			return null;
 		}
 
 		@Override
@@ -50,13 +55,8 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 		}
 
 		@Override
-		public FluidStack drain(FluidStack resource, boolean doDrain) {
-			return null;
-		}
-
-		@Override
-		public FluidStack drain(int maxDrain, boolean doDrain) {
-			return null;
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
 		}
 	}
 
@@ -88,9 +88,44 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 	}
 
 	@Override
+	public void closeInventory(EntityPlayer player) {
+
+	}
+
+	@Override
 	protected IFluidHandler getFluidHandler(EnumFacing facing) {
 		EnumFacing side = world.getBlockState(getPos()).getValue(BlockRefractoryHopper.FACING).facing;
 		return (facing == EnumFacing.UP || facing == side) ? fluid_handler : null;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 2;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return tank;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 1;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return false;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+
 	}
 
 	@Override
@@ -109,35 +144,8 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("next_drain", next_drain);
-		compound.setInteger("next_world_drain", next_world_drain);
-		compound.setInteger("next_fill", next_fill);
-		return compound;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 2;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return false;
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return oldState.getBlock() != newSate.getBlock();
 	}
 
 	@Override
@@ -267,22 +275,14 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		return tank;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 1;
-	}
-
-	@Override
-	protected void onInitialize() {
-
-	}
-
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-		return oldState.getBlock() != newSate.getBlock();
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("next_drain", next_drain);
+		compound.setInteger("next_world_drain", next_world_drain);
+		compound.setInteger("next_fill", next_fill);
+		return compound;
 	}
 }

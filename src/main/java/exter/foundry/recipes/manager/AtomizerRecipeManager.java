@@ -11,9 +11,9 @@ import exter.foundry.recipes.AtomizerRecipe;
 import net.minecraftforge.fluids.FluidStack;
 
 public class AtomizerRecipeManager implements IAtomizerRecipeManager {
-	public List<IAtomizerRecipe> recipes;
-
 	public static final AtomizerRecipeManager instance = new AtomizerRecipeManager();
+
+	public List<IAtomizerRecipe> recipes;
 
 	private AtomizerRecipeManager() {
 		recipes = new ArrayList<IAtomizerRecipe>();

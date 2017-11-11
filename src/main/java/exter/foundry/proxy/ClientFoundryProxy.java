@@ -69,46 +69,6 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		}
 	}
 
-	private void registerItemModel(Block block, String name) {
-		registerItemModel(Item.getItemFromBlock(block), name);
-	}
-
-	private void registerItemModel(Block block, String name, int meta) {
-		registerItemModel(Item.getItemFromBlock(block), name, meta);
-	}
-
-	private void registerItemModel(Item item, String name) {
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation("foundry:" + name, "inventory"));
-	}
-
-	private void registerItemModel(Item item, String name, int meta) {
-		name = "foundry:" + name;
-		ModelBakery.registerItemVariants(item, new ResourceLocation(name));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(name, "inventory"));
-	}
-
-	@Override
-	public void preInit() {
-		ModelLoaderRegistry.registerLoader(RFCModel.Loader.instance);
-		MaterialRegistry.instance.initIcons();
-		for (Map.Entry<String, FluidLiquidMetal> e : LiquidMetalRegistry.instance.getFluids().entrySet()) {
-			Fluid fluid = e.getValue();
-			Block block = fluid.getBlock();
-			Item item = Item.getItemFromBlock(block);
-			String name = e.getKey();
-			ModelBakery.registerItemVariants(item);
-			ModelLoader.setCustomMeshDefinition(item, new LiquidMetalItemMeshDefinition(name));
-			ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockFluidBase.LEVEL).build());
-		}
-		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, new IRenderFactory<EntitySkeletonGun>() {
-			@Override
-			public Render<AbstractSkeleton> createRenderFor(RenderManager manager) {
-				return new RenderSkeleton(manager);
-			}
-		});
-		ModIntegrationManager.clientPreInit();
-	}
-
 	@Override
 	public void init() {
 		for (BlockFoundryMachine.EnumMachine m : BlockFoundryMachine.EnumMachine.values()) {
@@ -204,6 +164,46 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 			}
 		}
 		ModIntegrationManager.clientPostInit();
+	}
+
+	@Override
+	public void preInit() {
+		ModelLoaderRegistry.registerLoader(RFCModel.Loader.instance);
+		MaterialRegistry.instance.initIcons();
+		for (Map.Entry<String, FluidLiquidMetal> e : LiquidMetalRegistry.instance.getFluids().entrySet()) {
+			Fluid fluid = e.getValue();
+			Block block = fluid.getBlock();
+			Item item = Item.getItemFromBlock(block);
+			String name = e.getKey();
+			ModelBakery.registerItemVariants(item);
+			ModelLoader.setCustomMeshDefinition(item, new LiquidMetalItemMeshDefinition(name));
+			ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockFluidBase.LEVEL).build());
+		}
+		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, new IRenderFactory<EntitySkeletonGun>() {
+			@Override
+			public Render<AbstractSkeleton> createRenderFor(RenderManager manager) {
+				return new RenderSkeleton(manager);
+			}
+		});
+		ModIntegrationManager.clientPreInit();
+	}
+
+	private void registerItemModel(Block block, String name) {
+		registerItemModel(Item.getItemFromBlock(block), name);
+	}
+
+	private void registerItemModel(Block block, String name, int meta) {
+		registerItemModel(Item.getItemFromBlock(block), name, meta);
+	}
+
+	private void registerItemModel(Item item, String name) {
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation("foundry:" + name, "inventory"));
+	}
+
+	private void registerItemModel(Item item, String name, int meta) {
+		name = "foundry:" + name;
+		ModelBakery.registerItemVariants(item, new ResourceLocation(name));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(name, "inventory"));
 	}
 
 }

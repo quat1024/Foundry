@@ -19,13 +19,13 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public class FirearmRoundBase implements IFirearmRound, ICapabilityProvider {
 	static public class Storage implements IStorage<IFirearmRound> {
 		@Override
-		public NBTBase writeNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side) {
-			return null;
+		public void readNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side, NBTBase nbt) {
+
 		}
 
 		@Override
-		public void readNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side, NBTBase nbt) {
-
+		public NBTBase writeNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side) {
+			return null;
 		}
 	}
 
@@ -45,28 +45,22 @@ public class FirearmRoundBase implements IFirearmRound, ICapabilityProvider {
 	}
 
 	@Override
-	public double getBaseRange() {
-		return base_range;
-	}
-
-	@Override
-	public double getFalloffRange() {
-		return falloff_range;
-	}
-
-	@Override
 	public double getBaseDamage(EntityLivingBase entity_hit) {
 		return base_damage;
 	}
 
 	@Override
-	public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count) {
-
+	public double getBaseRange() {
+		return base_range;
 	}
 
 	@Override
-	public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side) {
-
+	public final <T> T getCapability(Capability<T> cap, EnumFacing facing) {
+		if (cap == FoundryAPI.capability_firearmround) {
+			return FoundryAPI.capability_firearmround.cast(this);
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -75,8 +69,8 @@ public class FirearmRoundBase implements IFirearmRound, ICapabilityProvider {
 	}
 
 	@Override
-	public boolean ignoresArmor() {
-		return false;
+	public double getFalloffRange() {
+		return falloff_range;
 	}
 
 	@Override
@@ -90,11 +84,17 @@ public class FirearmRoundBase implements IFirearmRound, ICapabilityProvider {
 	}
 
 	@Override
-	public final <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == FoundryAPI.capability_firearmround) {
-			return FoundryAPI.capability_firearmround.cast(this);
-		} else {
-			return null;
-		}
+	public boolean ignoresArmor() {
+		return false;
+	}
+
+	@Override
+	public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count) {
+
+	}
+
+	@Override
+	public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side) {
+
 	}
 }

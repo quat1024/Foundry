@@ -11,9 +11,9 @@ import exter.foundry.recipes.AlloyFurnaceRecipe;
 import net.minecraft.item.ItemStack;
 
 public class AlloyFurnaceRecipeManager implements IAlloyFurnaceRecipeManager {
-	public List<IAlloyFurnaceRecipe> recipes;
-
 	public static final AlloyFurnaceRecipeManager INSTANCE = new AlloyFurnaceRecipeManager();
+
+	public List<IAlloyFurnaceRecipe> recipes;
 
 	private AlloyFurnaceRecipeManager() {
 		recipes = new ArrayList<IAlloyFurnaceRecipe>();
@@ -22,6 +22,15 @@ public class AlloyFurnaceRecipeManager implements IAlloyFurnaceRecipeManager {
 	@Override
 	public void addRecipe(ItemStack out, IItemMatcher in_a, IItemMatcher in_b) {
 		recipes.add(new AlloyFurnaceRecipe(out, in_a, in_b));
+	}
+
+	@Override
+	public void addRecipe(ItemStack out, IItemMatcher[] in_a, IItemMatcher[] in_b) {
+		for (IItemMatcher a : in_a) {
+			for (IItemMatcher b : in_b) {
+				addRecipe(out, a, b);
+			}
+		}
 	}
 
 	@Override
@@ -35,15 +44,6 @@ public class AlloyFurnaceRecipeManager implements IAlloyFurnaceRecipeManager {
 	@Override
 	public List<IAlloyFurnaceRecipe> getRecipes() {
 		return Collections.unmodifiableList(recipes);
-	}
-
-	@Override
-	public void addRecipe(ItemStack out, IItemMatcher[] in_a, IItemMatcher[] in_b) {
-		for (IItemMatcher a : in_a) {
-			for (IItemMatcher b : in_b) {
-				addRecipe(out, a, b);
-			}
-		}
 	}
 
 	@Override

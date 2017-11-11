@@ -18,13 +18,13 @@ public class CapabilityHeatProvider {
 
 	static private class Storage implements IStorage<IHeatProvider> {
 		@Override
-		public NBTBase writeNBT(Capability<IHeatProvider> capability, IHeatProvider instance, EnumFacing side) {
-			return null;
+		public void readNBT(Capability<IHeatProvider> capability, IHeatProvider instance, EnumFacing side, NBTBase nbt) {
+
 		}
 
 		@Override
-		public void readNBT(Capability<IHeatProvider> capability, IHeatProvider instance, EnumFacing side, NBTBase nbt) {
-
+		public NBTBase writeNBT(Capability<IHeatProvider> capability, IHeatProvider instance, EnumFacing side) {
+			return null;
 		}
 	}
 

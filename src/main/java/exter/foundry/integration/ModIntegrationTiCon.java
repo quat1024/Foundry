@@ -32,8 +32,8 @@ public class ModIntegrationTiCon implements IModIntegration {
 
 	public static final String TIC = "tconstruct";
 
-	private Map<String, String> liquid_map;
-	private Map<String, String> reverse_liquid_map;
+	static private final int TICON_INGOT_AMOUNT = 144;
+	static private final int INGOT_GCD = gcd(TICON_INGOT_AMOUNT, FoundryAPI.FLUID_AMOUNT_INGOT);
 
 	static private final int gcd(int a, int b) {
 		while (b != 0) {
@@ -44,18 +44,13 @@ public class ModIntegrationTiCon implements IModIntegration {
 		return a;
 	}
 
-	static private final int TICON_INGOT_AMOUNT = 144;
+	private Map<String, String> liquid_map;
 
-	static private final int INGOT_GCD = gcd(TICON_INGOT_AMOUNT, FoundryAPI.FLUID_AMOUNT_INGOT);
+	private Map<String, String> reverse_liquid_map;
 
-	@Override
-	public void onPreInit(Configuration config) {
-
-	}
-
-	@Override
-	public void onInit() {
-
+	private void createAlloyRecipe(AlloyRecipe mix) {
+		if (mix.getFluids().size() > 4) { return; }
+		createAlloyRecipe(mix, 0, new ArrayList<FluidStack>());
 	}
 
 	private void createAlloyRecipe(AlloyRecipe mix, int index, List<FluidStack> inputs) {
@@ -91,14 +86,9 @@ public class ModIntegrationTiCon implements IModIntegration {
 		createAlloyRecipe(mix, index + 1, in);
 	}
 
-	private void createAlloyRecipe(AlloyRecipe mix) {
-		if (mix.getFluids().size() > 4) { return; }
-		createAlloyRecipe(mix, 0, new ArrayList<FluidStack>());
-	}
-
 	@Override
-	public void onPostInit() {
-
+	public String getName() {
+		return "TiCon";
 	}
 
 	@Override
@@ -257,17 +247,6 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 	}
 
-	@Override
-	public String getName() {
-		return "TiCon";
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void onClientPreInit() {
-
-	}
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientInit() {
@@ -277,6 +256,27 @@ public class ModIntegrationTiCon implements IModIntegration {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientPostInit() {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientPreInit() {
+
+	}
+
+	@Override
+	public void onInit() {
+
+	}
+
+	@Override
+	public void onPostInit() {
+
+	}
+
+	@Override
+	public void onPreInit(Configuration config) {
 
 	}
 }

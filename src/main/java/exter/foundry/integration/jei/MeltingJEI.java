@@ -30,50 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class MeltingJEI {
 
-	public static class Wrapper implements IRecipeWrapper {
-
-		private final IDrawable temp;
-
-		private final IMeltingRecipe recipe;
-
-		public Wrapper(IMeltingRecipe recipe) {
-			this.recipe = recipe;
-			ResourceLocation background_location = new ResourceLocation("foundry", "textures/gui/crucible.png");
-			temp = new DrawableResource(background_location, 176, 53, (recipe.getMeltingPoint() * 100 - TileEntityFoundryHeatable.TEMP_MIN) * 54 / (500000 - TileEntityFoundryHeatable.TEMP_MIN), 12, 0, 0, 0, 0, 256, 256);
-
-		}
-
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return null;
-		}
-
-		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-			if (temp != null) {
-				temp.draw(minecraft, 11, 41);
-			}
-
-			minecraft.fontRenderer.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
-		}
-
-		@Override
-		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-			return false;
-		}
-
-		@Override
-		public void getIngredients(IIngredients ingredients) {
-			ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
-			ingredients.setOutput(FluidStack.class, recipe.getOutput());
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return recipe == other;
-		}
-	}
-
 	static public class Category implements IRecipeCategory<Wrapper> {
 
 		protected final ResourceLocation backgroundLocation;
@@ -101,14 +57,24 @@ public class MeltingJEI {
 		}
 
 		@Override
+		public void drawExtras(Minecraft minecraft) {
+			arrow.draw(minecraft, 49, 7);
+		}
+
+		@Override
 		@Nonnull
 		public IDrawable getBackground() {
 			return background;
 		}
 
 		@Override
-		public void drawExtras(Minecraft minecraft) {
-			arrow.draw(minecraft, 49, 7);
+		public IDrawable getIcon() {
+			return null;
+		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
 		}
 
 		@Override
@@ -116,15 +82,15 @@ public class MeltingJEI {
 			return localizedName;
 		}
 
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+
 		@Nonnull
 		@Override
 		public String getUid() {
 			return FoundryJEIConstants.MELT_UID;
-		}
-
-		@Override
-		public IDrawable getIcon() {
-			return null;
 		}
 
 		@Override
@@ -137,15 +103,49 @@ public class MeltingJEI {
 			guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
 			guiFluidStacks.set(1, ingredients.getOutputs(FluidStack.class).get(0));
 		}
+	}
 
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return Collections.emptyList();
+	public static class Wrapper implements IRecipeWrapper {
+
+		private final IDrawable temp;
+
+		private final IMeltingRecipe recipe;
+
+		public Wrapper(IMeltingRecipe recipe) {
+			this.recipe = recipe;
+			ResourceLocation background_location = new ResourceLocation("foundry", "textures/gui/crucible.png");
+			temp = new DrawableResource(background_location, 176, 53, (recipe.getMeltingPoint() * 100 - TileEntityFoundryHeatable.TEMP_MIN) * 54 / (500000 - TileEntityFoundryHeatable.TEMP_MIN), 12, 0, 0, 0, 0, 256, 256);
+
 		}
 
 		@Override
-		public String getModName() {
-			return Foundry.MODID;
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+			if (temp != null) {
+				temp.draw(minecraft, 11, 41);
+			}
+
+			minecraft.fontRenderer.drawString(recipe.getMeltingPoint() + " °K", 14, 28, 0);
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
+			ingredients.setOutput(FluidStack.class, recipe.getOutput());
+		}
+
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return null;
+		}
+
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
 		}
 	}
 }

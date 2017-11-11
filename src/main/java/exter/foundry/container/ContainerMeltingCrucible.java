@@ -9,19 +9,19 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerMeltingCrucible extends Container {
 
-	private TileEntityMeltingCrucibleBasic te_icf;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 3;
 	public static final int SLOTS_INVENTORY = 3;
 	private static final int SLOTS_HOTBAR = 3 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 84;
 
+	private static final int SLOT_INVENTORY_Y = 84;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 142;
+	private TileEntityMeltingCrucibleBasic te_icf;
 
 	public ContainerMeltingCrucible(TileEntityMeltingCrucibleBasic icf, EntityPlayer player) {
 		te_icf = icf;
@@ -46,6 +46,12 @@ public class ContainerMeltingCrucible extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_icf.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_icf.closeInventory(player);
 	}
 
 	@Override
@@ -75,11 +81,5 @@ public class ContainerMeltingCrucible extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_icf.closeInventory(player);
 	}
 }

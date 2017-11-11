@@ -20,8 +20,15 @@ public class BlockComponent extends Block implements IBlockVariants {
 		CASING_ADVANCED(2, "casing_advanced", "componentBlockCasingAdvanced"),
 		CASING_BASIC(3, "casing_basic", "componentBlockCasingBasic");
 
+		static public EnumVariant fromID(int num) {
+			for (EnumVariant m : values()) {
+				if (m.id == num) { return m; }
+			}
+			return null;
+		}
 		public final int id;
 		public final String name;
+
 		public final String model;
 
 		private EnumVariant(int id, String name, String model) {
@@ -39,47 +46,9 @@ public class BlockComponent extends Block implements IBlockVariants {
 		public String toString() {
 			return getName();
 		}
-
-		static public EnumVariant fromID(int num) {
-			for (EnumVariant m : values()) {
-				if (m.id == num) { return m; }
-			}
-			return null;
-		}
 	}
 
 	public static final PropertyEnum<EnumVariant> VARIANT = PropertyEnum.create("variant", EnumVariant.class);
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, VARIANT);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, EnumVariant.fromID(meta));
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(VARIANT).id;
-	}
-
-	@Override
-	public int damageDropped(IBlockState state) {
-		return getMetaFromState(state);
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-		for (EnumVariant m : EnumVariant.values()) {
-			list.add(new ItemStack(this, 1, m.id));
-		}
-	}
-
-	public ItemStack asItemStack(EnumVariant variant) {
-		return new ItemStack(this, 1, getMetaFromState(getDefaultState().withProperty(VARIANT, variant)));
-	}
 
 	public BlockComponent() {
 		super(Material.ROCK);
@@ -89,6 +58,37 @@ public class BlockComponent extends Block implements IBlockVariants {
 		setUnlocalizedName("foundry.componentBlock");
 		setCreativeTab(FoundryTabMaterials.tab);
 		setRegistryName("componentBlock");
+	}
+
+	public ItemStack asItemStack(EnumVariant variant) {
+		return new ItemStack(this, 1, getMetaFromState(getDefaultState().withProperty(VARIANT, variant)));
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(VARIANT).id;
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(VARIANT, EnumVariant.fromID(meta));
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+		for (EnumVariant m : EnumVariant.values()) {
+			list.add(new ItemStack(this, 1, m.id));
+		}
 	}
 
 	@Override

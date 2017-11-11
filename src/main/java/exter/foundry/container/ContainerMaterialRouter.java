@@ -9,19 +9,19 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerMaterialRouter extends Container {
 
-	private TileEntityMaterialRouter te_router;
-
 	// Slot numbers
 	private static final int SLOTS_TE = 0;
+
 	//private static final int SLOTS_TE_SIZE = 3;
 	private static final int SLOTS_INVENTORY = 9;
 	private static final int SLOTS_HOTBAR = 9 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 32;
-	private static final int SLOT_INVENTORY_Y = 147;
 
+	private static final int SLOT_INVENTORY_Y = 147;
 	private static final int SLOT_HOTBAR_X = 32;
+
 	private static final int SLOT_HOTBAR_Y = 205;
+	private TileEntityMaterialRouter te_router;
 
 	public ContainerMaterialRouter(TileEntityMaterialRouter router, EntityPlayer player) {
 		te_router = router;
@@ -52,6 +52,12 @@ public class ContainerMaterialRouter extends Container {
 	}
 
 	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_router.closeInventory(player);
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
 		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slot_index);
@@ -78,11 +84,5 @@ public class ContainerMaterialRouter extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_router.closeInventory(player);
 	}
 }

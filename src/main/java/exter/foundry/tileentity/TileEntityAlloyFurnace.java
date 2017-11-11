@@ -30,26 +30,26 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	public static final int SLOT_OUTPUT = 2;
 	public static final int SLOT_FUEL = 3;
 
-	public int burn_time;
-
-	public int item_burn_time;
-
-	public int progress;
-
-	private boolean update_burn_times;
-
 	@Deprecated
 	static private final int[] SLOTS_TOP = new int[] { SLOT_INPUT_A, SLOT_INPUT_B };
+
 	@Deprecated
 	static private final int[] SLOTS_BOTTOM = new int[] { SLOT_OUTPUT, SLOT_FUEL };
+
 	@Deprecated
 	static private final int[] SLOTS_SIDES = new int[] { SLOT_FUEL };
 
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of(SLOT_INPUT_A, SLOT_INPUT_B);
+
 	static private final Set<Integer> IH_SLOTS_INPUT_FUEL = ImmutableSet.of(SLOT_INPUT_A, SLOT_INPUT_B, SLOT_FUEL);
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of(SLOT_OUTPUT);
 	static private final Set<Integer> IH_SLOTS_OUTPUT_FUEL = ImmutableSet.of(SLOT_OUTPUT, SLOT_FUEL);
+
 	static private final Set<Integer> IH_SLOTS_FUEL = ImmutableSet.of(SLOT_FUEL);
+	public int burn_time;
+	public int item_burn_time;
+	public int progress;
+	private boolean update_burn_times;
 
 	private ItemHandler item_handler;
 	private ItemHandlerFuel item_handler_fuel;
@@ -63,107 +63,21 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		item_handler_fuel = new ItemHandlerFuel(this, getSizeInventory(), IH_SLOTS_INPUT_FUEL, IH_SLOTS_OUTPUT_FUEL, IH_SLOTS_FUEL);
 	}
 
+	@Optional.Method(modid = "Botania")
 	@Override
-	protected IItemHandler getItemHandler(EnumFacing side) {
-		switch (side) {
-		case UP:
-			return item_handler;
-		default:
-			return item_handler_fuel;
+	public void boostBurnTime() {
+		if (!world.isRemote) {
+			burn_time = 200;
+			item_burn_time = 199;
+			update_burn_times = true;
+			markDirty();
 		}
 	}
 
+	@Optional.Method(modid = "Botania")
 	@Override
-	public int getSizeInventory() {
-		return 4;
-	}
+	public void boostCookTime() {
 
-	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		if (tag.hasKey("BurnTime")) {
-			burn_time = tag.getInteger("BurnTime");
-		}
-		if (tag.hasKey("CookTime")) {
-			progress = tag.getInteger("CookTime");
-		}
-		if (tag.hasKey("ItemBurnTime")) {
-			item_burn_time = tag.getInteger("ItemBurnTime");
-		}
-		if (world != null && !world.isRemote) {
-			((BlockAlloyFurnace) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), burn_time > 0);
-		}
-	}
-
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-		return oldState.getBlock() != newSate.getBlock();
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("BurnTime", burn_time);
-		compound.setInteger("CookTime", progress);
-		compound.setInteger("ItemBurnTime", item_burn_time);
-		return compound;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	public boolean isBurning() {
-		return burn_time > 0;
-	}
-
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		switch (slot) {
-		case SLOT_OUTPUT:
-			return false;
-		case SLOT_FUEL:
-			return TileEntityFurnace.isItemFuel(stack);
-		}
-		return true;
-	}
-
-	@Deprecated
-	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-		switch (side) {
-		case DOWN:
-			return SLOTS_BOTTOM;
-		case UP:
-			return SLOTS_TOP;
-		default:
-			return SLOTS_SIDES;
-		}
-	}
-
-	@Deprecated
-	@Override
-	public boolean canInsertItem(int par1, ItemStack par2ItemStack, EnumFacing side) {
-		return this.isItemValidForSlot(par1, par2ItemStack);
 	}
 
 	@Deprecated
@@ -172,15 +86,38 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		return side != EnumFacing.UP || slot != SLOT_INPUT_A || slot != SLOT_INPUT_B || stack.getItem() == Items.BUCKET;
 	}
 
+	@Deprecated
 	@Override
-	protected void updateClient() {
-
+	public boolean canInsertItem(int par1, ItemStack par2ItemStack, EnumFacing side) {
+		return this.isItemValidForSlot(par1, par2ItemStack);
 	}
 
 	private boolean canOutput(IAlloyFurnaceRecipe recipe) {
 		ItemStack output = recipe.getOutput();
 		ItemStack inv_output = getStackInSlot(SLOT_OUTPUT);
 		return (inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize());
+	}
+
+	@Optional.Method(modid = "Botania")
+	@Override
+	public boolean canSmelt() {
+		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
+			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
+			if (recipe == null) {
+				recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
+			}
+			if (recipe == null) { return false; }
+			ItemStack output = recipe.getOutput();
+			ItemStack inv_output = inventory.get(SLOT_OUTPUT);
+			if (inv_output != null && (!inv_output.isItemEqual(output) || inv_output.getCount() - output.getCount() > inv_output.getMaxStackSize())) { return false; }
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {
+
 	}
 
 	private void doSmelt(IAlloyFurnaceRecipe recipe, boolean reversed) {
@@ -207,6 +144,112 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 			updateInventoryItem(SLOT_OUTPUT);
 			markDirty();
 		}
+	}
+
+	@Optional.Method(modid = "Botania")
+	@Override
+	public int getBurnTime() {
+		return burn_time <= 1 ? 0 : burn_time - 1;
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	protected IItemHandler getItemHandler(EnumFacing side) {
+		switch (side) {
+		case UP:
+			return item_handler;
+		default:
+			return item_handler_fuel;
+		}
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 4;
+	}
+
+	@Deprecated
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+		switch (side) {
+		case DOWN:
+			return SLOTS_BOTTOM;
+		case UP:
+			return SLOTS_TOP;
+		default:
+			return SLOTS_SIDES;
+		}
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return null;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 0;
+	}
+
+	public boolean isBurning() {
+		return burn_time > 0;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		switch (slot) {
+		case SLOT_OUTPUT:
+			return false;
+		case SLOT_FUEL:
+			return TileEntityFurnace.isItemFuel(stack);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
+		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		if (tag.hasKey("BurnTime")) {
+			burn_time = tag.getInteger("BurnTime");
+		}
+		if (tag.hasKey("CookTime")) {
+			progress = tag.getInteger("CookTime");
+		}
+		if (tag.hasKey("ItemBurnTime")) {
+			item_burn_time = tag.getInteger("ItemBurnTime");
+		}
+		if (world != null && !world.isRemote) {
+			((BlockAlloyFurnace) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), burn_time > 0);
+		}
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return oldState.getBlock() != newSate.getBlock();
+	}
+
+	@Override
+	protected void updateClient() {
+
 	}
 
 	@Override
@@ -272,57 +315,14 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		return null;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 0;
-	}
-
-	@Override
-	protected void onInitialize() {
-
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public boolean canSmelt() {
-		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
-			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
-			if (recipe == null) {
-				recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
-			}
-			if (recipe == null) { return false; }
-			ItemStack output = recipe.getOutput();
-			ItemStack inv_output = inventory.get(SLOT_OUTPUT);
-			if (inv_output != null && (!inv_output.isItemEqual(output) || inv_output.getCount() - output.getCount() > inv_output.getMaxStackSize())) { return false; }
-			return true;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
 		}
-		return false;
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public int getBurnTime() {
-		return burn_time <= 1 ? 0 : burn_time - 1;
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public void boostBurnTime() {
-		if (!world.isRemote) {
-			burn_time = 200;
-			item_burn_time = 199;
-			update_burn_times = true;
-			markDirty();
-		}
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public void boostCookTime() {
-
+		super.writeToNBT(compound);
+		compound.setInteger("BurnTime", burn_time);
+		compound.setInteger("CookTime", progress);
+		compound.setInteger("ItemBurnTime", item_burn_time);
+		return compound;
 	}
 }

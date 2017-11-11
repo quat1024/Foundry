@@ -18,50 +18,10 @@ import net.minecraft.world.World;
  */
 public interface IFirearmRound {
 	/**
-	 * Determine which gun this round fits.
-	 * Possible values are "revolver" for the Revolver, or "shotgun" for the shotgun.
-	 * @return The type of gun this ammo is used for.
-	 */
-	public String getRoundType();
-
-	/**
-	 * Called when a bullet hits a block.
-	 * @param shooter Player or mob, that made the shot.
-	 * @param from Location the shot originated.
-	 * @param world World the shot hit.
-	 * @param pos coordinates of the block hit.
-	 * @param side Side of the block hit.
-	 */
-	public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side);
-
-	/**
-	 * Called after a shot hit and damaged an entity
-	 * This method can be used to apply potion effects in special rounds.
-	 * @param entity Entity that the shot hit.
-	 * @param count How many bullets/pellets the shot hit the entity.
-	 */
-	public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count);
-
-	/**
 	 * Should the round break glass.
 	 * @return Should the round break glass
 	 */
 	public boolean breaksGlass();
-
-	/**
-	 * Get the base range of the round.
-	 * Bullets that hit with a distance below the base range do their base damage.
-	 * @return The base range of the round.
-	 */
-	public double getBaseRange();
-
-	/**
-	 * Get the damage fall-off range of the round.
-	 * Bullets that hit with a distance above the base range have their damage reduced the further they hit.
-	 * Bullets that hit further than their base+falloff range do no damage.
-	 * @return The base range of the round.
-	 */
-	public double getFalloffRange();
 
 	/**
 	 * Get the base damage of the round.
@@ -72,14 +32,54 @@ public interface IFirearmRound {
 	public double getBaseDamage(EntityLivingBase entity_hit);
 
 	/**
+	 * Get the base range of the round.
+	 * Bullets that hit with a distance below the base range do their base damage.
+	 * @return The base range of the round.
+	 */
+	public double getBaseRange();
+
+	/**
 	 * Get the casing that the round uses.
 	 * @return ItemStack of the casing.
 	 */
 	public ItemStack getCasing();
 
 	/**
+	 * Get the damage fall-off range of the round.
+	 * Bullets that hit with a distance above the base range have their damage reduced the further they hit.
+	 * Bullets that hit further than their base+falloff range do no damage.
+	 * @return The base range of the round.
+	 */
+	public double getFalloffRange();
+
+	/**
+	 * Determine which gun this round fits.
+	 * Possible values are "revolver" for the Revolver, or "shotgun" for the shotgun.
+	 * @return The type of gun this ammo is used for.
+	 */
+	public String getRoundType();
+
+	/**
 	 * Check if the round ignores armor.
 	 * @return true if the round ignores armor.
 	 */
 	public boolean ignoresArmor();
+
+	/**
+	 * Called after a shot hit and damaged an entity
+	 * This method can be used to apply potion effects in special rounds.
+	 * @param entity Entity that the shot hit.
+	 * @param count How many bullets/pellets the shot hit the entity.
+	 */
+	public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count);
+
+	/**
+	 * Called when a bullet hits a block.
+	 * @param shooter Player or mob, that made the shot.
+	 * @param from Location the shot originated.
+	 * @param world World the shot hit.
+	 * @param pos coordinates of the block hit.
+	 * @param side Side of the block hit.
+	 */
+	public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side);
 }

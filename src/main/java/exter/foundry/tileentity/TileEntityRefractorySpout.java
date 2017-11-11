@@ -23,16 +23,6 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 		}
 
 		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
-		}
-
-		@Override
-		public int fill(FluidStack resource, boolean doFill) {
-			return 0;
-		}
-
-		@Override
 		public FluidStack drain(FluidStack resource, boolean doDrain) {
 			return null;
 		}
@@ -41,12 +31,29 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 		public FluidStack drain(int maxDrain, boolean doDrain) {
 			return null;
 		}
+
+		@Override
+		public int fill(FluidStack resource, boolean doFill) {
+			return 0;
+		}
+
+		@Override
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
+		}
 	}
 
-	private FluidTank fluid_moved;
-	private IFluidHandler fluid_handler;
+	static private boolean areFluidStacksEqual(FluidStack a, FluidStack b) {
+		if (a == null) { return b == null; }
+		if (b == null) { return false; }
 
+		return a.isFluidStackIdentical(b);
+	}
+	private FluidTank fluid_moved;
+
+	private IFluidHandler fluid_handler;
 	private int pour_length;
+
 	private int next_move;
 
 	public TileEntityRefractorySpout() {
@@ -69,6 +76,31 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 	}
 
 	@Override
+	public int getSizeInventory() {
+		return 0;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return fluid_moved;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 1;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return false;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound compund) {
 		super.readFromNBT(compund);
 
@@ -81,41 +113,13 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("next_move", next_move);
-		compound.setInteger("pour_length", pour_length);
-		return compound;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 0;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return false;
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return oldState.getBlock() != newSate.getBlock();
 	}
 
 	@Override
 	protected void updateClient() {
 
-	}
-
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-		return oldState.getBlock() != newSate.getBlock();
-	}
-
-	static private boolean areFluidStacksEqual(FluidStack a, FluidStack b) {
-		if (a == null) { return b == null; }
-		if (b == null) { return false; }
-
-		return a.isFluidStackIdentical(b);
 	}
 
 	@Override
@@ -176,17 +180,13 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		return fluid_moved;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 1;
-	}
-
-	@Override
-	protected void onInitialize() {
-
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("next_move", next_move);
+		compound.setInteger("pour_length", pour_length);
+		return compound;
 	}
 }

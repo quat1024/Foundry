@@ -26,8 +26,8 @@ public class MTAlloyingCurcibleHandler {
 		}
 
 		@Override
-		protected void remove() {
-			AlloyingCrucibleRecipeManager.instance.recipes.remove(recipe);
+		public String getDescription() {
+			return String.format("(%s,%s) -> %s", MTHelper.getFluidDescription(recipe.getInputA()), MTHelper.getFluidDescription(recipe.getInputB()), MTHelper.getFluidDescription(recipe.getOutput()));
 		}
 
 		@Override
@@ -36,8 +36,8 @@ public class MTAlloyingCurcibleHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			return String.format("(%s,%s) -> %s", MTHelper.getFluidDescription(recipe.getInputA()), MTHelper.getFluidDescription(recipe.getInputB()), MTHelper.getFluidDescription(recipe.getOutput()));
+		protected void remove() {
+			AlloyingCrucibleRecipeManager.instance.recipes.remove(recipe);
 		}
 	}
 

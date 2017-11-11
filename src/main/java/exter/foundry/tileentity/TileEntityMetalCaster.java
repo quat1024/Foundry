@@ -54,67 +54,6 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 		update_energy = true;
 	}
 
-	@Override
-	protected IItemHandler getItemHandler(EnumFacing side) {
-		return item_handler;
-	}
-
-	@Override
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return fluid_handler;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compund) {
-		super.readFromNBT(compund);
-
-		if (compund.hasKey("progress")) {
-			progress = compund.getInteger("progress");
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("progress", progress);
-		return compound;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 14;
-	}
-
-	public int getProgress() {
-		return progress;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		return slot == INVENTORY_EXTRA;
-	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
-	private void checkCurrentRecipe() {
-		if (current_recipe == null) {
-			progress = -1;
-			return;
-		}
-
-		if (!current_recipe.matchesRecipe(inventory.get(INVENTORY_MOLD), tank.getFluid(), inventory.get(INVENTORY_EXTRA))) {
-			progress = -1;
-			current_recipe = null;
-			return;
-		}
-	}
-
 	private void beginCasting() {
 		if (current_recipe != null && canCastCurrentRecipe() && getStoredFoundryEnergy() >= ENERGY_REQUIRED) {
 			useFoundryEnergy(ENERGY_REQUIRED, true);
@@ -132,6 +71,73 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 		ItemStack inv_output = inventory.get(INVENTORY_OUTPUT);
 		if (inv_output != null && (!inv_output.isItemEqual(recipe_output) || inv_output.getCount() + recipe_output.getCount() > inv_output.getMaxStackSize())) { return false; }
 		return true;
+	}
+
+	private void checkCurrentRecipe() {
+		if (current_recipe == null) {
+			progress = -1;
+			return;
+		}
+
+		if (!current_recipe.matchesRecipe(inventory.get(INVENTORY_MOLD), tank.getFluid(), inventory.get(INVENTORY_EXTRA))) {
+			progress = -1;
+			current_recipe = null;
+			return;
+		}
+	}
+
+	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return fluid_handler;
+	}
+
+	@Override
+	public long getFoundryEnergyCapacity() {
+		return 40000;
+	}
+
+	@Override
+	protected IItemHandler getItemHandler(EnumFacing side) {
+		return item_handler;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 14;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		if (slot != 0) { return null; }
+		return tank;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 1;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+		return slot == INVENTORY_EXTRA;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compund) {
+		super.readFromNBT(compund);
+
+		if (compund.hasKey("progress")) {
+			progress = compund.getInteger("progress");
+		}
+	}
+
+	@Override
+	protected void updateClient() {
+
 	}
 
 	@Override
@@ -206,18 +212,12 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		if (slot != 0) { return null; }
-		return tank;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 1;
-	}
-
-	@Override
-	public long getFoundryEnergyCapacity() {
-		return 40000;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("progress", progress);
+		return compound;
 	}
 }

@@ -45,14 +45,6 @@ public class GuiMetalInfuser extends GuiFoundry {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
-		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
-
-		fontRenderer.drawString("Metal Infuser", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
-	}
-
-	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(GUI_TEXTURE);
@@ -68,6 +60,14 @@ public class GuiMetalInfuser extends GuiFoundry {
 
 		displayTank(window_x, window_y, INPUT_TANK_X, INPUT_TANK_Y, TANK_HEIGHT, TANK_OVERLAY_X, TANK_OVERLAY_Y, te_infuser.getTank(TileEntityMetalInfuser.TANK_INPUT));
 		displayTank(window_x, window_y, OUTPUT_TANK_X, OUTPUT_TANK_Y, TANK_HEIGHT, TANK_OVERLAY_X, TANK_OVERLAY_Y, te_infuser.getTank(TileEntityMetalInfuser.TANK_OUTPUT));
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
+		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
+
+		fontRenderer.drawString("Metal Infuser", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 	}
 
 	@Override

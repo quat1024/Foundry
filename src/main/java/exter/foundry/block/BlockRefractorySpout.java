@@ -46,21 +46,6 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 		setRegistryName("refractorySpout");
 	}
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		switch (state.getValue(FACING)) {
-		case EAST:
-			return AABB_EAST;
-		case NORTH:
-			return AABB_NORTH;
-		case SOUTH:
-			return AABB_SOUTH;
-		case WEST:
-			return AABB_WEST;
-		}
-		return null;
-	}
-
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
 		AxisAlignedBB[] bounds = null;
 		switch (state.getValue(FACING)) {
@@ -82,14 +67,52 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractorySpout", tooltip);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack item) {
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		for (EnumMachineFacing state : FACING.getAllowedValues()) {
+			BlockPos blockpos = pos.offset(state.facing.getOpposite());
+			if (worldIn.isSideSolid(blockpos, state.facing, true)) { return true; }
+		}
 
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+		if (side == EnumFacing.UP || side == EnumFacing.DOWN) { return false; }
+		BlockPos blockpos = pos.offset(side.getOpposite());
+		return worldIn.isSideSolid(blockpos, side, true);
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityRefractorySpout();
+	}
+
+	@Override
+	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return false;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		switch (state.getValue(FACING)) {
+		case EAST:
+			return AABB_EAST;
+		case NORTH:
+			return AABB_NORTH;
+		case SOUTH:
+			return AABB_SOUTH;
+		case WEST:
+			return AABB_WEST;
+		}
+		return null;
 	}
 
 	@Override
@@ -109,28 +132,6 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
-		if (side == EnumFacing.UP || side == EnumFacing.DOWN) { return false; }
-		BlockPos blockpos = pos.offset(side.getOpposite());
-		return worldIn.isSideSolid(blockpos, side, true);
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		for (EnumMachineFacing state : FACING.getAllowedValues()) {
-			BlockPos blockpos = pos.offset(state.facing.getOpposite());
-			if (worldIn.isSideSolid(blockpos, state.facing, true)) { return true; }
-		}
-
-		return false;
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityRefractorySpout();
-	}
-
-	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
@@ -143,16 +144,6 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 	@Override
 	public boolean isTopSolid(IBlockState state) {
 		return false;
-	}
-
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-		return true;
 	}
 
 	@Override
@@ -182,9 +173,18 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractorySpout", tooltip);
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack item) {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		return true;
 	}
 }

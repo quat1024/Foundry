@@ -44,28 +44,10 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 		setRegistryName("refractoryTank");
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityRefractoryTankBasic();
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
-
-		if (te != null) {
-			te.updateRedstone();
-		}
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitx, float hity, float hitz) {
-		if (world.isRemote) {
-			return true;
-		} else {
-			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
-			return true;
-		}
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryTankBasic", tooltip);
 	}
 
 	@Override
@@ -94,8 +76,25 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 	}
 
 	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityRefractoryTankBasic();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getSpoutPourDepth(World world, BlockPos pos, IBlockState state) {
+		return 2;
 	}
 
 	@Override
@@ -114,25 +113,26 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
+
+		if (te != null) {
+			te.updateRedstone();
+		}
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitx, float hity, float hitz) {
+		if (world.isRemote) {
+			return true;
+		} else {
+			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
+			return true;
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
 		return true;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public int getSpoutPourDepth(World world, BlockPos pos, IBlockState state) {
-		return 2;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryTankBasic", tooltip);
 	}
 }

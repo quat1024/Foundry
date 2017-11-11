@@ -5,11 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IInfuserRecipe {
-	/**
-	 * Get the fluid required.
-	 * @return FluidStack containing the required fluid.
-	 */
-	public FluidStack getInputFluid();
+	public int getEnergyNeeded();
 
 	/**
 	 * Get the substance required.
@@ -18,12 +14,16 @@ public interface IInfuserRecipe {
 	public IItemMatcher getInput();
 
 	/**
+	 * Get the fluid required.
+	 * @return FluidStack containing the required fluid.
+	 */
+	public FluidStack getInputFluid();
+
+	/**
 	 * Get the produced fluid.
 	 * @return The fluid that the recipe produces.
 	 */
 	public FluidStack getOutput();
-
-	public int getEnergyNeeded();
 
 	/**
 	 * Check if a fluid stack and substance stack matches this recipe

@@ -9,20 +9,20 @@ import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerBurnerHeater extends Container {
 
-	private TileEntityBurnerHeater te_burner;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 4;
-
 	public static final int SLOTS_INVENTORY = 4;
+
 	public static final int SLOTS_HOTBAR = 4 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 84;
 
+	private static final int SLOT_INVENTORY_Y = 84;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 142;
+	private TileEntityBurnerHeater te_burner;
 
 	public ContainerBurnerHeater(TileEntityBurnerHeater burner, EntityPlayer player) {
 		te_burner = burner;
@@ -49,6 +49,12 @@ public class ContainerBurnerHeater extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_burner.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_burner.closeInventory(player);
 	}
 
 	@Override
@@ -80,11 +86,5 @@ public class ContainerBurnerHeater extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_burner.closeInventory(player);
 	}
 }

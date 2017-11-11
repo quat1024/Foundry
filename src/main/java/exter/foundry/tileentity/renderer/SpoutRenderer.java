@@ -23,10 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SpoutRenderer extends TileEntitySpecialRenderer<TileEntityRefractorySpout> {
-	private void drawQuad(EnumFacing facing, TextureAtlasSprite texture, double x1, double y1, double x2, double y2, double z, int color, int light) {
-		drawQuad(facing, texture, x1, y1, x2, y2, z, 0, 0, color, light);
-	}
-
 	private void drawQuad(EnumFacing facing, TextureAtlasSprite texture, double x1, double y1, double x2, double y2, double z, double u, double v, int color, int light) {
 		float alpha = (color >> 24 & 255) / 255.0F;
 		float red = (color >> 16 & 255) / 255.0F;
@@ -73,6 +69,10 @@ public class SpoutRenderer extends TileEntitySpecialRenderer<TileEntityRefractor
 			break;
 		}
 		Tessellator.getInstance().draw();
+	}
+
+	private void drawQuad(EnumFacing facing, TextureAtlasSprite texture, double x1, double y1, double x2, double y2, double z, int color, int light) {
+		drawQuad(facing, texture, x1, y1, x2, y2, z, 0, 0, color, light);
 	}
 
 	@Override

@@ -25,16 +25,6 @@ public class MTMoldStationHandler {
 		}
 
 		@Override
-		protected void remove() {
-			MoldRecipeManager.instance.recipes.remove(recipe);
-		}
-
-		@Override
-		public String getRecipeType() {
-			return "mold station";
-		}
-
-		@Override
 		public String getDescription() {
 			StringBuilder builder = new StringBuilder();
 			builder.append(String.format("( %d, %d, [", recipe.getWidth(), recipe.getHeight()));
@@ -48,6 +38,16 @@ public class MTMoldStationHandler {
 			}
 			builder.append(String.format("] ) -> %s", MTHelper.getItemDescription(recipe.getOutput())));
 			return builder.toString();
+		}
+
+		@Override
+		public String getRecipeType() {
+			return "mold station";
+		}
+
+		@Override
+		protected void remove() {
+			MoldRecipeManager.instance.recipes.remove(recipe);
 		}
 	}
 

@@ -31,14 +31,6 @@ public class GuiButtonFoundry extends GuiButton {
 		icon_height = 0;
 	}
 
-	public GuiButtonFoundry setIconTexture(int x, int y, int w, int h) {
-		icon_x = x;
-		icon_y = y;
-		icon_width = w;
-		icon_height = h;
-		return this;
-	}
-
 	public void drawButton(Minecraft mc, int x, int y) {
 		if (this.visible) {
 			mc.getTextureManager().bindTexture(gui_texture);
@@ -58,11 +50,19 @@ public class GuiButtonFoundry extends GuiButton {
 		}
 	}
 
+	public int getHeight() {
+		return height;
+	}
+
 	public int getWidth() {
 		return width;
 	}
 
-	public int getHeight() {
-		return height;
+	public GuiButtonFoundry setIconTexture(int x, int y, int w, int h) {
+		icon_x = x;
+		icon_y = y;
+		icon_width = w;
+		icon_height = h;
+		return this;
 	}
 }

@@ -8,20 +8,20 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRefractoryHopper extends Container {
-	private TileEntityRefractoryHopper te_hopper;
-
 	// Slot numbers
 	private static final int SLOTS_TE = 0;
+
 	private static final int SLOTS_TE_SIZE = 2;
-
 	private static final int SLOTS_INVENTORY = 2;
+
 	private static final int SLOTS_HOTBAR = 2 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 83;
 
+	private static final int SLOT_INVENTORY_Y = 83;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 141;
+	private TileEntityRefractoryHopper te_hopper;
 
 	public ContainerRefractoryHopper(TileEntityRefractoryHopper hopper, EntityPlayer player) {
 		te_hopper = hopper;
@@ -45,6 +45,12 @@ public class ContainerRefractoryHopper extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_hopper.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_hopper.closeInventory(player);
 	}
 
 	@Override
@@ -74,11 +80,5 @@ public class ContainerRefractoryHopper extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_hopper.closeInventory(player);
 	}
 }

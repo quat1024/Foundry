@@ -14,12 +14,6 @@ public interface IAlloyMixerRecipeManager {
 	public void addRecipe(FluidStack out, FluidStack[] in);
 
 	/**
-	 * Get a list of all the recipes
-	 * @return List of all the recipes
-	 */
-	public List<IAlloyMixerRecipe> getRecipes();
-
-	/**
 	 * Find a valid recipe that contains the given inputs.
 	 * A recipe is found if the recipe's inputs contains the fluid in the parameters.
 	 * @param in_a FluidStack for the first input.
@@ -28,6 +22,12 @@ public interface IAlloyMixerRecipeManager {
 	 * @return
 	 */
 	public IAlloyMixerRecipe findRecipe(FluidStack[] in, int[] order);
+
+	/**
+	 * Get a list of all the recipes
+	 * @return List of all the recipes
+	 */
+	public List<IAlloyMixerRecipe> getRecipes();
 
 	/**
 	 * Removes a recipe.

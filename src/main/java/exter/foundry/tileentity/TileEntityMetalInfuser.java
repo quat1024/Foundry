@@ -59,70 +59,6 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 		addContainerSlot(new ContainerSlot(TANK_OUTPUT, INVENTORY_CONTAINER_OUTPUT_FILL, true));
 	}
 
-	@Override
-	protected IItemHandler getItemHandler(EnumFacing side) {
-		return item_handler;
-	}
-
-	@Override
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return fluid_handler;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compund) {
-		super.readFromNBT(compund);
-
-		if (compund.hasKey("progress")) {
-			progress = compund.getInteger("progress");
-		}
-
-		if (compund.hasKey("extract_time")) {
-			extract_energy = compund.getInteger("extract_time");
-		}
-
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("progress", progress);
-		compound.setInteger("extract_time", extract_energy);
-		return compound;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 5;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	public int getProgress() {
-		return progress;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		return true;
-	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
 	private void checkCurrentRecipe() {
 		if (current_recipe == null) {
 			progress = 0;
@@ -136,6 +72,11 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 			current_recipe = null;
 			return;
 		}
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {
+
 	}
 
 	private void doInfusion() {
@@ -160,6 +101,73 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 				decrStackSize(INVENTORY_SUBSTANCE_INPUT, 1);
 			}
 		}
+	}
+
+	public int getExtractTime() {
+		return extract_energy;
+	}
+
+	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return fluid_handler;
+	}
+
+	@Override
+	public long getFoundryEnergyCapacity() {
+		return 3000;
+	}
+
+	@Override
+	protected IItemHandler getItemHandler(EnumFacing side) {
+		return item_handler;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 5;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return tanks[slot];
+	}
+
+	@Override
+	public int getTankCount() {
+		return 2;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+		return true;
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compund) {
+		super.readFromNBT(compund);
+
+		if (compund.hasKey("progress")) {
+			progress = compund.getInteger("progress");
+		}
+
+		if (compund.hasKey("extract_time")) {
+			extract_energy = compund.getInteger("extract_time");
+		}
+
+	}
+
+	@Override
+	protected void updateClient() {
+
 	}
 
 	@Override
@@ -188,22 +196,14 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 		}
 	}
 
-	public int getExtractTime() {
-		return extract_energy;
-	}
-
 	@Override
-	public FluidTank getTank(int slot) {
-		return tanks[slot];
-	}
-
-	@Override
-	public int getTankCount() {
-		return 2;
-	}
-
-	@Override
-	public long getFoundryEnergyCapacity() {
-		return 3000;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("progress", progress);
+		compound.setInteger("extract_time", extract_energy);
+		return compound;
 	}
 }

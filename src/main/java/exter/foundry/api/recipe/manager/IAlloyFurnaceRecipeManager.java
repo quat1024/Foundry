@@ -23,12 +23,6 @@ public interface IAlloyFurnaceRecipeManager {
 	public void addRecipe(ItemStack out, IItemMatcher[] in_a, IItemMatcher[] in_b);
 
 	/**
-	 * Get a list of all the recipes
-	 * @return List of all the recipes
-	 */
-	public List<IAlloyFurnaceRecipe> getRecipes();
-
-	/**
 	 * Find a valid recipe that contains the given inputs.
 	 * A recipe is found if the recipe's inputs contains the fluid in the parameters.
 	 * @param in_a FluidStack for the first input.
@@ -37,6 +31,12 @@ public interface IAlloyFurnaceRecipeManager {
 	 * @return
 	 */
 	public IAlloyFurnaceRecipe findRecipe(ItemStack in_a, ItemStack in_b);
+
+	/**
+	 * Get a list of all the recipes
+	 * @return List of all the recipes
+	 */
+	public List<IAlloyFurnaceRecipe> getRecipes();
 
 	/**
 	 * Removes a recipe.

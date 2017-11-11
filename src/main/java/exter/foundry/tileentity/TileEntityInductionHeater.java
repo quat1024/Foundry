@@ -29,18 +29,25 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 	}
 
 	@Override
+	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
+		if (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) { return FoundryAPI.capability_heatprovider.cast(heat_provider); }
+		return super.getCapability(cap, facing);
+	}
+
+	@Override
+	public long getFoundryEnergyCapacity() {
+		return 25000;
+	}
+
+	@Optional.Method(modid = "IC2")
+	@Override
+	public int getSinkTier() {
+		return 2;
+	}
+
+	@Override
 	public int getSizeInventory() {
 		return 0;
-	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
-	@Override
-	protected void updateServer() {
-		super.updateServer();
 	}
 
 	@Override
@@ -54,8 +61,8 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 	}
 
 	@Override
-	public long getFoundryEnergyCapacity() {
-		return 25000;
+	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
+		return (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) || super.hasCapability(cap, facing);
 	}
 
 	@Override
@@ -64,19 +71,12 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		return (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) || super.hasCapability(cap, facing);
+	protected void updateClient() {
+
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) { return FoundryAPI.capability_heatprovider.cast(heat_provider); }
-		return super.getCapability(cap, facing);
-	}
-
-	@Optional.Method(modid = "IC2")
-	@Override
-	public int getSinkTier() {
-		return 2;
+	protected void updateServer() {
+		super.updateServer();
 	}
 }

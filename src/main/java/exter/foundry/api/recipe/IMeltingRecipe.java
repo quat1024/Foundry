@@ -12,16 +12,22 @@ public interface IMeltingRecipe {
 	public IItemMatcher getInput();
 
 	/**
-	 * Get the produced fluid.
-	 * @return The fluid that the recipe produces.
-	 */
-	public FluidStack getOutput();
-
-	/**
 	 * Get the melting temperature of the item.
 	 * @return Melting temperature in K.
 	 */
 	public int getMeltingPoint();
+
+	/**
+	 * Get the melting speed.
+	 * @return The melting speed.
+	 */
+	public int getMeltingSpeed();
+
+	/**
+	 * Get the produced fluid.
+	 * @return The fluid that the recipe produces.
+	 */
+	public FluidStack getOutput();
 
 	/**
 	 * Check if an item matches this recipe.
@@ -29,10 +35,4 @@ public interface IMeltingRecipe {
 	 * @return true, if the item matches, false otherwise.
 	 */
 	public boolean matchesRecipe(ItemStack item);
-
-	/**
-	 * Get the melting speed.
-	 * @return The melting speed.
-	 */
-	public int getMeltingSpeed();
 }

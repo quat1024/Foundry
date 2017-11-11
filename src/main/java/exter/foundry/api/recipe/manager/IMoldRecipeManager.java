@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 public interface IMoldRecipeManager {
 	public void addRecipe(ItemStack result, int width, int height, int[] recipe);
 
-	public List<IMoldRecipe> getRecipes();
-
 	public IMoldRecipe findRecipe(int[] grid);
+
+	public List<IMoldRecipe> getRecipes();
 
 	/**
 	 * Removes a recipe.

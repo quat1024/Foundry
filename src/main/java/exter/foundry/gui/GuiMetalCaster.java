@@ -59,11 +59,23 @@ public class GuiMetalCaster extends GuiFoundry {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
-		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
-
-		fontRenderer.drawString("Metal Caster", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+	protected void actionPerformed(GuiButton button) {
+		if (button.id == button_mode.id) {
+			switch (te_caster.getRedstoneMode()) {
+			case RSMODE_IGNORE:
+				te_caster.setRedstoneMode(RedstoneMode.RSMODE_OFF);
+				break;
+			case RSMODE_OFF:
+				te_caster.setRedstoneMode(RedstoneMode.RSMODE_ON);
+				break;
+			case RSMODE_ON:
+				te_caster.setRedstoneMode(RedstoneMode.RSMODE_PULSE);
+				break;
+			case RSMODE_PULSE:
+				te_caster.setRedstoneMode(RedstoneMode.RSMODE_IGNORE);
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -86,6 +98,14 @@ public class GuiMetalCaster extends GuiFoundry {
 			drawTexturedModalRect(window_x + POWER_X, window_y + POWER_Y + POWER_HEIGHT - power, POWER_OVERLAY_X, POWER_OVERLAY_Y + POWER_HEIGHT - power, POWER_WIDTH, power);
 		}
 		displayTank(window_x, window_y, TANK_X, TANK_Y, TANK_HEIGHT, TANK_OVERLAY_X, TANK_OVERLAY_Y, te_caster.getTank(0));
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
+		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
+
+		fontRenderer.drawString("Metal Caster", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 	}
 
 	@Override
@@ -125,25 +145,5 @@ public class GuiMetalCaster extends GuiFoundry {
 		int window_y = (height - ySize) / 2;
 		button_mode = new GuiButtonFoundry(1, RSMODE_X + window_x, RSMODE_Y + window_y, 16, 15, GUI_TEXTURE, RSMODE_TEXTURE_X, RSMODE_TEXTURE_Y, RSMODE_TEXTURE_X + 16, RSMODE_TEXTURE_Y);
 		buttonList.add(button_mode);
-	}
-
-	@Override
-	protected void actionPerformed(GuiButton button) {
-		if (button.id == button_mode.id) {
-			switch (te_caster.getRedstoneMode()) {
-			case RSMODE_IGNORE:
-				te_caster.setRedstoneMode(RedstoneMode.RSMODE_OFF);
-				break;
-			case RSMODE_OFF:
-				te_caster.setRedstoneMode(RedstoneMode.RSMODE_ON);
-				break;
-			case RSMODE_ON:
-				te_caster.setRedstoneMode(RedstoneMode.RSMODE_PULSE);
-				break;
-			case RSMODE_PULSE:
-				te_caster.setRedstoneMode(RedstoneMode.RSMODE_IGNORE);
-				break;
-			}
-		}
 	}
 }

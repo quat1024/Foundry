@@ -27,13 +27,13 @@ public class InventoryFirearm implements IInventory {
 	}
 
 	@Override
-	public int getSizeInventory() {
-		return items.size();
+	public void clear() {
+
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return items.get(slot);
+	public void closeInventory(EntityPlayer player) {
+
 	}
 
 	@Override
@@ -62,23 +62,18 @@ public class InventoryFirearm implements IInventory {
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int slot) {
-		ItemStack ammo = items.get(slot);
-		if (!ammo.isEmpty()) {
-			items.set(slot, ItemStack.EMPTY);
-			return ammo;
-		} else {
-			return ItemStack.EMPTY;
-		}
+	public ITextComponent getDisplayName() {
+		return null;
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
-		items.set(slot, stack);
-		if (stack.getCount() > this.getInventoryStackLimit()) {
-			stack.setCount(this.getInventoryStackLimit());
-		}
-		markDirty();
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
 	}
 
 	@Override
@@ -87,8 +82,35 @@ public class InventoryFirearm implements IInventory {
 	}
 
 	@Override
-	public void markDirty() {
-		player_inv.markDirty();
+	public String getName() {
+		return null;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return items.size();
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+		return items.get(slot);
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		for (ItemStack s : items)
+			if (!s.isEmpty()) return false;
+		return true;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		return stack.getItem() instanceof IFirearmRound;
 	}
 
 	@Override
@@ -97,18 +119,24 @@ public class InventoryFirearm implements IInventory {
 	}
 
 	@Override
+	public void markDirty() {
+		player_inv.markDirty();
+	}
+
+	@Override
 	public void openInventory(EntityPlayer player) {
 
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return stack.getItem() instanceof IFirearmRound;
+	public ItemStack removeStackFromSlot(int slot) {
+		ItemStack ammo = items.get(slot);
+		if (!ammo.isEmpty()) {
+			items.set(slot, ItemStack.EMPTY);
+			return ammo;
+		} else {
+			return ItemStack.EMPTY;
+		}
 	}
 
 	public void save() {
@@ -120,44 +148,16 @@ public class InventoryFirearm implements IInventory {
 	}
 
 	@Override
-	public String getName() {
-		return null;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return null;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
 	public void setField(int id, int value) {
 
 	}
 
 	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
-	public void clear() {
-
-	}
-
-	@Override
-	public boolean isEmpty() {
-		for (ItemStack s : items)
-			if (!s.isEmpty()) return false;
-		return true;
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+		items.set(slot, stack);
+		if (stack.getCount() > this.getInventoryStackLimit()) {
+			stack.setCount(this.getInventoryStackLimit());
+		}
+		markDirty();
 	}
 }

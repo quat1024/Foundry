@@ -11,14 +11,36 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface IMaterialRegistry {
 	/**
-	 * Registers all items with in the Ore Dictionary.
-	 * Note: Any item added to the same Ore Dictionary entry after calling this 
-	 * will not be registered in the Material Registry
-	 * @param oredict_name Ore Dictionary name to register.
-	 * @param material Material name to register. Ex: "Iron".
-	 * @param type Type name to register. Ex: "Ingot".
+	 * Get the material the item is made of. Ex: "Iron"/"Gold".
 	 */
-	public void registerItem(String oredict_name, String material, String type);
+	public String getMaterial(ItemStack item);
+
+	/**
+	 * Get the item stack used for the material icon in the Material Rounter's GUI..
+	 */
+	@SideOnly(Side.CLIENT)
+	public ItemStack getMaterialIcon(String material);
+
+	/**
+	 * Get all registered material names.
+	 */
+	public Set<String> getMaterialNames();
+
+	/**
+	 * Get what type item is. Ex: "Ingot"/"Dust".
+	 */
+	public String getType(ItemStack item);
+
+	/**
+	 * Get the item stack used for the type icon in the Material Rounter's GUI..
+	 */
+	@SideOnly(Side.CLIENT)
+	public ItemStack getTypeIcon(String type);
+
+	/**
+	 * Get all registered type names.
+	 */
+	public Set<String> getTypeNames();
 
 	/**
 	 * Registers an item.
@@ -29,24 +51,14 @@ public interface IMaterialRegistry {
 	public void registerItem(ItemStack item, String material, String type);
 
 	/**
-	 * Get the material the item is made of. Ex: "Iron"/"Gold".
+	 * Registers all items with in the Ore Dictionary.
+	 * Note: Any item added to the same Ore Dictionary entry after calling this 
+	 * will not be registered in the Material Registry
+	 * @param oredict_name Ore Dictionary name to register.
+	 * @param material Material name to register. Ex: "Iron".
+	 * @param type Type name to register. Ex: "Ingot".
 	 */
-	public String getMaterial(ItemStack item);
-
-	/**
-	 * Get what type item is. Ex: "Ingot"/"Dust".
-	 */
-	public String getType(ItemStack item);
-
-	/**
-	 * Get all registered type names.
-	 */
-	public Set<String> getTypeNames();
-
-	/**
-	 * Get all registered material names.
-	 */
-	public Set<String> getMaterialNames();
+	public void registerItem(String oredict_name, String material, String type);
 
 	/**
 	 * Register an icon for a material in the Material Rounter's GUI..
@@ -63,16 +75,4 @@ public interface IMaterialRegistry {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void registerTypeIcon(String type, ItemStack stack);
-
-	/**
-	 * Get the item stack used for the material icon in the Material Rounter's GUI..
-	 */
-	@SideOnly(Side.CLIENT)
-	public ItemStack getMaterialIcon(String material);
-
-	/**
-	 * Get the item stack used for the type icon in the Material Rounter's GUI..
-	 */
-	@SideOnly(Side.CLIENT)
-	public ItemStack getTypeIcon(String type);
 }

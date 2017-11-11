@@ -9,11 +9,6 @@ public class BurnerHeaterFuel implements IBurnerHeaterFuel {
 
 	public final IItemMatcher fuel;
 
-	@Override
-	public IItemMatcher getFuel() {
-		return fuel;
-	}
-
 	public BurnerHeaterFuel(IItemMatcher fuel, int burn_time, int heat) {
 		if (fuel == null) { throw new IllegalArgumentException("Fuel output cannot be null"); }
 		if (burn_time < 1) { throw new IllegalArgumentException("Fuel burn time must be > 0."); }
@@ -26,6 +21,11 @@ public class BurnerHeaterFuel implements IBurnerHeaterFuel {
 	@Override
 	public int getBurnTime() {
 		return burn_time;
+	}
+
+	@Override
+	public IItemMatcher getFuel() {
+		return fuel;
 	}
 
 	@Override

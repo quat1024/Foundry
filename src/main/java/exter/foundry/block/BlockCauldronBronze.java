@@ -22,16 +22,16 @@ public class BlockCauldronBronze extends BlockCauldron {
 		setCreativeTab(CreativeTabs.BREWING);
 	}
 
-	@Nullable
-	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(this);
-	}
-
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		Item item = Item.getItemFromBlock(this);
 		return new ItemStack(item, 1, 0);
+	}
+
+	@Nullable
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Item.getItemFromBlock(this);
 	}
 
 	@Override

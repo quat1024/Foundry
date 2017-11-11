@@ -53,6 +53,11 @@ public class MTOreStack implements IIngredient {
 	}
 
 	@Override
+	public IItemStack[] getItemArray() {
+		return getItems().toArray(new IItemStack[0]);
+	}
+
+	@Override
 	public List<IItemStack> getItems() {
 		List<IItemStack> result = new ArrayList<IItemStack>();
 		for (ItemStack item : stack.getItems()) {
@@ -93,6 +98,11 @@ public class MTOreStack implements IIngredient {
 	}
 
 	@Override
+	public boolean matchesExact(IItemStack iitem) {
+		return matches(iitem);
+	}
+
+	@Override
 	public IIngredient only(IItemCondition arg0) {
 		return this;
 	}
@@ -105,15 +115,5 @@ public class MTOreStack implements IIngredient {
 	@Override
 	public IIngredient transform(IItemTransformer arg0) {
 		return this;
-	}
-
-	@Override
-	public boolean matchesExact(IItemStack iitem) {
-		return matches(iitem);
-	}
-
-	@Override
-	public IItemStack[] getItemArray() {
-		return getItems().toArray(new IItemStack[0]);
 	}
 }

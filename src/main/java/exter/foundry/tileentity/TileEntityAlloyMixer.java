@@ -25,8 +25,13 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 		}
 
 		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			return drainTank(TANK_OUTPUT, resource, doDrain);
+		}
+
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			return drainTank(TANK_OUTPUT, maxDrain, doDrain);
 		}
 
 		@Override
@@ -55,13 +60,8 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 		}
 
 		@Override
-		public FluidStack drain(FluidStack resource, boolean doDrain) {
-			return drainTank(TANK_OUTPUT, resource, doDrain);
-		}
-
-		@Override
-		public FluidStack drain(int maxDrain, boolean doDrain) {
-			return drainTank(TANK_OUTPUT, maxDrain, doDrain);
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
 		}
 	}
 
@@ -84,6 +84,10 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 
 	private FluidTank[] tanks;
 	private IFluidHandler fluid_handler;
+
+	private int[] recipe_order = new int[4];
+
+	private FluidStack[] input_tank_fluids = new FluidStack[4];
 
 	public TileEntityAlloyMixer() {
 		super();
@@ -112,22 +116,28 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 	}
 
 	@Override
+	public long getFoundryEnergyCapacity() {
+		return 3000;
+	}
+
+	@Override
 	public int getSizeInventory() {
 		return 10;
+	}
+	@Override
+	public FluidTank getTank(int slot) {
+		return tanks[slot];
+	}
+
+	@Override
+	public int getTankCount() {
+		return 5;
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return false;
 	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
-	private int[] recipe_order = new int[4];
-	private FluidStack[] input_tank_fluids = new FluidStack[4];
 
 	private void mixAlloy() {
 		if (getStoredFoundryEnergy() < 10) { return; }
@@ -180,25 +190,15 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 	}
 
 	@Override
+	protected void updateClient() {
+
+	}
+
+	@Override
 	protected void updateServer() {
 		super.updateServer();
 		if (tanks[TANK_OUTPUT].getFluidAmount() < tanks[TANK_OUTPUT].getCapacity() && (tanks[TANK_INPUT_0].getFluidAmount() > 0 || tanks[TANK_INPUT_1].getFluidAmount() > 0 || tanks[TANK_INPUT_2].getFluidAmount() > 0 || tanks[TANK_INPUT_3].getFluidAmount() > 0)) {
 			mixAlloy();
 		}
-	}
-
-	@Override
-	public FluidTank getTank(int slot) {
-		return tanks[slot];
-	}
-
-	@Override
-	public int getTankCount() {
-		return 5;
-	}
-
-	@Override
-	public long getFoundryEnergyCapacity() {
-		return 3000;
 	}
 }

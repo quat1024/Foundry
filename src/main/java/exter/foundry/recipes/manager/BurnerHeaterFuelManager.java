@@ -12,9 +12,9 @@ import exter.foundry.tileentity.TileEntityFoundryHeatable;
 import net.minecraft.item.ItemStack;
 
 public class BurnerHeaterFuelManager implements IBurnerHeaterFuelManager {
-	public List<IBurnerHeaterFuel> fuels;
-
 	public static final BurnerHeaterFuelManager instance = new BurnerHeaterFuelManager();
+
+	public List<IBurnerHeaterFuel> fuels;
 
 	private BurnerHeaterFuelManager() {
 		fuels = new ArrayList<IBurnerHeaterFuel>();
@@ -39,12 +39,12 @@ public class BurnerHeaterFuelManager implements IBurnerHeaterFuelManager {
 	}
 
 	@Override
-	public void removeFuel(IBurnerHeaterFuel fuel) {
-		fuels.remove(fuel);
+	public int getHeatNeeded(int temperature, int temp_loss_rate) {
+		return TileEntityFoundryHeatable.getMaxHeatRecieve(temperature, temp_loss_rate);
 	}
 
 	@Override
-	public int getHeatNeeded(int temperature, int temp_loss_rate) {
-		return TileEntityFoundryHeatable.getMaxHeatRecieve(temperature, temp_loss_rate);
+	public void removeFuel(IBurnerHeaterFuel fuel) {
+		fuels.remove(fuel);
 	}
 }

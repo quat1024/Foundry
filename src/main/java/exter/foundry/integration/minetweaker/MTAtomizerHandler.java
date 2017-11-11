@@ -26,8 +26,8 @@ public class MTAtomizerHandler {
 		}
 
 		@Override
-		protected void remove() {
-			AtomizerRecipeManager.instance.recipes.remove(recipe);
+		public String getDescription() {
+			return String.format("%s -> %s", MTHelper.getFluidDescription(recipe.getInput()), MTHelper.getItemDescription(recipe.getOutput()));
 		}
 
 		@Override
@@ -36,8 +36,8 @@ public class MTAtomizerHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			return String.format("%s -> %s", MTHelper.getFluidDescription(recipe.getInput()), MTHelper.getItemDescription(recipe.getOutput()));
+		protected void remove() {
+			AtomizerRecipeManager.instance.recipes.remove(recipe);
 		}
 	}
 

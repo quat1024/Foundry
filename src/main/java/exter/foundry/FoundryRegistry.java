@@ -29,14 +29,14 @@ public class FoundryRegistry {
 	}
 
 	@SubscribeEvent
-	public void registerSounds(Register<SoundEvent> e) {
-		e.getRegistry().registerAll(SOUNDS.toArray(new SoundEvent[SOUNDS.size()]));
-	}
-
-	@SubscribeEvent
 	public void registerRecipes(Register<IRecipe> e) {
 		InitRecipes.preInit();
 		e.getRegistry().registerAll(RECIPES.toArray(new IRecipe[RECIPES.size()]));
+	}
+
+	@SubscribeEvent
+	public void registerSounds(Register<SoundEvent> e) {
+		e.getRegistry().registerAll(SOUNDS.toArray(new SoundEvent[SOUNDS.size()]));
 	}
 
 }

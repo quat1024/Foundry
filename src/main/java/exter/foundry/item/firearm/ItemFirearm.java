@@ -30,62 +30,10 @@ public abstract class ItemFirearm extends Item {
 
 	static private Random random = new Random();
 
-	public ItemFirearm() {
-		setMaxDamage(800);
-		setCreativeTab(FoundryTabFirearms.tab);
-		setMaxStackSize(1);
-		MinecraftForge.EVENT_BUS.register(this);
-	}
-
-	static private RayTraceResult trace(World world, EntityLivingBase shooter, Entity target, float spread) {
-		Vec3d start = new Vec3d(shooter.posX, shooter.posY + shooter.getEyeHeight() - 0.1, shooter.posZ);
-		Vec3d dir;
-		if (target != null) {
-			dir = new Vec3d(target.posX - start.x, target.posY - start.y, target.posZ - start.z).normalize();
-		} else {
-			float pitch = -shooter.rotationPitch;
-			float yaw = -shooter.rotationYaw;
-			float cyaw = MathHelper.cos(yaw * 0.017453292F - (float) Math.PI);
-			float syaw = MathHelper.sin(yaw * 0.017453292F - (float) Math.PI);
-			float cpitch = -MathHelper.cos(pitch * 0.017453292F);
-
-			dir = new Vec3d(syaw * cpitch, MathHelper.sin(pitch * 0.017453292F), cyaw * cpitch);
-		}
-		Vec3d vspread = new Vec3d((random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1)).normalize();
-		spread = random.nextFloat() * spread;
-		dir = dir.addVector(vspread.x * spread, vspread.y * spread, vspread.z * spread).normalize();
-
-		double distance = 150.0D;
-
-		Vec3d end = start.addVector(dir.x * distance, dir.y * distance, dir.z * distance);
-
-		Vec3d tstart = new Vec3d(start.x, start.y, start.z);
-		Vec3d tend = new Vec3d(end.x, end.y, end.z);
-		RayTraceResult obj = world.rayTraceBlocks(tstart, tend, false, true, false);
-
-		List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(shooter, shooter.getEntityBoundingBox().expand(150, 150, 150));
-		double min_dist = obj != null ? obj.hitVec.distanceTo(start) : 150;
-		for (Entity ent : entities) {
-			if (ent.canBeCollidedWith() && ent.getEntityBoundingBox() != null) {
-				RayTraceResult ent_obj = ent.getEntityBoundingBox().expand(0.1, 0.1, 0.1).calculateIntercept(start, end);
-				if (ent_obj != null) {
-					if (ent_obj.typeOfHit == RayTraceResult.Type.BLOCK) {
-						ent_obj.typeOfHit = RayTraceResult.Type.ENTITY;
-						ent_obj.entityHit = ent;
-					}
-					double d = ent_obj.hitVec.distanceTo(start);
-					if (obj == null || d < min_dist) {
-						min_dist = d;
-
-						obj = ent_obj;
-					}
-				}
-			}
-		}
-		if (obj != null) {
-			obj.hitInfo = start;
-		}
-		return obj;
+	static public boolean roundMatches(ItemStack stack, String type) {
+		if (stack == null) { return false; }
+		if (!stack.hasCapability(FoundryAPI.capability_firearmround, null)) { return false; }
+		return stack.getCapability(FoundryAPI.capability_firearmround, null).getRoundType().equals(type);
 	}
 
 	static public final void shoot(ItemStack round_item, World world, EntityLivingBase shooter, Entity target, int times, float spread, float damage_multiplier) {
@@ -151,10 +99,65 @@ public abstract class ItemFirearm extends Item {
 		}
 	}
 
-	@Override
-	public final int getMaxItemUseDuration(ItemStack p_77626_1_) {
-		return 72000;
+	static private RayTraceResult trace(World world, EntityLivingBase shooter, Entity target, float spread) {
+		Vec3d start = new Vec3d(shooter.posX, shooter.posY + shooter.getEyeHeight() - 0.1, shooter.posZ);
+		Vec3d dir;
+		if (target != null) {
+			dir = new Vec3d(target.posX - start.x, target.posY - start.y, target.posZ - start.z).normalize();
+		} else {
+			float pitch = -shooter.rotationPitch;
+			float yaw = -shooter.rotationYaw;
+			float cyaw = MathHelper.cos(yaw * 0.017453292F - (float) Math.PI);
+			float syaw = MathHelper.sin(yaw * 0.017453292F - (float) Math.PI);
+			float cpitch = -MathHelper.cos(pitch * 0.017453292F);
+
+			dir = new Vec3d(syaw * cpitch, MathHelper.sin(pitch * 0.017453292F), cyaw * cpitch);
+		}
+		Vec3d vspread = new Vec3d((random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1)).normalize();
+		spread = random.nextFloat() * spread;
+		dir = dir.addVector(vspread.x * spread, vspread.y * spread, vspread.z * spread).normalize();
+
+		double distance = 150.0D;
+
+		Vec3d end = start.addVector(dir.x * distance, dir.y * distance, dir.z * distance);
+
+		Vec3d tstart = new Vec3d(start.x, start.y, start.z);
+		Vec3d tend = new Vec3d(end.x, end.y, end.z);
+		RayTraceResult obj = world.rayTraceBlocks(tstart, tend, false, true, false);
+
+		List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(shooter, shooter.getEntityBoundingBox().expand(150, 150, 150));
+		double min_dist = obj != null ? obj.hitVec.distanceTo(start) : 150;
+		for (Entity ent : entities) {
+			if (ent.canBeCollidedWith() && ent.getEntityBoundingBox() != null) {
+				RayTraceResult ent_obj = ent.getEntityBoundingBox().expand(0.1, 0.1, 0.1).calculateIntercept(start, end);
+				if (ent_obj != null) {
+					if (ent_obj.typeOfHit == RayTraceResult.Type.BLOCK) {
+						ent_obj.typeOfHit = RayTraceResult.Type.ENTITY;
+						ent_obj.entityHit = ent;
+					}
+					double d = ent_obj.hitVec.distanceTo(start);
+					if (obj == null || d < min_dist) {
+						min_dist = d;
+
+						obj = ent_obj;
+					}
+				}
+			}
+		}
+		if (obj != null) {
+			obj.hitInfo = start;
+		}
+		return obj;
 	}
+
+	public ItemFirearm() {
+		setMaxDamage(800);
+		setCreativeTab(FoundryTabFirearms.tab);
+		setMaxStackSize(1);
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	public abstract ItemStack getAmmo(ItemStack stack, int slot);
 
 	@Override
 	public final int getItemStackLimit(ItemStack stack) {
@@ -166,13 +169,10 @@ public abstract class ItemFirearm extends Item {
 		return EnumAction.BOW;
 	}
 
-	public abstract void setAmmo(ItemStack stack, int slot, ItemStack ammo);
-
-	public abstract ItemStack getAmmo(ItemStack stack, int slot);
-
-	static public boolean roundMatches(ItemStack stack, String type) {
-		if (stack == null) { return false; }
-		if (!stack.hasCapability(FoundryAPI.capability_firearmround, null)) { return false; }
-		return stack.getCapability(FoundryAPI.capability_firearmround, null).getRoundType().equals(type);
+	@Override
+	public final int getMaxItemUseDuration(ItemStack p_77626_1_) {
+		return 72000;
 	}
+
+	public abstract void setAmmo(ItemStack stack, int slot, ItemStack ammo);
 }

@@ -29,66 +29,6 @@ public abstract class GuiFoundry extends GuiContainer {
 		super(container);
 	}
 
-	protected abstract ResourceLocation getGUITexture();
-
-	protected void drawItemStack(int x, int y, ItemStack stack) {
-		//GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-		GL11.glPushMatrix();
-		RenderHelper.enableGUIStandardItemLighting();
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		zLevel = 200.0F;
-		itemRender.zLevel = 200.0F;
-		FontRenderer font = null;
-		if (stack != null) {
-			font = stack.getItem().getFontRenderer(stack);
-		}
-		if (font == null) {
-			font = fontRenderer;
-		}
-		itemRender.renderItemAndEffectIntoGUI(stack, x, y);
-		itemRender.renderItemOverlayIntoGUI(font, stack, x, y, null);
-		zLevel = 0.0F;
-		itemRender.zLevel = 0.0F;
-		mc.renderEngine.bindTexture(this.getGUITexture());
-		GL11.glPopMatrix();
-		RenderHelper.enableStandardItemLighting();
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		//GL11.glTranslatef(0.0F, 0.0F, -32.0F);
-	}
-
-	/**
-	 * Draw part of an icon
-	 * @param x X coordinate to draw to.
-	 * @param y Y coordinate to draw to.
-	 * @param icon Icon to draw
-	 * @param width Width to draw.
-	 * @param height Height to draw.
-	 * @param icon_x X coordinate offset in the icon.
-	 * @param icon_y Y coordinate offset in the icon.
-	 */
-	private void drawTexturedModelRectFromIconPartial(int x, int y, TextureAtlasSprite icon, int width, int height, int icon_x, int icon_y, int color) {
-		BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
-
-		double min_u = icon.getInterpolatedU(icon_x);
-		double min_v = icon.getInterpolatedV(icon_y);
-		double max_u = icon.getInterpolatedU(icon_x + width);
-		double max_v = icon.getInterpolatedV(icon_y + height);
-		int red = color >>> 16 & 255;
-		int green = color >>> 8 & 255;
-		int blue = color & 255;
-
-		tessellator.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-		tessellator.pos(x, y + height, zLevel).tex(min_u, max_v).color(red, green, blue, 255).endVertex();
-		tessellator.pos(x + width, y + height, zLevel).tex(max_u, max_v).color(red, green, blue, 255).endVertex();
-		tessellator.pos(x + width, y, zLevel).tex(max_u, min_v).color(red, green, blue, 255).endVertex();
-		tessellator.pos(x, y, zLevel).tex(min_u, min_v).color(red, green, blue, 255).endVertex();
-		Tessellator.getInstance().draw();
-	}
-
 	protected void addTankTooltip(List<String> tooltip, int x, int y, FluidTank tank) {
 		FluidStack stack = tank.getFluid();
 		if (stack != null && stack.amount > 0) {
@@ -161,12 +101,65 @@ public abstract class GuiFoundry extends GuiContainer {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
-	protected void setGLColor(int color) {
-		float red = (color >> 16 & 255) / 255.0F;
-		float green = (color >> 8 & 255) / 255.0F;
-		float blue = (color & 255) / 255.0F;
-		GL11.glColor4f(red, green, blue, 1.0f);
+	protected void drawItemStack(int x, int y, ItemStack stack) {
+		//GL11.glTranslatef(0.0F, 0.0F, 32.0F);
+		GL11.glPushMatrix();
+		RenderHelper.enableGUIStandardItemLighting();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		zLevel = 200.0F;
+		itemRender.zLevel = 200.0F;
+		FontRenderer font = null;
+		if (stack != null) {
+			font = stack.getItem().getFontRenderer(stack);
+		}
+		if (font == null) {
+			font = fontRenderer;
+		}
+		itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+		itemRender.renderItemOverlayIntoGUI(font, stack, x, y, null);
+		zLevel = 0.0F;
+		itemRender.zLevel = 0.0F;
+		mc.renderEngine.bindTexture(this.getGUITexture());
+		GL11.glPopMatrix();
+		RenderHelper.enableStandardItemLighting();
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		//GL11.glTranslatef(0.0F, 0.0F, -32.0F);
 	}
+
+	/**
+	 * Draw part of an icon
+	 * @param x X coordinate to draw to.
+	 * @param y Y coordinate to draw to.
+	 * @param icon Icon to draw
+	 * @param width Width to draw.
+	 * @param height Height to draw.
+	 * @param icon_x X coordinate offset in the icon.
+	 * @param icon_y Y coordinate offset in the icon.
+	 */
+	private void drawTexturedModelRectFromIconPartial(int x, int y, TextureAtlasSprite icon, int width, int height, int icon_x, int icon_y, int color) {
+		BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
+
+		double min_u = icon.getInterpolatedU(icon_x);
+		double min_v = icon.getInterpolatedV(icon_y);
+		double max_u = icon.getInterpolatedU(icon_x + width);
+		double max_v = icon.getInterpolatedV(icon_y + height);
+		int red = color >>> 16 & 255;
+		int green = color >>> 8 & 255;
+		int blue = color & 255;
+
+		tessellator.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+		tessellator.pos(x, y + height, zLevel).tex(min_u, max_v).color(red, green, blue, 255).endVertex();
+		tessellator.pos(x + width, y + height, zLevel).tex(max_u, max_v).color(red, green, blue, 255).endVertex();
+		tessellator.pos(x + width, y, zLevel).tex(max_u, min_v).color(red, green, blue, 255).endVertex();
+		tessellator.pos(x, y, zLevel).tex(min_u, min_v).color(red, green, blue, 255).endVertex();
+		Tessellator.getInstance().draw();
+	}
+
+	protected abstract ResourceLocation getGUITexture();
 
 	protected String getRedstoenModeText(TileEntityFoundry.RedstoneMode mode) {
 		switch (mode) {
@@ -181,5 +174,12 @@ public abstract class GuiFoundry extends GuiContainer {
 		default:
 			return null;
 		}
+	}
+
+	protected void setGLColor(int color) {
+		float red = (color >> 16 & 255) / 255.0F;
+		float green = (color >> 8 & 255) / 255.0F;
+		float blue = (color & 255) / 255.0F;
+		GL11.glColor4f(red, green, blue, 1.0f);
 	}
 }

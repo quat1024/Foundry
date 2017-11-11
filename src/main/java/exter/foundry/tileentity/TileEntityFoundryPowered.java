@@ -24,8 +24,13 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 	private class ForgeEnergyConsumer implements IEnergyStorage {
 
 		@Override
-		public int receiveEnergy(int maxReceive, boolean simulate) {
-			return (int) receiveFoundryEnergy(maxReceive * RATIO_FE, !simulate, false) / RATIO_FE;
+		public boolean canExtract() {
+			return false;
+		}
+
+		@Override
+		public boolean canReceive() {
+			return true;
 		}
 
 		@Override
@@ -44,35 +49,113 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 
 		@Override
-		public boolean canExtract() {
-			return false;
-		}
-
-		@Override
-		public boolean canReceive() {
-			return true;
+		public int receiveEnergy(int maxReceive, boolean simulate) {
+			return (int) receiveFoundryEnergy(maxReceive * RATIO_FE, !simulate, false) / RATIO_FE;
 		}
 	}
-
-	private boolean added_enet;
-	protected boolean update_energy;
-	protected boolean update_energy_tick;
-
-	public abstract long getFoundryEnergyCapacity();
 
 	static public int RATIO_RF = 10;
 	static public int RATIO_TESLA = 10;
 	static public int RATIO_FE = 10;
+
 	static public int RATIO_EU = 40;
 
+	private boolean added_enet;
+	protected boolean update_energy;
+	protected boolean update_energy_tick;
 	private long energy_stored;
-	private final ForgeEnergyConsumer fe;
 
+	private final ForgeEnergyConsumer fe;
 	public TileEntityFoundryPowered() {
 		fe = new ForgeEnergyConsumer();
 		update_energy = false;
 		update_energy_tick = true;
 		added_enet = false;
+	}
+
+	@Optional.Method(modid = "ic2")
+	@Override
+	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction) {
+		return true;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
+		if (cap == CapabilityEnergy.ENERGY) {
+			return CapabilityEnergy.ENERGY.cast(fe);
+		} else {
+			return super.getCapability(cap, facing);
+		}
+	}
+
+	@Optional.Method(modid = "ic2")
+	@Override
+	public double getDemandedEnergy() {
+		return (double) (getFoundryEnergyCapacity() - getStoredFoundryEnergy()) / RATIO_EU;
+	}
+
+	public abstract long getFoundryEnergyCapacity();
+
+	@Optional.Method(modid = "ic2")
+	@Override
+	public int getSinkTier() {
+		return 1;
+	}
+
+	public long getStoredFoundryEnergy() {
+		long capacity = getFoundryEnergyCapacity();
+		if (energy_stored > capacity) {
+			return capacity;
+		} else {
+			return energy_stored;
+		}
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
+		if (cap == CapabilityEnergy.ENERGY) {
+			return true;
+		} else {
+			return super.hasCapability(cap, facing);
+		}
+	}
+
+	@Optional.Method(modid = "ic2")
+	@Override
+	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
+		double use_amount = Math.max(Math.min(amount, getDemandedEnergy()), 0);
+
+		return amount - receiveEU(use_amount, true);
+	}
+
+	@Optional.Method(modid = "ic2")
+	public void loadEnet() {
+		if (!added_enet && !getWorld().isRemote) {
+			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+			added_enet = true;
+		}
+	}
+
+	@Override
+	public void onChunkUnload() {
+		if (Loader.isModLoaded("ic2")) unloadEnet();
+	}
+
+	@Override
+	protected void onInitialize() {
+		update_energy_tick = true;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		if (compound.hasKey("energy")) {
+			energy_stored = compound.getLong("energy");
+		}
+	}
+
+	private double receiveEU(double eu, boolean do_receive) {
+		return (double) receiveFoundryEnergy((int) (eu * RATIO_EU), do_receive, true) / RATIO_EU;
 	}
 
 	private long receiveFoundryEnergy(long en, boolean do_receive, boolean allow_overflow) {
@@ -93,51 +176,12 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		return en;
 	}
 
-	private double receiveEU(double eu, boolean do_receive) {
-		return (double) receiveFoundryEnergy((int) (eu * RATIO_EU), do_receive, true) / RATIO_EU;
-	}
-
-	public long useFoundryEnergy(long amount, boolean do_use) {
-		if (amount > energy_stored) {
-			amount = energy_stored;
+	@Optional.Method(modid = "ic2")
+	public void unloadEnet() {
+		if (added_enet) {
+			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+			added_enet = false;
 		}
-		if (do_use) {
-			energy_stored -= amount;
-			updateFoundryEnergy();
-		}
-		return amount;
-	}
-
-	public long getStoredFoundryEnergy() {
-		long capacity = getFoundryEnergyCapacity();
-		if (energy_stored > capacity) {
-			return capacity;
-		} else {
-			return energy_stored;
-		}
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		if (compound.hasKey("energy")) {
-			energy_stored = compound.getLong("energy");
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setLong("energy", energy_stored);
-		return compound;
-	}
-
-	@Override
-	protected void onInitialize() {
-		update_energy_tick = true;
 	}
 
 	@Override
@@ -167,6 +211,11 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 	}
 
 	@Override
+	public void updateRedstone() {
+		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
+	}
+
+	@Override
 	protected void updateServer() {
 		if (update_energy_tick) {
 			updateFoundryEnergy();
@@ -174,73 +223,24 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 	}
 
-	@Override
-	public void updateRedstone() {
-		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		if (cap == CapabilityEnergy.ENERGY) {
-			return true;
-		} else {
-			return super.hasCapability(cap, facing);
+	public long useFoundryEnergy(long amount, boolean do_use) {
+		if (amount > energy_stored) {
+			amount = energy_stored;
 		}
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == CapabilityEnergy.ENERGY) {
-			return CapabilityEnergy.ENERGY.cast(fe);
-		} else {
-			return super.getCapability(cap, facing);
+		if (do_use) {
+			energy_stored -= amount;
+			updateFoundryEnergy();
 		}
+		return amount;
 	}
 
 	@Override
-	public void onChunkUnload() {
-		if (Loader.isModLoaded("ic2")) unloadEnet();
-	}
-
-	@Optional.Method(modid = "ic2")
-	public void unloadEnet() {
-		if (added_enet) {
-			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-			added_enet = false;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
 		}
-	}
-
-	@Optional.Method(modid = "ic2")
-	public void loadEnet() {
-		if (!added_enet && !getWorld().isRemote) {
-			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-			added_enet = true;
-		}
-	}
-
-	@Optional.Method(modid = "ic2")
-	@Override
-	public double getDemandedEnergy() {
-		return (double) (getFoundryEnergyCapacity() - getStoredFoundryEnergy()) / RATIO_EU;
-	}
-
-	@Optional.Method(modid = "ic2")
-	@Override
-	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
-		double use_amount = Math.max(Math.min(amount, getDemandedEnergy()), 0);
-
-		return amount - receiveEU(use_amount, true);
-	}
-
-	@Optional.Method(modid = "ic2")
-	@Override
-	public int getSinkTier() {
-		return 1;
-	}
-
-	@Optional.Method(modid = "ic2")
-	@Override
-	public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction) {
-		return true;
+		super.writeToNBT(compound);
+		compound.setLong("energy", energy_stored);
+		return compound;
 	}
 }

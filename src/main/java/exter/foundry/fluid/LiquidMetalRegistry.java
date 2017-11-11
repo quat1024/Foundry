@@ -19,13 +19,26 @@ import net.minecraftforge.fluids.FluidRegistry;
  * Utility class for registering a metal's corresponding block, items, fluid, and recipes.
  */
 public class LiquidMetalRegistry implements IFluidRegistry {
-	private Map<String, FluidLiquidMetal> registry;
-
 	static public LiquidMetalRegistry instance = new LiquidMetalRegistry();
+
+	private Map<String, FluidLiquidMetal> registry;
 
 	private LiquidMetalRegistry() {
 		registry = new HashMap<String, FluidLiquidMetal>();
 		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@Override
+	public FluidLiquidMetal getFluid(String name) {
+		return registry.get(name);
+	}
+
+	public Set<String> getFluidNames() {
+		return Collections.unmodifiableSet(registry.keySet());
+	}
+
+	public Map<String, FluidLiquidMetal> getFluids() {
+		return Collections.unmodifiableMap(registry);
 	}
 
 	/**
@@ -74,18 +87,5 @@ public class LiquidMetalRegistry implements IFluidRegistry {
 
 		registry.put(metal_name, fluid);
 		return fluid;
-	}
-
-	@Override
-	public FluidLiquidMetal getFluid(String name) {
-		return registry.get(name);
-	}
-
-	public Map<String, FluidLiquidMetal> getFluids() {
-		return Collections.unmodifiableMap(registry);
-	}
-
-	public Set<String> getFluidNames() {
-		return Collections.unmodifiableSet(registry.keySet());
 	}
 }

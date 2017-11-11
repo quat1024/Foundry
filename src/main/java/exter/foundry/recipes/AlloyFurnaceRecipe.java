@@ -13,6 +13,14 @@ public class AlloyFurnaceRecipe implements IAlloyFurnaceRecipe {
 	public IItemMatcher input_b;
 	public ItemStack output;
 
+	public AlloyFurnaceRecipe(ItemStack out, IItemMatcher in_a, IItemMatcher in_b) {
+		if (out == null) { throw new IllegalArgumentException("Alloy recipe output cannot be null"); }
+		output = out.copy();
+
+		input_a = in_a;
+		input_b = in_b;
+	}
+
 	@Override
 	public IItemMatcher getInputA() {
 		return input_a;
@@ -26,14 +34,6 @@ public class AlloyFurnaceRecipe implements IAlloyFurnaceRecipe {
 	@Override
 	public ItemStack getOutput() {
 		return output.copy();
-	}
-
-	public AlloyFurnaceRecipe(ItemStack out, IItemMatcher in_a, IItemMatcher in_b) {
-		if (out == null) { throw new IllegalArgumentException("Alloy recipe output cannot be null"); }
-		output = out.copy();
-
-		input_a = in_a;
-		input_b = in_b;
 	}
 
 	@Override

@@ -17,37 +17,6 @@ public class CastingRecipe implements ICastingRecipe {
 
 	private final int speed;
 
-	@Override
-	public FluidStack getInput() {
-		return fluid.copy();
-	}
-
-	@Override
-	public ItemStack getMold() {
-		return mold.copy();
-	}
-
-	@Override
-	public boolean containsExtra(ItemStack stack) {
-		if (stack == null) { return extra == null; }
-		return extra.apply(stack);
-	}
-
-	@Override
-	public boolean requiresExtra() {
-		return extra != null;
-	}
-
-	@Override
-	public IItemMatcher getInputExtra() {
-		return extra;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return output.getItem();
-	}
-
 	public CastingRecipe(IItemMatcher result, FluidStack in_fluid, ItemStack in_mold, IItemMatcher in_extra, int cast_speed) {
 		if (result == null) { throw new IllegalArgumentException("Casting recipe result cannot be null."); }
 		output = result;
@@ -61,9 +30,9 @@ public class CastingRecipe implements ICastingRecipe {
 	}
 
 	@Override
-	public boolean matchesRecipe(ItemStack mold_stack, FluidStack fluid_stack, ItemStack in_extra) {
-		if (getOutput() == null) { return false; }
-		return fluid_stack != null && fluid_stack.containsFluid(fluid) && mold_stack != null && mold.isItemEqual(mold_stack) && ItemStack.areItemStackTagsEqual(mold, mold_stack) && (extra == null || extra.apply(in_extra));
+	public boolean containsExtra(ItemStack stack) {
+		if (stack == null) { return extra == null; }
+		return extra.apply(stack);
 	}
 
 	@Override
@@ -72,7 +41,38 @@ public class CastingRecipe implements ICastingRecipe {
 	}
 
 	@Override
+	public FluidStack getInput() {
+		return fluid.copy();
+	}
+
+	@Override
+	public IItemMatcher getInputExtra() {
+		return extra;
+	}
+
+	@Override
+	public ItemStack getMold() {
+		return mold.copy();
+	}
+
+	@Override
+	public ItemStack getOutput() {
+		return output.getItem();
+	}
+
+	@Override
 	public IItemMatcher getOutputMatcher() {
 		return output;
+	}
+
+	@Override
+	public boolean matchesRecipe(ItemStack mold_stack, FluidStack fluid_stack, ItemStack in_extra) {
+		if (getOutput() == null) { return false; }
+		return fluid_stack != null && fluid_stack.containsFluid(fluid) && mold_stack != null && mold.isItemEqual(mold_stack) && ItemStack.areItemStackTagsEqual(mold, mold_stack) && (extra == null || extra.apply(in_extra));
+	}
+
+	@Override
+	public boolean requiresExtra() {
+		return extra != null;
 	}
 }

@@ -7,23 +7,11 @@ import net.minecraftforge.fluids.FluidStack;
 public interface ICastingRecipe {
 
 	/**
-	 * Get the fluid required for casting.
-	 * @return FluidStack containing the required fluid.
+	 * Check if the item stack contains the necessary extra items for this recipe.
+	 * @param stack the stack to check.
+	 * @return true if the stack contains the recipe's extra item requirement.
 	 */
-	public FluidStack getInput();
-
-	/**
-	 * Get the mold required for casting.
-	 * @return ItemStack containing the required mold.
-	 */
-
-	public ItemStack getMold();
-
-	/**
-	 * Get the extra item required for casting.
-	 * @return Can be an {@link ItemStack} containing the required extra item, a {@link OreStack}, or null if no extra item is required.
-	 */
-	public IItemMatcher getInputExtra();
+	public boolean containsExtra(ItemStack stack);
 
 	/**
 	 * Get the casting speed.
@@ -32,24 +20,23 @@ public interface ICastingRecipe {
 	public int getCastingSpeed();
 
 	/**
-	 * Check if a fluid stack and mold matches this recipe.
-	 * @param mold_stack mold to check.
-	 * @param fluid_stack fluid to check (must contain the fluid in the recipe).
-	 * @return true if the stack and mold matches, false otherwise.
+	 * Get the fluid required for casting.
+	 * @return FluidStack containing the required fluid.
 	 */
-	public boolean matchesRecipe(ItemStack mold_stack, FluidStack fluid_stack, ItemStack extra);
+	public FluidStack getInput();
 
 	/**
-	 * Check if the item stack contains the necessary extra items for this recipe.
-	 * @param stack the stack to check.
-	 * @return true if the stack contains the recipe's extra item requirement.
+	 * Get the extra item required for casting.
+	 * @return Can be an {@link ItemStack} containing the required extra item, a {@link OreStack}, or null if no extra item is required.
 	 */
-	public boolean containsExtra(ItemStack stack);
+	public IItemMatcher getInputExtra();
 
 	/**
-	 * Return true if the recipe requires an extra item.
+	 * Get the mold required for casting.
+	 * @return ItemStack containing the required mold.
 	 */
-	public boolean requiresExtra();
+
+	public ItemStack getMold();
 
 	/**
 	 * Get the actual item produced by casting.
@@ -61,4 +48,17 @@ public interface ICastingRecipe {
 	 * Get the output's matcher.
 	 */
 	public IItemMatcher getOutputMatcher();
+
+	/**
+	 * Check if a fluid stack and mold matches this recipe.
+	 * @param mold_stack mold to check.
+	 * @param fluid_stack fluid to check (must contain the fluid in the recipe).
+	 * @return true if the stack and mold matches, false otherwise.
+	 */
+	public boolean matchesRecipe(ItemStack mold_stack, FluidStack fluid_stack, ItemStack extra);
+
+	/**
+	 * Return true if the recipe requires an extra item.
+	 */
+	public boolean requiresExtra();
 }

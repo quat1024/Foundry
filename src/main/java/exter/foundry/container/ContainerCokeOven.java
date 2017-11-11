@@ -9,19 +9,19 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerCokeOven extends Container {
 
-	private TileEntityCokeOven te_oven;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 2;
 	public static final int SLOTS_INVENTORY = 2;
 	private static final int SLOTS_HOTBAR = 2 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 84;
 
+	private static final int SLOT_INVENTORY_Y = 84;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 142;
+	private TileEntityCokeOven te_oven;
 
 	public ContainerCokeOven(TileEntityCokeOven icf, EntityPlayer player) {
 		te_oven = icf;
@@ -45,6 +45,12 @@ public class ContainerCokeOven extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_oven.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_oven.closeInventory(player);
 	}
 
 	@Override
@@ -74,11 +80,5 @@ public class ContainerCokeOven extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_oven.closeInventory(player);
 	}
 }

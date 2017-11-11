@@ -26,41 +26,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class AlloyFurnaceJEI {
 
-	static public class Wrapper implements IRecipeWrapper {
-		@Nonnull
-		private final IAlloyFurnaceRecipe recipe;
-
-		public Wrapper(@Nonnull IAlloyFurnaceRecipe recipe) {
-			this.recipe = recipe;
-		}
-
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return null;
-		}
-
-		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-		}
-
-		@Override
-		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-			return false;
-		}
-
-		@Override
-		public void getIngredients(IIngredients ingredients) {
-			ingredients.setInputLists(ItemStack.class, ImmutableList.of(recipe.getInputA().getItems(), recipe.getInputB().getItems()));
-			ingredients.setOutput(ItemStack.class, recipe.getOutput());
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return recipe == other;
-		}
-	}
-
 	static public class Category implements IRecipeCategory<Wrapper> {
 
 		protected final ResourceLocation background_location;
@@ -89,15 +54,25 @@ public class AlloyFurnaceJEI {
 		}
 
 		@Override
+		public void drawExtras(Minecraft minecraft) {
+			flame.draw(minecraft, 18, 20);
+			arrow.draw(minecraft, 50, 19);
+		}
+
+		@Override
 		@Nonnull
 		public IDrawable getBackground() {
 			return background;
 		}
 
 		@Override
-		public void drawExtras(Minecraft minecraft) {
-			flame.draw(minecraft, 18, 20);
-			arrow.draw(minecraft, 50, 19);
+		public IDrawable getIcon() {
+			return null;
+		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
 		}
 
 		@Nonnull
@@ -106,15 +81,15 @@ public class AlloyFurnaceJEI {
 			return localized_name;
 		}
 
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+
 		@Nonnull
 		@Override
 		public String getUid() {
 			return FoundryJEIConstants.AF_UID;
-		}
-
-		@Override
-		public IDrawable getIcon() {
-			return null;
 		}
 
 		@Override
@@ -129,15 +104,40 @@ public class AlloyFurnaceJEI {
 			gui_items.set(1, ingredients.getInputs(ItemStack.class).get(1));
 			gui_items.set(2, ingredients.getOutputs(ItemStack.class).get(0));
 		}
+	}
 
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return Collections.emptyList();
+	static public class Wrapper implements IRecipeWrapper {
+		@Nonnull
+		private final IAlloyFurnaceRecipe recipe;
+
+		public Wrapper(@Nonnull IAlloyFurnaceRecipe recipe) {
+			this.recipe = recipe;
 		}
 
 		@Override
-		public String getModName() {
-			return Foundry.MODID;
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInputLists(ItemStack.class, ImmutableList.of(recipe.getInputA().getItems(), recipe.getInputB().getItems()));
+			ingredients.setOutput(ItemStack.class, recipe.getOutput());
+		}
+
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return null;
+		}
+
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
 		}
 	}
 }

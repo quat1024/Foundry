@@ -13,20 +13,20 @@ import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerMoldStation extends Container {
 
-	private TileEntityMoldStation te_station;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 4;
-
 	public static final int SLOTS_INVENTORY = 4;
+
 	public static final int SLOTS_HOTBAR = 4 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 108;
 
+	private static final int SLOT_INVENTORY_Y = 108;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 166;
+	private TileEntityMoldStation te_station;
 
 	public ContainerMoldStation(TileEntityMoldStation station, EntityPlayer player) {
 		te_station = station;
@@ -52,6 +52,12 @@ public class ContainerMoldStation extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_station.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_station.closeInventory(player);
 	}
 
 	@Override
@@ -84,11 +90,5 @@ public class ContainerMoldStation extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_station.closeInventory(player);
 	}
 }

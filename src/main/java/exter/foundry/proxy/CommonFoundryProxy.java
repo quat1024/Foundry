@@ -66,52 +66,6 @@ public class CommonFoundryProxy implements IGuiHandler {
 	static public final int GUI_COKEOVEN = 13;
 	static public final int GUI_ALLOYINGCRUCIBLE = 14;
 
-	public void preInit() {
-
-	}
-
-	public void init() {
-
-	}
-
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		BlockPos pos = new BlockPos(x, y, z);
-		switch (ID) {
-		case GUI_CRUCIBLE:
-			return new ContainerMeltingCrucible((TileEntityMeltingCrucibleBasic) world.getTileEntity(pos), player);
-		case GUI_CASTER:
-			return new ContainerMetalCaster((TileEntityMetalCaster) world.getTileEntity(pos), player);
-		case GUI_ALLOYMIXER:
-			return new ContainerAlloyMixer((TileEntityAlloyMixer) world.getTileEntity(pos), player);
-		case GUI_INFUSER:
-			return new ContainerMetalInfuser((TileEntityMetalInfuser) world.getTileEntity(pos), player);
-		case GUI_ALLOYFURNACE:
-			return new ContainerAlloyFurnace((TileEntityAlloyFurnace) world.getTileEntity(pos), player);
-		case GUI_MATERIALROUTER:
-			return new ContainerMaterialRouter((TileEntityMaterialRouter) world.getTileEntity(pos), player);
-		case GUI_REFRACTORYHOPPER:
-			return new ContainerRefractoryHopper((TileEntityRefractoryHopper) world.getTileEntity(pos), player);
-		case GUI_REVOLVER:
-			return new ContainerRevolver(player.getHeldItem(EnumHand.MAIN_HAND), player.inventory);
-		case GUI_SHOTGUN:
-			return new ContainerShotgun(player.getHeldItem(EnumHand.MAIN_HAND), player.inventory);
-		case GUI_ATOMIZER:
-			return new ContainerMetalAtomizer((TileEntityMetalAtomizer) world.getTileEntity(pos), player);
-		case GUI_MOLDSTATION:
-			return new ContainerMoldStation((TileEntityMoldStation) world.getTileEntity(pos), player);
-		case GUI_BURNERHEATER:
-			return new ContainerBurnerHeater((TileEntityBurnerHeater) world.getTileEntity(pos), player);
-		case GUI_REFRACTORYTANK:
-			return new ContainerRefractoryTank((TileEntityRefractoryTankBasic) world.getTileEntity(pos), player);
-		case GUI_COKEOVEN:
-			return new ContainerCokeOven((TileEntityCokeOven) world.getTileEntity(pos), player);
-		case GUI_ALLOYINGCRUCIBLE:
-			return new ContainerAlloyingCrucible((TileEntityAlloyingCrucible) world.getTileEntity(pos), player);
-		}
-		return null;
-	}
-
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
@@ -178,7 +132,53 @@ public class CommonFoundryProxy implements IGuiHandler {
 		return null;
 	}
 
+	@Override
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		BlockPos pos = new BlockPos(x, y, z);
+		switch (ID) {
+		case GUI_CRUCIBLE:
+			return new ContainerMeltingCrucible((TileEntityMeltingCrucibleBasic) world.getTileEntity(pos), player);
+		case GUI_CASTER:
+			return new ContainerMetalCaster((TileEntityMetalCaster) world.getTileEntity(pos), player);
+		case GUI_ALLOYMIXER:
+			return new ContainerAlloyMixer((TileEntityAlloyMixer) world.getTileEntity(pos), player);
+		case GUI_INFUSER:
+			return new ContainerMetalInfuser((TileEntityMetalInfuser) world.getTileEntity(pos), player);
+		case GUI_ALLOYFURNACE:
+			return new ContainerAlloyFurnace((TileEntityAlloyFurnace) world.getTileEntity(pos), player);
+		case GUI_MATERIALROUTER:
+			return new ContainerMaterialRouter((TileEntityMaterialRouter) world.getTileEntity(pos), player);
+		case GUI_REFRACTORYHOPPER:
+			return new ContainerRefractoryHopper((TileEntityRefractoryHopper) world.getTileEntity(pos), player);
+		case GUI_REVOLVER:
+			return new ContainerRevolver(player.getHeldItem(EnumHand.MAIN_HAND), player.inventory);
+		case GUI_SHOTGUN:
+			return new ContainerShotgun(player.getHeldItem(EnumHand.MAIN_HAND), player.inventory);
+		case GUI_ATOMIZER:
+			return new ContainerMetalAtomizer((TileEntityMetalAtomizer) world.getTileEntity(pos), player);
+		case GUI_MOLDSTATION:
+			return new ContainerMoldStation((TileEntityMoldStation) world.getTileEntity(pos), player);
+		case GUI_BURNERHEATER:
+			return new ContainerBurnerHeater((TileEntityBurnerHeater) world.getTileEntity(pos), player);
+		case GUI_REFRACTORYTANK:
+			return new ContainerRefractoryTank((TileEntityRefractoryTankBasic) world.getTileEntity(pos), player);
+		case GUI_COKEOVEN:
+			return new ContainerCokeOven((TileEntityCokeOven) world.getTileEntity(pos), player);
+		case GUI_ALLOYINGCRUCIBLE:
+			return new ContainerAlloyingCrucible((TileEntityAlloyingCrucible) world.getTileEntity(pos), player);
+		}
+		return null;
+	}
+
+	public void init() {
+
+	}
+
 	public void postInit() {
+
+	}
+
+	public void preInit() {
 
 	}
 }

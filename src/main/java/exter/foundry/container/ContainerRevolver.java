@@ -13,13 +13,13 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRevolver extends Container {
-	IInventory inventory;
-	private ItemStack revolver;
-	InventoryFirearm rev_inv;
 	// Slot numbers
 	private static final int SLOTS_REVOLVER = 0;
 	private static final int SLOTS_INVENTORY = SLOTS_REVOLVER + 8;
 	private static final int SLOTS_HOTBAR = SLOTS_INVENTORY + 3 * 9;
+	IInventory inventory;
+	private ItemStack revolver;
+	InventoryFirearm rev_inv;
 
 	public ContainerRevolver(ItemStack revolver_item, InventoryPlayer inventory_player) {
 		revolver = revolver_item;
@@ -61,6 +61,19 @@ public class ContainerRevolver extends Container {
 	}
 
 	@Override
+	public boolean canInteractWith(EntityPlayer player) {
+		return player.inventory.hasItemStack(revolver);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer entityPlayer) {
+		super.onContainerClosed(entityPlayer);
+		if (!entityPlayer.world.isRemote) {
+			rev_inv.save();
+		}
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
 		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slot_index);
@@ -91,18 +104,5 @@ public class ContainerRevolver extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public boolean canInteractWith(EntityPlayer player) {
-		return player.inventory.hasItemStack(revolver);
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer entityPlayer) {
-		super.onContainerClosed(entityPlayer);
-		if (!entityPlayer.world.isRemote) {
-			rev_inv.save();
-		}
 	}
 }

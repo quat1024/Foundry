@@ -40,15 +40,6 @@ public class GuiAlloyFurnace extends GuiFoundry {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
-		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
-
-		fontRenderer.drawString("Alloy Furnace", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
-
-	}
-
-	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(GUI_TEXTURE);
@@ -67,6 +58,15 @@ public class GuiAlloyFurnace extends GuiFoundry {
 			int progress = te_af.progress * PROGRESS_WIDTH / 400;
 			drawTexturedModalRect(window_x + PROGRESS_X, window_y + PROGRESS_Y, PROGRESS_OVERLAY_X, PROGRESS_OVERLAY_Y, progress, PROGRESS_HEIGHT);
 		}
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
+		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
+
+		fontRenderer.drawString("Alloy Furnace", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+
 	}
 
 	@Override

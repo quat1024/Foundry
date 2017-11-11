@@ -12,14 +12,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CastingRecipeManager implements ICastingRecipeManager {
-	public List<ICastingRecipe> recipes;
-	public List<ItemStack> molds;
-
 	public static final CastingRecipeManager instance = new CastingRecipeManager();
+	public List<ICastingRecipe> recipes;
+
+	public List<ItemStack> molds;
 
 	private CastingRecipeManager() {
 		recipes = new ArrayList<ICastingRecipe>();
 		molds = new ArrayList<ItemStack>();
+	}
+
+	@Override
+	public void addMold(ItemStack mold) {
+		molds.add(mold.copy());
+	}
+
+	@Override
+	public void addRecipe(IItemMatcher result, FluidStack in_fluid, ItemStack in_mold, IItemMatcher in_extra) {
+		addRecipe(result, in_fluid, in_mold, in_extra, 100);
 	}
 
 	@Override
@@ -33,11 +43,6 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 	}
 
 	@Override
-	public void addRecipe(IItemMatcher result, FluidStack in_fluid, ItemStack in_mold, IItemMatcher in_extra) {
-		addRecipe(result, in_fluid, in_mold, in_extra, 100);
-	}
-
-	@Override
 	public ICastingRecipe findRecipe(FluidStack fluid, ItemStack mold, ItemStack extra) {
 		if (mold == null || fluid == null || fluid.amount == 0) { return null; }
 		for (ICastingRecipe cr : recipes) {
@@ -47,8 +52,13 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 	}
 
 	@Override
-	public void addMold(ItemStack mold) {
-		molds.add(mold.copy());
+	public List<ItemStack> getMolds() {
+		return Collections.unmodifiableList(molds);
+	}
+
+	@Override
+	public List<ICastingRecipe> getRecipes() {
+		return Collections.unmodifiableList(recipes);
 	}
 
 	@Override
@@ -58,16 +68,6 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 			if (m.isItemEqual(stack)) { return true; }
 		}
 		return false;
-	}
-
-	@Override
-	public List<ICastingRecipe> getRecipes() {
-		return Collections.unmodifiableList(recipes);
-	}
-
-	@Override
-	public List<ItemStack> getMolds() {
-		return Collections.unmodifiableList(molds);
 	}
 
 	@Override

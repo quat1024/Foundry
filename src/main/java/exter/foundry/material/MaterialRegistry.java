@@ -15,13 +15,13 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public final class MaterialRegistry implements IMaterialRegistry {
 
-	private HashMap<HashableItem, String> materials;
-	private HashMap<HashableItem, String> types;
-
-	private Set<String> material_names;
-	private Set<String> type_names;
-
 	public static MaterialRegistry instance = new MaterialRegistry();
+	private HashMap<HashableItem, String> materials;
+
+	private HashMap<HashableItem, String> types;
+	private Set<String> material_names;
+
+	private Set<String> type_names;
 
 	@SideOnly(Side.CLIENT)
 	private Map<String, ItemStack> material_icons;
@@ -35,16 +35,41 @@ public final class MaterialRegistry implements IMaterialRegistry {
 		type_names = new HashSet<String>();
 	}
 
-	public void initIcons() {
-		material_icons = new HashMap<String, ItemStack>();
-		type_icons = new HashMap<String, ItemStack>();
+	@Override
+	public String getMaterial(ItemStack item) {
+		return HashableItem.getFromMap(materials, item);
 	}
 
 	@Override
-	public void registerItem(String oredict_name, String material, String type) {
-		for (ItemStack item : OreDictionary.getOres(oredict_name)) {
-			registerItem(item, material, type);
-		}
+	@SideOnly(Side.CLIENT)
+	public ItemStack getMaterialIcon(String material) {
+		return material_icons.get(material);
+	}
+
+	@Override
+	public Set<String> getMaterialNames() {
+		return Collections.unmodifiableSet(material_names);
+	}
+
+	@Override
+	public String getType(ItemStack item) {
+		return HashableItem.getFromMap(types, item);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ItemStack getTypeIcon(String type) {
+		return type_icons.get(type);
+	}
+
+	@Override
+	public Set<String> getTypeNames() {
+		return Collections.unmodifiableSet(type_names);
+	}
+
+	public void initIcons() {
+		material_icons = new HashMap<String, ItemStack>();
+		type_icons = new HashMap<String, ItemStack>();
 	}
 
 	@Override
@@ -57,23 +82,10 @@ public final class MaterialRegistry implements IMaterialRegistry {
 	}
 
 	@Override
-	public String getMaterial(ItemStack item) {
-		return HashableItem.getFromMap(materials, item);
-	}
-
-	@Override
-	public String getType(ItemStack item) {
-		return HashableItem.getFromMap(types, item);
-	}
-
-	@Override
-	public Set<String> getMaterialNames() {
-		return Collections.unmodifiableSet(material_names);
-	}
-
-	@Override
-	public Set<String> getTypeNames() {
-		return Collections.unmodifiableSet(type_names);
+	public void registerItem(String oredict_name, String material, String type) {
+		for (ItemStack item : OreDictionary.getOres(oredict_name)) {
+			registerItem(item, material, type);
+		}
 	}
 
 	@Override
@@ -87,18 +99,6 @@ public final class MaterialRegistry implements IMaterialRegistry {
 	@SideOnly(Side.CLIENT)
 	public void registerTypeIcon(String type, ItemStack icon) {
 		type_icons.put(type, icon);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getMaterialIcon(String material) {
-		return material_icons.get(material);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getTypeIcon(String type) {
-		return type_icons.get(type);
 	}
 
 }

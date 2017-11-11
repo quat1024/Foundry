@@ -26,8 +26,8 @@ public class MTAlloyFurnaceHandler {
 		}
 
 		@Override
-		protected void remove() {
-			AlloyFurnaceRecipeManager.INSTANCE.recipes.remove(recipe);
+		public String getDescription() {
+			return String.format(" ( %s, %s ) -> %s", MTHelper.getItemDescription(recipe.getInputA()), MTHelper.getItemDescription(recipe.getInputB()), MTHelper.getItemDescription(recipe.getOutput()));
 		}
 
 		@Override
@@ -36,8 +36,8 @@ public class MTAlloyFurnaceHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			return String.format(" ( %s, %s ) -> %s", MTHelper.getItemDescription(recipe.getInputA()), MTHelper.getItemDescription(recipe.getInputB()), MTHelper.getItemDescription(recipe.getOutput()));
+		protected void remove() {
+			AlloyFurnaceRecipeManager.INSTANCE.recipes.remove(recipe);
 		}
 	}
 

@@ -55,19 +55,19 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 		}
 	}
 
-	private int burn_time;
-	private int item_burn_time;
-	private int heat_provide;
-	private boolean update_burn_times;
-
-	private HeatProvider heat_provider;
-	private ItemHandlerFuel item_handler;
-
 	private static int DEFAULT_HEAT_PROVIDE = TileEntityFoundryHeatable.getMaxHeatRecieve(170000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE);
-
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of(0, 1, 2, 3);
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of();
 	static private final Set<Integer> IH_SLOTS_FUEL = ImmutableSet.of(0, 1, 2, 3);
+
+	private int burn_time;
+	private int item_burn_time;
+
+	private int heat_provide;
+
+	private boolean update_burn_times;
+	private HeatProvider heat_provider;
+	private ItemHandlerFuel item_handler;
 
 	public TileEntityBurnerHeater() {
 		burn_time = 0;
@@ -78,6 +78,60 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 		item_handler = new ItemHandlerFuel(this, getSizeInventory(), IH_SLOTS_INPUT, IH_SLOTS_OUTPUT, IH_SLOTS_FUEL);
 	}
 
+	@Optional.Method(modid = "Botania")
+	@Override
+	public void boostBurnTime() {
+		if (!world.isRemote) {
+			heat_provide = DEFAULT_HEAT_PROVIDE;
+			burn_time = 2000;
+			item_burn_time = 1999;
+			update_burn_times = true;
+			markDirty();
+		}
+	}
+
+	@Optional.Method(modid = "Botania")
+	@Override
+	public void boostCookTime() {
+
+	}
+
+	@Optional.Method(modid = "Botania")
+	@Override
+	public boolean canSmelt() {
+		return true;
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {
+
+	}
+
+	public int getBurningTime() {
+		return burn_time;
+	}
+
+	@Optional.Method(modid = "Botania")
+	@Override
+	public int getBurnTime() {
+		return burn_time <= 1 ? 0 : burn_time - 1;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
+		if (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) { return FoundryAPI.capability_heatprovider.cast(heat_provider); }
+		return super.getCapability(cap, facing);
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	public int getItemBurnTime() {
+		return item_burn_time;
+	}
+
 	@Override
 	protected IItemHandler getItemHandler(EnumFacing side) {
 		return item_handler;
@@ -86,6 +140,45 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 	@Override
 	public int getSizeInventory() {
 		return 4;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return null;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 0;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
+		return super.hasCapability(cap, facing) || (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP);
+	}
+
+	public boolean isBurning() {
+		return burn_time > 0;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		return TileEntityFurnace.isItemFuel(stack);
+	}
+
+	@Override
+	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
+		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+
 	}
 
 	@Override
@@ -108,47 +201,6 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return oldState.getBlock() != newSate.getBlock();
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("BurnTime", burn_time);
-		compound.setInteger("ItemBurnTime", item_burn_time);
-		compound.setInteger("HeatProvide", heat_provide);
-		return compound;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	public boolean isBurning() {
-		return burn_time > 0;
-	}
-
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return TileEntityFurnace.isItemFuel(stack);
 	}
 
 	@Override
@@ -202,66 +254,14 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		return null;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 0;
-	}
-
-	@Override
-	protected void onInitialize() {
-
-	}
-
-	public int getBurningTime() {
-		return burn_time;
-	}
-
-	public int getItemBurnTime() {
-		return item_burn_time;
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		return super.hasCapability(cap, facing) || (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP);
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) { return FoundryAPI.capability_heatprovider.cast(heat_provider); }
-		return super.getCapability(cap, facing);
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public boolean canSmelt() {
-		return true;
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public int getBurnTime() {
-		return burn_time <= 1 ? 0 : burn_time - 1;
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public void boostBurnTime() {
-		if (!world.isRemote) {
-			heat_provide = DEFAULT_HEAT_PROVIDE;
-			burn_time = 2000;
-			item_burn_time = 1999;
-			update_burn_times = true;
-			markDirty();
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
 		}
-	}
-
-	@Optional.Method(modid = "Botania")
-	@Override
-	public void boostCookTime() {
-
+		super.writeToNBT(compound);
+		compound.setInteger("BurnTime", burn_time);
+		compound.setInteger("ItemBurnTime", item_burn_time);
+		compound.setInteger("HeatProvide", heat_provide);
+		return compound;
 	}
 }

@@ -10,20 +10,20 @@ import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerAlloyFurnace extends Container {
 
-	private TileEntityAlloyFurnace te_alloyfurnace;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 4;
-
 	public static final int SLOTS_INVENTORY = 4;
+
 	public static final int SLOTS_HOTBAR = 4 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 84;
 
+	private static final int SLOT_INVENTORY_Y = 84;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 142;
+	private TileEntityAlloyFurnace te_alloyfurnace;
 
 	public ContainerAlloyFurnace(TileEntityAlloyFurnace furnace, EntityPlayer player) {
 		te_alloyfurnace = furnace;
@@ -49,6 +49,12 @@ public class ContainerAlloyFurnace extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_alloyfurnace.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_alloyfurnace.closeInventory(player);
 	}
 
 	@Override
@@ -81,11 +87,5 @@ public class ContainerAlloyFurnace extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_alloyfurnace.closeInventory(player);
 	}
 }

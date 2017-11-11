@@ -28,20 +28,6 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 		}
 
 		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
-		}
-
-		@Override
-		public int fill(FluidStack resource, boolean doFill) {
-			if (!inventory.get(0).isEmpty()) { return 0; }
-			if (doFill && (tank.getFluid() == null || tank.getFluid().amount == 0)) {
-				setRecipe(resource);
-			}
-			return fillTank(0, resource, doFill);
-		}
-
-		@Override
 		public FluidStack drain(FluidStack resource, boolean doDrain) {
 			if (progress > 0) { return null; }
 			FluidStack result = drainTank(0, resource, doDrain);
@@ -60,6 +46,20 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 			}
 			return result;
 		}
+
+		@Override
+		public int fill(FluidStack resource, boolean doFill) {
+			if (!inventory.get(0).isEmpty()) { return 0; }
+			if (doFill && (tank.getFluid() == null || tank.getFluid().amount == 0)) {
+				setRecipe(resource);
+			}
+			return fillTank(0, resource, doFill);
+		}
+
+		@Override
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
+		}
 	}
 
 	private class ItemHandlerTable extends ItemHandler {
@@ -75,17 +75,17 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 
 	static public final int CAST_TIME = 200;
 
+	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of();
+	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of(0);
+
 	private FluidTank tank;
+
 	private IFluidHandler fluid_handler;
 
 	private ICastingTableRecipe recipe;
 
 	private int progress;
-
 	private ItemHandlerTable item_handler;
-
-	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of();
-	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of(0);
 
 	public TileEntityCastingTableBase() {
 		super();
@@ -98,14 +98,43 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 		item_handler = new ItemHandlerTable(getSizeInventory(), IH_SLOTS_INPUT, IH_SLOTS_OUTPUT);
 	}
 
+	abstract public int getDefaultCapacity();
+
+	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return fluid_handler;
+	}
+
 	@Override
 	protected IItemHandler getItemHandler(EnumFacing facing) {
 		return item_handler;
 	}
 
+	public final int getProgress() {
+		return progress;
+	}
+
 	@Override
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return fluid_handler;
+	public final int getSizeInventory() {
+		return 1;
+	}
+
+	abstract public ICastingTableRecipe.TableType getTableType();
+
+	@Override
+	public final FluidTank getTank(int slot) {
+		return tank;
+	}
+
+	@Override
+	public final int getTankCount() {
+		return 1;
+	}
+
+	@Deprecated
+	@Override
+	public final boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+		return false;
 	}
 
 	@Override
@@ -128,41 +157,11 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 		}
 	}
 
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("progress", progress);
-		return compound;
-	}
-
-	@Override
-	public final int getSizeInventory() {
-		return 1;
-	}
-
-	public final int getProgress() {
-		return progress;
-	}
-
-	@Deprecated
-	@Override
-	public final boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		return false;
-	}
-
 	@Deprecated
 	@Override
 	public final ItemStack removeStackFromSlot(int slot) {
 		if (progress > 0) { return null; }
 		return super.removeStackFromSlot(slot);
-	}
-
-	@Override
-	protected void updateClient() {
-
 	}
 
 	private void setRecipe(FluidStack fluid) {
@@ -187,6 +186,11 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 	}
 
 	@Override
+	protected void updateClient() {
+
+	}
+
+	@Override
 	protected final void updateServer() {
 		int last_progress = progress;
 
@@ -207,16 +211,12 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 	}
 
 	@Override
-	public final FluidTank getTank(int slot) {
-		return tank;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("progress", progress);
+		return compound;
 	}
-
-	@Override
-	public final int getTankCount() {
-		return 1;
-	}
-
-	abstract public int getDefaultCapacity();
-
-	abstract public ICastingTableRecipe.TableType getTableType();
 }

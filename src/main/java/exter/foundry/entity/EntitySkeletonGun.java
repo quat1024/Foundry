@@ -26,23 +26,6 @@ public class EntitySkeletonGun extends EntitySkeleton {
 	}
 
 	@Override
-	public void setItemStackToSlot(EntityEquipmentSlot slot, ItemStack item) {
-		if (slot != EntityEquipmentSlot.MAINHAND || world.isRemote) {
-			super.setItemStackToSlot(slot, item);
-		}
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return new ResourceLocation("foundry", "gun_skeleton");
-	}
-
-	@Override
-	public void setCombatTask() {
-
-	}
-
-	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
 		float damage = this.world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
 		if (getHeldItem(EnumHand.MAIN_HAND).getItem() == FoundryItems.item_shotgun) {
@@ -58,23 +41,14 @@ public class EntitySkeletonGun extends EntitySkeleton {
 		}
 	}
 
-	private void setGun() {
-		if (rand.nextInt(100) < 10) {
-			super.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, FoundryItems.item_shotgun.empty());
-		} else {
-			super.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, FoundryItems.item_revolver.empty());
-		}
-	}
-
-	@Override
-	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		super.setEquipmentBasedOnDifficulty(difficulty);
-		setGun();
-	}
-
 	@Override
 	public boolean canPickUpLoot() {
 		return false;
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return new ResourceLocation("foundry", "gun_skeleton");
 	}
 
 	@Override
@@ -87,5 +61,31 @@ public class EntitySkeletonGun extends EntitySkeleton {
 		setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
 
 		return livingdata;
+	}
+
+	@Override
+	public void setCombatTask() {
+
+	}
+
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		super.setEquipmentBasedOnDifficulty(difficulty);
+		setGun();
+	}
+
+	private void setGun() {
+		if (rand.nextInt(100) < 10) {
+			super.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, FoundryItems.item_shotgun.empty());
+		} else {
+			super.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, FoundryItems.item_revolver.empty());
+		}
+	}
+
+	@Override
+	public void setItemStackToSlot(EntityEquipmentSlot slot, ItemStack item) {
+		if (slot != EntityEquipmentSlot.MAINHAND || world.isRemote) {
+			super.setItemStackToSlot(slot, item);
+		}
 	}
 }

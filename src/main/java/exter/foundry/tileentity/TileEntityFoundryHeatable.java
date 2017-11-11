@@ -9,12 +9,32 @@ import net.minecraft.util.EnumFacing;
 public abstract class TileEntityFoundryHeatable extends TileEntityFoundry {
 	static public final int TEMP_MIN = 29000;
 
+	static public int getMaxHeatRecieve(int max_heat, int temp_loss_rate) {
+		return (max_heat - TEMP_MIN) / temp_loss_rate;
+	}
+
 	private int heat;
 
 	public TileEntityFoundryHeatable() {
 		super();
 		heat = TEMP_MIN;
 	}
+
+	abstract protected boolean canReceiveHeat();
+
+	private final IHeatProvider getHeatProvider() {
+		TileEntity te = world.getTileEntity(getPos().down());
+		if (te != null && te.hasCapability(FoundryAPI.capability_heatprovider, EnumFacing.UP)) { return te.getCapability(FoundryAPI.capability_heatprovider, EnumFacing.UP); }
+		return null;
+	}
+
+	abstract protected int getMaxTemperature();
+
+	public final int getTemperature() {
+		return heat;
+	}
+
+	abstract protected int getTemperatureLossRate();
 
 	@Override
 	public void readFromNBT(NBTTagCompound compund) {
@@ -30,26 +50,6 @@ public abstract class TileEntityFoundryHeatable extends TileEntityFoundry {
 				heat = temp_max;
 			}
 		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("heat", heat);
-		return compound;
-	}
-
-	public final int getTemperature() {
-		return heat;
-	}
-
-	private final IHeatProvider getHeatProvider() {
-		TileEntity te = world.getTileEntity(getPos().down());
-		if (te != null && te.hasCapability(FoundryAPI.capability_heatprovider, EnumFacing.UP)) { return te.getCapability(FoundryAPI.capability_heatprovider, EnumFacing.UP); }
-		return null;
 	}
 
 	@Override
@@ -77,13 +77,13 @@ public abstract class TileEntityFoundryHeatable extends TileEntityFoundry {
 		}
 	}
 
-	abstract protected boolean canReceiveHeat();
-
-	abstract protected int getMaxTemperature();
-
-	abstract protected int getTemperatureLossRate();
-
-	static public int getMaxHeatRecieve(int max_heat, int temp_loss_rate) {
-		return (max_heat - TEMP_MIN) / temp_loss_rate;
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("heat", heat);
+		return compound;
 	}
 }

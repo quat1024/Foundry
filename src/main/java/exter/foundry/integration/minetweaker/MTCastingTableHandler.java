@@ -28,8 +28,8 @@ public class MTCastingTableHandler {
 		}
 
 		@Override
-		protected void remove() {
-			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
+		public String getDescription() {
+			return String.format("( %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInput()), recipe.getTableType().toString(), MTHelper.getItemDescription(recipe.getOutput()));
 		}
 
 		@Override
@@ -38,9 +38,24 @@ public class MTCastingTableHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			return String.format("( %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInput()), recipe.getTableType().toString(), MTHelper.getItemDescription(recipe.getOutput()));
+		protected void remove() {
+			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
 		}
+	}
+
+	@ZenMethod
+	static public void addBlockRecipe(IItemStack output, ILiquidStack input) {
+		addRecipe(output, input, ICastingTableRecipe.TableType.BLOCK);
+	}
+
+	@ZenMethod
+	static public void addIngotRecipe(IItemStack output, ILiquidStack input) {
+		addRecipe(output, input, ICastingTableRecipe.TableType.INGOT);
+	}
+
+	@ZenMethod
+	static public void addPlateRecipe(IItemStack output, ILiquidStack input) {
+		addRecipe(output, input, ICastingTableRecipe.TableType.PLATE);
 	}
 
 	static private void addRecipe(IItemStack output, ILiquidStack input, ICastingTableRecipe.TableType table) {
@@ -57,32 +72,13 @@ public class MTCastingTableHandler {
 	}
 
 	@ZenMethod
-	static public void addIngotRecipe(IItemStack output, ILiquidStack input) {
-		addRecipe(output, input, ICastingTableRecipe.TableType.INGOT);
-	}
-
-	@ZenMethod
-	static public void addPlateRecipe(IItemStack output, ILiquidStack input) {
-		addRecipe(output, input, ICastingTableRecipe.TableType.PLATE);
-	}
-
-	@ZenMethod
 	static public void addRodRecipe(IItemStack output, ILiquidStack input) {
 		addRecipe(output, input, ICastingTableRecipe.TableType.ROD);
 	}
 
 	@ZenMethod
-	static public void addBlockRecipe(IItemStack output, ILiquidStack input) {
-		addRecipe(output, input, ICastingTableRecipe.TableType.BLOCK);
-	}
-
-	static public void removeRecipe(ILiquidStack input, ICastingTableRecipe.TableType table) {
-		ICastingTableRecipe recipe = CastingTableRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), table);
-		if (recipe == null) {
-			CraftTweakerAPI.logWarning("Casting table recipe not found.");
-			return;
-		}
-		CraftTweakerAPI.apply((new CastingTableAction(recipe)).action_remove);
+	static public void removeBlockRecipe(ILiquidStack input) {
+		removeRecipe(input, ICastingTableRecipe.TableType.BLOCK);
 	}
 
 	@ZenMethod
@@ -95,13 +91,17 @@ public class MTCastingTableHandler {
 		removeRecipe(input, ICastingTableRecipe.TableType.PLATE);
 	}
 
-	@ZenMethod
-	static public void removeRodRecipe(ILiquidStack input) {
-		removeRecipe(input, ICastingTableRecipe.TableType.ROD);
+	static public void removeRecipe(ILiquidStack input, ICastingTableRecipe.TableType table) {
+		ICastingTableRecipe recipe = CastingTableRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), table);
+		if (recipe == null) {
+			CraftTweakerAPI.logWarning("Casting table recipe not found.");
+			return;
+		}
+		CraftTweakerAPI.apply((new CastingTableAction(recipe)).action_remove);
 	}
 
 	@ZenMethod
-	static public void removeBlockRecipe(ILiquidStack input) {
-		removeRecipe(input, ICastingTableRecipe.TableType.BLOCK);
+	static public void removeRodRecipe(ILiquidStack input) {
+		removeRecipe(input, ICastingTableRecipe.TableType.ROD);
 	}
 }

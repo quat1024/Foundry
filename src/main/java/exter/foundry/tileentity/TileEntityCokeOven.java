@@ -40,57 +40,6 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 		item_handler = new ItemHandler(getSizeInventory(), IH_SLOTS_INPUT, IH_SLOTS_OUTPUT);
 	}
 
-	@Override
-	protected IItemHandler getItemHandler(EnumFacing side) {
-		return item_handler;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compund) {
-		super.readFromNBT(compund);
-
-		if (compund.hasKey("progress")) {
-			progress = compund.getInteger("progress");
-		}
-		if (world != null && !world.isRemote) {
-			((BlockCokeOven) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), progress > 0);
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("progress", progress);
-		return compound;
-	}
-
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-		return oldState.getBlock() != newSate.getBlock();
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 2;
-	}
-
-	public int getProgress() {
-		return progress;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return i == INVENTORY_INPUT;
-	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
 	private boolean canBake() {
 		if (getTemperature() <= BAKE_TEMP) { return false; }
 		ItemStack input = inventory.get(INVENTORY_INPUT);
@@ -98,6 +47,25 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 		if (input == null || input.getItem() != Items.COAL || input.getMetadata() != 0) { return false; }
 		if (output != null && output.getItem() != FoundryItems.item_component && output.getMetadata() != ItemComponent.SubItem.COAL_COKE.id && output.getCount() == output.getMaxStackSize()) { return false; }
 		return true;
+	}
+
+	@Override
+	protected boolean canReceiveHeat() {
+		boolean active = true;
+		switch (getRedstoneMode()) {
+		case RSMODE_OFF:
+			if (redstone_signal) {
+				active = false;
+			}
+			break;
+		case RSMODE_ON:
+			if (!redstone_signal) {
+				active = false;
+			}
+			break;
+		default:
+		}
+		return active;
 	}
 
 	private void doBakingProgress() {
@@ -123,6 +91,72 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 	}
 
 	@Override
+	protected IItemHandler getItemHandler(EnumFacing side) {
+		return item_handler;
+	}
+
+	@Override
+	public int getMaxTemperature() {
+		return 220000;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 2;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return null;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 0;
+	}
+
+	@Override
+	protected int getTemperatureLossRate() {
+		return FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return i == INVENTORY_INPUT;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compund) {
+		super.readFromNBT(compund);
+
+		if (compund.hasKey("progress")) {
+			progress = compund.getInteger("progress");
+		}
+		if (world != null && !world.isRemote) {
+			((BlockCokeOven) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), progress > 0);
+		}
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return oldState.getBlock() != newSate.getBlock();
+	}
+
+	@Override
+	protected void updateClient() {
+
+	}
+
+	@Override
 	protected void updateServer() {
 		super.updateServer();
 		int last_progress = progress;
@@ -139,46 +173,12 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		return null;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 0;
-	}
-
-	@Override
-	protected void onInitialize() {
-
-	}
-
-	@Override
-	public int getMaxTemperature() {
-		return 220000;
-	}
-
-	@Override
-	protected int getTemperatureLossRate() {
-		return FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE;
-	}
-
-	@Override
-	protected boolean canReceiveHeat() {
-		boolean active = true;
-		switch (getRedstoneMode()) {
-		case RSMODE_OFF:
-			if (redstone_signal) {
-				active = false;
-			}
-			break;
-		case RSMODE_ON:
-			if (!redstone_signal) {
-				active = false;
-			}
-			break;
-		default:
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
 		}
-		return active;
+		super.writeToNBT(compound);
+		compound.setInteger("progress", progress);
+		return compound;
 	}
 }

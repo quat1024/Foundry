@@ -43,8 +43,15 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		WEST(3, "west", EnumFacing.WEST),
 		DOWN(4, "down", EnumFacing.DOWN);
 
+		static public EnumHopperFacing fromID(int num) {
+			for (EnumHopperFacing m : values()) {
+				if (m.id == num) { return m; }
+			}
+			return null;
+		}
 		public final int id;
 		public final String name;
+
 		public final EnumFacing facing;
 
 		private EnumHopperFacing(int id, String name, EnumFacing target) {
@@ -62,22 +69,15 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		public String toString() {
 			return getName();
 		}
-
-		static public EnumHopperFacing fromID(int num) {
-			for (EnumHopperFacing m : values()) {
-				if (m.id == num) { return m; }
-			}
-			return null;
-		}
 	}
 
 	public static final PropertyEnum<EnumHopperFacing> FACING = PropertyEnum.create("facing", EnumHopperFacing.class);
 
 	protected static final AxisAlignedBB AABB_SIDES = new AxisAlignedBB(0.0, 0.25, 0.0, 1.0, 1.0, 1.0);
 
-	private Random rand = new Random();
-
 	protected static final AxisAlignedBB[] BOUNDS = new AxisAlignedBB[] { new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D), new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D), new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D) };
+
+	private Random rand = new Random();
 
 	public BlockRefractoryHopper() {
 		super(Material.IRON);
@@ -89,71 +89,16 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		setRegistryName("refractoryHopper");
 	}
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return state.getValue(FACING) == EnumHopperFacing.DOWN ? FULL_BLOCK_AABB : AABB_SIDES;
-	}
-
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
 		for (AxisAlignedBB box : BOUNDS) {
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, box);
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumHopperFacing.fromID(meta));
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).id;
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		switch (facing) {
-		case EAST:
-			return getDefaultState().withProperty(FACING, EnumHopperFacing.WEST);
-		case NORTH:
-			return getDefaultState().withProperty(FACING, EnumHopperFacing.SOUTH);
-		case SOUTH:
-			return getDefaultState().withProperty(FACING, EnumHopperFacing.NORTH);
-		case WEST:
-			return getDefaultState().withProperty(FACING, EnumHopperFacing.EAST);
-		default:
-			return getDefaultState().withProperty(FACING, EnumHopperFacing.DOWN);
-
-		}
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityRefractoryHopper();
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
-
-		if (te != null) {
-			te.updateRedstone();
-		}
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitx, float hity, float hitz) {
-		if (world.isRemote) {
-			return true;
-		} else {
-			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REFRACTORYHOPPER, world, pos.getX(), pos.getY(), pos.getZ());
-			return true;
-		}
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryHopper", tooltip);
 	}
 
 	@Override
@@ -182,8 +127,56 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 	}
 
 	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING);
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityRefractoryHopper();
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return state.getValue(FACING) == EnumHopperFacing.DOWN ? FULL_BLOCK_AABB : AABB_SIDES;
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).id;
+	}
+
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getSpoutPourDepth(World world, BlockPos pos, IBlockState state) {
+		return 11;
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		switch (facing) {
+		case EAST:
+			return getDefaultState().withProperty(FACING, EnumHopperFacing.WEST);
+		case NORTH:
+			return getDefaultState().withProperty(FACING, EnumHopperFacing.SOUTH);
+		case SOUTH:
+			return getDefaultState().withProperty(FACING, EnumHopperFacing.NORTH);
+		case WEST:
+			return getDefaultState().withProperty(FACING, EnumHopperFacing.EAST);
+		default:
+			return getDefaultState().withProperty(FACING, EnumHopperFacing.DOWN);
+
+		}
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumHopperFacing.fromID(meta));
 	}
 
 	@Override
@@ -196,20 +189,27 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		return false;
 	}
 
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		TileEntityFoundry te = (TileEntityFoundry) world.getTileEntity(pos);
+
+		if (te != null) {
+			te.updateRedstone();
+		}
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitx, float hity, float hitz) {
+		if (world.isRemote) {
+			return true;
+		} else {
+			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REFRACTORYHOPPER, world, pos.getX(), pos.getY(), pos.getZ());
+			return true;
+		}
+	}
+
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
 		return true;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public int getSpoutPourDepth(World world, BlockPos pos, IBlockState state) {
-		return 11;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		FoundryMiscUtils.localizeTooltip("tooltip.foundry.refractoryHopper", tooltip);
 	}
 }

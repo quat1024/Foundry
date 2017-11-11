@@ -10,20 +10,20 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerMetalAtomizer extends Container {
 
-	private TileEntityMetalAtomizer te_atomizer;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 5;
-
 	public static final int SLOTS_INVENTORY = 5;
+
 	private static final int SLOTS_HOTBAR = 5 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 84;
 
+	private static final int SLOT_INVENTORY_Y = 84;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 142;
+	private TileEntityMetalAtomizer te_atomizer;
 
 	public ContainerMetalAtomizer(TileEntityMetalAtomizer caster, EntityPlayer player) {
 		te_atomizer = caster;
@@ -53,6 +53,12 @@ public class ContainerMetalAtomizer extends Container {
 	}
 
 	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_atomizer.closeInventory(player);
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
 		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slot_index);
@@ -77,11 +83,5 @@ public class ContainerMetalAtomizer extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_atomizer.closeInventory(player);
 	}
 }

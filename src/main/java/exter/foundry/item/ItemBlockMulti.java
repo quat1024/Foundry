@@ -12,13 +12,13 @@ public class ItemBlockMulti extends ItemBlock {
 		setHasSubtypes(true);
 	}
 
-	protected int getSubIndex(ItemStack stack) {
-		return stack.getItemDamage();
-	}
-
 	@Override
 	public int getMetadata(int dmg) {
 		return dmg;
+	}
+
+	protected int getSubIndex(ItemStack stack) {
+		return stack.getItemDamage();
 	}
 
 	@Override

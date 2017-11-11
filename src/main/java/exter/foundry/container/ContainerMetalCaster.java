@@ -12,24 +12,24 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerMetalCaster extends Container {
 
-	private TileEntityMetalCaster te_caster;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 14;
 	private static final int SLOTS_TE_MOLD_STORAGE = 5;
 	private static final int SLOTS_TE_MOLD_STORAGE_SIZE = 9;
 	public static final int SLOTS_INVENTORY = 14;
 	private static final int SLOTS_HOTBAR = 14 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
+
 	private static final int SLOT_INVENTORY_Y = 84;
-
 	private static final int SLOT_HOTBAR_X = 8;
-	private static final int SLOT_HOTBAR_Y = 142;
 
+	private static final int SLOT_HOTBAR_Y = 142;
 	private static final int SLOT_STORAGE_X = 116;
+
 	private static final int SLOT_STORAGE_Y = 21;
+	private TileEntityMetalCaster te_caster;
 
 	public ContainerMetalCaster(TileEntityMetalCaster caster, EntityPlayer player) {
 		te_caster = caster;
@@ -61,6 +61,12 @@ public class ContainerMetalCaster extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_caster.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_caster.closeInventory(player);
 	}
 
 	@Override
@@ -113,11 +119,5 @@ public class ContainerMetalCaster extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_caster.closeInventory(player);
 	}
 }

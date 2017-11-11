@@ -22,6 +22,23 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageTileEntitySync implements IMessage {
+	static public class Handler implements IMessageHandler<MessageTileEntitySync, IMessage> {
+		@Override
+		public IMessage onMessage(MessageTileEntitySync message, MessageContext ctx) {
+			IThreadListener main_thread;
+			World world;
+			if (ctx.side == Side.SERVER) {
+				world = ctx.getServerHandler().player.world;
+				main_thread = (WorldServer) world;
+			} else {
+				world = getClientWorld();
+				main_thread = Minecraft.getMinecraft();
+			}
+			main_thread.addScheduledTask(new SyncRunnable(message.data, world));
+			return null;
+		}
+	}
+
 	static private class SyncRunnable implements Runnable {
 		private NBTTagCompound data;
 		private World world;
@@ -50,23 +67,6 @@ public class MessageTileEntitySync implements IMessage {
 			}
 		}
 
-	}
-
-	static public class Handler implements IMessageHandler<MessageTileEntitySync, IMessage> {
-		@Override
-		public IMessage onMessage(MessageTileEntitySync message, MessageContext ctx) {
-			IThreadListener main_thread;
-			World world;
-			if (ctx.side == Side.SERVER) {
-				world = ctx.getServerHandler().player.world;
-				main_thread = (WorldServer) world;
-			} else {
-				world = getClientWorld();
-				main_thread = Minecraft.getMinecraft();
-			}
-			main_thread.addScheduledTask(new SyncRunnable(message.data, world));
-			return null;
-		}
 	}
 
 	@SideOnly(Side.CLIENT)

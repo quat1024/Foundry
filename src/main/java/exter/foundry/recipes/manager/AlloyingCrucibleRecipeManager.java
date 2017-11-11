@@ -10,9 +10,9 @@ import exter.foundry.recipes.AlloyingCrucibleRecipe;
 import net.minecraftforge.fluids.FluidStack;
 
 public class AlloyingCrucibleRecipeManager implements IAlloyingCrucibleRecipeManager {
-	public List<IAlloyingCrucibleRecipe> recipes;
-
 	public static final AlloyingCrucibleRecipeManager instance = new AlloyingCrucibleRecipeManager();
+
+	public List<IAlloyingCrucibleRecipe> recipes;
 
 	private AlloyingCrucibleRecipeManager() {
 		recipes = new ArrayList<IAlloyingCrucibleRecipe>();

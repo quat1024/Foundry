@@ -12,9 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class InfuserRecipeManager implements IInfuserRecipeManager {
-	public List<IInfuserRecipe> recipes;
-
 	public static final InfuserRecipeManager instance = new InfuserRecipeManager();
+
+	public List<IInfuserRecipe> recipes;
 
 	private InfuserRecipeManager() {
 		recipes = new ArrayList<IInfuserRecipe>();

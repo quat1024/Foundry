@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 // Compatibility with 144mB/ingot fluids.
 public class ModIntegrationMolten implements IModIntegration {
-	private Map<String, String> liquid_map;
+	static private final int MOLTEN_INGOT_AMOUNT = 144;
 
 	static private final int gcd(int a, int b) {
 		while (b != 0) {
@@ -41,32 +41,28 @@ public class ModIntegrationMolten implements IModIntegration {
 		return a;
 	}
 
-	static private final int MOLTEN_INGOT_AMOUNT = 144;
+	private Map<String, String> liquid_map;
 
-	@Override
-	public void onPreInit(Configuration config) {
+	private void convertAlloyingCrucibleRecipe(IAlloyingCrucibleRecipe mix) {
+		FluidStack out = mix.getOutput();
 
-	}
-
-	@Override
-	public void onInit() {
-
-	}
-
-	private FluidStack toMolten(FluidStack stack) {
-		String mapped = liquid_map.get(stack.getFluid().getName());
-		if (mapped != null) {
-			Fluid mapped_fluid = FluidRegistry.getFluid(mapped);
-			if (mapped_fluid == null) { return null; }
-
-			if (mapped.equals("glass")) {
-				return new FluidStack(mapped_fluid, stack.amount);
-			} else {
-				return new FluidStack(mapped_fluid, FoundryMiscUtils.divCeil(stack.amount * MOLTEN_INGOT_AMOUNT, FoundryAPI.FLUID_AMOUNT_INGOT));
-			}
-		} else {
-			return null;
+		FluidStack in_a = mix.getInputA();
+		FluidStack in_b = mix.getInputB();
+		FluidStack mapped_a = toMolten(in_a);
+		FluidStack mapped_b = toMolten(in_b);
+		if (mapped_a != null) {
+			AlloyingCrucibleRecipeManager.instance.addRecipe(out, mapped_a, in_b);
 		}
+		if (mapped_b != null) {
+			AlloyingCrucibleRecipeManager.instance.addRecipe(out, in_a, mapped_b);
+		}
+		if (mapped_a != null && mapped_b != null) {
+			AlloyingCrucibleRecipeManager.instance.addRecipe(out, mapped_a, mapped_b);
+		}
+	}
+
+	private void convertAlloyMixerRecipe(IAlloyMixerRecipe mix) {
+		convertAlloyMixerRecipe(mix, 0, new ArrayList<FluidStack>(), false);
 	}
 
 	private void convertAlloyMixerRecipe(IAlloyMixerRecipe mix, int index, List<FluidStack> inputs, boolean has_mapped) {
@@ -105,31 +101,9 @@ public class ModIntegrationMolten implements IModIntegration {
 		convertAlloyMixerRecipe(mix, index + 1, in, has_mapped);
 	}
 
-	private void convertAlloyMixerRecipe(IAlloyMixerRecipe mix) {
-		convertAlloyMixerRecipe(mix, 0, new ArrayList<FluidStack>(), false);
-	}
-
-	private void convertAlloyingCrucibleRecipe(IAlloyingCrucibleRecipe mix) {
-		FluidStack out = mix.getOutput();
-
-		FluidStack in_a = mix.getInputA();
-		FluidStack in_b = mix.getInputB();
-		FluidStack mapped_a = toMolten(in_a);
-		FluidStack mapped_b = toMolten(in_b);
-		if (mapped_a != null) {
-			AlloyingCrucibleRecipeManager.instance.addRecipe(out, mapped_a, in_b);
-		}
-		if (mapped_b != null) {
-			AlloyingCrucibleRecipeManager.instance.addRecipe(out, in_a, mapped_b);
-		}
-		if (mapped_a != null && mapped_b != null) {
-			AlloyingCrucibleRecipeManager.instance.addRecipe(out, mapped_a, mapped_b);
-		}
-	}
-
 	@Override
-	public void onPostInit() {
-
+	public String getName() {
+		return "MoltenMetalFluids";
 	}
 
 	@Override
@@ -187,17 +161,6 @@ public class ModIntegrationMolten implements IModIntegration {
 		}
 	}
 
-	@Override
-	public String getName() {
-		return "MoltenMetalFluids";
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void onClientPreInit() {
-
-	}
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientInit() {
@@ -208,5 +171,42 @@ public class ModIntegrationMolten implements IModIntegration {
 	@Override
 	public void onClientPostInit() {
 
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientPreInit() {
+
+	}
+
+	@Override
+	public void onInit() {
+
+	}
+
+	@Override
+	public void onPostInit() {
+
+	}
+
+	@Override
+	public void onPreInit(Configuration config) {
+
+	}
+
+	private FluidStack toMolten(FluidStack stack) {
+		String mapped = liquid_map.get(stack.getFluid().getName());
+		if (mapped != null) {
+			Fluid mapped_fluid = FluidRegistry.getFluid(mapped);
+			if (mapped_fluid == null) { return null; }
+
+			if (mapped.equals("glass")) {
+				return new FluidStack(mapped_fluid, stack.amount);
+			} else {
+				return new FluidStack(mapped_fluid, FoundryMiscUtils.divCeil(stack.amount * MOLTEN_INGOT_AMOUNT, FoundryAPI.FLUID_AMOUNT_INGOT));
+			}
+		} else {
+			return null;
+		}
 	}
 }

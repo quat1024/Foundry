@@ -41,88 +41,9 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	}
 
 	@Override
-	public String getUnlocalizedName() {
-		return stack.getUnlocalizedName();
-	}
-
-	@Override
-	public String getLocalizedName() {
-		return stack.getLocalizedName();
-	}
-
-	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return 300;
-	}
-
-	@Override
-	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return 0;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		if (temperature < 1200) { return; }
-		double dx;
-		double dy;
-		double dz;
-
-		if (world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.AIR && !world.getBlockState(pos.add(0, 1, 0)).isOpaqueCube()) {
-			if (rand.nextInt(100) == 0) {
-				dx = pos.getX() + rand.nextFloat();
-				dy = pos.getY() + state.getBoundingBox(world, pos).maxY;
-				dz = pos.getZ() + rand.nextFloat();
-				world.spawnParticle(EnumParticleTypes.LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
-				world.playSound(dx, dy, dz, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
-			}
-
-			if (rand.nextInt(200) == 0) {
-				world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
-			}
-		}
-
-		BlockPos down = pos.down();
-		if (rand.nextInt(10) == 0 && world.getBlockState(down).isSideSolid(world, down, EnumFacing.UP) && !world.getBlockState(pos.add(0, -1, 0)).getMaterial().blocksMovement()) {
-			dx = pos.getX() + rand.nextFloat();
-			dy = pos.getY() - 1.05D;
-			dz = pos.getZ() + rand.nextFloat();
-
-			world.spawnParticle(EnumParticleTypes.DRIP_LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
-		}
-	}
-
-	@Override
 	public boolean canDisplace(IBlockAccess world, BlockPos pos) {
 		if (world.getBlockState(pos).getMaterial().isLiquid()) { return false; }
 		return super.canDisplace(world, pos);
-	}
-
-	@Override
-	public boolean displaceIfPossible(World world, BlockPos pos) {
-		if (world.getBlockState(pos).getMaterial().isLiquid()) { return false; }
-		return super.displaceIfPossible(world, pos);
-	}
-
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		super.onBlockAdded(world, pos, state);
-		checkForHarden(world, pos, state);
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		super.neighborChanged(state, world, pos, block, fromPos);
-		checkForHarden(world, pos, state);
-	}
-
-	private IBlockState getBlockStateFromItemStack(ItemStack stack) {
-		Block block = ((ItemBlock) (stack.getItem())).getBlock();
-		int meta = stack.getMetadata();
-		for (IBlockState state : block.getBlockState().getValidStates()) {
-			if (state != null && block.damageDropped(state) == meta) { return state; }
-		}
-		return null;
 	}
 
 	public void checkForHarden(World world, BlockPos pos, IBlockState state) {
@@ -157,18 +78,51 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 		}
 	}
 
-	private boolean tryToHarden(World world, BlockPos pos, BlockPos npos) {
-		//Check if block is in contact with water.
-		if (world.getBlockState(npos).getMaterial() == Material.WATER) {
-			int i;
-			world.setBlockState(pos, solid_state);
-			world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 2.6f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8f, false);
-			for (i = 0; i < 8; i++) {
-				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + Math.random(), pos.getY() + 1.2D, pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D);
-			}
-			return true;
+	@Override
+	public boolean displaceIfPossible(World world, BlockPos pos) {
+		if (world.getBlockState(pos).getMaterial().isLiquid()) { return false; }
+		return super.displaceIfPossible(world, pos);
+	}
+
+	private IBlockState getBlockStateFromItemStack(ItemStack stack) {
+		Block block = ((ItemBlock) (stack.getItem())).getBlock();
+		int meta = stack.getMetadata();
+		for (IBlockState state : block.getBlockState().getValidStates()) {
+			if (state != null && block.damageDropped(state) == meta) { return state; }
 		}
-		return false;
+		return null;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 300;
+	}
+
+	@Override
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 0;
+	}
+
+	@Override
+	public String getLocalizedName() {
+		return stack.getLocalizedName();
+	}
+
+	@Override
+	public String getUnlocalizedName() {
+		return stack.getUnlocalizedName();
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		super.neighborChanged(state, world, pos, block, fromPos);
+		checkForHarden(world, pos, state);
+	}
+
+	@Override
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(world, pos, state);
+		checkForHarden(world, pos, state);
 	}
 
 	@Override
@@ -183,5 +137,51 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 			}
 			entity.setFire(15);
 		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		if (temperature < 1200) { return; }
+		double dx;
+		double dy;
+		double dz;
+
+		if (world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.AIR && !world.getBlockState(pos.add(0, 1, 0)).isOpaqueCube()) {
+			if (rand.nextInt(100) == 0) {
+				dx = pos.getX() + rand.nextFloat();
+				dy = pos.getY() + state.getBoundingBox(world, pos).maxY;
+				dz = pos.getZ() + rand.nextFloat();
+				world.spawnParticle(EnumParticleTypes.LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				world.playSound(dx, dy, dz, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+			}
+
+			if (rand.nextInt(200) == 0) {
+				world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+			}
+		}
+
+		BlockPos down = pos.down();
+		if (rand.nextInt(10) == 0 && world.getBlockState(down).isSideSolid(world, down, EnumFacing.UP) && !world.getBlockState(pos.add(0, -1, 0)).getMaterial().blocksMovement()) {
+			dx = pos.getX() + rand.nextFloat();
+			dy = pos.getY() - 1.05D;
+			dz = pos.getZ() + rand.nextFloat();
+
+			world.spawnParticle(EnumParticleTypes.DRIP_LAVA, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+		}
+	}
+
+	private boolean tryToHarden(World world, BlockPos pos, BlockPos npos) {
+		//Check if block is in contact with water.
+		if (world.getBlockState(npos).getMaterial() == Material.WATER) {
+			int i;
+			world.setBlockState(pos, solid_state);
+			world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 2.6f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8f, false);
+			for (i = 0; i < 8; i++) {
+				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + Math.random(), pos.getY() + 1.2D, pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D);
+			}
+			return true;
+		}
+		return false;
 	}
 }

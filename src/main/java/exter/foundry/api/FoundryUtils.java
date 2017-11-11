@@ -11,6 +11,20 @@ import net.minecraftforge.oredict.OreDictionary;
 public class FoundryUtils {
 
 	/**
+	 * Check if an item is registered in the Ore Dictionary.
+	 * @param name Ore name to check.
+	 * @param stack Item to check.
+	 * @return true if the item is registered, false otherwise.
+	 */
+	static public boolean isItemInOreDictionary(String name, ItemStack stack) {
+		List<ItemStack> ores = OreDictionary.getOres(name);
+		for (ItemStack i : ores) {
+			if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) { return true; }
+		}
+		return false;
+	}
+
+	/**
 	 * Helper method for registering basic melting recipes for a given metal.
 	 * @param partial_name The partial ore dictionary name e.g. "Copper" for "ingotCopper","oreCopper", etc.
 	 * @param fluid The liquid created by the smelter.
@@ -26,19 +40,5 @@ public class FoundryUtils {
 			FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dustSmall" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 			FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dustTiny" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 		}
-	}
-
-	/**
-	 * Check if an item is registered in the Ore Dictionary.
-	 * @param name Ore name to check.
-	 * @param stack Item to check.
-	 * @return true if the item is registered, false otherwise.
-	 */
-	static public boolean isItemInOreDictionary(String name, ItemStack stack) {
-		List<ItemStack> ores = OreDictionary.getOres(name);
-		for (ItemStack i : ores) {
-			if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) { return true; }
-		}
-		return false;
 	}
 }

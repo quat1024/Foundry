@@ -36,155 +36,6 @@ import net.minecraftforge.items.IItemHandler;
  * Base class for all machines.
  */
 public abstract class TileEntityFoundry extends TileEntity implements ITickable, IInventory {
-	public enum RedstoneMode {
-		RSMODE_IGNORE(0),
-		RSMODE_ON(1),
-		RSMODE_OFF(2),
-		RSMODE_PULSE(3);
-
-		public final int id;
-
-		private RedstoneMode(int num) {
-			id = num;
-		}
-
-		static public RedstoneMode fromID(int num) {
-			for (RedstoneMode m : RedstoneMode.values()) {
-				if (m.id == num) { return m; }
-			}
-			return RSMODE_IGNORE;
-		}
-	}
-
-	protected class FluidHandler implements IFluidHandler {
-		private int fill_tank;
-		private int drain_tank;
-		private IFluidTankProperties[] props;
-
-		public FluidHandler(int fill_tank, int drain_tank) {
-			this.fill_tank = fill_tank;
-			this.drain_tank = drain_tank;
-			props = new IFluidTankProperties[getTankCount()];
-			for (int i = 0; i < props.length; i++) {
-				props[i] = new FluidTankPropertiesWrapper(getTank(i));
-			}
-		}
-
-		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
-		}
-
-		@Override
-		public int fill(FluidStack resource, boolean doFill) {
-			if (fill_tank < 0) { return 0; }
-			return fillTank(fill_tank, resource, doFill);
-		}
-
-		@Override
-		public FluidStack drain(FluidStack resource, boolean doDrain) {
-			if (drain_tank < 0) { return null; }
-			return drainTank(drain_tank, resource, doDrain);
-		}
-
-		@Override
-		public FluidStack drain(int maxDrain, boolean doDrain) {
-			if (drain_tank < 0) { return null; }
-			return drainTank(drain_tank, maxDrain, doDrain);
-		}
-	}
-
-	public class ItemHandler implements IItemHandler {
-		protected final int slots;
-		protected final ImmutableSet<Integer> insert_slots;
-		protected final ImmutableSet<Integer> extract_slots;
-
-		protected boolean canInsert(int slot, ItemStack stack) {
-			return isItemValidForSlot(slot, stack);
-		}
-
-		protected boolean canExtract(int slot) {
-			return true;
-		}
-
-		public ItemHandler(int slots, Set<Integer> insert_slots, Set<Integer> extract_slots) {
-			this.slots = slots;
-			this.insert_slots = ImmutableSet.copyOf(insert_slots);
-			this.extract_slots = ImmutableSet.copyOf(extract_slots);
-		}
-
-		@Override
-		public final int getSlots() {
-			return slots;
-		}
-
-		@Override
-		public final ItemStack getStackInSlot(int slot) {
-			return getStackInSlot(slot);
-		}
-
-		@Override
-		public final ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (!insert_slots.contains(slot) || !canInsert(slot, stack)) { return stack; }
-			ItemStack is = getStackInSlot(slot);
-			if (is == null) {
-				if (!simulate) {
-					setStackInSlot(slot, stack.copy());
-					updateInventoryItem(slot);
-					markDirty();
-				}
-				return null;
-			} else if (is.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(is, stack)) {
-				if (stack.getCount() + is.getCount() > is.getMaxStackSize()) {
-					stack = stack.copy();
-					stack.setCount(stack.getCount() - is.getMaxStackSize() + is.getCount());
-					if (!simulate) {
-						is.setCount(is.getMaxStackSize());
-					}
-				} else {
-					if (!simulate) {
-						is.grow(stack.getCount());
-					}
-					stack = null;
-				}
-				if (!simulate) {
-					updateInventoryItem(slot);
-					markDirty();
-				}
-				return stack;
-			}
-			return stack;
-		}
-
-		@Override
-		public final ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (!extract_slots.contains(slot) || !canExtract(slot)) { return null; }
-			ItemStack is = getStackInSlot(slot);
-			if (is.isEmpty()) { return ItemStack.EMPTY; }
-			if (amount > is.getCount()) {
-				amount = is.getCount();
-			}
-			if (!simulate) {
-				is.shrink(amount);
-				if (is.isEmpty()) {
-					setStackInSlot(slot, ItemStack.EMPTY);
-				}
-				updateInventoryItem(slot);
-				markDirty();
-			}
-			is = is.copy();
-			is.setCount(amount);
-			return is;
-		}
-
-		@Override
-		public int getSlotLimit(int slot) {
-			return TileEntityFoundry.this.getInventoryStackLimit();
-		}
-	}
-
-	private RedstoneMode mode;
-
 	/**
 	 * Links an item slot to a tank for filling/draining containers.
 	 */
@@ -246,6 +97,155 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		}
 	}
 
+	protected class FluidHandler implements IFluidHandler {
+		private int fill_tank;
+		private int drain_tank;
+		private IFluidTankProperties[] props;
+
+		public FluidHandler(int fill_tank, int drain_tank) {
+			this.fill_tank = fill_tank;
+			this.drain_tank = drain_tank;
+			props = new IFluidTankProperties[getTankCount()];
+			for (int i = 0; i < props.length; i++) {
+				props[i] = new FluidTankPropertiesWrapper(getTank(i));
+			}
+		}
+
+		@Override
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			if (drain_tank < 0) { return null; }
+			return drainTank(drain_tank, resource, doDrain);
+		}
+
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			if (drain_tank < 0) { return null; }
+			return drainTank(drain_tank, maxDrain, doDrain);
+		}
+
+		@Override
+		public int fill(FluidStack resource, boolean doFill) {
+			if (fill_tank < 0) { return 0; }
+			return fillTank(fill_tank, resource, doFill);
+		}
+
+		@Override
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
+		}
+	}
+
+	public class ItemHandler implements IItemHandler {
+		protected final int slots;
+		protected final ImmutableSet<Integer> insert_slots;
+		protected final ImmutableSet<Integer> extract_slots;
+
+		public ItemHandler(int slots, Set<Integer> insert_slots, Set<Integer> extract_slots) {
+			this.slots = slots;
+			this.insert_slots = ImmutableSet.copyOf(insert_slots);
+			this.extract_slots = ImmutableSet.copyOf(extract_slots);
+		}
+
+		protected boolean canExtract(int slot) {
+			return true;
+		}
+
+		protected boolean canInsert(int slot, ItemStack stack) {
+			return isItemValidForSlot(slot, stack);
+		}
+
+		@Override
+		public final ItemStack extractItem(int slot, int amount, boolean simulate) {
+			if (!extract_slots.contains(slot) || !canExtract(slot)) { return null; }
+			ItemStack is = getStackInSlot(slot);
+			if (is.isEmpty()) { return ItemStack.EMPTY; }
+			if (amount > is.getCount()) {
+				amount = is.getCount();
+			}
+			if (!simulate) {
+				is.shrink(amount);
+				if (is.isEmpty()) {
+					setStackInSlot(slot, ItemStack.EMPTY);
+				}
+				updateInventoryItem(slot);
+				markDirty();
+			}
+			is = is.copy();
+			is.setCount(amount);
+			return is;
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			return TileEntityFoundry.this.getInventoryStackLimit();
+		}
+
+		@Override
+		public final int getSlots() {
+			return slots;
+		}
+
+		@Override
+		public final ItemStack getStackInSlot(int slot) {
+			return getStackInSlot(slot);
+		}
+
+		@Override
+		public final ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			if (!insert_slots.contains(slot) || !canInsert(slot, stack)) { return stack; }
+			ItemStack is = getStackInSlot(slot);
+			if (is == null) {
+				if (!simulate) {
+					setStackInSlot(slot, stack.copy());
+					updateInventoryItem(slot);
+					markDirty();
+				}
+				return null;
+			} else if (is.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(is, stack)) {
+				if (stack.getCount() + is.getCount() > is.getMaxStackSize()) {
+					stack = stack.copy();
+					stack.setCount(stack.getCount() - is.getMaxStackSize() + is.getCount());
+					if (!simulate) {
+						is.setCount(is.getMaxStackSize());
+					}
+				} else {
+					if (!simulate) {
+						is.grow(stack.getCount());
+					}
+					stack = null;
+				}
+				if (!simulate) {
+					updateInventoryItem(slot);
+					markDirty();
+				}
+				return stack;
+			}
+			return stack;
+		}
+	}
+
+	public enum RedstoneMode {
+		RSMODE_IGNORE(0),
+		RSMODE_ON(1),
+		RSMODE_OFF(2),
+		RSMODE_PULSE(3);
+
+		static public RedstoneMode fromID(int num) {
+			for (RedstoneMode m : RedstoneMode.values()) {
+				if (m.id == num) { return m; }
+			}
+			return RSMODE_IGNORE;
+		}
+
+		public final int id;
+
+		private RedstoneMode(int num) {
+			id = num;
+		}
+	}
+
+	private RedstoneMode mode;
+
 	private List<ContainerSlot> conatiner_slots;
 	private NBTTagCompound update_packet;
 	private boolean initialized;
@@ -255,20 +255,6 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	protected final NonNullList<ItemStack> inventory;
 
 	private int container_timer;
-
-	protected final void addContainerSlot(ContainerSlot cs) {
-		conatiner_slots.add(cs);
-	}
-
-	protected abstract void updateClient();
-
-	protected abstract void updateServer();
-
-	public abstract FluidTank getTank(int slot);
-
-	public abstract int getTankCount();
-
-	protected abstract void onInitialize();
 
 	public TileEntityFoundry() {
 		conatiner_slots = new ArrayList<ContainerSlot>();
@@ -280,13 +266,23 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		container_timer = 0;
 	}
 
-	@Override
-	public final ItemStack getStackInSlot(int slot) {
-		return inventory.get(slot);
+	protected final void addContainerSlot(ContainerSlot cs) {
+		conatiner_slots.add(cs);
 	}
 
-	public void setStackInSlot(int slot, ItemStack stack) {
-		inventory.set(slot, stack);
+	@Override
+	public void clear() {
+
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {
+		if (!world.isRemote && player instanceof EntityPlayerMP) {
+			NBTTagCompound tag = new NBTTagCompound();
+			super.writeToNBT(tag);
+			tag.setInteger("rsmode", mode.id);
+			sendPacketToPlayer(tag, (EntityPlayerMP) player);
+		}
 	}
 
 	@Override
@@ -308,315 +304,6 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 			}
 		} else {
 			return ItemStack.EMPTY;
-		}
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int slot) {
-		if (!getStackInSlot(slot).isEmpty()) {
-			ItemStack is = getStackInSlot(slot);
-			setStackInSlot(slot, ItemStack.EMPTY);
-			updateInventoryItem(slot);
-			markDirty();
-			return is;
-		} else {
-			return ItemStack.EMPTY;
-		}
-	}
-
-	@Override
-	public final void setInventorySlotContents(int slot, ItemStack stack) {
-		setStackInSlot(slot, stack);
-
-		if (stack.getCount() > this.getInventoryStackLimit()) {
-			stack.setCount(this.getInventoryStackLimit());
-		}
-		updateInventoryItem(slot);
-		markDirty();
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-		initialized = false;
-		onChunkUnload();
-	}
-
-	@Override
-	public final SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound nbt = new NBTTagCompound();
-		writeToNBT(nbt);
-		return new SPacketUpdateTileEntity(getPos(), 0, nbt);
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(null);
-	}
-
-	protected final void updateTank(int slot) {
-		if (world.isRemote) { return; }
-		if (update_packet == null) {
-			update_packet = new NBTTagCompound();
-			super.writeToNBT(update_packet);
-		}
-		writeTankToNBT(update_packet, slot);
-	}
-
-	protected final void updateInventoryItem(int slot) {
-		if (world.isRemote) { return; }
-		if (update_packet == null) {
-			update_packet = new NBTTagCompound();
-			super.writeToNBT(update_packet);
-		}
-		writeInventoryItemToNBT(update_packet, slot);
-	}
-
-	protected final void writeTankToNBT(NBTTagCompound compound, int slot) {
-		NBTTagCompound tag = new NBTTagCompound();
-		getTank(slot).writeToNBT(tag);
-		compound.setTag("Tank_" + String.valueOf(slot), tag);
-	}
-
-	protected final void writeInventoryItemToNBT(NBTTagCompound compound, int slot) {
-		ItemStack is = getStackInSlot(slot);
-		NBTTagCompound tag = new NBTTagCompound();
-		if (is != null) {
-			tag.setBoolean("empty", false);
-			is.writeToNBT(tag);
-		} else {
-			tag.setBoolean("empty", true);
-		}
-		compound.setTag("Item_" + String.valueOf(slot), tag);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-
-		int i;
-		for (i = 0; i < getTankCount(); i++) {
-			NBTTagCompound tag = (NBTTagCompound) compound.getTag("Tank_" + String.valueOf(i));
-			if (tag != null) {
-				FluidTank tank = getTank(i);
-				tank.setFluid(null);
-				tank.readFromNBT(tag);
-			}
-		}
-
-		for (i = 0; i < getSizeInventory(); i++) {
-			NBTTagCompound tag = (NBTTagCompound) compound.getTag("Item_" + String.valueOf(i));
-			if (tag != null) {
-				ItemStack stack = null;
-				if (!tag.getBoolean("empty")) {
-					stack = new ItemStack(tag);
-				}
-				inventory.set(i, stack);
-			}
-		}
-		if (compound.hasKey("rsmode")) {
-			mode = RedstoneMode.fromID(compound.getInteger("rsmode"));
-		}
-		if (compound.hasKey("bucket_timer")) {
-			container_timer = compound.getInteger("container_timer");
-		}
-	}
-
-	protected void writeTileToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		int i;
-		super.writeToNBT(compound);
-		for (i = 0; i < getTankCount(); i++) {
-			writeTankToNBT(compound, i);
-		}
-		for (i = 0; i < getSizeInventory(); i++) {
-			writeInventoryItemToNBT(compound, i);
-		}
-		compound.setInteger("rsmode", mode.id);
-		compound.setInteger("container_timer", container_timer);
-		return compound;
-	}
-
-	protected final void updateValue(String name, int value) {
-		if (world.isRemote) { return; }
-		if (update_packet == null) {
-			update_packet = new NBTTagCompound();
-			super.writeToNBT(update_packet);
-		}
-		update_packet.setInteger(name, value);
-	}
-
-	protected final void updateValue(String name, long value) {
-		if (world.isRemote) { return; }
-		if (update_packet == null) {
-			update_packet = new NBTTagCompound();
-			super.writeToNBT(update_packet);
-		}
-		update_packet.setLong(name, value);
-	}
-
-	protected final void updateValue(String name, boolean value) {
-		if (world.isRemote) { return; }
-		if (update_packet == null) {
-			update_packet = new NBTTagCompound();
-			super.writeToNBT(update_packet);
-		}
-		update_packet.setBoolean(name, value);
-	}
-
-	protected final void updateNBTTag(String name, NBTTagCompound compound) {
-		if (world.isRemote) { return; }
-		if (update_packet == null) {
-			update_packet = new NBTTagCompound();
-			super.writeToNBT(update_packet);
-		}
-		update_packet.setTag(name, compound);
-	}
-
-	protected void sendPacketToNearbyPlayers(NBTTagCompound data) {
-		data.setInteger("dim", world.provider.getDimension());
-		Foundry.network_channel.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
-	}
-
-	protected void sendPacketToPlayer(NBTTagCompound data, EntityPlayerMP player) {
-		data.setInteger("dim", world.provider.getDimension());
-		Foundry.network_channel.sendTo(new MessageTileEntitySync(data), player);
-	}
-
-	@Override
-	public void update() {
-		if (!(initialized || isInvalid())) {
-			updateRedstone();
-			onInitialize();
-			initialized = true;
-		}
-
-		if (!world.isRemote) {
-			if (update_packet == null) {
-				update_packet = new NBTTagCompound();
-				super.writeToNBT(update_packet);
-			}
-			for (ContainerSlot cs : conatiner_slots) {
-				cs.update();
-			}
-			if (container_timer > 0) {
-				container_timer--;
-			}
-			updateServer();
-
-			if (update_packet != null) {
-				sendPacketToNearbyPlayers(update_packet);
-			}
-			update_packet = null;
-		} else {
-			updateClient();
-		}
-		last_redstone_signal = redstone_signal;
-	}
-
-	@Override
-	public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		super.onDataPacket(net, pkt);
-		if (world.isRemote) {
-			readFromNBT(pkt.getNbtCompound());
-		}
-		//world.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-	}
-
-	public void updateRedstone() {
-		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
-	}
-
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		return world.getTileEntity(getPos()) != this ? false : player.getDistanceSq(getPos()) <= 64.0D;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
-	public void clear() {
-
-	}
-
-	@Override
-	public String getName() {
-		return null;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return null;
-	}
-
-	public RedstoneMode getRedstoneMode() {
-		return mode;
-	}
-
-	public void setRedstoneMode(RedstoneMode new_mode) {
-		if (mode != new_mode) {
-			mode = new_mode;
-			if (world.isRemote) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setInteger("rsmode", mode.id);
-				sendToServer(tag);
-			}
-		}
-	}
-
-	protected void sendToServer(NBTTagCompound tag) {
-		if (world.isRemote) {
-			super.writeToNBT(tag);
-			tag.setInteger("dim", world.provider.getDimension());
-			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
-		}
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-		if (!world.isRemote && player instanceof EntityPlayerMP) {
-			NBTTagCompound tag = writeToNBT(null);
-			sendPacketToPlayer(tag, (EntityPlayerMP) player);
-		}
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-		if (!world.isRemote && player instanceof EntityPlayerMP) {
-			NBTTagCompound tag = new NBTTagCompound();
-			super.writeToNBT(tag);
-			tag.setInteger("rsmode", mode.id);
-			sendPacketToPlayer(tag, (EntityPlayerMP) player);
 		}
 	}
 
@@ -653,25 +340,6 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		return filled;
 	}
 
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return null;
-	}
-
-	protected IItemHandler getItemHandler(EnumFacing facing) {
-		return null;
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return getFluidHandler(facing) != null;
-		} else if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return getItemHandler(facing) != null;
-		} else {
-			return super.hasCapability(cap, facing);
-		}
-	}
-
 	@Override
 	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
 		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
@@ -694,9 +362,341 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	@Override
+	public ITextComponent getDisplayName() {
+		return null;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return null;
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	protected IItemHandler getItemHandler(EnumFacing facing) {
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
+	public RedstoneMode getRedstoneMode() {
+		return mode;
+	}
+
+	@Override
+	public final ItemStack getStackInSlot(int slot) {
+		return inventory.get(slot);
+	}
+
+	public abstract FluidTank getTank(int slot);
+
+	public abstract int getTankCount();
+
+	@Override
+	public final SPacketUpdateTileEntity getUpdatePacket() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		writeToNBT(nbt);
+		return new SPacketUpdateTileEntity(getPos(), 0, nbt);
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return writeToNBT(null);
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
+		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return getFluidHandler(facing) != null;
+		} else if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return getItemHandler(facing) != null;
+		} else {
+			return super.hasCapability(cap, facing);
+		}
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+		initialized = false;
+		onChunkUnload();
+	}
+
+	@Override
 	public boolean isEmpty() {
 		for (ItemStack s : inventory)
 			if (!s.isEmpty()) return false;
 		return true;
+	}
+
+	@Override
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return world.getTileEntity(getPos()) != this ? false : player.getDistanceSq(getPos()) <= 64.0D;
+	}
+
+	@Override
+	public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
+		if (world.isRemote) {
+			readFromNBT(pkt.getNbtCompound());
+		}
+		//world.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	}
+
+	protected abstract void onInitialize();
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+		if (!world.isRemote && player instanceof EntityPlayerMP) {
+			NBTTagCompound tag = writeToNBT(null);
+			sendPacketToPlayer(tag, (EntityPlayerMP) player);
+		}
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+
+		int i;
+		for (i = 0; i < getTankCount(); i++) {
+			NBTTagCompound tag = (NBTTagCompound) compound.getTag("Tank_" + String.valueOf(i));
+			if (tag != null) {
+				FluidTank tank = getTank(i);
+				tank.setFluid(null);
+				tank.readFromNBT(tag);
+			}
+		}
+
+		for (i = 0; i < getSizeInventory(); i++) {
+			NBTTagCompound tag = (NBTTagCompound) compound.getTag("Item_" + String.valueOf(i));
+			if (tag != null) {
+				ItemStack stack = null;
+				if (!tag.getBoolean("empty")) {
+					stack = new ItemStack(tag);
+				}
+				inventory.set(i, stack);
+			}
+		}
+		if (compound.hasKey("rsmode")) {
+			mode = RedstoneMode.fromID(compound.getInteger("rsmode"));
+		}
+		if (compound.hasKey("bucket_timer")) {
+			container_timer = compound.getInteger("container_timer");
+		}
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int slot) {
+		if (!getStackInSlot(slot).isEmpty()) {
+			ItemStack is = getStackInSlot(slot);
+			setStackInSlot(slot, ItemStack.EMPTY);
+			updateInventoryItem(slot);
+			markDirty();
+			return is;
+		} else {
+			return ItemStack.EMPTY;
+		}
+	}
+
+	protected void sendPacketToNearbyPlayers(NBTTagCompound data) {
+		data.setInteger("dim", world.provider.getDimension());
+		Foundry.network_channel.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
+	}
+
+	protected void sendPacketToPlayer(NBTTagCompound data, EntityPlayerMP player) {
+		data.setInteger("dim", world.provider.getDimension());
+		Foundry.network_channel.sendTo(new MessageTileEntitySync(data), player);
+	}
+
+	protected void sendToServer(NBTTagCompound tag) {
+		if (world.isRemote) {
+			super.writeToNBT(tag);
+			tag.setInteger("dim", world.provider.getDimension());
+			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
+		}
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public final void setInventorySlotContents(int slot, ItemStack stack) {
+		setStackInSlot(slot, stack);
+
+		if (stack.getCount() > this.getInventoryStackLimit()) {
+			stack.setCount(this.getInventoryStackLimit());
+		}
+		updateInventoryItem(slot);
+		markDirty();
+	}
+
+	public void setRedstoneMode(RedstoneMode new_mode) {
+		if (mode != new_mode) {
+			mode = new_mode;
+			if (world.isRemote) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setInteger("rsmode", mode.id);
+				sendToServer(tag);
+			}
+		}
+	}
+
+	public void setStackInSlot(int slot, ItemStack stack) {
+		inventory.set(slot, stack);
+	}
+
+	@Override
+	public void update() {
+		if (!(initialized || isInvalid())) {
+			updateRedstone();
+			onInitialize();
+			initialized = true;
+		}
+
+		if (!world.isRemote) {
+			if (update_packet == null) {
+				update_packet = new NBTTagCompound();
+				super.writeToNBT(update_packet);
+			}
+			for (ContainerSlot cs : conatiner_slots) {
+				cs.update();
+			}
+			if (container_timer > 0) {
+				container_timer--;
+			}
+			updateServer();
+
+			if (update_packet != null) {
+				sendPacketToNearbyPlayers(update_packet);
+			}
+			update_packet = null;
+		} else {
+			updateClient();
+		}
+		last_redstone_signal = redstone_signal;
+	}
+
+	protected abstract void updateClient();
+
+	protected final void updateInventoryItem(int slot) {
+		if (world.isRemote) { return; }
+		if (update_packet == null) {
+			update_packet = new NBTTagCompound();
+			super.writeToNBT(update_packet);
+		}
+		writeInventoryItemToNBT(update_packet, slot);
+	}
+
+	protected final void updateNBTTag(String name, NBTTagCompound compound) {
+		if (world.isRemote) { return; }
+		if (update_packet == null) {
+			update_packet = new NBTTagCompound();
+			super.writeToNBT(update_packet);
+		}
+		update_packet.setTag(name, compound);
+	}
+
+	public void updateRedstone() {
+		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
+	}
+
+	protected abstract void updateServer();
+
+	protected final void updateTank(int slot) {
+		if (world.isRemote) { return; }
+		if (update_packet == null) {
+			update_packet = new NBTTagCompound();
+			super.writeToNBT(update_packet);
+		}
+		writeTankToNBT(update_packet, slot);
+	}
+
+	protected final void updateValue(String name, boolean value) {
+		if (world.isRemote) { return; }
+		if (update_packet == null) {
+			update_packet = new NBTTagCompound();
+			super.writeToNBT(update_packet);
+		}
+		update_packet.setBoolean(name, value);
+	}
+
+	protected final void updateValue(String name, int value) {
+		if (world.isRemote) { return; }
+		if (update_packet == null) {
+			update_packet = new NBTTagCompound();
+			super.writeToNBT(update_packet);
+		}
+		update_packet.setInteger(name, value);
+	}
+
+	protected final void updateValue(String name, long value) {
+		if (world.isRemote) { return; }
+		if (update_packet == null) {
+			update_packet = new NBTTagCompound();
+			super.writeToNBT(update_packet);
+		}
+		update_packet.setLong(name, value);
+	}
+
+	protected final void writeInventoryItemToNBT(NBTTagCompound compound, int slot) {
+		ItemStack is = getStackInSlot(slot);
+		NBTTagCompound tag = new NBTTagCompound();
+		if (is != null) {
+			tag.setBoolean("empty", false);
+			is.writeToNBT(tag);
+		} else {
+			tag.setBoolean("empty", true);
+		}
+		compound.setTag("Item_" + String.valueOf(slot), tag);
+	}
+
+	protected final void writeTankToNBT(NBTTagCompound compound, int slot) {
+		NBTTagCompound tag = new NBTTagCompound();
+		getTank(slot).writeToNBT(tag);
+		compound.setTag("Tank_" + String.valueOf(slot), tag);
+	}
+
+	protected void writeTileToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		int i;
+		super.writeToNBT(compound);
+		for (i = 0; i < getTankCount(); i++) {
+			writeTankToNBT(compound, i);
+		}
+		for (i = 0; i < getSizeInventory(); i++) {
+			writeInventoryItemToNBT(compound, i);
+		}
+		compound.setInteger("rsmode", mode.id);
+		compound.setInteger("container_timer", container_timer);
+		return compound;
 	}
 }

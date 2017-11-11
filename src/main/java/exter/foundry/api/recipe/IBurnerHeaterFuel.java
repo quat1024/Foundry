@@ -5,7 +5,7 @@ import exter.foundry.api.recipe.matcher.IItemMatcher;
 public interface IBurnerHeaterFuel {
 	public int getBurnTime();
 
-	public int getHeat();
-
 	public IItemMatcher getFuel();
+
+	public int getHeat();
 }

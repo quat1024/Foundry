@@ -29,41 +29,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class InfuserJEI {
 
-	static public class Wrapper implements IRecipeWrapper {
-		private final IInfuserRecipe recipe;
-
-		public Wrapper(IInfuserRecipe recipe) {
-			this.recipe = recipe;
-		}
-
-		@Override
-		public List<String> getTooltipStrings(int x, int y) {
-			return null;
-		}
-
-		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-			minecraft.fontRenderer.drawString(recipe.getEnergyNeeded() / TileEntityFoundryPowered.RATIO_FE + " FE", 0, 38, 0);
-		}
-
-		@Override
-		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-			return false;
-		}
-
-		@Override
-		public void getIngredients(IIngredients ingredients) {
-			ingredients.setInput(FluidStack.class, recipe.getInputFluid());
-			ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
-			ingredients.setOutput(FluidStack.class, recipe.getOutput());
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return recipe == other;
-		}
-	}
-
 	static public class Category implements IRecipeCategory<Wrapper> {
 
 		protected final ResourceLocation background_location;
@@ -92,14 +57,24 @@ public class InfuserJEI {
 		}
 
 		@Override
+		public void drawExtras(Minecraft minecraft) {
+			arrow.draw(minecraft, 34, 18);
+		}
+
+		@Override
 		@Nonnull
 		public IDrawable getBackground() {
 			return background;
 		}
 
 		@Override
-		public void drawExtras(Minecraft minecraft) {
-			arrow.draw(minecraft, 34, 18);
+		public IDrawable getIcon() {
+			return null;
+		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODNAME;
 		}
 
 		@Nonnull
@@ -108,15 +83,15 @@ public class InfuserJEI {
 			return localizedName;
 		}
 
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+
 		@Nonnull
 		@Override
 		public String getUid() {
 			return FoundryJEIConstants.INF_UID;
-		}
-
-		@Override
-		public IDrawable getIcon() {
-			return null;
 		}
 
 		@Override
@@ -133,15 +108,40 @@ public class InfuserJEI {
 			guiItemStacks.init(0, true, 14, 17);
 			guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
 		}
+	}
 
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return Collections.emptyList();
+	static public class Wrapper implements IRecipeWrapper {
+		private final IInfuserRecipe recipe;
+
+		public Wrapper(IInfuserRecipe recipe) {
+			this.recipe = recipe;
 		}
 
 		@Override
-		public String getModName() {
-			return Foundry.MODNAME;
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+			minecraft.fontRenderer.drawString(recipe.getEnergyNeeded() / TileEntityFoundryPowered.RATIO_FE + " FE", 0, 38, 0);
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInput(FluidStack.class, recipe.getInputFluid());
+			ingredients.setInputLists(ItemStack.class, Collections.singletonList(recipe.getInput().getItems()));
+			ingredients.setOutput(FluidStack.class, recipe.getOutput());
+		}
+
+		@Override
+		public List<String> getTooltipStrings(int x, int y) {
+			return null;
+		}
+
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
 		}
 	}
 }

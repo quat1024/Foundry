@@ -25,8 +25,13 @@ public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 		}
 
 		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			return drainTank(TANK_OUTPUT, resource, doDrain);
+		}
+
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			return drainTank(TANK_OUTPUT, maxDrain, doDrain);
 		}
 
 		@Override
@@ -55,13 +60,8 @@ public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 		}
 
 		@Override
-		public FluidStack drain(FluidStack resource, boolean doDrain) {
-			return drainTank(TANK_OUTPUT, resource, doDrain);
-		}
-
-		@Override
-		public FluidStack drain(int maxDrain, boolean doDrain) {
-			return drainTank(TANK_OUTPUT, maxDrain, doDrain);
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
 		}
 	}
 
@@ -99,44 +99,6 @@ public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 		addContainerSlot(new ContainerSlot(TANK_OUTPUT, INVENTORY_CONTAINER_OUTPUT_FILL, true));
 	}
 
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return fluid_handler;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 6;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		if (tag.hasKey("Progress")) {
-			progress = tag.getInteger("Progress");
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("Progress", progress);
-		return compound;
-	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
 	private boolean canOutput(IAlloyingCrucibleRecipe recipe) {
 		FluidStack output = recipe.getOutput();
 		return tanks[TANK_OUTPUT].fill(output, false) == output.amount;
@@ -151,6 +113,49 @@ public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 			drainTank(TANK_INPUT_B, recipe.getInputB(), true);
 		}
 		fillTank(TANK_OUTPUT, recipe.getOutput(), true);
+	}
+
+	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return fluid_handler;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 6;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return tanks[slot];
+	}
+
+	@Override
+	public int getTankCount() {
+		return 3;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		if (tag.hasKey("Progress")) {
+			progress = tag.getInteger("Progress");
+		}
+	}
+
+	@Override
+	protected void updateClient() {
+
 	}
 
 	@Override
@@ -184,17 +189,12 @@ public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		return tanks[slot];
-	}
-
-	@Override
-	public int getTankCount() {
-		return 3;
-	}
-
-	@Override
-	protected void onInitialize() {
-
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("Progress", progress);
+		return compound;
 	}
 }

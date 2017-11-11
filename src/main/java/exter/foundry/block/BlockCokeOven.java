@@ -32,6 +32,17 @@ public class BlockCokeOven extends BlockFoundrySidedMachine {
 		setRegistryName("cokeOven");
 	}
 
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		FoundryMiscUtils.localizeTooltip("tooltip.foundry.cokeOven", tooltip);
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityCokeOven();
+	}
+
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hit_x, float hit_y, float hit_z) {
 		if (world.isRemote) {
@@ -40,11 +51,6 @@ public class BlockCokeOven extends BlockFoundrySidedMachine {
 			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_COKEOVEN, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityCokeOven();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -77,11 +83,5 @@ public class BlockCokeOven extends BlockFoundrySidedMachine {
 				break;
 			}
 		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		FoundryMiscUtils.localizeTooltip("tooltip.foundry.cokeOven", tooltip);
 	}
 }

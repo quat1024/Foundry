@@ -12,13 +12,10 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public class AlloyMixerRecipe implements IAlloyMixerRecipe {
 
+	static private final boolean[] matched = new boolean[4];
 	public List<FluidStack> inputs;
-	public FluidStack output;
 
-	@Override
-	public FluidStack getOutput() {
-		return output.copy();
-	}
+	public FluidStack output;
 
 	public AlloyMixerRecipe(FluidStack out, FluidStack[] in) {
 		output = out.copy();
@@ -38,7 +35,10 @@ public class AlloyMixerRecipe implements IAlloyMixerRecipe {
 		return inputs;
 	}
 
-	static private final boolean[] matched = new boolean[4];
+	@Override
+	public FluidStack getOutput() {
+		return output.copy();
+	}
 
 	@Override
 	public boolean matchesRecipe(FluidStack[] in, int[] order) {

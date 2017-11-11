@@ -9,19 +9,19 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerMetalInfuser extends Container {
 
-	private TileEntityMetalInfuser te_infuser;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 5;
 	public static final int SLOTS_INVENTORY = 5;
 	private static final int SLOTS_HOTBAR = 5 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 127;
 
+	private static final int SLOT_INVENTORY_Y = 127;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 185;
+	private TileEntityMetalInfuser te_infuser;
 
 	public ContainerMetalInfuser(TileEntityMetalInfuser infuser, EntityPlayer player) {
 		te_infuser = infuser;
@@ -51,6 +51,12 @@ public class ContainerMetalInfuser extends Container {
 	}
 
 	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_infuser.closeInventory(player);
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
 		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slot_index);
@@ -77,11 +83,5 @@ public class ContainerMetalInfuser extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_infuser.closeInventory(player);
 	}
 }

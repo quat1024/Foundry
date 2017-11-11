@@ -30,21 +30,6 @@ public class InfuserRecipe implements IInfuserRecipe {
 	 */
 	public final FluidStack output;
 
-	@Override
-	public FluidStack getInputFluid() {
-		return fluid.copy();
-	}
-
-	@Override
-	public IItemMatcher getInput() {
-		return item;
-	}
-
-	@Override
-	public FluidStack getOutput() {
-		return output.copy();
-	}
-
 	public InfuserRecipe(FluidStack result, FluidStack in_fluid, IItemMatcher in_item, int energy) {
 		if (energy < 1) { throw new IllegalArgumentException("Infuser substance recipe energy nust be > 0."); }
 		if (in_fluid == null) { throw new IllegalArgumentException("Infuser recipe input cannot be null"); }
@@ -56,13 +41,28 @@ public class InfuserRecipe implements IInfuserRecipe {
 	}
 
 	@Override
-	public boolean matchesRecipe(FluidStack in_fluid, ItemStack item_stack) {
-		return item.apply(item_stack) && in_fluid.containsFluid(fluid);
+	public int getEnergyNeeded() {
+		return extract_energy;
 	}
 
 	@Override
-	public int getEnergyNeeded() {
-		return extract_energy;
+	public IItemMatcher getInput() {
+		return item;
+	}
+
+	@Override
+	public FluidStack getInputFluid() {
+		return fluid.copy();
+	}
+
+	@Override
+	public FluidStack getOutput() {
+		return output.copy();
+	}
+
+	@Override
+	public boolean matchesRecipe(FluidStack in_fluid, ItemStack item_stack) {
+		return item.apply(item_stack) && in_fluid.containsFluid(fluid);
 	}
 
 }

@@ -9,20 +9,20 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerAlloyMixer extends Container {
 
-	private TileEntityAlloyMixer te_alloymixer;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 10;
-
 	public static final int SLOTS_INVENTORY = 10;
+
 	private static final int SLOTS_HOTBAR = 10 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 127;
 
+	private static final int SLOT_INVENTORY_Y = 127;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 185;
+	private TileEntityAlloyMixer te_alloymixer;
 
 	public ContainerAlloyMixer(TileEntityAlloyMixer mixer, EntityPlayer player) {
 		te_alloymixer = mixer;
@@ -57,6 +57,12 @@ public class ContainerAlloyMixer extends Container {
 	}
 
 	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_alloymixer.closeInventory(player);
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
 		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slot_index);
@@ -83,11 +89,5 @@ public class ContainerAlloyMixer extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_alloymixer.closeInventory(player);
 	}
 }

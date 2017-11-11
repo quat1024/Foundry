@@ -19,11 +19,6 @@ public interface ICastingTableRecipe {
 	public FluidStack getInput();
 
 	/**
-	 * Get the Casting Table type.
-	 */
-	public TableType getTableType();
-
-	/**
 	 * Get the actual item produced by casting.
 	 * @return ItemStack containing the item produced. Can be null if using an Ore Dictionary name with nothing registered with it.
 	 */
@@ -33,4 +28,9 @@ public interface ICastingTableRecipe {
 	 * Get the output's matcher.
 	 */
 	public IItemMatcher getOutputMatcher();
+
+	/**
+	 * Get the Casting Table type.
+	 */
+	public TableType getTableType();
 }

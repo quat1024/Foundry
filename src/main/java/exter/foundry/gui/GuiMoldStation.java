@@ -64,33 +64,9 @@ public class GuiMoldStation extends GuiFoundry {
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
-		int window_x = (width - xSize) / 2;
-		int window_y = (height - ySize) / 2;
-		button_fire = new GuiButtonFoundry(1, 117 + window_x, 15 + window_y, 17, 17, GUI_TEXTURE, 187, 107, 204, 107);
-		buttonList.add(button_fire);
-	}
-
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
-		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
-
-		fontRenderer.drawString("Mold Station", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
-	}
-
-	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		super.mouseClicked(mouseX, mouseY, mouseButton);
-		if (te_ms.hasBlock() && isPointInRegion(GRID_X, GRID_Y, GRID_SIZE - 1, GRID_SIZE - 1, mouseX, mouseY)) {
-			int x = (mouseX - GRID_X - guiLeft) / GRID_SLOT_SIZE;
-			int y = (mouseY - GRID_Y - guiTop) / GRID_SLOT_SIZE;
-			if (mouseButton == 0) {
-				te_ms.carve(x, y, x, y);
-			} else {
-				te_ms.mend(x, y, x, y);
-			}
+	protected void actionPerformed(GuiButton button) {
+		if (button.id == button_fire.id) {
+			te_ms.fire();
 		}
 	}
 
@@ -128,6 +104,14 @@ public class GuiMoldStation extends GuiFoundry {
 	}
 
 	@Override
+	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
+		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
+
+		fontRenderer.drawString("Mold Station", 5, 6, 0x404040);
+		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+	}
+
+	@Override
 	public void drawScreen(int mousex, int mousey, float par3) {
 		super.drawScreen(mousex, mousey, par3);
 
@@ -154,9 +138,25 @@ public class GuiMoldStation extends GuiFoundry {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
-		if (button.id == button_fire.id) {
-			te_ms.fire();
+	public void initGui() {
+		super.initGui();
+		int window_x = (width - xSize) / 2;
+		int window_y = (height - ySize) / 2;
+		button_fire = new GuiButtonFoundry(1, 117 + window_x, 15 + window_y, 17, 17, GUI_TEXTURE, 187, 107, 204, 107);
+		buttonList.add(button_fire);
+	}
+
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		if (te_ms.hasBlock() && isPointInRegion(GRID_X, GRID_Y, GRID_SIZE - 1, GRID_SIZE - 1, mouseX, mouseY)) {
+			int x = (mouseX - GRID_X - guiLeft) / GRID_SLOT_SIZE;
+			int y = (mouseY - GRID_Y - guiTop) / GRID_SLOT_SIZE;
+			if (mouseButton == 0) {
+				te_ms.carve(x, y, x, y);
+			} else {
+				te_ms.mend(x, y, x, y);
+			}
 		}
 	}
 }

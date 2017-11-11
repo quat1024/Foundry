@@ -23,9 +23,19 @@ public class BlockRefractoryGlass extends BlockBreakable {
 	}
 
 	@Override
+	protected boolean canSilkHarvest() {
+		return true;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 
 	/**
@@ -34,15 +44,5 @@ public class BlockRefractoryGlass extends BlockBreakable {
 	@Override
 	public int quantityDropped(Random random) {
 		return 0;
-	}
-
-	@Override
-	protected boolean canSilkHarvest() {
-		return true;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
 	}
 }

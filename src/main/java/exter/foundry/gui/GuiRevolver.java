@@ -25,18 +25,14 @@ public class GuiRevolver extends GuiContainer {
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
-		int window_x = (width - xSize) / 2;
-		int window_y = (height - ySize) / 2;
-		button_unload = new GuiButtonFoundry(1, 82 + window_x, 67 + window_y, 12, 12, GUI_TEXTURE, 176, 0, 188, 0);
-		buttonList.add(button_unload);
-	}
-
-	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRenderer.drawString("Revolver Ammo", 23, 6, 4210752);
-		fontRenderer.drawString((new TextComponentTranslation("container.inventory")).getUnformattedText(), 8, ySize - 96 + 2, 4210752);
+	protected void actionPerformed(GuiButton button) {
+		if (button.id == button_unload.id) {
+			for (Slot slot : (inventorySlots.inventorySlots)) {
+				if (slot instanceof SlotFirearmAmmo) {
+					this.handleMouseClick(slot, slot.slotNumber, 0, ClickType.QUICK_MOVE);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -50,13 +46,17 @@ public class GuiRevolver extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
-		if (button.id == button_unload.id) {
-			for (Slot slot : (inventorySlots.inventorySlots)) {
-				if (slot instanceof SlotFirearmAmmo) {
-					this.handleMouseClick(slot, slot.slotNumber, 0, ClickType.QUICK_MOVE);
-				}
-			}
-		}
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		fontRenderer.drawString("Revolver Ammo", 23, 6, 4210752);
+		fontRenderer.drawString((new TextComponentTranslation("container.inventory")).getUnformattedText(), 8, ySize - 96 + 2, 4210752);
+	}
+
+	@Override
+	public void initGui() {
+		super.initGui();
+		int window_x = (width - xSize) / 2;
+		int window_y = (height - ySize) / 2;
+		button_unload = new GuiButtonFoundry(1, 82 + window_x, 67 + window_y, 12, 12, GUI_TEXTURE, 176, 0, 188, 0);
+		buttonList.add(button_unload);
 	}
 }

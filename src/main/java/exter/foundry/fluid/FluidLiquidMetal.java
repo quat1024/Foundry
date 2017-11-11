@@ -18,13 +18,13 @@ public class FluidLiquidMetal extends Fluid {
 		setDensity(2000);
 	}
 
-	public FluidLiquidMetal setColor(int fluid_color) {
-		color = fluid_color | 0xFF000000;
-		return this;
-	}
-
 	@Override
 	public int getColor() {
 		return color;
+	}
+
+	public FluidLiquidMetal setColor(int fluid_color) {
+		color = fluid_color | 0xFF000000;
+		return this;
 	}
 }

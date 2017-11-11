@@ -9,11 +9,11 @@ import net.minecraft.item.ItemStack;
 public interface IBurnerHeaterFuelManager {
 	public void addFuel(IItemMatcher item, int burn_time, int heat);
 
-	public List<IBurnerHeaterFuel> getFuels();
-
 	public IBurnerHeaterFuel getFuel(ItemStack item);
 
-	public void removeFuel(IBurnerHeaterFuel fuel);
+	public List<IBurnerHeaterFuel> getFuels();
 
 	public int getHeatNeeded(int heat_loss_rate, int temperature);
+
+	public void removeFuel(IBurnerHeaterFuel fuel);
 }

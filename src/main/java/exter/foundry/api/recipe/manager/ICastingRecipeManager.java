@@ -10,6 +10,12 @@ import net.minecraftforge.fluids.FluidStack;
 public interface ICastingRecipeManager {
 
 	/**
+	 * Register an item as a mold. Only registered items are accepted in the Metal Caster's mold slot.
+	 * @param mold Item to be registered.
+	 */
+	public void addMold(ItemStack mold);
+
+	/**
 	 * Register a Metal Caster recipe.
 	 * Note: the mold must be registered with {@link RegisterMold}.
 	 * @param result Item produced.
@@ -30,16 +36,12 @@ public interface ICastingRecipeManager {
 	public void addRecipe(IItemMatcher result, FluidStack in_fluid, ItemStack in_mold, IItemMatcher in_extra, int speed);
 
 	/**
-	 * Register an item as a mold. Only registered items are accepted in the Metal Caster's mold slot.
-	 * @param mold Item to be registered.
+	 * Find a casting recipe given a FluidStack and a mold.
+	 * @param fluid FluidStack that contains the recipe's required fluid.
+	 * @param mold Mold used by the recipe.
+	 * @return The casting recipe, or null if no matching recipe.
 	 */
-	public void addMold(ItemStack mold);
-
-	/**
-	 * Get a list of all the recipes.
-	 * @return List of all the recipes.
-	 */
-	public List<ICastingRecipe> getRecipes();
+	public ICastingRecipe findRecipe(FluidStack fluid, ItemStack mold, ItemStack extra);
 
 	/**
 	 * Get a list of all registered molds.
@@ -48,12 +50,10 @@ public interface ICastingRecipeManager {
 	public List<ItemStack> getMolds();
 
 	/**
-	 * Find a casting recipe given a FluidStack and a mold.
-	 * @param fluid FluidStack that contains the recipe's required fluid.
-	 * @param mold Mold used by the recipe.
-	 * @return The casting recipe, or null if no matching recipe.
+	 * Get a list of all the recipes.
+	 * @return List of all the recipes.
 	 */
-	public ICastingRecipe findRecipe(FluidStack fluid, ItemStack mold, ItemStack extra);
+	public List<ICastingRecipe> getRecipes();
 
 	/**
 	 * Check if an item is registered as a mold.

@@ -40,19 +40,35 @@ public class ModIntegrationBotania implements IModIntegration {
 	}
 
 	@Override
-	public void onPreInit(Configuration config) {
-		liquid_manasteel = LiquidMetalRegistry.instance.registerLiquidMetal("Manasteel", 1950, 15);
-		liquid_terrasteel = LiquidMetalRegistry.instance.registerLiquidMetal("Terrasteel", 2100, 15);
-		liquid_elementium = LiquidMetalRegistry.instance.registerLiquidMetal("ElvenElementium", 2400, 15);
+	public String getName() {
+		return BOTANIA;
+	}
 
-		FoundryUtils.registerBasicMeltingRecipes("Manasteel", liquid_manasteel);
-		FoundryUtils.registerBasicMeltingRecipes("Terrasteel", liquid_terrasteel);
-		FoundryUtils.registerBasicMeltingRecipes("ElvenElementium", liquid_elementium);
+	@Override
+	public void onAfterPostInit() {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientInit() {
+
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onClientPostInit() {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientPreInit() {
+
+	}
+
+	@Override
+	public void onInit() {
 
 	}
 
@@ -134,29 +150,13 @@ public class ModIntegrationBotania implements IModIntegration {
 	}
 
 	@Override
-	public String getName() {
-		return BOTANIA;
-	}
+	public void onPreInit(Configuration config) {
+		liquid_manasteel = LiquidMetalRegistry.instance.registerLiquidMetal("Manasteel", 1950, 15);
+		liquid_terrasteel = LiquidMetalRegistry.instance.registerLiquidMetal("Terrasteel", 2100, 15);
+		liquid_elementium = LiquidMetalRegistry.instance.registerLiquidMetal("ElvenElementium", 2400, 15);
 
-	@Override
-	public void onInit() {
-
-	}
-
-	@Override
-	public void onAfterPostInit() {
-
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void onClientPreInit() {
-
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void onClientInit() {
-
+		FoundryUtils.registerBasicMeltingRecipes("Manasteel", liquid_manasteel);
+		FoundryUtils.registerBasicMeltingRecipes("Terrasteel", liquid_terrasteel);
+		FoundryUtils.registerBasicMeltingRecipes("ElvenElementium", liquid_elementium);
 	}
 }

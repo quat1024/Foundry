@@ -26,16 +26,6 @@ public class MTAlloyMixerHandler {
 		}
 
 		@Override
-		protected void remove() {
-			AlloyMixerRecipeManager.instance.recipes.remove(recipe);
-		}
-
-		@Override
-		public String getRecipeType() {
-			return "alloy mixer";
-		}
-
-		@Override
 		public String getDescription() {
 			StringBuilder builder = new StringBuilder();
 			builder.append("(");
@@ -50,6 +40,16 @@ public class MTAlloyMixerHandler {
 			}
 			builder.append(String.format(" ) -> %s", MTHelper.getFluidDescription(recipe.getOutput())));
 			return builder.toString();
+		}
+
+		@Override
+		public String getRecipeType() {
+			return "alloy mixer";
+		}
+
+		@Override
+		protected void remove() {
+			AlloyMixerRecipeManager.instance.recipes.remove(recipe);
 		}
 	}
 

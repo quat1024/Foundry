@@ -35,8 +35,10 @@ public class MTCastingHandler {
 		}
 
 		@Override
-		protected void remove() {
-			CastingRecipeManager.instance.recipes.remove(recipe);
+		public String getDescription() {
+			IItemMatcher extra = recipe.getInputExtra();
+			if (extra == null) { return String.format("( %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInput()), MTHelper.getItemDescription(recipe.getMold()), MTHelper.getItemDescription(recipe.getOutput())); }
+			return String.format("( %s, %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInput()), MTHelper.getItemDescription(recipe.getMold()), MTHelper.getItemDescription(recipe.getInputExtra()), MTHelper.getItemDescription(recipe.getOutput()));
 		}
 
 		@Override
@@ -45,10 +47,8 @@ public class MTCastingHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			IItemMatcher extra = recipe.getInputExtra();
-			if (extra == null) { return String.format("( %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInput()), MTHelper.getItemDescription(recipe.getMold()), MTHelper.getItemDescription(recipe.getOutput())); }
-			return String.format("( %s, %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInput()), MTHelper.getItemDescription(recipe.getMold()), MTHelper.getItemDescription(recipe.getInputExtra()), MTHelper.getItemDescription(recipe.getOutput()));
+		protected void remove() {
+			CastingRecipeManager.instance.recipes.remove(recipe);
 		}
 	}
 
@@ -66,8 +66,8 @@ public class MTCastingHandler {
 		}
 
 		@Override
-		protected void remove() {
-			CastingRecipeManager.instance.molds.remove(mold);
+		public String getDescription() {
+			return String.format("%s", MTHelper.getItemDescription(mold));
 		}
 
 		@Override
@@ -76,9 +76,19 @@ public class MTCastingHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			return String.format("%s", MTHelper.getItemDescription(mold));
+		protected void remove() {
+			CastingRecipeManager.instance.molds.remove(mold);
 		}
+	}
+
+	@ZenMethod
+	static public void addMold(IItemStack mold) {
+		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
+		if (molditem == null) {
+			CraftTweakerAPI.logError("Invalid mold item");
+			return;
+		}
+		CraftTweakerAPI.apply((new MoldAction(molditem).action_add));
 	}
 
 	@ZenMethod
@@ -97,26 +107,6 @@ public class MTCastingHandler {
 	}
 
 	@ZenMethod
-	static public void removeRecipe(ILiquidStack input, IItemStack mold, @Optional IItemStack extra) {
-		ICastingRecipe recipe = CastingRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
-		if (recipe == null) {
-			CraftTweakerAPI.logWarning("Casting recipe not found.");
-			return;
-		}
-		CraftTweakerAPI.apply((new CastingAction(recipe)).action_remove);
-	}
-
-	@ZenMethod
-	static public void addMold(IItemStack mold) {
-		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
-		if (molditem == null) {
-			CraftTweakerAPI.logError("Invalid mold item");
-			return;
-		}
-		CraftTweakerAPI.apply((new MoldAction(molditem).action_add));
-	}
-
-	@ZenMethod
 	static public void removeMold(IItemStack mold) {
 		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
 		if (molditem == null) {
@@ -130,5 +120,15 @@ public class MTCastingHandler {
 			}
 		}
 		CraftTweakerAPI.logWarning("Mold not found.");
+	}
+
+	@ZenMethod
+	static public void removeRecipe(ILiquidStack input, IItemStack mold, @Optional IItemStack extra) {
+		ICastingRecipe recipe = CastingRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
+		if (recipe == null) {
+			CraftTweakerAPI.logWarning("Casting recipe not found.");
+			return;
+		}
+		CraftTweakerAPI.apply((new CastingAction(recipe)).action_remove);
 	}
 }

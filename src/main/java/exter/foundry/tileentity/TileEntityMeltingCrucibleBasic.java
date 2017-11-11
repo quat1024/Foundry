@@ -49,60 +49,22 @@ public class TileEntityMeltingCrucibleBasic extends TileEntityFoundryHeatable {
 	}
 
 	@Override
-	protected IItemHandler getItemHandler(EnumFacing side) {
-		return item_handler;
-	}
-
-	@Override
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return fluid_handler;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compund) {
-		super.readFromNBT(compund);
-
-		if (compund.hasKey("progress")) {
-			progress = compund.getInteger("progress");
+	protected boolean canReceiveHeat() {
+		boolean active = true;
+		switch (getRedstoneMode()) {
+		case RSMODE_OFF:
+			if (redstone_signal) {
+				active = false;
+			}
+			break;
+		case RSMODE_ON:
+			if (!redstone_signal) {
+				active = false;
+			}
+			break;
+		default:
 		}
-
-		if (compund.hasKey("melt_point")) {
-			melt_point = compund.getInteger("melt_point");
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("melt_point", melt_point);
-		compound.setInteger("progress", progress);
-		return compound;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 3;
-	}
-
-	public int getProgress() {
-		return progress;
-	}
-
-	public int getMeltingPoint() {
-		return melt_point;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return i == INVENTORY_INPUT;
-	}
-
-	@Override
-	protected void updateClient() {
-
+		return active;
 	}
 
 	private void checkCurrentRecipe() {
@@ -150,6 +112,78 @@ public class TileEntityMeltingCrucibleBasic extends TileEntityFoundryHeatable {
 	}
 
 	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return fluid_handler;
+	}
+
+	@Override
+	protected IItemHandler getItemHandler(EnumFacing side) {
+		return item_handler;
+	}
+
+	@Override
+	public int getMaxTemperature() {
+		return FoundryAPI.CRUCIBLE_BASIC_MAX_TEMP;
+	}
+
+	public int getMeltingPoint() {
+		return melt_point;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 3;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		if (slot != 0) { return null; }
+		return tank;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 1;
+	}
+
+	@Override
+	protected int getTemperatureLossRate() {
+		return FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return i == INVENTORY_INPUT;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compund) {
+		super.readFromNBT(compund);
+
+		if (compund.hasKey("progress")) {
+			progress = compund.getInteger("progress");
+		}
+
+		if (compund.hasKey("melt_point")) {
+			melt_point = compund.getInteger("melt_point");
+		}
+	}
+
+	@Override
+	protected void updateClient() {
+
+	}
+
+	@Override
 	protected void updateServer() {
 		super.updateServer();
 		int last_progress = progress;
@@ -172,47 +206,13 @@ public class TileEntityMeltingCrucibleBasic extends TileEntityFoundryHeatable {
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		if (slot != 0) { return null; }
-		return tank;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 1;
-	}
-
-	@Override
-	protected void onInitialize() {
-
-	}
-
-	@Override
-	public int getMaxTemperature() {
-		return FoundryAPI.CRUCIBLE_BASIC_MAX_TEMP;
-	}
-
-	@Override
-	protected int getTemperatureLossRate() {
-		return FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE;
-	}
-
-	@Override
-	protected boolean canReceiveHeat() {
-		boolean active = true;
-		switch (getRedstoneMode()) {
-		case RSMODE_OFF:
-			if (redstone_signal) {
-				active = false;
-			}
-			break;
-		case RSMODE_ON:
-			if (!redstone_signal) {
-				active = false;
-			}
-			break;
-		default:
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
 		}
-		return active;
+		super.writeToNBT(compound);
+		compound.setInteger("melt_point", melt_point);
+		compound.setInteger("progress", progress);
+		return compound;
 	}
 }

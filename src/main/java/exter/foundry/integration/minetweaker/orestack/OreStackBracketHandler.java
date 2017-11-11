@@ -19,16 +19,31 @@ import stanhebben.zenscript.util.ZenPosition;
 
 @BracketHandler(priority = 100)
 public class OreStackBracketHandler implements IBracketHandler {
+	private class Symbol implements IZenSymbol {
+		private final IEnvironmentGlobal environment;
+		private final String name;
+
+		public Symbol(IEnvironmentGlobal environment, String name) {
+			this.environment = environment;
+			this.name = name;
+		}
+
+		@Override
+		public IPartialExpression instance(ZenPosition position) {
+			return new ExpressionCallStatic(position, environment, method, new ExpressionString(position, name));
+		}
+	}
+	public static IIngredient getOreStack(String name) {
+		return new MTOreStack(new OreMatcher(name, 1));
+	}
+
 	private final IZenSymbol symbolAny;
+
 	private final IJavaMethod method;
 
 	public OreStackBracketHandler() {
 		symbolAny = CraftTweakerAPI.getJavaStaticFieldSymbol(IngredientAny.class, "INSTANCE");
 		method = CraftTweakerAPI.getJavaMethod(OreStackBracketHandler.class, "getOreStack", String.class);
-	}
-
-	public static IIngredient getOreStack(String name) {
-		return new MTOreStack(new OreMatcher(name, 1));
 	}
 
 	@Override
@@ -50,20 +65,5 @@ public class OreStackBracketHandler implements IBracketHandler {
 		}
 
 		return null;
-	}
-
-	private class Symbol implements IZenSymbol {
-		private final IEnvironmentGlobal environment;
-		private final String name;
-
-		public Symbol(IEnvironmentGlobal environment, String name) {
-			this.environment = environment;
-			this.name = name;
-		}
-
-		@Override
-		public IPartialExpression instance(ZenPosition position) {
-			return new ExpressionCallStatic(position, environment, method, new ExpressionString(position, name));
-		}
 	}
 }

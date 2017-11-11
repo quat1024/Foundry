@@ -9,20 +9,20 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRefractoryTank extends Container {
-	private TileEntityRefractoryTankBasic te_tank;
-
 	// Slot numbers
 	private static final int SLOTS_TE = 0;
+
 	private static final int SLOTS_TE_SIZE = 2;
-
 	private static final int SLOTS_INVENTORY = 2;
+
 	private static final int SLOTS_HOTBAR = 2 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 83;
 
+	private static final int SLOT_INVENTORY_Y = 83;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 141;
+	private TileEntityRefractoryTankBasic te_tank;
 
 	public ContainerRefractoryTank(TileEntityRefractoryTankBasic tank, EntityPlayer player) {
 		te_tank = tank;
@@ -46,6 +46,12 @@ public class ContainerRefractoryTank extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return te_tank.isUsableByPlayer(par1EntityPlayer);
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_tank.closeInventory(player);
 	}
 
 	@Override
@@ -75,11 +81,5 @@ public class ContainerRefractoryTank extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_tank.closeInventory(player);
 	}
 }

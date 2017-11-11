@@ -94,55 +94,6 @@ public class Foundry {
 	public static SimpleNetworkWrapper network_channel;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(new FoundryRegistry());
-		log = event.getModLog();
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		config.load();
-
-		if (Loader.isModLoaded("crafttweaker")) ModIntegrationManager.registerIntegration(config, new ModIntegrationMinetweaker());
-		if (Loader.isModLoaded("tconstruct")) ModIntegrationManager.registerIntegration(config, new ModIntegrationTiCon());
-		ModIntegrationManager.registerIntegration(config, new ModIntegrationMolten());
-		if (Loader.isModLoaded("enderio")) ModIntegrationManager.registerIntegration(config, new ModIntegrationEnderIO());
-		if (Loader.isModLoaded("botania")) ModIntegrationManager.registerIntegration(config, new ModIntegrationBotania());
-
-		FoundryAPI.fluids = LiquidMetalRegistry.instance;
-
-		FoundryAPI.recipes_melting = MeltingRecipeManager.INSTANCE;
-		FoundryAPI.recipes_casting = CastingRecipeManager.instance;
-		FoundryAPI.recipes_casting_table = CastingTableRecipeManager.instance;
-		FoundryAPI.recipes_alloymixer = AlloyMixerRecipeManager.instance;
-		FoundryAPI.recipes_infuser = InfuserRecipeManager.instance;
-		FoundryAPI.recipes_alloyfurnace = AlloyFurnaceRecipeManager.INSTANCE;
-		FoundryAPI.recipes_atomizer = AtomizerRecipeManager.instance;
-		FoundryAPI.recipes_mold = MoldRecipeManager.instance;
-		FoundryAPI.recipes_alloyingcrucible = AlloyingCrucibleRecipeManager.instance;
-
-		FoundryAPI.materials = MaterialRegistry.instance;
-		FoundryAPI.burnerheater_fuel = BurnerHeaterFuelManager.instance;
-
-		CapabilityHeatProvider.init();
-		CapabilityFirearmRound.init();
-
-		FoundryConfig.load(config);
-		FoundryItems.registerItems(config);
-		FoundryBlocks.registerBlocks(config);
-
-		FoundryFluids.init();
-
-		ModIntegrationManager.preInit(config);
-
-		config.save();
-
-		network_channel = NetworkRegistry.INSTANCE.newSimpleChannel("EXTER.FOUNDRY");
-		network_channel.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.SERVER);
-		network_channel.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.CLIENT);
-
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-		proxy.preInit();
-	}
-
-	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		ModIntegrationManager.init();
 		FoundrySounds.init();
@@ -189,5 +140,54 @@ public class Foundry {
 		InitRecipes.postInit();
 		proxy.postInit();
 		ModIntegrationManager.afterPostInit();
+	}
+
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(new FoundryRegistry());
+		log = event.getModLog();
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		config.load();
+
+		if (Loader.isModLoaded("crafttweaker")) ModIntegrationManager.registerIntegration(config, new ModIntegrationMinetweaker());
+		if (Loader.isModLoaded("tconstruct")) ModIntegrationManager.registerIntegration(config, new ModIntegrationTiCon());
+		ModIntegrationManager.registerIntegration(config, new ModIntegrationMolten());
+		if (Loader.isModLoaded("enderio")) ModIntegrationManager.registerIntegration(config, new ModIntegrationEnderIO());
+		if (Loader.isModLoaded("botania")) ModIntegrationManager.registerIntegration(config, new ModIntegrationBotania());
+
+		FoundryAPI.fluids = LiquidMetalRegistry.instance;
+
+		FoundryAPI.recipes_melting = MeltingRecipeManager.INSTANCE;
+		FoundryAPI.recipes_casting = CastingRecipeManager.instance;
+		FoundryAPI.recipes_casting_table = CastingTableRecipeManager.instance;
+		FoundryAPI.recipes_alloymixer = AlloyMixerRecipeManager.instance;
+		FoundryAPI.recipes_infuser = InfuserRecipeManager.instance;
+		FoundryAPI.recipes_alloyfurnace = AlloyFurnaceRecipeManager.INSTANCE;
+		FoundryAPI.recipes_atomizer = AtomizerRecipeManager.instance;
+		FoundryAPI.recipes_mold = MoldRecipeManager.instance;
+		FoundryAPI.recipes_alloyingcrucible = AlloyingCrucibleRecipeManager.instance;
+
+		FoundryAPI.materials = MaterialRegistry.instance;
+		FoundryAPI.burnerheater_fuel = BurnerHeaterFuelManager.instance;
+
+		CapabilityHeatProvider.init();
+		CapabilityFirearmRound.init();
+
+		FoundryConfig.load(config);
+		FoundryItems.registerItems(config);
+		FoundryBlocks.registerBlocks(config);
+
+		FoundryFluids.init();
+
+		ModIntegrationManager.preInit(config);
+
+		config.save();
+
+		network_channel = NetworkRegistry.INSTANCE.newSimpleChannel("EXTER.FOUNDRY");
+		network_channel.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.SERVER);
+		network_channel.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.CLIENT);
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+		proxy.preInit();
 	}
 }

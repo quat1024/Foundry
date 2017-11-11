@@ -23,12 +23,13 @@ public class TileEntityRefractoryTankBasic extends TileEntityFoundry {
 	}
 
 	@Override
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return fluid_handler;
+	public void closeInventory(EntityPlayer player) {
+
 	}
 
-	protected int getTankCapacity() {
-		return 16000;
+	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return fluid_handler;
 	}
 
 	@Override
@@ -37,18 +38,32 @@ public class TileEntityRefractoryTankBasic extends TileEntityFoundry {
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {
+	public FluidTank getTank(int slot) {
+		return tank;
+	}
 
+	protected int getTankCapacity() {
+		return 16000;
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
-
+	public int getTankCount() {
+		return 1;
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return false;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+
 	}
 
 	@Override
@@ -58,20 +73,5 @@ public class TileEntityRefractoryTankBasic extends TileEntityFoundry {
 
 	@Override
 	protected void updateServer() {
-	}
-
-	@Override
-	public FluidTank getTank(int slot) {
-		return tank;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 1;
-	}
-
-	@Override
-	protected void onInitialize() {
-
 	}
 }

@@ -36,24 +36,24 @@ public class ItemComponent extends Item {
 		AMMO_PELLET_LUMIUM(20, "componentPelletLumium"),
 		COAL_COKE(21, "componentCoalCoke");
 
-		public final int id;
-		public final String name;
-
 		static private final Map<Integer, SubItem> value_map = new HashMap<Integer, SubItem>();
-
-		SubItem(int id, String name) {
-			this.id = id;
-			this.name = name;
+		static {
+			for (SubItem sub : values()) {
+				value_map.put(sub.id, sub);
+			}
 		}
 
 		static public SubItem fromId(int id) {
 			return value_map.get(id);
 		}
 
-		static {
-			for (SubItem sub : values()) {
-				value_map.put(sub.id, sub);
-			}
+		public final int id;
+
+		public final String name;
+
+		SubItem(int id, String name) {
+			this.id = id;
+			this.name = name;
 		}
 	}
 
@@ -66,8 +66,9 @@ public class ItemComponent extends Item {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
-		return "item.foundry." + SubItem.fromId(itemstack.getItemDamage()).name;
+	public int getItemBurnTime(ItemStack fuel) {
+		if (fuel.getItem() == this && fuel.getMetadata() == SubItem.COAL_COKE.id) { return 3200; }
+		return 0;
 	}
 
 	@Override
@@ -79,8 +80,7 @@ public class ItemComponent extends Item {
 	}
 
 	@Override
-	public int getItemBurnTime(ItemStack fuel) {
-		if (fuel.getItem() == this && fuel.getMetadata() == SubItem.COAL_COKE.id) { return 3200; }
-		return 0;
+	public String getUnlocalizedName(ItemStack itemstack) {
+		return "item.foundry." + SubItem.fromId(itemstack.getItemDamage()).name;
 	}
 }

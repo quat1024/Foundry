@@ -26,17 +26,17 @@ public class ItemRoundFire extends Item {
 		}
 
 		@Override
-		public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side) {
-			BlockPos front = pos.add(side.getDirectionVec());
-			if (world.isAirBlock(front) && !world.isAirBlock(pos)) {
-				world.setBlockState(front, Blocks.FIRE.getDefaultState());
+		public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count) {
+			if (!entity.isImmuneToFire()) {
+				entity.setFire(5);
 			}
 		}
 
 		@Override
-		public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count) {
-			if (!entity.isImmuneToFire()) {
-				entity.setFire(5);
+		public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side) {
+			BlockPos front = pos.add(side.getDirectionVec());
+			if (world.isAirBlock(front) && !world.isAirBlock(pos)) {
+				world.setBlockState(front, Blocks.FIRE.getDefaultState());
 			}
 		}
 	}

@@ -9,20 +9,20 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerAlloyingCrucible extends Container {
 
-	private TileEntityAlloyingCrucible te_alloyingcrucible;
-
 	// Slot numbers
 	public static final int SLOTS_TE = 0;
+
 	public static final int SLOTS_TE_SIZE = 6;
-
 	public static final int SLOTS_INVENTORY = 6;
+
 	private static final int SLOTS_HOTBAR = 6 + 3 * 9;
-
 	private static final int SLOT_INVENTORY_X = 8;
-	private static final int SLOT_INVENTORY_Y = 127;
 
+	private static final int SLOT_INVENTORY_Y = 127;
 	private static final int SLOT_HOTBAR_X = 8;
+
 	private static final int SLOT_HOTBAR_Y = 185;
+	private TileEntityAlloyingCrucible te_alloyingcrucible;
 
 	public ContainerAlloyingCrucible(TileEntityAlloyingCrucible ac, EntityPlayer player) {
 		te_alloyingcrucible = ac;
@@ -53,6 +53,12 @@ public class ContainerAlloyingCrucible extends Container {
 	}
 
 	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		te_alloyingcrucible.closeInventory(player);
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot_index) {
 		ItemStack slot_stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slot_index);
@@ -79,11 +85,5 @@ public class ContainerAlloyingCrucible extends Container {
 		}
 
 		return slot_stack;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer player) {
-		super.onContainerClosed(player);
-		te_alloyingcrucible.closeInventory(player);
 	}
 }

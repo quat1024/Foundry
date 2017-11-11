@@ -17,20 +17,20 @@ public class ItemHandlerFuel extends TileEntityFoundry.ItemHandler {
 	}
 
 	@Override
-	protected boolean canInsert(int slot, ItemStack stack) {
-		if (fuel_slots.contains(slot)) {
-			return TileEntityFurnace.isItemFuel(stack);
-		} else {
-			return !TileEntityFurnace.isItemFuel(stack);
-		}
-	}
-
-	@Override
 	protected boolean canExtract(int slot) {
 		if (fuel_slots.contains(slot)) {
 			return !TileEntityFurnace.isItemFuel(getStackInSlot(slot));
 		} else {
 			return true;
+		}
+	}
+
+	@Override
+	protected boolean canInsert(int slot, ItemStack stack) {
+		if (fuel_slots.contains(slot)) {
+			return TileEntityFurnace.isItemFuel(stack);
+		} else {
+			return !TileEntityFurnace.isItemFuel(stack);
 		}
 	}
 }

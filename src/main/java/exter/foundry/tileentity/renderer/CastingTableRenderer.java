@@ -25,13 +25,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCastingTableBase> {
+	static private final EnumFacing[] facings = new EnumFacing[] { null, EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.WEST };
 	private final double left;
 	private final double right;
 	private final double top;
 	private final double bottom;
 	private final double low;
 	private final double high;
+
 	private final String item_texture;
+
+	private Map<HashableItem, Integer> colors;
 
 	public CastingTableRenderer(int left, int right, int top, int bottom, int low, int high, String item_texture) {
 		this.left = (double) left / 16 - 0.005;
@@ -43,10 +47,6 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 		this.item_texture = item_texture;
 		colors = new HashMap<HashableItem, Integer>();
 	}
-
-	private Map<HashableItem, Integer> colors;
-
-	static private final EnumFacing[] facings = new EnumFacing[] { null, EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.WEST };
 
 	protected int getItemColor(ItemStack stack) {
 		Integer color = HashableItem.getFromMap(colors, stack);
@@ -98,10 +98,6 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 
 	protected TextureAtlasSprite getItemTexture(ItemStack stack) {
 		return Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(item_texture);
-	}
-
-	protected boolean uvLockItem() {
-		return true;
 	}
 
 	@Override
@@ -177,5 +173,9 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 		GlStateManager.enableLighting();
 		GlStateManager.disableBlend();
 		GL11.glPopMatrix();
+	}
+
+	protected boolean uvLockItem() {
+		return true;
 	}
 }

@@ -43,22 +43,22 @@ public class MeltingRecipe implements IMeltingRecipe {
 	}
 
 	@Override
-	public FluidStack getOutput() {
-		return fluid.copy();
-	}
-
-	@Override
 	public int getMeltingPoint() {
 		return melting_point;
 	}
 
 	@Override
-	public boolean matchesRecipe(ItemStack item) {
-		return solid.apply(item);
+	public int getMeltingSpeed() {
+		return melting_speed;
 	}
 
 	@Override
-	public int getMeltingSpeed() {
-		return melting_speed;
+	public FluidStack getOutput() {
+		return fluid.copy();
+	}
+
+	@Override
+	public boolean matchesRecipe(ItemStack item) {
+		return solid.apply(item);
 	}
 }

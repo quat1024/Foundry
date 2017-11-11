@@ -32,9 +32,9 @@ abstract public class AddRemoveAction {
 
 	abstract protected void add();
 
-	abstract protected void remove();
-
 	abstract public String getDescription();
 
 	abstract public String getRecipeType();
+
+	abstract protected void remove();
 }

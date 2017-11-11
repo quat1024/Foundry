@@ -51,13 +51,23 @@ public class ItemRefractoryFluidContainer extends Item {
 		}
 
 		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
+		public boolean canDrain() {
+			return true;
 		}
 
 		@Override
-		public int fill(FluidStack resource, boolean doFill) {
-			return ItemRefractoryFluidContainer.this.fill(stack, resource, doFill, false);
+		public boolean canDrainFluidType(FluidStack fluidStack) {
+			return true;
+		}
+
+		@Override
+		public boolean canFill() {
+			return true;
+		}
+
+		@Override
+		public boolean canFillFluidType(FluidStack fluidStack) {
+			return true;
 		}
 
 		@Override
@@ -73,39 +83,8 @@ public class ItemRefractoryFluidContainer extends Item {
 		}
 
 		@Override
-		public FluidStack getContents() {
-			if (stack.getTagCompound() == null) { return null; }
-			return FluidStack.loadFluidStackFromNBT(stack.getTagCompound());
-		}
-
-		@Override
-		public int getCapacity() {
-			return Fluid.BUCKET_VOLUME;
-		}
-
-		@Override
-		public boolean canFill() {
-			return true;
-		}
-
-		@Override
-		public boolean canDrain() {
-			return true;
-		}
-
-		@Override
-		public boolean canFillFluidType(FluidStack fluidStack) {
-			return true;
-		}
-
-		@Override
-		public boolean canDrainFluidType(FluidStack fluidStack) {
-			return true;
-		}
-
-		@Override
-		public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-			return cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		public int fill(FluidStack resource, boolean doFill) {
+			return ItemRefractoryFluidContainer.this.fill(stack, resource, doFill, false);
 		}
 
 		@Override
@@ -115,6 +94,27 @@ public class ItemRefractoryFluidContainer extends Item {
 			} else {
 				return null;
 			}
+		}
+
+		@Override
+		public int getCapacity() {
+			return Fluid.BUCKET_VOLUME;
+		}
+
+		@Override
+		public FluidStack getContents() {
+			if (stack.getTagCompound() == null) { return null; }
+			return FluidStack.loadFluidStackFromNBT(stack.getTagCompound());
+		}
+
+		@Override
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
+		}
+
+		@Override
+		public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
+			return cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 		}
 	}
 
@@ -129,26 +129,77 @@ public class ItemRefractoryFluidContainer extends Item {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	@SubscribeEvent
-	public void playerInteract(PlayerInteractEvent.RightClickBlock event) {
-		//Prevent Blocks from activating when right clicking with a container in hand.
-		ItemStack stack = event.getEntityPlayer().getHeldItem(event.getHand());
-		if (stack != null && stack.getItem() == this) {
-			event.setCanceled(true);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag par4) {
+		FluidStack fluid = getFluid(stack);
+		if (fluid == null) {
+			list.add(TextFormatting.BLUE + "Empty");
+		} else {
+			list.add(TextFormatting.BLUE + fluid.getLocalizedName());
+			list.add(TextFormatting.BLUE + String.valueOf(fluid.amount) + " / " + String.valueOf(Fluid.BUCKET_VOLUME) + " mB");
 		}
 	}
 
-	private void setFluid(ItemStack is, FluidStack fluid) {
-		if (fluid != null) {
-			NBTTagCompound tag = is.getTagCompound();
-			if (tag == null) {
-				tag = new NBTTagCompound();
-				is.setTagCompound(tag);
-			}
-			fluid.writeToNBT(tag);
-		} else {
-			is.setTagCompound(null);
+	public FluidStack drain(ItemStack stack, int amount, boolean doDrain) {
+		if (stack.getCount() > 1) { return null; }
+		FluidStack fluid = getFluid(stack);
+
+		if (fluid == null) { return null; }
+
+		int drained = amount;
+		if (fluid.amount < drained) {
+			drained = fluid.amount;
 		}
+
+		FluidStack drain_fluid = new FluidStack(fluid, drained);
+		if (doDrain) {
+			fluid.amount -= drained;
+			if (fluid.amount <= 0) {
+				fluid = null;
+			}
+			setFluid(stack, fluid);
+
+		}
+		return drain_fluid;
+	}
+
+	public ItemStack empty(int stack_size) {
+		ItemStack stack = new ItemStack(this, stack_size, 0);
+		setFluid(stack, null);
+		return stack;
+	}
+
+	private int fill(ItemStack stack, FluidStack fluid, boolean do_fill, boolean ignore_stacksize) {
+		if (!ignore_stacksize && stack.getCount() > 1) { return 0; }
+		FluidStack container_fluid = getFluid(stack);
+
+		if (!do_fill) {
+			if (container_fluid == null) { return Math.min(Fluid.BUCKET_VOLUME, fluid.amount); }
+
+			if (!container_fluid.isFluidEqual(fluid)) { return 0; }
+
+			return Math.min(Fluid.BUCKET_VOLUME - container_fluid.amount, fluid.amount);
+		}
+
+		if (container_fluid == null) {
+			container_fluid = new FluidStack(fluid, Math.min(Fluid.BUCKET_VOLUME, fluid.amount));
+
+			setFluid(stack, container_fluid);
+			return container_fluid.amount;
+		}
+
+		if (!container_fluid.isFluidEqual(fluid)) { return 0; }
+		int filled = Fluid.BUCKET_VOLUME - container_fluid.amount;
+
+		if (fluid.amount < filled) {
+			container_fluid.amount += fluid.amount;
+			filled = fluid.amount;
+		} else {
+			container_fluid.amount = Fluid.BUCKET_VOLUME;
+		}
+		setFluid(stack, container_fluid);
+		return filled;
 	}
 
 	private ItemStack fromFluidStack(FluidStack fluid) {
@@ -167,6 +218,13 @@ public class ItemRefractoryFluidContainer extends Item {
 	}
 
 	@Override
+	public int getItemStackLimit(ItemStack stack) {
+		FluidStack fluid = getFluid(stack);
+		if (fluid == null) { return 16; }
+		return 1;
+	}
+
+	@Override
 	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tabs)) {
 			list.add(fromFluidStack(null));
@@ -180,31 +238,8 @@ public class ItemRefractoryFluidContainer extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World player, List<String> list, ITooltipFlag par4) {
-		FluidStack fluid = getFluid(stack);
-		if (fluid == null) {
-			list.add(TextFormatting.BLUE + "Empty");
-		} else {
-			list.add(TextFormatting.BLUE + fluid.getLocalizedName());
-			list.add(TextFormatting.BLUE + String.valueOf(fluid.amount) + " / " + String.valueOf(Fluid.BUCKET_VOLUME) + " mB");
-		}
-	}
-
-	private boolean splitStack(ItemStack stack, EntityPlayer player) {
-		if (stack.getCount() == 1) { return true; }
-		if (player.capabilities.isCreativeMode) { return false; }
-
-		ItemStack rest_stack = stack.copy();
-		rest_stack.shrink(1);
-		int slot = player.inventory.getFirstEmptyStack();
-		if (slot >= 0) {
-			player.inventory.setInventorySlotContents(slot, rest_stack);
-			player.inventory.markDirty();
-			stack.setCount(1);
-			return true;
-		}
-		return false;
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+		return new FluidHandler(stack);
 	}
 
 	@Override
@@ -324,76 +359,41 @@ public class ItemRefractoryFluidContainer extends Item {
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	public FluidStack drain(ItemStack stack, int amount, boolean doDrain) {
-		if (stack.getCount() > 1) { return null; }
-		FluidStack fluid = getFluid(stack);
-
-		if (fluid == null) { return null; }
-
-		int drained = amount;
-		if (fluid.amount < drained) {
-			drained = fluid.amount;
+	@SubscribeEvent
+	public void playerInteract(PlayerInteractEvent.RightClickBlock event) {
+		//Prevent Blocks from activating when right clicking with a container in hand.
+		ItemStack stack = event.getEntityPlayer().getHeldItem(event.getHand());
+		if (stack != null && stack.getItem() == this) {
+			event.setCanceled(true);
 		}
+	}
 
-		FluidStack drain_fluid = new FluidStack(fluid, drained);
-		if (doDrain) {
-			fluid.amount -= drained;
-			if (fluid.amount <= 0) {
-				fluid = null;
+	private void setFluid(ItemStack is, FluidStack fluid) {
+		if (fluid != null) {
+			NBTTagCompound tag = is.getTagCompound();
+			if (tag == null) {
+				tag = new NBTTagCompound();
+				is.setTagCompound(tag);
 			}
-			setFluid(stack, fluid);
-
-		}
-		return drain_fluid;
-	}
-
-	private int fill(ItemStack stack, FluidStack fluid, boolean do_fill, boolean ignore_stacksize) {
-		if (!ignore_stacksize && stack.getCount() > 1) { return 0; }
-		FluidStack container_fluid = getFluid(stack);
-
-		if (!do_fill) {
-			if (container_fluid == null) { return Math.min(Fluid.BUCKET_VOLUME, fluid.amount); }
-
-			if (!container_fluid.isFluidEqual(fluid)) { return 0; }
-
-			return Math.min(Fluid.BUCKET_VOLUME - container_fluid.amount, fluid.amount);
-		}
-
-		if (container_fluid == null) {
-			container_fluid = new FluidStack(fluid, Math.min(Fluid.BUCKET_VOLUME, fluid.amount));
-
-			setFluid(stack, container_fluid);
-			return container_fluid.amount;
-		}
-
-		if (!container_fluid.isFluidEqual(fluid)) { return 0; }
-		int filled = Fluid.BUCKET_VOLUME - container_fluid.amount;
-
-		if (fluid.amount < filled) {
-			container_fluid.amount += fluid.amount;
-			filled = fluid.amount;
+			fluid.writeToNBT(tag);
 		} else {
-			container_fluid.amount = Fluid.BUCKET_VOLUME;
+			is.setTagCompound(null);
 		}
-		setFluid(stack, container_fluid);
-		return filled;
 	}
 
-	@Override
-	public int getItemStackLimit(ItemStack stack) {
-		FluidStack fluid = getFluid(stack);
-		if (fluid == null) { return 16; }
-		return 1;
-	}
+	private boolean splitStack(ItemStack stack, EntityPlayer player) {
+		if (stack.getCount() == 1) { return true; }
+		if (player.capabilities.isCreativeMode) { return false; }
 
-	public ItemStack empty(int stack_size) {
-		ItemStack stack = new ItemStack(this, stack_size, 0);
-		setFluid(stack, null);
-		return stack;
-	}
-
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-		return new FluidHandler(stack);
+		ItemStack rest_stack = stack.copy();
+		rest_stack.shrink(1);
+		int slot = player.inventory.getFirstEmptyStack();
+		if (slot >= 0) {
+			player.inventory.setInventorySlotContents(slot, rest_stack);
+			player.inventory.markDirty();
+			stack.setCount(1);
+			return true;
+		}
+		return false;
 	}
 }

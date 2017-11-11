@@ -23,14 +23,14 @@ public class CastingTableRendererBlock extends CastingTableRenderer {
 	}
 
 	@Override
-	protected boolean uvLockItem() {
-		return false;
-	}
-
-	@Override
 	protected TextureAtlasSprite getItemTexture(ItemStack stack) {
 		List<BakedQuad> quads = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, getWorld(), Minecraft.getMinecraft().player).getQuads(null, EnumFacing.UP, 0);
 		if (quads != null && quads.size() > 0) { return quads.get(0).getSprite(); }
 		return super.getItemTexture(stack);
+	}
+
+	@Override
+	protected boolean uvLockItem() {
+		return false;
 	}
 }

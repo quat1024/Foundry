@@ -30,8 +30,13 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 		}
 
 		@Override
-		public IFluidTankProperties[] getTankProperties() {
-			return props;
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			return drainTank(TANK_INPUT, resource.amount, doDrain);
+		}
+
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			return drainTank(TANK_INPUT, maxDrain, doDrain);
 		}
 
 		@Override
@@ -41,13 +46,8 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 		}
 
 		@Override
-		public FluidStack drain(FluidStack resource, boolean doDrain) {
-			return drainTank(TANK_INPUT, resource.amount, doDrain);
-		}
-
-		@Override
-		public FluidStack drain(int maxDrain, boolean doDrain) {
-			return drainTank(TANK_INPUT, maxDrain, doDrain);
+		public IFluidTankProperties[] getTankProperties() {
+			return props;
 		}
 	}
 
@@ -98,68 +98,6 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 		update_energy = true;
 	}
 
-	@Override
-	protected IItemHandler getItemHandler(EnumFacing side) {
-		return item_handler;
-	}
-
-	@Override
-	protected IFluidHandler getFluidHandler(EnumFacing facing) {
-		return fluid_handler;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compund) {
-		super.readFromNBT(compund);
-
-		if (compund.hasKey("progress")) {
-			progress = compund.getInteger("progress");
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		if (compound == null) {
-			compound = new NBTTagCompound();
-		}
-		super.writeToNBT(compound);
-		compound.setInteger("progress", progress);
-		return compound;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 5;
-	}
-
-	public int getProgress() {
-		return progress;
-	}
-
-	@Deprecated
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		return false;
-	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
-	private void checkCurrentRecipe() {
-		if (current_recipe == null) {
-			progress = -1;
-			return;
-		}
-
-		if (!current_recipe.matchesRecipe(tanks[TANK_INPUT].getFluid())) {
-			progress = -1;
-			current_recipe = null;
-			return;
-		}
-	}
-
 	private void beginAtomizing() {
 		if (current_recipe != null && canAtomizeCurrentRecipe() && getStoredFoundryEnergy() >= ENERGY_REQUIRED) {
 			useFoundryEnergy(ENERGY_REQUIRED, true);
@@ -175,6 +113,74 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 		ItemStack inv_output = inventory.get(INVENTORY_OUTPUT);
 		if (inv_output != null && (!inv_output.isItemEqual(recipe_output) || inv_output.getCount() + recipe_output.getCount() > inv_output.getMaxStackSize())) { return false; }
 		return true;
+	}
+
+	private void checkCurrentRecipe() {
+		if (current_recipe == null) {
+			progress = -1;
+			return;
+		}
+
+		if (!current_recipe.matchesRecipe(tanks[TANK_INPUT].getFluid())) {
+			progress = -1;
+			current_recipe = null;
+			return;
+		}
+	}
+
+	@Override
+	protected IFluidHandler getFluidHandler(EnumFacing facing) {
+		return fluid_handler;
+	}
+
+	@Override
+	public long getFoundryEnergyCapacity() {
+		return 60000;
+	}
+
+	@Override
+	protected IItemHandler getItemHandler(EnumFacing side) {
+		return item_handler;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 5;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		if (slot < 0 || slot > 1) { return null; }
+		return tanks[slot];
+	}
+
+	@Override
+	public int getTankCount() {
+		return 2;
+	}
+
+	@Deprecated
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+		return false;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compund) {
+		super.readFromNBT(compund);
+
+		if (compund.hasKey("progress")) {
+			progress = compund.getInteger("progress");
+		}
+	}
+
+	@Override
+	protected void updateClient() {
+
 	}
 
 	@Override
@@ -247,18 +253,12 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 	}
 
 	@Override
-	public FluidTank getTank(int slot) {
-		if (slot < 0 || slot > 1) { return null; }
-		return tanks[slot];
-	}
-
-	@Override
-	public int getTankCount() {
-		return 2;
-	}
-
-	@Override
-	public long getFoundryEnergyCapacity() {
-		return 60000;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		if (compound == null) {
+			compound = new NBTTagCompound();
+		}
+		super.writeToNBT(compound);
+		compound.setInteger("progress", progress);
+		return compound;
 	}
 }

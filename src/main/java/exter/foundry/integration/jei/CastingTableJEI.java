@@ -27,66 +27,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class CastingTableJEI {
 
-	private final ItemStack table_item;
-	private final String name;
-	private final BlockCastingTable.EnumTable type;
-	private final String UID;
-
-	public CastingTableJEI(BlockCastingTable.EnumTable table) {
-		type = table;
-		table_item = FoundryBlocks.block_casting_table.asItemStack(table);
-		name = table.name;
-		UID = "foundry.casting_table." + name;
-	}
-
-	public BlockCastingTable.EnumTable getType() {
-		return type;
-	}
-
-	public String getUID() {
-		return UID;
-	}
-
-	public static class Wrapper implements IRecipeWrapper {
-		private final ICastingTableRecipe recipe;
-		private final String name;
-
-		public Wrapper(ICastingTableRecipe recipe) {
-			this.recipe = recipe;
-			this.name = recipe.getTableType().name().toLowerCase();
-		}
-
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return null;
-		}
-
-		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-		}
-
-		@Override
-		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-			return false;
-		}
-
-		@Override
-		public void getIngredients(IIngredients ingredients) {
-			ingredients.setInput(FluidStack.class, recipe.getInput());
-			ingredients.setOutput(ItemStack.class, recipe.getOutput());
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return recipe == other;
-		}
-	}
-
 	public class Category implements IRecipeCategory<Wrapper> {
 
 		protected final ResourceLocation backgroundLocation;
@@ -108,14 +48,24 @@ public class CastingTableJEI {
 		}
 
 		@Override
+		public void drawExtras(Minecraft minecraft) {
+
+		}
+
+		@Override
 		@Nonnull
 		public IDrawable getBackground() {
 			return background;
 		}
 
 		@Override
-		public void drawExtras(Minecraft minecraft) {
+		public IDrawable getIcon() {
+			return null;
+		}
 
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
 		}
 
 		@Nonnull
@@ -124,15 +74,15 @@ public class CastingTableJEI {
 			return localizedName;
 		}
 
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+
 		@Nonnull
 		@Override
 		public String getUid() {
 			return UID;
-		}
-
-		@Override
-		public IDrawable getIcon() {
-			return null;
 		}
 
 		@Override
@@ -151,16 +101,66 @@ public class CastingTableJEI {
 			gui_items.set(1, table_item);
 			gui_fluids.set(2, input.get(0));
 		}
+	}
+	public static class Wrapper implements IRecipeWrapper {
+		private final ICastingTableRecipe recipe;
+		private final String name;
+
+		public Wrapper(ICastingTableRecipe recipe) {
+			this.recipe = recipe;
+			this.name = recipe.getTableType().name().toLowerCase();
+		}
+
+		@Override
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInput(FluidStack.class, recipe.getInput());
+			ingredients.setOutput(ItemStack.class, recipe.getOutput());
+		}
+
+		public String getName() {
+			return name;
+		}
 
 		@Override
 		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return Collections.emptyList();
+			return null;
 		}
 
 		@Override
-		public String getModName() {
-			return Foundry.MODID;
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
 		}
+	}
+	private final ItemStack table_item;
+	private final String name;
+
+	private final BlockCastingTable.EnumTable type;
+
+	private final String UID;
+
+	public CastingTableJEI(BlockCastingTable.EnumTable table) {
+		type = table;
+		table_item = FoundryBlocks.block_casting_table.asItemStack(table);
+		name = table.name;
+		UID = "foundry.casting_table." + name;
+	}
+
+	public BlockCastingTable.EnumTable getType() {
+		return type;
+	}
+
+	public String getUID() {
+		return UID;
 	}
 
 }

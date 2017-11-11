@@ -27,8 +27,8 @@ public class MTInfuserHandler {
 		}
 
 		@Override
-		protected void remove() {
-			InfuserRecipeManager.instance.recipes.remove(recipe);
+		public String getDescription() {
+			return String.format("( %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInputFluid()), MTHelper.getItemDescription(recipe.getInput()), MTHelper.getFluidDescription(recipe.getOutput()));
 		}
 
 		@Override
@@ -37,8 +37,8 @@ public class MTInfuserHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			return String.format("( %s, %s ) -> %s", MTHelper.getFluidDescription(recipe.getInputFluid()), MTHelper.getItemDescription(recipe.getInput()), MTHelper.getFluidDescription(recipe.getOutput()));
+		protected void remove() {
+			InfuserRecipeManager.instance.recipes.remove(recipe);
 		}
 	}
 

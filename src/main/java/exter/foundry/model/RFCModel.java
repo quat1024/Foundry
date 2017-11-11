@@ -101,26 +101,6 @@ public class RFCModel implements IModel {
 		}
 
 		@Override
-		public boolean isAmbientOcclusion() {
-			return true;
-		}
-
-		@Override
-		public boolean isGui3d() {
-			return false;
-		}
-
-		@Override
-		public boolean isBuiltInRenderer() {
-			return false;
-		}
-
-		@Override
-		public TextureAtlasSprite getParticleTexture() {
-			return particle;
-		}
-
-		@Override
 		public ItemCameraTransforms getItemCameraTransforms() {
 			return ItemCameraTransforms.DEFAULT;
 		}
@@ -128,6 +108,11 @@ public class RFCModel implements IModel {
 		@Override
 		public ItemOverrideList getOverrides() {
 			return override;
+		}
+
+		@Override
+		public TextureAtlasSprite getParticleTexture() {
+			return particle;
 		}
 
 		@Override
@@ -144,6 +129,44 @@ public class RFCModel implements IModel {
 			} else if (type != TransformType.GUI && isCulled) { return Pair.of(otherModel, pair.getRight()); }
 			return pair;
 		}
+
+		@Override
+		public boolean isAmbientOcclusion() {
+			return true;
+		}
+
+		@Override
+		public boolean isBuiltInRenderer() {
+			return false;
+		}
+
+		@Override
+		public boolean isGui3d() {
+			return false;
+		}
+	}
+
+	static public class Loader implements ICustomModelLoader {
+		static public Loader instance = new Loader();
+
+		private Loader() {
+
+		}
+
+		@Override
+		public boolean accepts(ResourceLocation modelLocation) {
+			return modelLocation.getResourceDomain().equals("foundry") && (modelLocation.getResourcePath().equals("container") || modelLocation.getResourcePath().endsWith("/container"));
+		}
+
+		@Override
+		public IModel loadModel(ResourceLocation modelLocation) {
+			return RFCModel.instance;
+		}
+
+		@Override
+		public void onResourceManagerReload(IResourceManager resourceManager) {
+
+		}
 	}
 
 	static private final class SimpleBakedModel implements IBakedModel {
@@ -158,26 +181,6 @@ public class RFCModel implements IModel {
 		}
 
 		@Override
-		public boolean isAmbientOcclusion() {
-			return true;
-		}
-
-		@Override
-		public boolean isGui3d() {
-			return false;
-		}
-
-		@Override
-		public boolean isBuiltInRenderer() {
-			return false;
-		}
-
-		@Override
-		public TextureAtlasSprite getParticleTexture() {
-			return particle;
-		}
-
-		@Override
 		public ItemCameraTransforms getItemCameraTransforms() {
 			return ItemCameraTransforms.DEFAULT;
 		}
@@ -185,6 +188,11 @@ public class RFCModel implements IModel {
 		@Override
 		public ItemOverrideList getOverrides() {
 			return ItemOverrideList.NONE;
+		}
+
+		@Override
+		public TextureAtlasSprite getParticleTexture() {
+			return particle;
 		}
 
 		@Override
@@ -197,32 +205,134 @@ public class RFCModel implements IModel {
 		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType type) {
 			return PerspectiveMapWrapper.handlePerspective(this, transforms, type);
 		}
+
+		@Override
+		public boolean isAmbientOcclusion() {
+			return true;
+		}
+
+		@Override
+		public boolean isBuiltInRenderer() {
+			return false;
+		}
+
+		@Override
+		public boolean isGui3d() {
+			return false;
+		}
 	}
 
-	@Override
-	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-		Optional<TRSRTransformation> transform = state.apply(Optional.empty());
-		ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-		builder.addAll(getQuadsForSprite(0, bakedTextureGetter.apply(texture_bg), format, transform));
-		builder.addAll(getQuadsForSprite(2, bakedTextureGetter.apply(texture_fg), format, transform));
+	public static final RFCModel instance = new RFCModel();
 
-		ImmutableMap<TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(state);
-		return new BakedItemModel(builder.build(), bakedTextureGetter.apply(texture_fg), map, null, bakedTextureGetter, format, transform);
+	static private final IModelState DEFAULT_STATE;
+
+	static {
+		TRSRTransformation tprh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(0f, 4.0f / 16, 0.5f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, -90, -55)), new Vector3f(0.65f, 0.65f, 0.65f), null));
+
+		TRSRTransformation tplh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(0f, 4.0f / 16, 0.5f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 90, 55)), new Vector3f(0.65f, 0.65f, 0.65f), null));
+
+		TRSRTransformation fprh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(1.13f / 16, 3.2f / 16, 1.13f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, -90, 25)), new Vector3f(0.58f, 0.58f, 0.58f), null));
+
+		TRSRTransformation fplh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(1.13f / 16, 3.2f / 16, 1.13f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 90, -25)), new Vector3f(0.58f, 0.58f, 0.58f), null));
+
+		TRSRTransformation gnd = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(1f / 16, 1f / 16, 0), TRSRTransformation.quatFromXYZ(0, 0, 0), new Vector3f(0.58f, 0.58f, 0.58f), null));
+
+		DEFAULT_STATE = new SimpleModelState(ImmutableMap.of(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, tplh, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, tprh, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, fplh, ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, fprh, ItemCameraTransforms.TransformType.GROUND, gnd));
 	}
 
-	@Override
-	public Collection<ResourceLocation> getDependencies() {
-		return ImmutableList.of();
+	private static void addSideQuad(ImmutableList.Builder<BakedQuad> builder, BitSet faces, VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, int tint, TextureAtlasSprite sprite, int uMax, int vMax, int u, int v) {
+		int si = side.ordinal();
+		if (si > 4) {
+			si -= 2;
+		}
+		int index = (vMax + 1) * ((uMax + 1) * si + u) + v;
+		if (!faces.get(index)) {
+			faces.set(index);
+			builder.add(buildSideQuad(format, transform, side, tint, sprite, u, v));
+		}
 	}
 
-	@Override
-	public Collection<ResourceLocation> getTextures() {
-		return ImmutableList.of(texture_fg, texture_bg);
+	private static final BakedQuad buildQuad(VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, TextureAtlasSprite sprite, int tint, float x0, float y0, float z0, float u0, float v0, float x1, float y1, float z1, float u1, float v1, float x2, float y2, float z2, float u2, float v2, float x3, float y3, float z3, float u3, float v3, int color) {
+		UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
+		builder.setQuadTint(tint);
+		builder.setQuadOrientation(side);
+		builder.setTexture(sprite);
+		putVertex(builder, format, transform, side, x0, y0, z0, u0, v0, color);
+		putVertex(builder, format, transform, side, x1, y1, z1, u1, v1, color);
+		putVertex(builder, format, transform, side, x2, y2, z2, u2, v2, color);
+		putVertex(builder, format, transform, side, x3, y3, z3, u3, v3, color);
+		return builder.build();
 	}
 
-	@Override
-	public IModelState getDefaultState() {
-		return DEFAULT_STATE;
+	private static BakedQuad buildSideQuad(VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, int tint, TextureAtlasSprite sprite, int u, int v) {
+		final float eps0 = 30e-5f;
+		final float eps1 = 45e-5f;
+		final float eps2 = .5f;
+		final float eps3 = .5f;
+		float x0 = (float) u / sprite.getIconWidth();
+		float y0 = (float) v / sprite.getIconHeight();
+		float x1 = x0, y1 = y0;
+		float z1 = 7.5f / 16f - eps1 - 0.0002f * tint;
+		float z2 = 8.5f / 16f + eps1 + 0.0002f * tint;
+		switch (side) {
+		case WEST:
+			z1 = 8.5f / 16f + eps1 + 0.0002f * tint;
+			z2 = 7.5f / 16f - eps1 - 0.0002f * tint;
+		case EAST:
+			y1 = (v + 1f) / sprite.getIconHeight();
+			break;
+		case DOWN:
+			z1 = 8.5f / 16f + eps1 + 0.0002f * tint;
+			z2 = 7.5f / 16f - eps1 - 0.0002f * tint;
+		case UP:
+			x1 = (u + 1f) / sprite.getIconWidth();
+			break;
+		default:
+			throw new IllegalArgumentException("can't handle z-oriented side");
+		}
+		float u0 = 16f * (x0 - side.getDirectionVec().getX() * eps3 / sprite.getIconWidth());
+		float u1 = 16f * (x1 - side.getDirectionVec().getX() * eps3 / sprite.getIconWidth());
+		float v0 = 16f * (1f - y0 - side.getDirectionVec().getY() * eps3 / sprite.getIconHeight());
+		float v1 = 16f * (1f - y1 - side.getDirectionVec().getY() * eps3 / sprite.getIconHeight());
+		switch (side) {
+		case WEST:
+		case EAST:
+			y0 -= eps1;
+			y1 += eps1;
+			v0 -= eps2 / sprite.getIconHeight();
+			v1 += eps2 / sprite.getIconHeight();
+			break;
+		case DOWN:
+		case UP:
+			x0 -= eps1;
+			x1 += eps1;
+			u0 += eps2 / sprite.getIconWidth();
+			u1 -= eps2 / sprite.getIconWidth();
+			break;
+		default:
+			throw new IllegalArgumentException("can't handle z-oriented side");
+		}
+		switch (side) {
+		case WEST:
+			x0 += eps0;
+			x1 += eps0;
+			break;
+		case EAST:
+			x0 -= eps0;
+			x1 -= eps0;
+			break;
+		case DOWN:
+			y0 -= eps0;
+			y1 -= eps0;
+			break;
+		case UP:
+			y0 += eps0;
+			y1 += eps0;
+			break;
+		default:
+			throw new IllegalArgumentException("can't handle z-oriented side");
+		}
+		return buildQuad(format, transform, side.getOpposite(), sprite, tint, x0, y0, z1, sprite.getInterpolatedU(u0), sprite.getInterpolatedV(v0), x1, y1, z1, sprite.getInterpolatedU(u1), sprite.getInterpolatedV(v1), x1, y1, z2, sprite.getInterpolatedU(u1), sprite.getInterpolatedV(v1), x0, y0, z2, sprite.getInterpolatedU(u0), sprite.getInterpolatedV(v0), 0xFFFFFFFF);
 	}
 
 	public static ImmutableList<BakedQuad> getQuadsForSprite(int tint, TextureAtlasSprite sprite, VertexFormat format, Optional<TRSRTransformation> transform) {
@@ -305,101 +415,6 @@ public class RFCModel implements IModel {
 		return (pixels[u + (vMax - 1 - v) * uMax] >> 24 & 0xFF) == 0;
 	}
 
-	private static void addSideQuad(ImmutableList.Builder<BakedQuad> builder, BitSet faces, VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, int tint, TextureAtlasSprite sprite, int uMax, int vMax, int u, int v) {
-		int si = side.ordinal();
-		if (si > 4) {
-			si -= 2;
-		}
-		int index = (vMax + 1) * ((uMax + 1) * si + u) + v;
-		if (!faces.get(index)) {
-			faces.set(index);
-			builder.add(buildSideQuad(format, transform, side, tint, sprite, u, v));
-		}
-	}
-
-	private static BakedQuad buildSideQuad(VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, int tint, TextureAtlasSprite sprite, int u, int v) {
-		final float eps0 = 30e-5f;
-		final float eps1 = 45e-5f;
-		final float eps2 = .5f;
-		final float eps3 = .5f;
-		float x0 = (float) u / sprite.getIconWidth();
-		float y0 = (float) v / sprite.getIconHeight();
-		float x1 = x0, y1 = y0;
-		float z1 = 7.5f / 16f - eps1 - 0.0002f * tint;
-		float z2 = 8.5f / 16f + eps1 + 0.0002f * tint;
-		switch (side) {
-		case WEST:
-			z1 = 8.5f / 16f + eps1 + 0.0002f * tint;
-			z2 = 7.5f / 16f - eps1 - 0.0002f * tint;
-		case EAST:
-			y1 = (v + 1f) / sprite.getIconHeight();
-			break;
-		case DOWN:
-			z1 = 8.5f / 16f + eps1 + 0.0002f * tint;
-			z2 = 7.5f / 16f - eps1 - 0.0002f * tint;
-		case UP:
-			x1 = (u + 1f) / sprite.getIconWidth();
-			break;
-		default:
-			throw new IllegalArgumentException("can't handle z-oriented side");
-		}
-		float u0 = 16f * (x0 - side.getDirectionVec().getX() * eps3 / sprite.getIconWidth());
-		float u1 = 16f * (x1 - side.getDirectionVec().getX() * eps3 / sprite.getIconWidth());
-		float v0 = 16f * (1f - y0 - side.getDirectionVec().getY() * eps3 / sprite.getIconHeight());
-		float v1 = 16f * (1f - y1 - side.getDirectionVec().getY() * eps3 / sprite.getIconHeight());
-		switch (side) {
-		case WEST:
-		case EAST:
-			y0 -= eps1;
-			y1 += eps1;
-			v0 -= eps2 / sprite.getIconHeight();
-			v1 += eps2 / sprite.getIconHeight();
-			break;
-		case DOWN:
-		case UP:
-			x0 -= eps1;
-			x1 += eps1;
-			u0 += eps2 / sprite.getIconWidth();
-			u1 -= eps2 / sprite.getIconWidth();
-			break;
-		default:
-			throw new IllegalArgumentException("can't handle z-oriented side");
-		}
-		switch (side) {
-		case WEST:
-			x0 += eps0;
-			x1 += eps0;
-			break;
-		case EAST:
-			x0 -= eps0;
-			x1 -= eps0;
-			break;
-		case DOWN:
-			y0 -= eps0;
-			y1 -= eps0;
-			break;
-		case UP:
-			y0 += eps0;
-			y1 += eps0;
-			break;
-		default:
-			throw new IllegalArgumentException("can't handle z-oriented side");
-		}
-		return buildQuad(format, transform, side.getOpposite(), sprite, tint, x0, y0, z1, sprite.getInterpolatedU(u0), sprite.getInterpolatedV(v0), x1, y1, z1, sprite.getInterpolatedU(u1), sprite.getInterpolatedV(v1), x1, y1, z2, sprite.getInterpolatedU(u1), sprite.getInterpolatedV(v1), x0, y0, z2, sprite.getInterpolatedU(u0), sprite.getInterpolatedV(v0), 0xFFFFFFFF);
-	}
-
-	private static final BakedQuad buildQuad(VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, TextureAtlasSprite sprite, int tint, float x0, float y0, float z0, float u0, float v0, float x1, float y1, float z1, float u1, float v1, float x2, float y2, float z2, float u2, float v2, float x3, float y3, float z3, float u3, float v3, int color) {
-		UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
-		builder.setQuadTint(tint);
-		builder.setQuadOrientation(side);
-		builder.setTexture(sprite);
-		putVertex(builder, format, transform, side, x0, y0, z0, u0, v0, color);
-		putVertex(builder, format, transform, side, x1, y1, z1, u1, v1, color);
-		putVertex(builder, format, transform, side, x2, y2, z2, u2, v2, color);
-		putVertex(builder, format, transform, side, x3, y3, z3, u3, v3, color);
-		return builder.build();
-	}
-
 	private static void putVertex(UnpackedBakedQuad.Builder builder, VertexFormat format, Optional<TRSRTransformation> transform, EnumFacing side, float x, float y, float z, float u, float v, int color) {
 		Vector4f vec = new Vector4f();
 		for (int e = 0; e < format.getElementCount(); e++) {
@@ -439,53 +454,38 @@ public class RFCModel implements IModel {
 		}
 	}
 
-	static public class Loader implements ICustomModelLoader {
-		static public Loader instance = new Loader();
-
-		private Loader() {
-
-		}
-
-		@Override
-		public void onResourceManagerReload(IResourceManager resourceManager) {
-
-		}
-
-		@Override
-		public boolean accepts(ResourceLocation modelLocation) {
-			return modelLocation.getResourceDomain().equals("foundry") && (modelLocation.getResourcePath().equals("container") || modelLocation.getResourcePath().endsWith("/container"));
-		}
-
-		@Override
-		public IModel loadModel(ResourceLocation modelLocation) {
-			return RFCModel.instance;
-		}
-	}
-
-	public static final RFCModel instance = new RFCModel();
-
 	private final ResourceLocation texture_fg;
+
 	private final ResourceLocation texture_bg;
 
 	private RFCModel() {
 		texture_fg = new ResourceLocation("foundry", "items/container_foreground");
 		texture_bg = new ResourceLocation("foundry", "items/container_background");
 	}
+	@Override
+	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+		Optional<TRSRTransformation> transform = state.apply(Optional.empty());
+		ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
+		builder.addAll(getQuadsForSprite(0, bakedTextureGetter.apply(texture_bg), format, transform));
+		builder.addAll(getQuadsForSprite(2, bakedTextureGetter.apply(texture_fg), format, transform));
 
-	static private final IModelState DEFAULT_STATE;
+		ImmutableMap<TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(state);
+		return new BakedItemModel(builder.build(), bakedTextureGetter.apply(texture_fg), map, null, bakedTextureGetter, format, transform);
+	}
 
-	static {
-		TRSRTransformation tprh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(0f, 4.0f / 16, 0.5f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, -90, -55)), new Vector3f(0.65f, 0.65f, 0.65f), null));
+	@Override
+	public IModelState getDefaultState() {
+		return DEFAULT_STATE;
+	}
 
-		TRSRTransformation tplh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(0f, 4.0f / 16, 0.5f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 90, 55)), new Vector3f(0.65f, 0.65f, 0.65f), null));
+	@Override
+	public Collection<ResourceLocation> getDependencies() {
+		return ImmutableList.of();
+	}
 
-		TRSRTransformation fprh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(1.13f / 16, 3.2f / 16, 1.13f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, -90, 25)), new Vector3f(0.58f, 0.58f, 0.58f), null));
-
-		TRSRTransformation fplh = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(1.13f / 16, 3.2f / 16, 1.13f / 16), TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 90, -25)), new Vector3f(0.58f, 0.58f, 0.58f), null));
-
-		TRSRTransformation gnd = TRSRTransformation.blockCenterToCorner(new TRSRTransformation(new Vector3f(1f / 16, 1f / 16, 0), TRSRTransformation.quatFromXYZ(0, 0, 0), new Vector3f(0.58f, 0.58f, 0.58f), null));
-
-		DEFAULT_STATE = new SimpleModelState(ImmutableMap.of(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, tplh, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, tprh, ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, fplh, ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, fprh, ItemCameraTransforms.TransformType.GROUND, gnd));
+	@Override
+	public Collection<ResourceLocation> getTextures() {
+		return ImmutableList.of(texture_fg, texture_bg);
 	}
 
 }

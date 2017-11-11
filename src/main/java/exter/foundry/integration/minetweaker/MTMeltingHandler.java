@@ -28,8 +28,8 @@ public class MTMeltingHandler {
 		}
 
 		@Override
-		protected void remove() {
-			MeltingRecipeManager.INSTANCE.removeRecipe(recipe);
+		public String getDescription() {
+			return String.format(" %s -> %s", MTHelper.getItemDescription(recipe.getInput()), MTHelper.getFluidDescription(recipe.getOutput()));
 		}
 
 		@Override
@@ -38,8 +38,8 @@ public class MTMeltingHandler {
 		}
 
 		@Override
-		public String getDescription() {
-			return String.format(" %s -> %s", MTHelper.getItemDescription(recipe.getInput()), MTHelper.getFluidDescription(recipe.getOutput()));
+		protected void remove() {
+			MeltingRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 

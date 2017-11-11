@@ -15,12 +15,6 @@ public interface IAlloyingCrucibleRecipeManager {
 	public void addRecipe(FluidStack out, FluidStack in_a, FluidStack in_b);
 
 	/**
-	 * Get a list of all the recipes
-	 * @return List of all the recipes
-	 */
-	public List<IAlloyingCrucibleRecipe> getRecipes();
-
-	/**
 	 * Find a valid recipe that contains the given inputs.
 	 * A recipe is found if the recipe's inputs contains the fluid in the parameters.
 	 * @param in_a FluidStack for the first input.
@@ -29,6 +23,12 @@ public interface IAlloyingCrucibleRecipeManager {
 	 * @return
 	 */
 	public IAlloyingCrucibleRecipe findRecipe(FluidStack in_a, FluidStack in_b);
+
+	/**
+	 * Get a list of all the recipes
+	 * @return List of all the recipes
+	 */
+	public List<IAlloyingCrucibleRecipe> getRecipes();
 
 	/**
 	 * Removes a recipe.

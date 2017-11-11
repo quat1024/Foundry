@@ -26,35 +26,11 @@ public class RecipeHelper {
 	public static final List<IRecipe> recipeList = FoundryRegistry.RECIPES;
 
 	/*
-	 * This adds the recipe to the list of crafting recipes.  Since who cares about names, it adds it as recipesX, where X is the current recipe you are adding.
-	 */
-	public static void addRecipe(int j, IRecipe rec) {
-		if (rec.getRegistryName() == null) recipeList.add(rec.setRegistryName(new ResourceLocation(MODID, "recipes" + j)));
-		else recipeList.add(rec);
-	}
-
-	/*
-	 * This adds the recipe to the list of crafting recipes.  Cares about names.
-	 */
-	public static void addRecipe(String name, IRecipe rec) {
-		if (rec.getRegistryName() == null) recipeList.add(rec.setRegistryName(new ResourceLocation(MODID, name)));
-		else recipeList.add(rec);
-	}
-
-	public static void addRecipe(IRecipe rec) {
-		addRecipe(j++, rec);
-	}
-
-	/*
 	 * This adds a shaped recipe to the list of crafting recipes, using the forge format.
 	 */
 	public static void addOldShaped(ItemStack output, Object... input) {
 		ShapedPrimer primer = CraftingHelper.parseShaped(input);
 		addRecipe(j++, new ShapedRecipes(new ResourceLocation(MODID, "recipes" + j).toString(), primer.width, primer.height, primer.input, output));
-	}
-
-	public static <T extends IForgeRegistryEntry<?>> void addOldShaped(T output, Object... input) {
-		addOldShaped(output instanceof Item ? new ItemStack((Item) output) : new ItemStack((Block) output), input);
 	}
 
 	/*
@@ -71,6 +47,10 @@ public class RecipeHelper {
 	public static void addOldShaped(String name, String group, ItemStack output, Object... input) {
 		ShapedPrimer primer = CraftingHelper.parseShaped(input);
 		addRecipe(j++, new ShapedRecipes(new ResourceLocation(MODID, group).toString(), primer.width, primer.height, primer.input, output).setRegistryName(MODID, name));
+	}
+
+	public static <T extends IForgeRegistryEntry<?>> void addOldShaped(T output, Object... input) {
+		addOldShaped(output instanceof Item ? new ItemStack((Item) output) : new ItemStack((Block) output), input);
 	}
 
 	/*
@@ -92,33 +72,31 @@ public class RecipeHelper {
 	}
 
 	/*
-	 * Adds a shapeless recipe with X output using an array of inputs. Use Strings for OreDictionary support. This array is not ordered.
+	 * This adds the recipe to the list of crafting recipes.  Since who cares about names, it adds it as recipesX, where X is the current recipe you are adding.
 	 */
-	public static void addShapeless(ItemStack output, Object... inputs) {
-		addRecipe(j++, new ShapelessRecipes(MODID + ":" + j, output, createInput(inputs)));
+	public static void addRecipe(int j, IRecipe rec) {
+		if (rec.getRegistryName() == null) recipeList.add(rec.setRegistryName(new ResourceLocation(MODID, "recipes" + j)));
+		else recipeList.add(rec);
 	}
 
-	public static void addShapeless(Item output, Object... inputs) {
-		addShapeless(new ItemStack(output), inputs);
-	}
-
-	public static void addShapeless(Block output, Object... inputs) {
-		addShapeless(new ItemStack(output), inputs);
+	public static void addRecipe(IRecipe rec) {
+		addRecipe(j++, rec);
 	}
 
 	/*
-	 * Adds a shapeless recipe with X output using an array of inputs. Use Strings for OreDictionary support. This array is not ordered.  This has a custom group.
+	 * This adds the recipe to the list of crafting recipes.  Cares about names.
 	 */
-	public static void addShapeless(String group, ItemStack output, Object... inputs) {
-		addRecipe(j++, new ShapelessRecipes(MODID + ":" + group, output, createInput(inputs)));
+	public static void addRecipe(String name, IRecipe rec) {
+		if (rec.getRegistryName() == null) recipeList.add(rec.setRegistryName(new ResourceLocation(MODID, name)));
+		else recipeList.add(rec);
 	}
 
-	public static void addShapeless(String group, Item output, Object... inputs) {
-		addShapeless(group, new ItemStack(output), inputs);
+	public static void addShaped(Block output, int width, int height, Object... input) {
+		addShaped(new ItemStack(output), width, height, input);
 	}
 
-	public static void addShapeless(String group, Block output, Object... inputs) {
-		addShapeless(group, new ItemStack(output), inputs);
+	public static void addShaped(Item output, int width, int height, Object... input) {
+		addShaped(new ItemStack(output), width, height, input);
 	}
 
 	/*
@@ -129,12 +107,12 @@ public class RecipeHelper {
 		addRecipe(j++, genShaped(output, width, height, input));
 	}
 
-	public static void addShaped(Item output, int width, int height, Object... input) {
-		addShaped(new ItemStack(output), width, height, input);
+	public static void addShaped(String group, Block output, int width, int height, Object... input) {
+		addShaped(group, new ItemStack(output), width, height, input);
 	}
 
-	public static void addShaped(Block output, int width, int height, Object... input) {
-		addShaped(new ItemStack(output), width, height, input);
+	public static void addShaped(String group, Item output, int width, int height, Object... input) {
+		addShaped(group, new ItemStack(output), width, height, input);
 	}
 
 	/*
@@ -145,12 +123,55 @@ public class RecipeHelper {
 		addRecipe(j++, genShaped(MODID + ":" + group, output, width, height, input));
 	}
 
-	public static void addShaped(String group, Item output, int width, int height, Object... input) {
-		addShaped(group, new ItemStack(output), width, height, input);
+	public static void addShapeless(Block output, Object... inputs) {
+		addShapeless(new ItemStack(output), inputs);
 	}
 
-	public static void addShaped(String group, Block output, int width, int height, Object... input) {
-		addShaped(group, new ItemStack(output), width, height, input);
+	public static void addShapeless(Item output, Object... inputs) {
+		addShapeless(new ItemStack(output), inputs);
+	}
+
+	/*
+	 * Adds a shapeless recipe with X output using an array of inputs. Use Strings for OreDictionary support. This array is not ordered.
+	 */
+	public static void addShapeless(ItemStack output, Object... inputs) {
+		addRecipe(j++, new ShapelessRecipes(MODID + ":" + j, output, createInput(inputs)));
+	}
+
+	public static void addShapeless(String group, Block output, Object... inputs) {
+		addShapeless(group, new ItemStack(output), inputs);
+	}
+
+	public static void addShapeless(String group, Item output, Object... inputs) {
+		addShapeless(group, new ItemStack(output), inputs);
+	}
+
+	/*
+	 * Adds a shapeless recipe with X output using an array of inputs. Use Strings for OreDictionary support. This array is not ordered.  This has a custom group.
+	 */
+	public static void addShapeless(String group, ItemStack output, Object... inputs) {
+		addRecipe(j++, new ShapelessRecipes(MODID + ":" + group, output, createInput(inputs)));
+	}
+
+	public static NonNullList<Ingredient> createInput(Object[] input) {
+		if (input[0] instanceof List) input = ((List<?>) input[0]).toArray();
+		else if (input[0] instanceof Object[]) input = (Object[]) input[0];
+		NonNullList<Ingredient> inputL = NonNullList.create();
+		for (int i = 0; i < input.length; i++) {
+			Object k = input[i];
+			if (k instanceof String) {
+				inputL.add(i, new OreIngredient((String) k));
+			} else if (k instanceof ItemStack) {
+				inputL.add(i, Ingredient.fromStacks((ItemStack) k));
+			} else if (k instanceof Item) {
+				inputL.add(i, Ingredient.fromStacks(new ItemStack((Item) k)));
+			} else if (k instanceof Block) {
+				inputL.add(i, Ingredient.fromStacks(new ItemStack((Block) k)));
+			} else {
+				throw new UnsupportedOperationException("Attempted to add invalid shapeless recipe.  Complain to the author of " + MODNAME);
+			}
+		}
+		return inputL;
 	}
 
 	public static ShapedRecipes genShaped(ItemStack output, int l, int w, Object[] input) {
@@ -196,26 +217,5 @@ public class RecipeHelper {
 		}
 
 		return new ShapedRecipes(group, l, w, inputL, output);
-	}
-
-	public static NonNullList<Ingredient> createInput(Object[] input) {
-		if (input[0] instanceof List) input = ((List<?>) input[0]).toArray();
-		else if (input[0] instanceof Object[]) input = (Object[]) input[0];
-		NonNullList<Ingredient> inputL = NonNullList.create();
-		for (int i = 0; i < input.length; i++) {
-			Object k = input[i];
-			if (k instanceof String) {
-				inputL.add(i, new OreIngredient((String) k));
-			} else if (k instanceof ItemStack) {
-				inputL.add(i, Ingredient.fromStacks((ItemStack) k));
-			} else if (k instanceof Item) {
-				inputL.add(i, Ingredient.fromStacks(new ItemStack((Item) k)));
-			} else if (k instanceof Block) {
-				inputL.add(i, Ingredient.fromStacks(new ItemStack((Block) k)));
-			} else {
-				throw new UnsupportedOperationException("Attempted to add invalid shapeless recipe.  Complain to the author of " + MODNAME);
-			}
-		}
-		return inputL;
 	}
 }

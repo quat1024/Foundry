@@ -30,35 +30,6 @@ public class InitHardCore {
 		return false;
 	}
 
-	static private void removeCompressionCrafting(String prefix, String result_prefix) {
-		Set<IRecipe> remove = new HashSet<IRecipe>();
-		InventoryCrafting grid = new InventoryCrafting(new Container() {
-			@Override
-			public boolean canInteractWith(EntityPlayer playerIn) {
-				return false;
-			}
-		}, 3, 3);
-		for (String ore_name : OreDictionary.getOreNames()) {
-			if (ore_name.startsWith(prefix)) {
-				for (ItemStack item : OreDictionary.getOres(ore_name)) {
-					if (MeltingRecipeManager.INSTANCE.findRecipe(item) != null) {
-						for (int i = 0; i < 9; i++) {
-							grid.setInventorySlotContents(i, item);
-						}
-						for (IRecipe recipe : ForgeRegistries.RECIPES) {
-							if (recipe.matches(grid, null) && hasOreDictionaryPrefix(recipe.getCraftingResult(grid), result_prefix)) {
-								remove.add(recipe);
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		for (IRecipe rec : remove)
-			((IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES).remove(rec.getRegistryName());
-	}
-
 	static public void init() {
 		if (FoundryConfig.hardcore_remove_ingot_nugget) { // Remove 9 nuggets -> ingot recipes (only if they can be melted)
 			removeCompressionCrafting("nugget", "ingot");
@@ -97,5 +68,34 @@ public class InitHardCore {
 				AlloyFurnaceRecipeManager.INSTANCE.removeRecipe(recipe);
 			}
 		}
+	}
+
+	static private void removeCompressionCrafting(String prefix, String result_prefix) {
+		Set<IRecipe> remove = new HashSet<IRecipe>();
+		InventoryCrafting grid = new InventoryCrafting(new Container() {
+			@Override
+			public boolean canInteractWith(EntityPlayer playerIn) {
+				return false;
+			}
+		}, 3, 3);
+		for (String ore_name : OreDictionary.getOreNames()) {
+			if (ore_name.startsWith(prefix)) {
+				for (ItemStack item : OreDictionary.getOres(ore_name)) {
+					if (MeltingRecipeManager.INSTANCE.findRecipe(item) != null) {
+						for (int i = 0; i < 9; i++) {
+							grid.setInventorySlotContents(i, item);
+						}
+						for (IRecipe recipe : ForgeRegistries.RECIPES) {
+							if (recipe.matches(grid, null) && hasOreDictionaryPrefix(recipe.getCraftingResult(grid), result_prefix)) {
+								remove.add(recipe);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		for (IRecipe rec : remove)
+			((IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES).remove(rec.getRegistryName());
 	}
 }

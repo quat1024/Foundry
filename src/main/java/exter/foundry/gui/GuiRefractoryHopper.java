@@ -34,6 +34,17 @@ public class GuiRefractoryHopper extends GuiFoundry {
 	}
 
 	@Override
+	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		mc.renderEngine.bindTexture(GUI_TEXTURE);
+		int window_x = (width - xSize) / 2;
+		int window_y = (height - ySize) / 2;
+		drawTexturedModalRect(window_x, window_y, 0, 0, xSize, ySize);
+
+		displayTank(window_x, window_y, TANK_X, TANK_Y, TANK_HEIGHT, TANK_OVERLAY_X, TANK_OVERLAY_Y, te_hopper.getTank(0));
+	}
+
+	@Override
 	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
@@ -53,17 +64,6 @@ public class GuiRefractoryHopper extends GuiFoundry {
 				drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 			}
 		}
-	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(GUI_TEXTURE);
-		int window_x = (width - xSize) / 2;
-		int window_y = (height - ySize) / 2;
-		drawTexturedModalRect(window_x, window_y, 0, 0, xSize, ySize);
-
-		displayTank(window_x, window_y, TANK_X, TANK_Y, TANK_HEIGHT, TANK_OVERLAY_X, TANK_OVERLAY_Y, te_hopper.getTank(0));
 	}
 
 	@Override

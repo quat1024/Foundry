@@ -31,44 +31,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class CastingJEI {
 
-	static public class Wrapper implements IRecipeWrapper {
-		@Nonnull
-		private final ICastingRecipe recipe;
-
-		public Wrapper(ICastingRecipe recipe) {
-			this.recipe = recipe;
-		}
-
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return null;
-		}
-
-		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-		}
-
-		@Override
-		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-			return false;
-		}
-
-		@Override
-		public void getIngredients(IIngredients ingredients) {
-			IItemMatcher extra = recipe.getInputExtra();
-			List<ItemStack> extra_items = extra != null ? extra.getItems() : Collections.<ItemStack>emptyList();
-			ingredients.setInputs(FluidStack.class, Collections.singletonList(recipe.getInput()));
-			ingredients.setInputLists(ItemStack.class, ImmutableList.of(Collections.singletonList(recipe.getMold()), extra_items));
-			ingredients.setOutput(ItemStack.class, recipe.getOutput());
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return recipe == other;
-		}
-	}
-
 	static public class Category implements IRecipeCategory<Wrapper> {
 
 		protected final ResourceLocation backgroundLocation;
@@ -96,14 +58,24 @@ public class CastingJEI {
 		}
 
 		@Override
+		public void drawExtras(Minecraft minecraft) {
+			arrow.draw(minecraft, 22, 35);
+		}
+
+		@Override
 		@Nonnull
 		public IDrawable getBackground() {
 			return background;
 		}
 
 		@Override
-		public void drawExtras(Minecraft minecraft) {
-			arrow.draw(minecraft, 22, 35);
+		public IDrawable getIcon() {
+			return null;
+		}
+
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
 		}
 
 		@Nonnull
@@ -112,15 +84,15 @@ public class CastingJEI {
 			return localizedName;
 		}
 
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+
 		@Nonnull
 		@Override
 		public String getUid() {
 			return FoundryJEIConstants.CAST_UID;
-		}
-
-		@Override
-		public IDrawable getIcon() {
-			return null;
 		}
 
 		@Override
@@ -137,15 +109,43 @@ public class CastingJEI {
 			gui_items.set(2, ingredients.getInputs(ItemStack.class).get(1));
 			gui_fluids.set(3, ingredients.getInputs(FluidStack.class).get(0));
 		}
+	}
 
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return Collections.emptyList();
+	static public class Wrapper implements IRecipeWrapper {
+		@Nonnull
+		private final ICastingRecipe recipe;
+
+		public Wrapper(ICastingRecipe recipe) {
+			this.recipe = recipe;
 		}
 
 		@Override
-		public String getModName() {
-			return Foundry.MODID;
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			IItemMatcher extra = recipe.getInputExtra();
+			List<ItemStack> extra_items = extra != null ? extra.getItems() : Collections.<ItemStack>emptyList();
+			ingredients.setInputs(FluidStack.class, Collections.singletonList(recipe.getInput()));
+			ingredients.setInputLists(ItemStack.class, ImmutableList.of(Collections.singletonList(recipe.getMold()), extra_items));
+			ingredients.setOutput(ItemStack.class, recipe.getOutput());
+		}
+
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return null;
+		}
+
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
 		}
 	}
 }

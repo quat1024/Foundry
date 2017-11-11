@@ -18,12 +18,6 @@ public class GuiShotgun extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRenderer.drawString("Shotgun Ammo", 23, 6, 4210752);
-		fontRenderer.drawString((new TextComponentTranslation("container.inventory")).getUnformattedText(), 8, ySize - 96 + 2, 4210752);
-	}
-
-	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -31,5 +25,11 @@ public class GuiShotgun extends GuiContainer {
 		int center_x = (width - xSize) / 2;
 		int center_y = (height - ySize) / 2;
 		drawTexturedModalRect(center_x, center_y, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		fontRenderer.drawString("Shotgun Ammo", 23, 6, 4210752);
+		fontRenderer.drawString((new TextComponentTranslation("container.inventory")).getUnformattedText(), 8, ySize - 96 + 2, 4210752);
 	}
 }

@@ -31,8 +31,13 @@ public class OreMatcher implements IItemMatcher {
 		return amount;
 	}
 
-	public String getOreName() {
-		return match;
+	@Override
+	public ItemStack getItem() {
+		List<ItemStack> list = OreDictionary.getOres(match);
+		if (list.isEmpty()) { return null; }
+		ItemStack res = list.get(0).copy();
+		res.setCount(amount);
+		return res;
 	}
 
 	@Override
@@ -46,12 +51,7 @@ public class OreMatcher implements IItemMatcher {
 		return list;
 	}
 
-	@Override
-	public ItemStack getItem() {
-		List<ItemStack> list = OreDictionary.getOres(match);
-		if (list.isEmpty()) { return null; }
-		ItemStack res = list.get(0).copy();
-		res.setCount(amount);
-		return res;
+	public String getOreName() {
+		return match;
 	}
 }

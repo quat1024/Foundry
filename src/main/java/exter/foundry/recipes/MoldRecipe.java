@@ -14,11 +14,6 @@ public class MoldRecipe implements IMoldRecipe {
 
 	public final ItemStack output;
 
-	@Override
-	public ItemStack getOutput() {
-		return output.copy();
-	}
-
 	public MoldRecipe(ItemStack output, int width, int height, int[] recipe) {
 		if (output == null) { throw new IllegalArgumentException("Mold recipe output cannot be null"); }
 		this.output = output.copy();
@@ -53,6 +48,16 @@ public class MoldRecipe implements IMoldRecipe {
 	}
 
 	@Override
+	public int getHeight() {
+		return height;
+	}
+
+	@Override
+	public ItemStack getOutput() {
+		return output.copy();
+	}
+
+	@Override
 	public int[] getRecipeGrid() {
 		return recipe.clone();
 	}
@@ -60,11 +65,6 @@ public class MoldRecipe implements IMoldRecipe {
 	@Override
 	public int getWidth() {
 		return width;
-	}
-
-	@Override
-	public int getHeight() {
-		return height;
 	}
 
 	@Override

@@ -14,16 +14,6 @@ public class CastingTableRecipe implements ICastingTableRecipe {
 
 	private final IItemMatcher output;
 
-	@Override
-	public FluidStack getInput() {
-		return fluid.copy();
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return output.getItem();
-	}
-
 	public CastingTableRecipe(IItemMatcher result, FluidStack fluid, ICastingTableRecipe.TableType type) {
 		if (result == null) { throw new IllegalArgumentException("Casting Table recipe result cannot be null."); }
 
@@ -35,12 +25,22 @@ public class CastingTableRecipe implements ICastingTableRecipe {
 	}
 
 	@Override
-	public TableType getTableType() {
-		return type;
+	public FluidStack getInput() {
+		return fluid.copy();
+	}
+
+	@Override
+	public ItemStack getOutput() {
+		return output.getItem();
 	}
 
 	@Override
 	public IItemMatcher getOutputMatcher() {
 		return output;
+	}
+
+	@Override
+	public TableType getTableType() {
+		return type;
 	}
 }

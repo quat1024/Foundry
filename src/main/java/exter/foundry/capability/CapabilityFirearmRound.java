@@ -16,33 +16,8 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 public class CapabilityFirearmRound {
 	static private class ReferenceFirearmRound implements IFirearmRound {
 		@Override
-		public String getRoundType() {
-			return ItemRevolver.AMMO_TYPE;
-		}
-
-		@Override
-		public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side) {
-
-		}
-
-		@Override
-		public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count) {
-
-		}
-
-		@Override
 		public boolean breaksGlass() {
 			return true;
-		}
-
-		@Override
-		public double getBaseRange() {
-			return 60;
-		}
-
-		@Override
-		public double getFalloffRange() {
-			return 30;
 		}
 
 		@Override
@@ -51,25 +26,50 @@ public class CapabilityFirearmRound {
 		}
 
 		@Override
+		public double getBaseRange() {
+			return 60;
+		}
+
+		@Override
 		public ItemStack getCasing() {
 			return null;
+		}
+
+		@Override
+		public double getFalloffRange() {
+			return 30;
+		}
+
+		@Override
+		public String getRoundType() {
+			return ItemRevolver.AMMO_TYPE;
 		}
 
 		@Override
 		public boolean ignoresArmor() {
 			return false;
 		}
+
+		@Override
+		public void onBulletDamagedLivingEntity(EntityLivingBase entity, int count) {
+
+		}
+
+		@Override
+		public void onBulletHitBlock(EntityLivingBase shooter, Vec3d from, World world, BlockPos pos, EnumFacing side) {
+
+		}
 	}
 
 	static private class Storage implements IStorage<IFirearmRound> {
 		@Override
-		public NBTBase writeNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side) {
-			return null;
+		public void readNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side, NBTBase nbt) {
+
 		}
 
 		@Override
-		public void readNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side, NBTBase nbt) {
-
+		public NBTBase writeNBT(Capability<IFirearmRound> capability, IFirearmRound instance, EnumFacing side) {
+			return null;
 		}
 	}
 

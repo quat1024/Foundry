@@ -31,11 +31,6 @@ public class FoundryBlocks {
 		FoundryRegistry.ITEMS.add(new ItemBlock(block).setRegistryName(block.getRegistryName()));
 	}
 
-	static private <T extends Block & IBlockVariants> void registerMulti(T block) {
-		FoundryRegistry.BLOCKS.add(block);
-		FoundryRegistry.ITEMS.add(new ItemBlockMulti(block).setRegistryName(block.getRegistryName()));
-	}
-
 	static public void registerBlocks(Configuration config) {
 		block_component = new BlockComponent();
 		block_refractory_glass = new BlockRefractoryGlass();
@@ -70,5 +65,10 @@ public class FoundryBlocks {
 			block_coke_oven = new BlockCokeOven();
 			register(block_coke_oven);
 		}
+	}
+
+	static private <T extends Block & IBlockVariants> void registerMulti(T block) {
+		FoundryRegistry.BLOCKS.add(block);
+		FoundryRegistry.ITEMS.add(new ItemBlockMulti(block).setRegistryName(block.getRegistryName()));
 	}
 }

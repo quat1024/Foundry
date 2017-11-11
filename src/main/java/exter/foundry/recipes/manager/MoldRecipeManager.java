@@ -10,9 +10,9 @@ import exter.foundry.recipes.MoldRecipe;
 import net.minecraft.item.ItemStack;
 
 public class MoldRecipeManager implements IMoldRecipeManager {
-	public List<IMoldRecipe> recipes;
-
 	public static final MoldRecipeManager instance = new MoldRecipeManager();
+
+	public List<IMoldRecipe> recipes;
 
 	private MoldRecipeManager() {
 		recipes = new ArrayList<IMoldRecipe>();

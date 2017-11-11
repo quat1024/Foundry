@@ -10,9 +10,9 @@ import exter.foundry.recipes.AlloyMixerRecipe;
 import net.minecraftforge.fluids.FluidStack;
 
 public class AlloyMixerRecipeManager implements IAlloyMixerRecipeManager {
-	public List<IAlloyMixerRecipe> recipes;
-
 	public static final AlloyMixerRecipeManager instance = new AlloyMixerRecipeManager();
+
+	public List<IAlloyMixerRecipe> recipes;
 
 	private int[] recipe_order;
 

@@ -22,8 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiMaterialRouter extends GuiFoundry {
 
-	private TileEntityMaterialRouter te_router;
-
 	@SideOnly(Side.CLIENT)
 	private abstract class FilterSlot {
 		protected final String name;
@@ -38,11 +36,11 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 		public abstract void drawTooltip(int x, int y);
 
-		public abstract void onClick();
-
 		public final String getName() {
 			return name;
 		}
+
+		public abstract void onClick();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -95,9 +93,12 @@ public class GuiMaterialRouter extends GuiFoundry {
 		}
 	}
 
-	private List<FilterSlot> material_slots;
-	private List<FilterSlot> type_slots;
+	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation("foundry:textures/gui/materialrouter.png");
 
+	private TileEntityMaterialRouter te_router;
+	private List<FilterSlot> material_slots;
+
+	private List<FilterSlot> type_slots;
 	private GuiButtonFoundry[] route_buttons;
 	private GuiButtonFoundry material_scroll_left;
 	private GuiButtonFoundry material_scroll_right;
@@ -105,25 +106,8 @@ public class GuiMaterialRouter extends GuiFoundry {
 	private GuiButtonFoundry type_scroll_right;
 	private GuiButtonFoundry route_scroll_up;
 	private GuiButtonFoundry route_scroll_down;
+
 	private boolean do_scroll_sync;
-
-	private void drawMaterialIcon(int x, int y, String name) {
-		if (name.equals("_Any")) {
-			GL11.glEnable(GL11.GL_BLEND);
-			drawTexturedModalRect(x, y, 216, 193, 16, 16);
-		} else {
-			drawItemStack(x, y, MaterialRegistry.instance.getMaterialIcon(name));
-		}
-	}
-
-	private void drawTypeIcon(int x, int y, String name) {
-		if (name.equals("_Any")) {
-			GL11.glEnable(GL11.GL_BLEND);
-			drawTexturedModalRect(x, y, 216, 193, 16, 16);
-		} else {
-			drawItemStack(x, y, MaterialRegistry.instance.getTypeIcon(name));
-		}
-	}
 
 	public GuiMaterialRouter(TileEntityMaterialRouter router, EntityPlayer player) {
 		super(new ContainerMaterialRouter(router, player));
@@ -153,64 +137,40 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 	}
 
-	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation("foundry:textures/gui/materialrouter.png");
-
 	@Override
-	protected ResourceLocation getGUITexture() {
-		return GUI_TEXTURE;
-	}
-
-	@Override
-	public void drawScreen(int mousex, int mousey, float par3) {
-		super.drawScreen(mousex, mousey, par3);
-
-		int i;
-		for (i = 0; i < 8; i++) {
-			int index = i + te_router.gui_material_scroll;
-			if (index >= material_slots.size()) {
-				break;
+	protected void actionPerformed(GuiButton button) {
+		if (button.id < 6) {
+			te_router.getRoutes().add(new TileEntityMaterialRouter.Route(material_slots.get(te_router.gui_material_selected).getName(), type_slots.get(te_router.gui_type_selected).getName(), EnumFacing.VALUES[button.id]));
+			te_router.syncRoutes();
+		} else if (button.id == material_scroll_left.id) {
+			if (te_router.gui_material_scroll > 0) {
+				te_router.gui_material_scroll -= 8;
+				do_scroll_sync = true;
 			}
-			FilterSlot slot = material_slots.get(index);
-			if (isPointInRegion(111 + 17 * (i % 4), 24 + 17 * (i / 4), 16, 16, mousex, mousey)) {
-				slot.drawTooltip(mousex, mousey);
+		} else if (button.id == material_scroll_right.id) {
+			if (te_router.gui_material_scroll < material_slots.size() - 8) {
+				te_router.gui_material_scroll += 8;
+				do_scroll_sync = true;
 			}
-		}
-
-		for (i = 0; i < 8; i++) {
-			int index = i + te_router.gui_type_scroll;
-			if (index >= type_slots.size()) {
-				break;
+		} else if (button.id == type_scroll_left.id) {
+			if (te_router.gui_type_scroll > 0) {
+				te_router.gui_type_scroll -= 8;
+				do_scroll_sync = true;
 			}
-			FilterSlot slot = type_slots.get(index);
-			if (isPointInRegion(111 + 17 * (i % 4), 70 + 17 * (i / 4), 16, 16, mousex, mousey)) {
-				slot.drawTooltip(mousex, mousey);
+		} else if (button.id == type_scroll_right.id) {
+			if (te_router.gui_type_scroll < type_slots.size() - 8) {
+				te_router.gui_type_scroll += 8;
+				do_scroll_sync = true;
 			}
-
-		}
-
-		List<TileEntityMaterialRouter.Route> routes = te_router.getRoutes();
-		for (i = 0; i < 4; i++) {
-			int index = i + te_router.gui_route_scroll;
-			if (index >= routes.size()) {
-				break;
+		} else if (button.id == route_scroll_up.id) {
+			if (te_router.gui_route_scroll > 0) {
+				te_router.gui_route_scroll -= 4;
+				do_scroll_sync = true;
 			}
-
-			TileEntityMaterialRouter.Route r = routes.get(index);
-			int y = 49 + i * 17;
-			if (isPointInRegion(29, y, 16, 16, mousex, mousey)) {
-				List<String> tooltip = new ArrayList<String>();
-				tooltip.add((new TextComponentTranslation("foundry.router.material." + r.material)).getUnformattedText());
-				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
-			}
-			if (isPointInRegion(46, y, 16, 16, mousex, mousey)) {
-				List<String> tooltip = new ArrayList<String>();
-				tooltip.add((new TextComponentTranslation("foundry.router.type." + r.type)).getUnformattedText());
-				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
-			}
-			if (isPointInRegion(81, y + 4, 8, 8, mousex, mousey)) {
-				List<String> tooltip = new ArrayList<String>();
-				tooltip.add("Remove");
-				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
+		} else if (button.id == route_scroll_down.id) {
+			if (te_router.gui_route_scroll < te_router.getRoutes().size() - 4) {
+				te_router.gui_route_scroll += 4;
+				do_scroll_sync = true;
 			}
 		}
 	}
@@ -291,6 +251,109 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 	}
 
+	private void drawMaterialIcon(int x, int y, String name) {
+		if (name.equals("_Any")) {
+			GL11.glEnable(GL11.GL_BLEND);
+			drawTexturedModalRect(x, y, 216, 193, 16, 16);
+		} else {
+			drawItemStack(x, y, MaterialRegistry.instance.getMaterialIcon(name));
+		}
+	}
+
+	@Override
+	public void drawScreen(int mousex, int mousey, float par3) {
+		super.drawScreen(mousex, mousey, par3);
+
+		int i;
+		for (i = 0; i < 8; i++) {
+			int index = i + te_router.gui_material_scroll;
+			if (index >= material_slots.size()) {
+				break;
+			}
+			FilterSlot slot = material_slots.get(index);
+			if (isPointInRegion(111 + 17 * (i % 4), 24 + 17 * (i / 4), 16, 16, mousex, mousey)) {
+				slot.drawTooltip(mousex, mousey);
+			}
+		}
+
+		for (i = 0; i < 8; i++) {
+			int index = i + te_router.gui_type_scroll;
+			if (index >= type_slots.size()) {
+				break;
+			}
+			FilterSlot slot = type_slots.get(index);
+			if (isPointInRegion(111 + 17 * (i % 4), 70 + 17 * (i / 4), 16, 16, mousex, mousey)) {
+				slot.drawTooltip(mousex, mousey);
+			}
+
+		}
+
+		List<TileEntityMaterialRouter.Route> routes = te_router.getRoutes();
+		for (i = 0; i < 4; i++) {
+			int index = i + te_router.gui_route_scroll;
+			if (index >= routes.size()) {
+				break;
+			}
+
+			TileEntityMaterialRouter.Route r = routes.get(index);
+			int y = 49 + i * 17;
+			if (isPointInRegion(29, y, 16, 16, mousex, mousey)) {
+				List<String> tooltip = new ArrayList<String>();
+				tooltip.add((new TextComponentTranslation("foundry.router.material." + r.material)).getUnformattedText());
+				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
+			}
+			if (isPointInRegion(46, y, 16, 16, mousex, mousey)) {
+				List<String> tooltip = new ArrayList<String>();
+				tooltip.add((new TextComponentTranslation("foundry.router.type." + r.type)).getUnformattedText());
+				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
+			}
+			if (isPointInRegion(81, y + 4, 8, 8, mousex, mousey)) {
+				List<String> tooltip = new ArrayList<String>();
+				tooltip.add("Remove");
+				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
+			}
+		}
+	}
+
+	private void drawTypeIcon(int x, int y, String name) {
+		if (name.equals("_Any")) {
+			GL11.glEnable(GL11.GL_BLEND);
+			drawTexturedModalRect(x, y, 216, 193, 16, 16);
+		} else {
+			drawItemStack(x, y, MaterialRegistry.instance.getTypeIcon(name));
+		}
+	}
+
+	@Override
+	protected ResourceLocation getGUITexture() {
+		return GUI_TEXTURE;
+	}
+
+	@Override
+	public void initGui() {
+		super.initGui();
+		int window_x = (width - xSize) / 2;
+		int window_y = (height - ySize) / 2;
+		route_buttons = new GuiButtonFoundry[6];
+		int i;
+		for (i = 0; i < 6; i++) {
+			route_buttons[i] = new GuiButtonFoundry(i, window_x + 119 + (i % 3) * 18, window_y + 108 + (i / 3) * 18, 16, 16, GUI_TEXTURE, 200, 177, 216, 177).setIconTexture(201, i * 16 + 1, 14, 14);
+			buttonList.add(route_buttons[i]);
+		}
+		material_scroll_left = new GuiButtonFoundry(6, window_x + 96, window_y + 28, 12, 25, GUI_TEXTURE, 200, 99, 212, 99);
+		buttonList.add(material_scroll_left);
+		material_scroll_right = new GuiButtonFoundry(7, window_x + 181, window_y + 28, 12, 25, GUI_TEXTURE, 200, 124, 212, 124);
+		buttonList.add(material_scroll_right);
+		type_scroll_left = new GuiButtonFoundry(8, window_x + 96, window_y + 74, 12, 25, GUI_TEXTURE, 200, 99, 212, 99);
+		buttonList.add(type_scroll_left);
+		type_scroll_right = new GuiButtonFoundry(9, window_x + 181, window_y + 74, 12, 25, GUI_TEXTURE, 200, 124, 212, 124);
+		buttonList.add(type_scroll_right);
+		route_scroll_up = new GuiButtonFoundry(10, window_x + 47, window_y + 24, 25, 12, GUI_TEXTURE, 200, 149, 225, 149);
+		buttonList.add(route_scroll_up);
+		route_scroll_down = new GuiButtonFoundry(11, window_x + 47, window_y + 119, 25, 12, GUI_TEXTURE, 200, 161, 225, 161);
+		buttonList.add(route_scroll_down);
+	}
+
 	@Override
 	protected void mouseClicked(int x, int y, int par3) throws IOException {
 		super.mouseClicked(x, y, par3);
@@ -334,69 +397,6 @@ public class GuiMaterialRouter extends GuiFoundry {
 			}
 		}
 
-	}
-
-	@Override
-	protected void actionPerformed(GuiButton button) {
-		if (button.id < 6) {
-			te_router.getRoutes().add(new TileEntityMaterialRouter.Route(material_slots.get(te_router.gui_material_selected).getName(), type_slots.get(te_router.gui_type_selected).getName(), EnumFacing.VALUES[button.id]));
-			te_router.syncRoutes();
-		} else if (button.id == material_scroll_left.id) {
-			if (te_router.gui_material_scroll > 0) {
-				te_router.gui_material_scroll -= 8;
-				do_scroll_sync = true;
-			}
-		} else if (button.id == material_scroll_right.id) {
-			if (te_router.gui_material_scroll < material_slots.size() - 8) {
-				te_router.gui_material_scroll += 8;
-				do_scroll_sync = true;
-			}
-		} else if (button.id == type_scroll_left.id) {
-			if (te_router.gui_type_scroll > 0) {
-				te_router.gui_type_scroll -= 8;
-				do_scroll_sync = true;
-			}
-		} else if (button.id == type_scroll_right.id) {
-			if (te_router.gui_type_scroll < type_slots.size() - 8) {
-				te_router.gui_type_scroll += 8;
-				do_scroll_sync = true;
-			}
-		} else if (button.id == route_scroll_up.id) {
-			if (te_router.gui_route_scroll > 0) {
-				te_router.gui_route_scroll -= 4;
-				do_scroll_sync = true;
-			}
-		} else if (button.id == route_scroll_down.id) {
-			if (te_router.gui_route_scroll < te_router.getRoutes().size() - 4) {
-				te_router.gui_route_scroll += 4;
-				do_scroll_sync = true;
-			}
-		}
-	}
-
-	@Override
-	public void initGui() {
-		super.initGui();
-		int window_x = (width - xSize) / 2;
-		int window_y = (height - ySize) / 2;
-		route_buttons = new GuiButtonFoundry[6];
-		int i;
-		for (i = 0; i < 6; i++) {
-			route_buttons[i] = new GuiButtonFoundry(i, window_x + 119 + (i % 3) * 18, window_y + 108 + (i / 3) * 18, 16, 16, GUI_TEXTURE, 200, 177, 216, 177).setIconTexture(201, i * 16 + 1, 14, 14);
-			buttonList.add(route_buttons[i]);
-		}
-		material_scroll_left = new GuiButtonFoundry(6, window_x + 96, window_y + 28, 12, 25, GUI_TEXTURE, 200, 99, 212, 99);
-		buttonList.add(material_scroll_left);
-		material_scroll_right = new GuiButtonFoundry(7, window_x + 181, window_y + 28, 12, 25, GUI_TEXTURE, 200, 124, 212, 124);
-		buttonList.add(material_scroll_right);
-		type_scroll_left = new GuiButtonFoundry(8, window_x + 96, window_y + 74, 12, 25, GUI_TEXTURE, 200, 99, 212, 99);
-		buttonList.add(type_scroll_left);
-		type_scroll_right = new GuiButtonFoundry(9, window_x + 181, window_y + 74, 12, 25, GUI_TEXTURE, 200, 124, 212, 124);
-		buttonList.add(type_scroll_right);
-		route_scroll_up = new GuiButtonFoundry(10, window_x + 47, window_y + 24, 25, 12, GUI_TEXTURE, 200, 149, 225, 149);
-		buttonList.add(route_scroll_up);
-		route_scroll_down = new GuiButtonFoundry(11, window_x + 47, window_y + 119, 25, 12, GUI_TEXTURE, 200, 161, 225, 161);
-		buttonList.add(route_scroll_down);
 	}
 
 	@Override

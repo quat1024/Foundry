@@ -34,12 +34,12 @@ public class ItemStackMatcher implements IItemMatcher {
 	}
 
 	@Override
-	public List<ItemStack> getItems() {
-		return Lists.newArrayList(match.copy());
+	public ItemStack getItem() {
+		return match.copy();
 	}
 
 	@Override
-	public ItemStack getItem() {
-		return match.copy();
+	public List<ItemStack> getItems() {
+		return Lists.newArrayList(match.copy());
 	}
 }

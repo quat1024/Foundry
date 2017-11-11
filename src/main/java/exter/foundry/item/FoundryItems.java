@@ -37,6 +37,22 @@ public class FoundryItems {
 
 	static public ItemRefractoryFluidContainer item_container;
 
+	static public ItemStack component(ItemComponent.SubItem sub) {
+		return component(sub, 1);
+	}
+
+	static public ItemStack component(ItemComponent.SubItem sub, int amount) {
+		return new ItemStack(item_component, amount, sub.id);
+	}
+
+	static public ItemStack mold(ItemMold.SubItem sub) {
+		return mold(sub, 1);
+	}
+
+	static public ItemStack mold(ItemMold.SubItem sub, int amount) {
+		return new ItemStack(item_mold, amount, sub.id);
+	}
+
 	static public void registerItems(Configuration config) {
 		item_component = new ItemComponent();
 		item_mold = new ItemMold();
@@ -73,21 +89,5 @@ public class FoundryItems {
 		FoundryRegistry.ITEMS.add(item_container);
 
 		OreDictionary.registerOre("fuelCoke", component(ItemComponent.SubItem.COAL_COKE));
-	}
-
-	static public ItemStack component(ItemComponent.SubItem sub) {
-		return component(sub, 1);
-	}
-
-	static public ItemStack component(ItemComponent.SubItem sub, int amount) {
-		return new ItemStack(item_component, amount, sub.id);
-	}
-
-	static public ItemStack mold(ItemMold.SubItem sub) {
-		return mold(sub, 1);
-	}
-
-	static public ItemStack mold(ItemMold.SubItem sub, int amount) {
-		return new ItemStack(item_mold, amount, sub.id);
 	}
 }

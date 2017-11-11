@@ -27,12 +27,6 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		public String type;
 		public EnumFacing side;
 
-		public Route(String route_material, String route_type, EnumFacing route_side) {
-			material = route_material;
-			type = route_type;
-			side = route_side;
-		}
-
 		public Route(ByteBuf data) {
 			material = ByteBufUtils.readUTF8String(data);
 			type = ByteBufUtils.readUTF8String(data);
@@ -43,16 +37,10 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 			readFromNBT(tag);
 		}
 
-		public void readFromNBT(NBTTagCompound tag) {
-			material = tag.getString("material");
-			type = tag.getString("type");
-			side = EnumFacing.VALUES[tag.getByte("side")];
-		}
-
-		public void writeToNBT(NBTTagCompound tag) {
-			tag.setString("material", material);
-			tag.setString("type", type);
-			tag.setByte("side", (byte) side.getIndex());
+		public Route(String route_material, String route_type, EnumFacing route_side) {
+			material = route_material;
+			type = route_type;
+			side = route_side;
 		}
 
 		public boolean matchesItem(ItemStack stack) {
@@ -70,6 +58,18 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 			}
 
 			return true;
+		}
+
+		public void readFromNBT(NBTTagCompound tag) {
+			material = tag.getString("material");
+			type = tag.getString("type");
+			side = EnumFacing.VALUES[tag.getByte("side")];
+		}
+
+		public void writeToNBT(NBTTagCompound tag) {
+			tag.setString("material", material);
+			tag.setString("type", type);
+			tag.setByte("side", (byte) side.getIndex());
 		}
 
 		public void writeToPacket(ByteBuf data) {
@@ -109,14 +109,10 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 	}
 
 	@Override
-	protected IItemHandler getItemHandler(EnumFacing side) {
-		if (side == null) { return null; }
-		return item_handlers.get(side);
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return SLOT_OUTPUT + 6;
+	public void closeInventory(EntityPlayer player) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+			syncRoutes();
+		}
 	}
 
 	@Override
@@ -125,22 +121,45 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {
-		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-			syncRoutes();
-		}
+	protected IItemHandler getItemHandler(EnumFacing side) {
+		if (side == null) { return null; }
+		return item_handlers.get(side);
+	}
+
+	public List<Route> getRoutes() {
+		return routes;
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
-		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-			syncRoutes();
-		}
+	public int getSizeInventory() {
+		return SLOT_OUTPUT + 6;
+	}
+
+	@Override
+	public FluidTank getTank(int slot) {
+		return null;
+	}
+
+	@Override
+	public int getTankCount() {
+		return 0;
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack item) {
 		return slot < SLOT_OUTPUT;
+	}
+
+	@Override
+	protected void onInitialize() {
+
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+			syncRoutes();
+		}
 	}
 
 	@Override
@@ -176,6 +195,61 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 
 	}
 
+	private void routeItem(int in_slot, int out_slot) {
+		ItemStack input = inventory.get(in_slot);
+		ItemStack output = inventory.get(out_slot);
+		if (output == null) {
+			inventory.set(out_slot, input);
+			inventory.set(in_slot, ItemStack.EMPTY);
+			updateInventoryItem(in_slot);
+			updateInventoryItem(out_slot);
+		} else {
+			if (!output.isItemEqual(input) || !ItemStack.areItemStackTagsEqual(output, input)) { return; }
+			int transfer = output.getMaxStackSize() - output.getCount();
+			if (transfer > input.getCount()) {
+				transfer = input.getCount();
+			}
+			decrStackSize(in_slot, transfer);
+			inventory.get(out_slot).grow(transfer);
+			updateInventoryItem(in_slot);
+			updateInventoryItem(out_slot);
+		}
+	}
+
+	public void syncRoutes() {
+		NBTTagCompound tag = new NBTTagCompound();
+		writeTileToNBT(tag);
+		writeRoutesToNBT(tag);
+		if (world.isRemote) {
+			tag.setInteger("dim", world.provider.getDimension());
+			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
+		} else {
+			sendPacketToNearbyPlayers(tag);
+		}
+	}
+
+	@Override
+	protected void updateClient() {
+
+	}
+
+	@Override
+	protected void updateServer() {
+		if (input_index % 4 == 0) {
+			int i = input_index / 4;
+			ItemStack input = inventory.get(i);
+			if (input != null) {
+				for (Route r : routes) {
+					if (r.matchesItem(input)) {
+						routeItem(i, SLOT_OUTPUT + r.side.getIndex());
+						break;
+					}
+				}
+			}
+		}
+		input_index = (input_index + 1) % (SLOT_OUTPUT * 4);
+	}
+
 	private void writeRoutesToNBT(NBTTagCompound compound) {
 		NBTTagCompound routes_tag = new NBTTagCompound();
 		routes_tag.setInteger("size", routes.size());
@@ -202,79 +276,5 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		compound.setInteger("gui_material_selected", gui_material_selected);
 		compound.setInteger("gui_type_selected", gui_type_selected);
 		return compound;
-	}
-
-	private void routeItem(int in_slot, int out_slot) {
-		ItemStack input = inventory.get(in_slot);
-		ItemStack output = inventory.get(out_slot);
-		if (output == null) {
-			inventory.set(out_slot, input);
-			inventory.set(in_slot, ItemStack.EMPTY);
-			updateInventoryItem(in_slot);
-			updateInventoryItem(out_slot);
-		} else {
-			if (!output.isItemEqual(input) || !ItemStack.areItemStackTagsEqual(output, input)) { return; }
-			int transfer = output.getMaxStackSize() - output.getCount();
-			if (transfer > input.getCount()) {
-				transfer = input.getCount();
-			}
-			decrStackSize(in_slot, transfer);
-			inventory.get(out_slot).grow(transfer);
-			updateInventoryItem(in_slot);
-			updateInventoryItem(out_slot);
-		}
-	}
-
-	@Override
-	protected void updateClient() {
-
-	}
-
-	@Override
-	protected void updateServer() {
-		if (input_index % 4 == 0) {
-			int i = input_index / 4;
-			ItemStack input = inventory.get(i);
-			if (input != null) {
-				for (Route r : routes) {
-					if (r.matchesItem(input)) {
-						routeItem(i, SLOT_OUTPUT + r.side.getIndex());
-						break;
-					}
-				}
-			}
-		}
-		input_index = (input_index + 1) % (SLOT_OUTPUT * 4);
-	}
-
-	@Override
-	public FluidTank getTank(int slot) {
-		return null;
-	}
-
-	@Override
-	public int getTankCount() {
-		return 0;
-	}
-
-	@Override
-	protected void onInitialize() {
-
-	}
-
-	public List<Route> getRoutes() {
-		return routes;
-	}
-
-	public void syncRoutes() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeTileToNBT(tag);
-		writeRoutesToNBT(tag);
-		if (world.isRemote) {
-			tag.setInteger("dim", world.provider.getDimension());
-			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
-		} else {
-			sendPacketToNearbyPlayers(tag);
-		}
 	}
 }

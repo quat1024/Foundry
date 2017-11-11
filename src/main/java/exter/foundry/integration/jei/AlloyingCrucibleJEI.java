@@ -25,40 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class AlloyingCrucibleJEI {
 
-	static public class Wrapper implements IRecipeWrapper {
-		private final IAlloyingCrucibleRecipe recipe;
-
-		public Wrapper(IAlloyingCrucibleRecipe recipe) {
-			this.recipe = recipe;
-		}
-
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return null;
-		}
-
-		@Override
-		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-		}
-
-		@Override
-		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-			return false;
-		}
-
-		@Override
-		public void getIngredients(IIngredients ingredients) {
-			ingredients.setOutput(FluidStack.class, recipe.getOutput());
-			ingredients.setInputs(FluidStack.class, ImmutableList.of(recipe.getInputA(), recipe.getInputB()));
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return recipe == other;
-		}
-	}
-
 	static public class Category implements IRecipeCategory<Wrapper> {
 
 		protected final ResourceLocation backgroundLocation;
@@ -80,14 +46,24 @@ public class AlloyingCrucibleJEI {
 		}
 
 		@Override
+		public void drawExtras(Minecraft minecraft) {
+
+		}
+
+		@Override
 		@Nonnull
 		public IDrawable getBackground() {
 			return background;
 		}
 
 		@Override
-		public void drawExtras(Minecraft minecraft) {
+		public IDrawable getIcon() {
+			return null;
+		}
 
+		@Override
+		public String getModName() {
+			return Foundry.MODID;
 		}
 
 		@Nonnull
@@ -96,15 +72,15 @@ public class AlloyingCrucibleJEI {
 			return localizedName;
 		}
 
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return Collections.emptyList();
+		}
+
 		@Nonnull
 		@Override
 		public String getUid() {
 			return "foundry.alloyingcrucible";
-		}
-
-		@Override
-		public IDrawable getIcon() {
-			return null;
 		}
 
 		@Override
@@ -125,15 +101,39 @@ public class AlloyingCrucibleJEI {
 			guiFluidStacks.set(1, in_b);
 			guiFluidStacks.set(2, out);
 		}
+	}
 
-		@Override
-		public List<String> getTooltipStrings(int mouseX, int mouseY) {
-			return Collections.emptyList();
+	static public class Wrapper implements IRecipeWrapper {
+		private final IAlloyingCrucibleRecipe recipe;
+
+		public Wrapper(IAlloyingCrucibleRecipe recipe) {
+			this.recipe = recipe;
 		}
 
 		@Override
-		public String getModName() {
-			return Foundry.MODID;
+		public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return recipe == other;
+		}
+
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setOutput(FluidStack.class, recipe.getOutput());
+			ingredients.setInputs(FluidStack.class, ImmutableList.of(recipe.getInputA(), recipe.getInputB()));
+		}
+
+		@Override
+		public List<String> getTooltipStrings(int mouseX, int mouseY) {
+			return null;
+		}
+
+		@Override
+		public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+			return false;
 		}
 	}
 }

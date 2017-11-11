@@ -35,57 +35,6 @@ public class FoundryMiscUtils {
 		return a / b + ((a % b == 0) ? 0 : 1);
 	}
 
-	static public String getItemOreDictionaryName(ItemStack stack) {
-		for (String name : OreDictionary.getOreNames()) {
-			List<ItemStack> ores = OreDictionary.getOres(name);
-			for (ItemStack i : ores) {
-				if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) { return name; }
-			}
-		}
-		return null;
-	}
-
-	static public Set<String> getAllItemOreDictionaryNames(ItemStack stack) {
-		Set<String> result = new HashSet<String>();
-		for (String name : OreDictionary.getOreNames()) {
-			List<ItemStack> ores = OreDictionary.getOres(name);
-			for (ItemStack i : ores) {
-				if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) {
-					result.add(name);
-				}
-			}
-		}
-		return result;
-	}
-
-	static public ItemStack getModItemFromOreDictionary(String modid, String orename) {
-		return getModItemFromOreDictionary(modid, orename, 1);
-	}
-
-	static public ItemStack getModItemFromOreDictionary(String modid, String orename, int amount) {
-		modid = modid.toLowerCase();
-		for (ItemStack is : OreDictionary.getOres(orename)) {
-			if (is.getItem().getRegistryName().getResourceDomain().equals(modid)) {
-				is = is.copy();
-				is.setCount(amount);
-				return is;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Register item in the ore dictionary only if it's not already registered.
-	 * @param name Ore Dictionary name.
-	 * @param stack Item to register.
-	 */
-	static public void registerInOreDictionary(String name, ItemStack stack) {
-		if (stack == null) { return; }
-		if (!FoundryUtils.isItemInOreDictionary(name, stack)) {
-			OreDictionary.registerOre(name, stack);
-		}
-	}
-
 	static public FluidStack drainFluidFromWorld(World world, BlockPos pos, boolean do_drain) {
 		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock() instanceof IFluidBlock) {
@@ -106,6 +55,45 @@ public class FoundryMiscUtils {
 				world.setBlockToAir(pos);
 			}
 			return new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+		}
+		return null;
+	}
+
+	static public Set<String> getAllItemOreDictionaryNames(ItemStack stack) {
+		Set<String> result = new HashSet<String>();
+		for (String name : OreDictionary.getOreNames()) {
+			List<ItemStack> ores = OreDictionary.getOres(name);
+			for (ItemStack i : ores) {
+				if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) {
+					result.add(name);
+				}
+			}
+		}
+		return result;
+	}
+
+	static public String getItemOreDictionaryName(ItemStack stack) {
+		for (String name : OreDictionary.getOreNames()) {
+			List<ItemStack> ores = OreDictionary.getOres(name);
+			for (ItemStack i : ores) {
+				if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) { return name; }
+			}
+		}
+		return null;
+	}
+
+	static public ItemStack getModItemFromOreDictionary(String modid, String orename) {
+		return getModItemFromOreDictionary(modid, orename, 1);
+	}
+
+	static public ItemStack getModItemFromOreDictionary(String modid, String orename, int amount) {
+		modid = modid.toLowerCase();
+		for (ItemStack is : OreDictionary.getOres(orename)) {
+			if (is.getItem().getRegistryName().getResourceDomain().equals(modid)) {
+				is = is.copy();
+				is.setCount(amount);
+				return is;
+			}
 		}
 		return null;
 	}
@@ -132,6 +120,18 @@ public class FoundryMiscUtils {
 			if (CastingRecipeManager.instance.findRecipe(new FluidStack(fluid.getFluid(), FoundryAPI.CASTER_TANK_CAPACITY), mold, extra_item) == null) {
 				CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(item), fluid, mold, extra);
 			}
+		}
+	}
+
+	/**
+	 * Register item in the ore dictionary only if it's not already registered.
+	 * @param name Ore Dictionary name.
+	 * @param stack Item to register.
+	 */
+	static public void registerInOreDictionary(String name, ItemStack stack) {
+		if (stack == null) { return; }
+		if (!FoundryUtils.isItemInOreDictionary(name, stack)) {
+			OreDictionary.registerOre(name, stack);
 		}
 	}
 

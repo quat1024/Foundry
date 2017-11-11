@@ -21,7 +21,30 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 	public static final String CRT = CraftTweaker.MODID;
 
 	@Override
-	public void onPreInit(Configuration config) {
+	public String getName() {
+		return CRT;
+	}
+
+	@Override
+	public void onAfterPostInit() {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientInit() {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientPostInit() {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void onClientPreInit() {
 
 	}
 
@@ -45,30 +68,7 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 	}
 
 	@Override
-	public String getName() {
-		return CRT;
-	}
-
-	@Override
-	public void onAfterPostInit() {
-
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void onClientPreInit() {
-
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void onClientInit() {
-
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void onClientPostInit() {
+	public void onPreInit(Configuration config) {
 
 	}
 }
