@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "level=0": { "model": "foundry:bronzecauldronempty" },
-        "level=1": { "model": "foundry:bronzecauldronlevel1" },
-        "level=2": { "model": "foundry:bronzecauldronlevel2" },
-        "level=3": { "model": "foundry:bronzecauldronlevel3" }
-    }
-}
