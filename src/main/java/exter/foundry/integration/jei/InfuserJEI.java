@@ -147,42 +147,4 @@ public class InfuserJEI {
 			return Foundry.MODNAME;
 		}
 	}
-
-	static public class Handler implements IRecipeHandler<Wrapper> {
-		@Override
-		@Nonnull
-		public Class<Wrapper> getRecipeClass() {
-			return Wrapper.class;
-		}
-
-		@Nonnull
-		@Override
-		public String getRecipeCategoryUid(Wrapper recipe) {
-			return "foundry.infuser";
-		}
-
-		@Override
-		@Nonnull
-		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
-			return recipe;
-		}
-
-		@Override
-		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
-			return true;
-		}
-	}
-
-	static public List<Wrapper> getRecipes() {
-		List<Wrapper> recipes = new ArrayList<Wrapper>();
-
-		for (IInfuserRecipe recipe : InfuserRecipeManager.instance.getRecipes()) {
-			List<ItemStack> input = recipe.getInput().getItems();
-			if (!input.isEmpty()) {
-				recipes.add(new Wrapper(recipe));
-			}
-		}
-
-		return recipes;
-	}
 }

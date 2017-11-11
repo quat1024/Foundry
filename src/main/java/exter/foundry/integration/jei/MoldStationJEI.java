@@ -1,13 +1,11 @@
 package exter.foundry.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import exter.foundry.api.recipe.IMoldRecipe;
-import exter.foundry.recipes.manager.MoldRecipeManager;
 import exter.foundry.util.FoundryMiscUtils;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
@@ -18,8 +16,8 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.gui.elements.DrawableResource;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -31,8 +29,12 @@ public class MoldStationJEI {
 
 		private final IDrawable[] carve_drawables;
 
-		public Wrapper(IDrawable[] carve_drawables, IMoldRecipe recipe) {
-			this.carve_drawables = carve_drawables;
+		public Wrapper(IMoldRecipe recipe) {
+			this.carve_drawables = new IDrawable[4];
+			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
+			for (int i = 0; i < 4; i++) 
+				carve_drawables[i] = new DrawableResource(location, 176, 107 + i * 11, 11, 11, 0, 0, 0, 0, 256, 256);
+			
 			this.recipe = recipe;
 		}
 
@@ -164,46 +166,5 @@ public class MoldStationJEI {
 			// TODO Auto-generated method stub
 			return null;
 		}
-	}
-
-	static public class Handler implements IRecipeHandler<Wrapper> {
-
-		@Override
-		@Nonnull
-		public Class<Wrapper> getRecipeClass() {
-			return Wrapper.class;
-		}
-
-		@Override
-		@Nonnull
-		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
-			return recipe;
-		}
-
-		@Override
-		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
-			return true;
-		}
-
-		@Override
-		public String getRecipeCategoryUid(Wrapper recipe) {
-			return "foundry.mold";
-		}
-	}
-
-	static public List<Wrapper> getRecipes(IJeiHelpers helpers) {
-		IGuiHelper guiHelper = helpers.getGuiHelper();
-		IDrawable[] carve_drawables = new IDrawable[4];
-		ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
-		for (int i = 0; i < 4; i++) {
-			carve_drawables[i] = guiHelper.createDrawable(location, 176, 107 + i * 11, 11, 11);
-		}
-		List<Wrapper> recipes = new ArrayList<Wrapper>();
-
-		for (IMoldRecipe recipe : MoldRecipeManager.instance.getRecipes()) {
-			recipes.add(new Wrapper(carve_drawables, recipe));
-		}
-
-		return recipes;
 	}
 }

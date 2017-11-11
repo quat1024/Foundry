@@ -6,7 +6,6 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IMeltingRecipe;
-import exter.foundry.integration.jei.MeltingJEI;
 import exter.foundry.recipes.MeltingRecipe;
 import exter.foundry.recipes.manager.MeltingRecipeManager;
 import stanhebben.zenscript.annotations.Optional;
@@ -25,14 +24,12 @@ public class MTMeltingHandler {
 
 		@Override
 		protected void add() {
-			MeltingRecipeManager.INSTANCE.recipes.add(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(new MeltingJEI.Wrapper(null, recipe));
+			MeltingRecipeManager.INSTANCE.addRecipe(recipe);
 		}
 
 		@Override
 		protected void remove() {
-			MeltingRecipeManager.INSTANCE.recipes.remove(recipe);
-			CraftTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new MeltingJEI.Wrapper(null, recipe));
+			MeltingRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 
 		@Override

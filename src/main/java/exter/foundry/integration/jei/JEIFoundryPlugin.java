@@ -1,8 +1,12 @@
 package exter.foundry.integration.jei;
 
 import exter.foundry.api.recipe.IAlloyFurnaceRecipe;
+import exter.foundry.api.recipe.IAlloyMixerRecipe;
+import exter.foundry.api.recipe.IAtomizerRecipe;
 import exter.foundry.api.recipe.ICastingRecipe;
+import exter.foundry.api.recipe.IInfuserRecipe;
 import exter.foundry.api.recipe.IMeltingRecipe;
+import exter.foundry.api.recipe.IMoldRecipe;
 import exter.foundry.block.BlockCastingTable;
 import exter.foundry.block.BlockFoundryMachine;
 import exter.foundry.block.FoundryBlocks;
@@ -12,8 +16,12 @@ import exter.foundry.container.ContainerMetalCaster;
 import exter.foundry.container.ContainerMetalInfuser;
 import exter.foundry.container.ContainerMoldStation;
 import exter.foundry.recipes.manager.AlloyFurnaceRecipeManager;
+import exter.foundry.recipes.manager.AlloyMixerRecipeManager;
+import exter.foundry.recipes.manager.AtomizerRecipeManager;
 import exter.foundry.recipes.manager.CastingRecipeManager;
+import exter.foundry.recipes.manager.InfuserRecipeManager;
 import exter.foundry.recipes.manager.MeltingRecipeManager;
+import exter.foundry.recipes.manager.MoldRecipeManager;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -57,30 +65,33 @@ public class JEIFoundryPlugin implements IModPlugin {
 		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.CASTER), FoundryJEIConstants.CAST_UID);
 		registry.handleRecipes(ICastingRecipe.class, CastingJEI.Wrapper::new, FoundryJEIConstants.CAST_UID);
 		registry.addRecipes(CastingRecipeManager.instance.getRecipes(), FoundryJEIConstants.CAST_UID);
-		
-		
-		transfer_registry.addRecipeTransferHandler(ContainerMetalInfuser.class, "foundry.infuser", ContainerMetalInfuser.SLOTS_TE, ContainerMetalInfuser.SLOTS_TE_SIZE, ContainerMetalInfuser.SLOTS_INVENTORY, 36);
 
-		transfer_registry.addRecipeTransferHandler(ContainerMoldStation.class, "foundry.mold", ContainerMoldStation.SLOTS_TE, ContainerMoldStation.SLOTS_TE_SIZE, ContainerMoldStation.SLOTS_INVENTORY, 36);
-
-		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ALLOYMIXER), "foundry.alloymixer");
-		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.INFUSER), "foundry.infuser");
-		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ATOMIZER), "foundry.atomizer");
+		transfer_registry.addRecipeTransferHandler(ContainerMetalInfuser.class, FoundryJEIConstants.INF_UID, ContainerMetalInfuser.SLOTS_TE, ContainerMetalInfuser.SLOTS_TE_SIZE, ContainerMetalInfuser.SLOTS_INVENTORY, 36);
+		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.INFUSER), FoundryJEIConstants.INF_UID);
+		registry.handleRecipes(IInfuserRecipe.class, InfuserJEI.Wrapper::new, FoundryJEIConstants.INF_UID);
+		registry.addRecipes(InfuserRecipeManager.instance.getRecipes(), FoundryJEIConstants.INF_UID);
+		
+		transfer_registry.addRecipeTransferHandler(ContainerMoldStation.class, FoundryJEIConstants.MOLD_UID, ContainerMoldStation.SLOTS_TE, ContainerMoldStation.SLOTS_TE_SIZE, ContainerMoldStation.SLOTS_INVENTORY, 36);
+		registry.addRecipeCatalyst(new ItemStack(FoundryBlocks.block_mold_station), FoundryJEIConstants.MOLD_UID);
+		registry.handleRecipes(IMoldRecipe.class, MoldStationJEI.Wrapper::new, FoundryJEIConstants.MOLD_UID);
+		registry.addRecipes(MoldRecipeManager.instance.getRecipes(), FoundryJEIConstants.MOLD_UID);
+		
+		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ALLOYMIXER), FoundryJEIConstants.AM_UID);
+		registry.handleRecipes(IAlloyMixerRecipe.class, AlloyMixerJEI.Wrapper::new, FoundryJEIConstants.AM_UID);
+		registry.addRecipes(AlloyMixerRecipeManager.instance.getRecipes(), FoundryJEIConstants.AM_UID);
+		
+		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ATOMIZER), FoundryJEIConstants.ATOM_UID);
+		registry.handleRecipes(IAtomizerRecipe.class, AtomizerJEI.Wrapper::new, FoundryJEIConstants.ATOM_UID);
+		registry.addRecipes(AtomizerRecipeManager.instance.getRecipes(), FoundryJEIConstants.ATOM_UID);
+		
 		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ALLOYING_CRUCIBLE), "foundry.alloyingcrucible");
-		registry.addRecipeCatalyst(new ItemStack(FoundryBlocks.block_mold_station), "foundry.mold");
 		registry.addRecipeCatalyst(FoundryBlocks.block_casting_table.asItemStack(BlockCastingTable.EnumTable.INGOT), "foundry.casting_table.ingot");
 		registry.addRecipeCatalyst(FoundryBlocks.block_casting_table.asItemStack(BlockCastingTable.EnumTable.PLATE), "foundry.casting_table.plate");
 		registry.addRecipeCatalyst(FoundryBlocks.block_casting_table.asItemStack(BlockCastingTable.EnumTable.ROD), "foundry.casting_table.rod");
 		registry.addRecipeCatalyst(FoundryBlocks.block_casting_table.asItemStack(BlockCastingTable.EnumTable.BLOCK), "foundry.casting_table.block");
 
-		registry.addRecipes(AlloyFurnaceJEI.getRecipes(helpers));
-		registry.addRecipes(MeltingJEI.getRecipes(helpers));
-		registry.addRecipes(CastingJEI.getRecipes());
-		registry.addRecipes(AlloyMixerJEI.getRecipes());
 		registry.addRecipes(AlloyingCrucibleJEI.getRecipes());
-		registry.addRecipes(InfuserJEI.getRecipes());
 		registry.addRecipes(AtomizerJEI.getRecipes());
-		registry.addRecipes(MoldStationJEI.getRecipes(helpers));
 		registry.addRecipes(table_ingot.getRecipes());
 		registry.addRecipes(table_plate.getRecipes());
 		registry.addRecipes(table_rod.getRecipes());

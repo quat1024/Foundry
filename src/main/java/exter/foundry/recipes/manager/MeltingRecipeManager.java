@@ -54,4 +54,8 @@ public class MeltingRecipeManager implements IMeltingRecipeManager {
 	public void removeRecipe(IMeltingRecipe recipe) {
 		recipes.remove(recipe);
 	}
+	
+	public void addRecipe(IMeltingRecipe recipe) {
+		recipes.add(recipe);
+	}
 }

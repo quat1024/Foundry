@@ -1,6 +1,5 @@
 package exter.foundry.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import javax.annotation.Nonnull;
 import exter.foundry.Foundry;
 import exter.foundry.api.recipe.IAlloyMixerRecipe;
 import exter.foundry.gui.GuiAlloyMixer;
-import exter.foundry.recipes.manager.AlloyMixerRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.gui.IDrawable;
@@ -17,7 +15,6 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
@@ -139,39 +136,5 @@ public class AlloyMixerJEI {
 		public String getModName() {
 			return Foundry.MODID;
 		}
-	}
-
-	static public class Handler implements IRecipeHandler<Wrapper> {
-		@Override
-		@Nonnull
-		public Class<Wrapper> getRecipeClass() {
-			return Wrapper.class;
-		}
-
-		@Override
-		@Nonnull
-		public IRecipeWrapper getRecipeWrapper(@Nonnull Wrapper recipe) {
-			return recipe;
-		}
-
-		@Override
-		public boolean isRecipeValid(@Nonnull Wrapper recipe) {
-			return true;
-		}
-
-		@Override
-		public String getRecipeCategoryUid(Wrapper recipe) {
-			return "foundry.alloymixer";
-		}
-	}
-
-	static public List<Wrapper> getRecipes() {
-		List<Wrapper> recipes = new ArrayList<Wrapper>();
-
-		for (IAlloyMixerRecipe recipe : AlloyMixerRecipeManager.instance.getRecipes()) {
-			recipes.add(new Wrapper(recipe));
-		}
-
-		return recipes;
 	}
 }
