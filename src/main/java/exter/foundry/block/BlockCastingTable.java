@@ -50,6 +50,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 			}
 			return null;
 		}
+
 		public final int id;
 		public final String name;
 		public final String model;
@@ -81,7 +82,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 
 	public static final PropertyEnum<EnumTable> TABLE = PropertyEnum.create("type", EnumTable.class);
 
-	private Random rand = new Random();
+	private final Random rand = new Random();
 
 	public BlockCastingTable() {
 		super(Material.IRON);
@@ -107,15 +108,15 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te != null && (te instanceof TileEntityCastingTableBase) && !world.isRemote) {
+		if (te != null && te instanceof TileEntityCastingTableBase && !world.isRemote) {
 			TileEntityCastingTableBase tef = (TileEntityCastingTableBase) te;
 			if (tef.getProgress() == 0) {
 				ItemStack is = tef.getStackInSlot(0);
 
 				if (!is.isEmpty()) {
-					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
+					double drop_x = rand.nextFloat() * 0.3 + 0.35;
+					double drop_y = rand.nextFloat() * 0.3 + 0.35;
+					double drop_z = rand.nextFloat() * 0.3 + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
@@ -134,7 +135,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return this.createTileEntity(world, getStateFromMeta(meta));
+		return createTileEntity(world, getStateFromMeta(meta));
 	}
 
 	@Override
@@ -165,7 +166,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 	private void dropCastingTableOutput(EntityPlayer player, World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te != null && (te instanceof TileEntityCastingTableBase) && !world.isRemote) {
+		if (te != null && te instanceof TileEntityCastingTableBase && !world.isRemote) {
 			TileEntityCastingTableBase te_ct = (TileEntityCastingTableBase) te;
 			if (te_ct.getProgress() == 0) {
 				ItemStack is = te_ct.getStackInSlot(0);

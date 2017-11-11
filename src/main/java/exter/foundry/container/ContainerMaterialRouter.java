@@ -21,7 +21,7 @@ public class ContainerMaterialRouter extends Container {
 	private static final int SLOT_HOTBAR_X = 32;
 
 	private static final int SLOT_HOTBAR_Y = 205;
-	private TileEntityMaterialRouter te_router;
+	private final TileEntityMaterialRouter te_router;
 
 	public ContainerMaterialRouter(TileEntityMaterialRouter router, EntityPlayer player) {
 		te_router = router;

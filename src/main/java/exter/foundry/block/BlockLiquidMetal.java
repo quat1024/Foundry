@@ -85,7 +85,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	}
 
 	private IBlockState getBlockStateFromItemStack(ItemStack stack) {
-		Block block = ((ItemBlock) (stack.getItem())).getBlock();
+		Block block = ((ItemBlock) stack.getItem()).getBlock();
 		int meta = stack.getMetadata();
 		for (IBlockState state : block.getBlockState().getValidStates()) {
 			if (state != null && block.damageDropped(state) == meta) { return state; }

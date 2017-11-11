@@ -67,7 +67,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 				if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 					IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 					FluidStack drained = tank.drain(Fluid.BUCKET_VOLUME, false);
-					if (drained == null || drained.amount == 0 || (fluid != null && drained.getFluid() != fluid)) { return; }
+					if (drained == null || drained.amount == 0 || fluid != null && drained.getFluid() != fluid) { return; }
 
 					int filled = handler.fill(drained, false);
 					if (filled == 0) { return; }
@@ -82,7 +82,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 				if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 					IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 					FluidStack drained = handler.drain(Fluid.BUCKET_VOLUME, false);
-					if (drained == null || drained.amount == 0 || (fluid != null && drained.getFluid() != fluid)) { return; }
+					if (drained == null || drained.amount == 0 || fluid != null && drained.getFluid() != fluid) { return; }
 
 					int filled = tank.fill(drained, false);
 					if (filled == 0) { return; }
@@ -98,9 +98,9 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected class FluidHandler implements IFluidHandler {
-		private int fill_tank;
-		private int drain_tank;
-		private IFluidTankProperties[] props;
+		private final int fill_tank;
+		private final int drain_tank;
+		private final IFluidTankProperties[] props;
 
 		public FluidHandler(int fill_tank, int drain_tank) {
 			this.fill_tank = fill_tank;
@@ -177,7 +177,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 		@Override
 		public int getSlotLimit(int slot) {
-			return TileEntityFoundry.this.getInventoryStackLimit();
+			return getInventoryStackLimit();
 		}
 
 		@Override
@@ -246,7 +246,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 	private RedstoneMode mode;
 
-	private List<ContainerSlot> conatiner_slots;
+	private final List<ContainerSlot> conatiner_slots;
 	private NBTTagCompound update_packet;
 	private boolean initialized;
 
@@ -257,7 +257,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	private int container_timer;
 
 	public TileEntityFoundry() {
-		conatiner_slots = new ArrayList<ContainerSlot>();
+		conatiner_slots = new ArrayList<>();
 		last_redstone_signal = false;
 		redstone_signal = false;
 		initialized = false;
@@ -545,8 +545,8 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	public final void setInventorySlotContents(int slot, ItemStack stack) {
 		setStackInSlot(slot, stack);
 
-		if (stack.getCount() > this.getInventoryStackLimit()) {
-			stack.setCount(this.getInventoryStackLimit());
+		if (stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
 		updateInventoryItem(slot);
 		markDirty();

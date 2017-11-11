@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemStackMatcher implements IItemMatcher {
-	private ItemStack match;
+	private final ItemStack match;
 
 	public ItemStackMatcher(Block match) {
 		this.match = new ItemStack(match);

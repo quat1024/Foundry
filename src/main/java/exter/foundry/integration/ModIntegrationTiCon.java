@@ -75,12 +75,12 @@ public class ModIntegrationTiCon implements IModIntegration {
 		FluidStack ing = mix.getFluids().get(index);
 		String mapped = liquid_map.get(ing.getFluid().getName());
 		if (mapped != null) {
-			List<FluidStack> in = new ArrayList<FluidStack>(inputs);
+			List<FluidStack> in = new ArrayList<>(inputs);
 			in.add(new FluidStack( // Convert TiCon Fluid Stack to Foundry Fluid Stack
 					LiquidMetalRegistry.instance.getFluid(mapped), ing.amount * FoundryAPI.FLUID_AMOUNT_INGOT / INGOT_GCD));
 			createAlloyRecipe(mix, index + 1, in);
 		}
-		List<FluidStack> in = new ArrayList<FluidStack>(inputs);
+		List<FluidStack> in = new ArrayList<>(inputs);
 		FluidStack fl = ing;
 		in.add(new FluidStack(fl.getFluid(), fl.amount * TICON_INGOT_AMOUNT / INGOT_GCD));
 		createAlloyRecipe(mix, index + 1, in);
@@ -93,7 +93,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 
 	@Override
 	public void onAfterPostInit() {
-		liquid_map = new HashMap<String, String>();
+		liquid_map = new HashMap<>();
 		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
 			if (name.equals("Glass")) {
 				if (FoundryConfig.recipe_glass) {
@@ -110,7 +110,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 		liquid_map.put("constantan", "Cupronickel");
 
-		reverse_liquid_map = new HashMap<String, String>();
+		reverse_liquid_map = new HashMap<>();
 		for (Map.Entry<String, String> e : liquid_map.entrySet()) {
 			reverse_liquid_map.put(LiquidMetalRegistry.instance.getFluid(e.getValue()).getName(), e.getKey());
 		}
@@ -201,7 +201,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 
 		//Add support for Foundry's fluid to the TiCon casting table.
-		List<slimeknights.tconstruct.library.smeltery.CastingRecipe> recipes = new ArrayList<slimeknights.tconstruct.library.smeltery.CastingRecipe>();
+		List<slimeknights.tconstruct.library.smeltery.CastingRecipe> recipes = new ArrayList<>();
 		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
 			if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
 				slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;

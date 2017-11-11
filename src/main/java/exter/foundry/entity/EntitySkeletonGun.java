@@ -27,7 +27,7 @@ public class EntitySkeletonGun extends EntitySkeleton {
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
-		float damage = this.world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
+		float damage = world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
 		if (getHeldItem(EnumHand.MAIN_HAND).getItem() == FoundryItems.item_shotgun) {
 			if (!world.isRemote) {
 				playSound(FoundrySounds.sound_shotgun_fire, 0.9F, 1F);
@@ -53,12 +53,12 @@ public class EntitySkeletonGun extends EntitySkeleton {
 
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextGaussian() * 0.05D, 1));
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Random spawn bonus", rand.nextGaussian() * 0.05D, 1));
 
 		setEquipmentBasedOnDifficulty(difficulty);
 		setEnchantmentBasedOnDifficulty(difficulty);
 
-		setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
+		setCanPickUpLoot(rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
 
 		return livingdata;
 	}

@@ -59,7 +59,7 @@ public class MTMeltingHandler {
 			CraftTweakerAPI.logError("Invalid melting recipe.");
 			return;
 		}
-		CraftTweakerAPI.apply((new MeltingAction(recipe).action_add));
+		CraftTweakerAPI.apply(new MeltingAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -69,6 +69,6 @@ public class MTMeltingHandler {
 			CraftTweakerAPI.logWarning("Melting recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new MeltingAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new MeltingAction(recipe).action_remove);
 	}
 }

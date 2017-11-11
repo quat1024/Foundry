@@ -46,7 +46,7 @@ public class GuiCokeOven extends GuiFoundry {
 	private static final int RSMODE_TEXTURE_X = 176;
 	private static final int RSMODE_TEXTURE_Y = 100;
 
-	private TileEntityCokeOven te_oven;
+	private final TileEntityCokeOven te_oven;
 	private GuiButtonFoundry button_mode;
 
 	public GuiCokeOven(TileEntityCokeOven te, EntityPlayer player) {
@@ -93,7 +93,7 @@ public class GuiCokeOven extends GuiFoundry {
 		drawTexturedModalRect(window_x + HEAT_BAR_X + bake - HEAT_BAR_BAKE_WIDTH / 2, window_y + HEAT_BAR_Y, HEAT_BAR_BAKE_X, HEAT_BAR_BAKE_Y, HEAT_BAR_BAKE_WIDTH, HEAT_BAR_HEIGHT);
 
 		//Draw progress bar.
-		int progress = (te_oven.getProgress() / 100) * PROGRESS_WIDTH / (TileEntityCokeOven.BAKE_TIME / 100);
+		int progress = te_oven.getProgress() / 100 * PROGRESS_WIDTH / (TileEntityCokeOven.BAKE_TIME / 100);
 		if (progress > 0) {
 			drawTexturedModalRect(window_x + PROGRESS_X, window_y + PROGRESS_Y, PROGRESS_OVERLAY_X, PROGRESS_OVERLAY_Y, progress, PROGRESS_HEIGHT);
 		}
@@ -104,7 +104,7 @@ public class GuiCokeOven extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Coke Oven", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 
 	}
 
@@ -114,7 +114,7 @@ public class GuiCokeOven extends GuiFoundry {
 
 		//Draw tool tips.
 		if (isPointInRegion(HEAT_BAR_X, HEAT_BAR_Y, HEAT_BAR_WIDTH, HEAT_BAR_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			int heat = te_oven.getTemperature() / 100;
 			int bake = TileEntityCokeOven.BAKE_TEMP / 100;
 			currenttip.add("Temperature: " + String.valueOf(heat) + " °K");
@@ -124,7 +124,7 @@ public class GuiCokeOven extends GuiFoundry {
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.getWidth(), button_mode.getHeight(), mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			currenttip.add(getRedstoenModeText(te_oven.getRedstoneMode()));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}

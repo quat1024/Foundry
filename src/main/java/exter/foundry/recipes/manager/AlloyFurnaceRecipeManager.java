@@ -16,7 +16,7 @@ public class AlloyFurnaceRecipeManager implements IAlloyFurnaceRecipeManager {
 	public List<IAlloyFurnaceRecipe> recipes;
 
 	private AlloyFurnaceRecipeManager() {
-		recipes = new ArrayList<IAlloyFurnaceRecipe>();
+		recipes = new ArrayList<>();
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public interface IMaterialRegistry {
 
 	/**
 	 * Registers all items with in the Ore Dictionary.
-	 * Note: Any item added to the same Ore Dictionary entry after calling this 
+	 * Note: Any item added to the same Ore Dictionary entry after calling this
 	 * will not be registered in the Material Registry
 	 * @param oredict_name Ore Dictionary name to register.
 	 * @param material Material name to register. Ex: "Iron".

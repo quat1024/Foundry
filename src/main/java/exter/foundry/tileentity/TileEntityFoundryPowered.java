@@ -66,6 +66,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 	private long energy_stored;
 
 	private final ForgeEnergyConsumer fe;
+
 	public TileEntityFoundryPowered() {
 		fe = new ForgeEnergyConsumer();
 		update_energy = false;

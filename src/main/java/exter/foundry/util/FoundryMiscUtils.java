@@ -32,7 +32,7 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class FoundryMiscUtils {
 	static public int divCeil(int a, int b) {
-		return a / b + ((a % b == 0) ? 0 : 1);
+		return a / b + (a % b == 0 ? 0 : 1);
 	}
 
 	static public FluidStack drainFluidFromWorld(World world, BlockPos pos, boolean do_drain) {
@@ -60,7 +60,7 @@ public class FoundryMiscUtils {
 	}
 
 	static public Set<String> getAllItemOreDictionaryNames(ItemStack stack) {
-		Set<String> result = new HashSet<String>();
+		Set<String> result = new HashSet<>();
 		for (String name : OreDictionary.getOreNames()) {
 			List<ItemStack> ores = OreDictionary.getOres(name);
 			for (ItemStack i : ores) {
@@ -100,7 +100,7 @@ public class FoundryMiscUtils {
 
 	@SideOnly(Side.CLIENT)
 	static public void localizeTooltip(String key, List<String> tooltip) {
-		for (String str : (new TextComponentTranslation(key)).getUnformattedText().split("//")) {
+		for (String str : new TextComponentTranslation(key).getUnformattedText().split("//")) {
 			tooltip.add(TextFormatting.GRAY + str);
 		}
 	}

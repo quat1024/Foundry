@@ -14,10 +14,10 @@ public class AlloyMixerRecipeManager implements IAlloyMixerRecipeManager {
 
 	public List<IAlloyMixerRecipe> recipes;
 
-	private int[] recipe_order;
+	private final int[] recipe_order;
 
 	private AlloyMixerRecipeManager() {
-		recipes = new ArrayList<IAlloyMixerRecipe>();
+		recipes = new ArrayList<>();
 		recipe_order = new int[4];
 	}
 

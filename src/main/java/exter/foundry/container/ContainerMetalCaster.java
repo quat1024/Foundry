@@ -29,7 +29,7 @@ public class ContainerMetalCaster extends Container {
 	private static final int SLOT_STORAGE_X = 116;
 
 	private static final int SLOT_STORAGE_Y = 21;
-	private TileEntityMetalCaster te_caster;
+	private final TileEntityMetalCaster te_caster;
 
 	public ContainerMetalCaster(TileEntityMetalCaster caster, EntityPlayer player) {
 		te_caster = caster;

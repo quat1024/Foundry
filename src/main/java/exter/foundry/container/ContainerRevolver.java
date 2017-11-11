@@ -18,7 +18,7 @@ public class ContainerRevolver extends Container {
 	private static final int SLOTS_INVENTORY = SLOTS_REVOLVER + 8;
 	private static final int SLOTS_HOTBAR = SLOTS_INVENTORY + 3 * 9;
 	IInventory inventory;
-	private ItemStack revolver;
+	private final ItemStack revolver;
 	InventoryFirearm rev_inv;
 
 	public ContainerRevolver(ItemStack revolver_item, InventoryPlayer inventory_player) {

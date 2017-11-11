@@ -35,7 +35,7 @@ public class CastingTableJEI {
 		@Nonnull
 		private final String localizedName;
 
-		private IJeiHelpers helpers;
+		private final IJeiHelpers helpers;
 
 		public Category(IJeiHelpers helpers) {
 			this.helpers = helpers;
@@ -102,13 +102,14 @@ public class CastingTableJEI {
 			gui_fluids.set(2, input.get(0));
 		}
 	}
+
 	public static class Wrapper implements IRecipeWrapper {
 		private final ICastingTableRecipe recipe;
 		private final String name;
 
 		public Wrapper(ICastingTableRecipe recipe) {
 			this.recipe = recipe;
-			this.name = recipe.getTableType().name().toLowerCase();
+			name = recipe.getTableType().name().toLowerCase();
 		}
 
 		@Override
@@ -141,6 +142,7 @@ public class CastingTableJEI {
 			return false;
 		}
 	}
+
 	private final ItemStack table_item;
 	private final String name;
 

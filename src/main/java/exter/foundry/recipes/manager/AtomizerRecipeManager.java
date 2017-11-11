@@ -16,7 +16,7 @@ public class AtomizerRecipeManager implements IAtomizerRecipeManager {
 	public List<IAtomizerRecipe> recipes;
 
 	private AtomizerRecipeManager() {
-		recipes = new ArrayList<IAtomizerRecipe>();
+		recipes = new ArrayList<>();
 	}
 
 	@Override

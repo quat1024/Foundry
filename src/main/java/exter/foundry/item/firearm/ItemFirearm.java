@@ -37,7 +37,7 @@ public abstract class ItemFirearm extends Item {
 	}
 
 	static public final void shoot(ItemStack round_item, World world, EntityLivingBase shooter, Entity target, int times, float spread, float damage_multiplier) {
-		Map<EntityLivingBase, MutablePair<Float, Integer>> entities_hit = new HashMap<EntityLivingBase, MutablePair<Float, Integer>>();
+		Map<EntityLivingBase, MutablePair<Float, Integer>> entities_hit = new HashMap<>();
 		IFirearmRound round = round_item.getCapability(FoundryAPI.capability_firearmround, null);
 		int i;
 		for (i = 0; i < times; i++) {
@@ -74,7 +74,7 @@ public abstract class ItemFirearm extends Item {
 						if (damage >= 1) {
 							MutablePair<Float, Integer> accum = entities_hit.get(obj.entityHit);
 							if (accum == null) {
-								accum = new MutablePair<Float, Integer>(0.0f, 0);
+								accum = new MutablePair<>(0.0f, 0);
 								entities_hit.put((EntityLivingBase) obj.entityHit, accum);
 							}
 							accum.left += (float) damage;
@@ -89,7 +89,7 @@ public abstract class ItemFirearm extends Item {
 		}
 		for (Map.Entry<EntityLivingBase, MutablePair<Float, Integer>> hit : entities_hit.entrySet()) {
 			EntityLivingBase en = hit.getKey();
-			DamageSource damage = (new EntityDamageSource("foundry.bullet", shooter)).setProjectile();
+			DamageSource damage = new EntityDamageSource("foundry.bullet", shooter).setProjectile();
 			if (round.ignoresArmor()) {
 				damage.setDamageBypassesArmor();
 			}
@@ -113,7 +113,7 @@ public abstract class ItemFirearm extends Item {
 
 			dir = new Vec3d(syaw * cpitch, MathHelper.sin(pitch * 0.017453292F), cyaw * cpitch);
 		}
-		Vec3d vspread = new Vec3d((random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1)).normalize();
+		Vec3d vspread = new Vec3d(random.nextFloat() * 2 - 1, random.nextFloat() * 2 - 1, random.nextFloat() * 2 - 1).normalize();
 		spread = random.nextFloat() * spread;
 		dir = dir.addVector(vspread.x * spread, vspread.y * spread, vspread.z * spread).normalize();
 

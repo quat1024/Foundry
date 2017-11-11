@@ -22,7 +22,7 @@ public class ContainerBurnerHeater extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 142;
-	private TileEntityBurnerHeater te_burner;
+	private final TileEntityBurnerHeater te_burner;
 
 	public ContainerBurnerHeater(TileEntityBurnerHeater burner, EntityPlayer player) {
 		te_burner = burner;

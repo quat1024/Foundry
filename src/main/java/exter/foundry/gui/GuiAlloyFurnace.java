@@ -30,7 +30,7 @@ public class GuiAlloyFurnace extends GuiFoundry {
 	public static final int BURN_OVERLAY_X = 176;
 	public static final int BURN_OVERLAY_Y = 0;
 
-	private TileEntityAlloyFurnace te_af;
+	private final TileEntityAlloyFurnace te_af;
 
 	public GuiAlloyFurnace(TileEntityAlloyFurnace af, EntityPlayer player) {
 		super(new ContainerAlloyFurnace(af, player));
@@ -65,7 +65,7 @@ public class GuiAlloyFurnace extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Alloy Furnace", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 
 	}
 

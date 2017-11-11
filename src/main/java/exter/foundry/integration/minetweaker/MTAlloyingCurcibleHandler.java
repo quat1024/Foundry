@@ -55,7 +55,7 @@ public class MTAlloyingCurcibleHandler {
 			CraftTweakerAPI.logError("Invalid alloying crucible recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new AlloyingCrucibleAction(recipe).action_add));
+		CraftTweakerAPI.apply(new AlloyingCrucibleAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -73,6 +73,6 @@ public class MTAlloyingCurcibleHandler {
 			CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new AlloyingCrucibleAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new AlloyingCrucibleAction(recipe).action_remove);
 	}
 }

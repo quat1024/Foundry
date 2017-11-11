@@ -42,8 +42,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRefractoryFluidContainer extends Item {
 	private class FluidHandler implements IFluidHandler, IFluidTankProperties, ICapabilityProvider {
-		private IFluidTankProperties[] props;
-		private ItemStack stack;
+		private final IFluidTankProperties[] props;
+		private final ItemStack stack;
 
 		public FluidHandler(ItemStack stack) {
 			this.stack = stack;
@@ -73,7 +73,7 @@ public class ItemRefractoryFluidContainer extends Item {
 		@Override
 		public FluidStack drain(FluidStack resource, boolean doDrain) {
 			FluidStack fluid = getFluid(stack);
-			if (resource == null || (fluid != null && !fluid.isFluidEqual(resource))) { return null; }
+			if (resource == null || fluid != null && !fluid.isFluidEqual(resource)) { return null; }
 			return drain(resource.amount, doDrain);
 		}
 

@@ -59,6 +59,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 			}
 			return null;
 		}
+
 		public final int id;
 		public final String name;
 
@@ -83,7 +84,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 
 	public static final PropertyEnum<EnumMachine> MACHINE = PropertyEnum.create("machine", EnumMachine.class);
 
-	private Random rand = new Random();
+	private final Random rand = new Random();
 
 	public BlockFoundryMachine() {
 		super(Material.IRON);
@@ -109,16 +110,16 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te != null && (te instanceof TileEntityFoundry) && !world.isRemote) {
+		if (te != null && te instanceof TileEntityFoundry && !world.isRemote) {
 			TileEntityFoundry tef = (TileEntityFoundry) te;
 			int i;
 			for (i = 0; i < tef.getSizeInventory(); i++) {
 				ItemStack is = tef.getStackInSlot(i);
 
 				if (!is.isEmpty()) {
-					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
+					double drop_x = rand.nextFloat() * 0.3 + 0.35;
+					double drop_y = rand.nextFloat() * 0.3 + 0.35;
+					double drop_z = rand.nextFloat() * 0.3 + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
@@ -137,7 +138,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return this.createTileEntity(world, getStateFromMeta(meta));
+		return createTileEntity(world, getStateFromMeta(meta));
 	}
 
 	@Override

@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class OreMatcher implements IItemMatcher {
-	private String match;
-	private int amount;
+	private final String match;
+	private final int amount;
 
 	public OreMatcher(String match) {
 		this(match, 1);
@@ -42,7 +42,7 @@ public class OreMatcher implements IItemMatcher {
 
 	@Override
 	public List<ItemStack> getItems() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 		for (ItemStack ore : OreDictionary.getOres(match)) {
 			ore = ore.copy();
 			ore.setCount(amount);

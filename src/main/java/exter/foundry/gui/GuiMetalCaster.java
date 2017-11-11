@@ -48,7 +48,7 @@ public class GuiMetalCaster extends GuiFoundry {
 	private static final int RSMODE_TEXTURE_X = 176;
 	private static final int RSMODE_TEXTURE_Y = 90;
 
-	private TileEntityMetalCaster te_caster;
+	private final TileEntityMetalCaster te_caster;
 	private GuiButtonFoundry button_mode;
 
 	public GuiMetalCaster(TileEntityMetalCaster cs, EntityPlayer player) {
@@ -105,7 +105,7 @@ public class GuiMetalCaster extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Metal Caster", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 	}
 
 	@Override
@@ -113,13 +113,13 @@ public class GuiMetalCaster extends GuiFoundry {
 		super.drawScreen(mousex, mousey, par3);
 
 		if (isPointInRegion(TANK_X, TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			addTankTooltip(currenttip, mousex, mousey, te_caster.getTank(0));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 
 		if (isPointInRegion(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			long power = te_caster.getStoredFoundryEnergy();
 			long max_power = te_caster.getFoundryEnergyCapacity();
 			currenttip.add("Energy: " + String.valueOf(power) + "/" + String.valueOf(max_power));
@@ -127,7 +127,7 @@ public class GuiMetalCaster extends GuiFoundry {
 		}
 
 		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.getWidth(), button_mode.getHeight(), mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			currenttip.add(getRedstoenModeText(te_caster.getRedstoneMode()));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}

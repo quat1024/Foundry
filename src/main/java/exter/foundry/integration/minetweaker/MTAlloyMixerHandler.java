@@ -71,7 +71,7 @@ public class MTAlloyMixerHandler {
 			CraftTweakerAPI.logError("Invalid alloy mixer recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new AlloyMixerAction(recipe).action_add));
+		CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -88,6 +88,6 @@ public class MTAlloyMixerHandler {
 			CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new AlloyMixerAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_remove);
 	}
 }

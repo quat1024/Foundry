@@ -22,7 +22,7 @@ public class ContainerAlloyingCrucible extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 185;
-	private TileEntityAlloyingCrucible te_alloyingcrucible;
+	private final TileEntityAlloyingCrucible te_alloyingcrucible;
 
 	public ContainerAlloyingCrucible(TileEntityAlloyingCrucible ac, EntityPlayer player) {
 		te_alloyingcrucible = ac;

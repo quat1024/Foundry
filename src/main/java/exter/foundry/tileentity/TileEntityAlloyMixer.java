@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 	protected class FluidHandler implements IFluidHandler {
-		private IFluidTankProperties[] props;
+		private final IFluidTankProperties[] props;
 
 		public FluidHandler() {
 			props = new IFluidTankProperties[getTankCount()];
@@ -82,12 +82,12 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 	static public final int TANK_INPUT_3 = 3;
 	static public final int TANK_OUTPUT = 4;
 
-	private FluidTank[] tanks;
-	private IFluidHandler fluid_handler;
+	private final FluidTank[] tanks;
+	private final IFluidHandler fluid_handler;
 
-	private int[] recipe_order = new int[4];
+	private final int[] recipe_order = new int[4];
 
-	private FluidStack[] input_tank_fluids = new FluidStack[4];
+	private final FluidStack[] input_tank_fluids = new FluidStack[4];
 
 	public TileEntityAlloyMixer() {
 		super();
@@ -124,6 +124,7 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 	public int getSizeInventory() {
 		return 10;
 	}
+
 	@Override
 	public FluidTank getTank(int slot) {
 		return tanks[slot];

@@ -26,9 +26,9 @@ public class TileEntityMeltingCrucibleBasic extends TileEntityFoundryHeatable {
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of(INVENTORY_INPUT);
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of();
 
-	private FluidTank tank;
-	private IFluidHandler fluid_handler;
-	private ItemHandler item_handler;
+	private final FluidTank tank;
+	private final IFluidHandler fluid_handler;
+	private final ItemHandler item_handler;
 
 	private int progress;
 	private int melt_point;

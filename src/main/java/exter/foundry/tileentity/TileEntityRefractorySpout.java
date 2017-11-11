@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityRefractorySpout extends TileEntityFoundry {
 	protected class FluidHandler implements IFluidHandler {
-		private IFluidTankProperties[] props;
+		private final IFluidTankProperties[] props;
 
 		public FluidHandler() {
 			props = new IFluidTankProperties[0];
@@ -49,9 +49,10 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 
 		return a.isFluidStackIdentical(b);
 	}
-	private FluidTank fluid_moved;
 
-	private IFluidHandler fluid_handler;
+	private final FluidTank fluid_moved;
+
+	private final IFluidHandler fluid_handler;
 	private int pour_length;
 
 	private int next_move;
@@ -68,7 +69,7 @@ public class TileEntityRefractorySpout extends TileEntityFoundry {
 	@Override
 	protected IFluidHandler getFluidHandler(EnumFacing facing) {
 		EnumFacing side = world.getBlockState(getPos()).getValue(BlockFoundrySidedMachine.FACING).facing;
-		return (facing == EnumFacing.DOWN || facing == side) ? fluid_handler : null;
+		return facing == EnumFacing.DOWN || facing == side ? fluid_handler : null;
 	}
 
 	public int getPourLength() {

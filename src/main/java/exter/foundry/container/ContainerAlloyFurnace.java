@@ -23,7 +23,7 @@ public class ContainerAlloyFurnace extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 142;
-	private TileEntityAlloyFurnace te_alloyfurnace;
+	private final TileEntityAlloyFurnace te_alloyfurnace;
 
 	public ContainerAlloyFurnace(TileEntityAlloyFurnace furnace, EntityPlayer player) {
 		te_alloyfurnace = furnace;

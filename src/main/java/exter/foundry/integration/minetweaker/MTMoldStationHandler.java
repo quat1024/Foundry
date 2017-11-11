@@ -60,7 +60,7 @@ public class MTMoldStationHandler {
 			CraftTweakerAPI.logError("Invalid mold station recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new MoldStationAction(recipe).action_add));
+		CraftTweakerAPI.apply(new MoldStationAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -74,6 +74,6 @@ public class MTMoldStationHandler {
 			CraftTweakerAPI.logWarning("Mold station recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new MoldStationAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new MoldStationAction(recipe).action_remove);
 	}
 }

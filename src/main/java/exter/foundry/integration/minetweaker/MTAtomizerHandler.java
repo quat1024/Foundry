@@ -50,7 +50,7 @@ public class MTAtomizerHandler {
 			CraftTweakerAPI.logError("Invalid atomizer recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new AtomizerAction(recipe).action_add));
+		CraftTweakerAPI.apply(new AtomizerAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -60,6 +60,6 @@ public class MTAtomizerHandler {
 			CraftTweakerAPI.logWarning("Atomizer recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new AtomizerAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new AtomizerAction(recipe).action_remove);
 	}
 }

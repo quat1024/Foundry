@@ -10,8 +10,8 @@ public class TileEntityRefractoryTankBasic extends TileEntityFoundry {
 	static public final int INVENTORY_CONTAINER_DRAIN = 0;
 	static public final int INVENTORY_CONTAINER_FILL = 1;
 
-	private FluidTank tank;
-	private IFluidHandler fluid_handler;
+	private final FluidTank tank;
+	private final IFluidHandler fluid_handler;
 
 	public TileEntityRefractoryTankBasic() {
 

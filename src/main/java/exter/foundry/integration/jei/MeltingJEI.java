@@ -47,7 +47,7 @@ public class MeltingJEI {
 			backgroundLocation = new ResourceLocation("foundry", "textures/gui/crucible.png");
 
 			IDrawableStatic arrowDrawable = guiHelper.createDrawable(backgroundLocation, 176, 78, 24, 17);
-			this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+			arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
 
 			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/crucible.png");
 			background = guiHelper.createDrawable(location, 30, 16, 94, 54);

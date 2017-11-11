@@ -18,8 +18,8 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 	public List<ItemStack> molds;
 
 	private CastingRecipeManager() {
-		recipes = new ArrayList<ICastingRecipe>();
-		molds = new ArrayList<ItemStack>();
+		recipes = new ArrayList<>();
+		molds = new ArrayList<>();
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class MTAlloyFurnaceHandler {
 			CraftTweakerAPI.logError("Invalid alloy furnace recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new AlloyFurnaceAction(recipe).action_add));
+		CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -61,6 +61,6 @@ public class MTAlloyFurnaceHandler {
 			CraftTweakerAPI.logWarning("Alloy furnace recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new AlloyFurnaceAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_remove);
 	}
 }

@@ -22,7 +22,7 @@ public class ContainerAlloyMixer extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 185;
-	private TileEntityAlloyMixer te_alloymixer;
+	private final TileEntityAlloyMixer te_alloymixer;
 
 	public ContainerAlloyMixer(TileEntityAlloyMixer mixer, EntityPlayer player) {
 		te_alloymixer = mixer;

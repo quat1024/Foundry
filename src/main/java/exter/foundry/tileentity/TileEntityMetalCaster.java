@@ -31,9 +31,9 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of(INVENTORY_EXTRA);
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of(INVENTORY_OUTPUT);
 
-	private FluidTank tank;
-	private IFluidHandler fluid_handler;
-	private ItemHandler item_handler;
+	private final FluidTank tank;
+	private final IFluidHandler fluid_handler;
+	private final ItemHandler item_handler;
 
 	private ICastingRecipe current_recipe;
 

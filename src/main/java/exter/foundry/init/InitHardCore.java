@@ -53,7 +53,7 @@ public class InitHardCore {
 			}
 
 			// Remove alloy furnace recipes as well.
-			List<IAlloyFurnaceRecipe> remove = new ArrayList<IAlloyFurnaceRecipe>();
+			List<IAlloyFurnaceRecipe> remove = new ArrayList<>();
 			for (IAlloyFurnaceRecipe recipe : AlloyFurnaceRecipeManager.INSTANCE.getRecipes()) {
 				ItemStack output = recipe.getOutput();
 				Set<String> ore_names = FoundryMiscUtils.getAllItemOreDictionaryNames(output);
@@ -71,7 +71,7 @@ public class InitHardCore {
 	}
 
 	static private void removeCompressionCrafting(String prefix, String result_prefix) {
-		Set<IRecipe> remove = new HashSet<IRecipe>();
+		Set<IRecipe> remove = new HashSet<>();
 		InventoryCrafting grid = new InventoryCrafting(new Container() {
 			@Override
 			public boolean canInteractWith(EntityPlayer playerIn) {

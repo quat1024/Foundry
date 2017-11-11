@@ -21,7 +21,7 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 
 	private static int MAX_PROVIDE = TileEntityFoundryHeatable.getMaxHeatRecieve(350000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE);
 
-	private HeatProvider heat_provider;
+	private final HeatProvider heat_provider;
 
 	public TileEntityInductionHeater() {
 		super();
@@ -62,7 +62,7 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 
 	@Override
 	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		return (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) || super.hasCapability(cap, facing);
+		return cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP || super.hasCapability(cap, facing);
 	}
 
 	@Override

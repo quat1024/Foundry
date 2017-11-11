@@ -35,6 +35,7 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 			}
 			return null;
 		}
+
 		public final int id;
 		public final String name;
 
@@ -67,6 +68,7 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 			}
 			return null;
 		}
+
 		public final int id;
 
 		public final String name;
@@ -101,16 +103,16 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te != null && (te instanceof TileEntityFoundry) && !world.isRemote) {
+		if (te != null && te instanceof TileEntityFoundry && !world.isRemote) {
 			TileEntityFoundry tef = (TileEntityFoundry) te;
 			int i;
 			for (i = 0; i < tef.getSizeInventory(); i++) {
 				ItemStack is = tef.getStackInSlot(i);
 
 				if (!is.isEmpty()) {
-					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
+					double drop_x = rand.nextFloat() * 0.3 + 0.35;
+					double drop_y = rand.nextFloat() * 0.3 + 0.35;
+					double drop_z = rand.nextFloat() * 0.3 + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 
@@ -146,7 +148,7 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumMachineFacing.fromID(meta & 3)).withProperty(STATE, EnumMachineState.fromID((meta >>> 2) & 1));
+		return getDefaultState().withProperty(FACING, EnumMachineFacing.fromID(meta & 3)).withProperty(STATE, EnumMachineState.fromID(meta >>> 2 & 1));
 	}
 
 	@Override

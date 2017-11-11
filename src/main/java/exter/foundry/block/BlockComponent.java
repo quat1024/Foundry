@@ -26,6 +26,7 @@ public class BlockComponent extends Block implements IBlockVariants {
 			}
 			return null;
 		}
+
 		public final int id;
 		public final String name;
 

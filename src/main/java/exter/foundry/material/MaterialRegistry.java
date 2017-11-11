@@ -16,12 +16,12 @@ import net.minecraftforge.oredict.OreDictionary;
 public final class MaterialRegistry implements IMaterialRegistry {
 
 	public static MaterialRegistry instance = new MaterialRegistry();
-	private HashMap<HashableItem, String> materials;
+	private final HashMap<HashableItem, String> materials;
 
-	private HashMap<HashableItem, String> types;
-	private Set<String> material_names;
+	private final HashMap<HashableItem, String> types;
+	private final Set<String> material_names;
 
-	private Set<String> type_names;
+	private final Set<String> type_names;
 
 	@SideOnly(Side.CLIENT)
 	private Map<String, ItemStack> material_icons;
@@ -29,10 +29,10 @@ public final class MaterialRegistry implements IMaterialRegistry {
 	private Map<String, ItemStack> type_icons;
 
 	private MaterialRegistry() {
-		materials = new HashMap<HashableItem, String>();
-		types = new HashMap<HashableItem, String>();
-		material_names = new HashSet<String>();
-		type_names = new HashSet<String>();
+		materials = new HashMap<>();
+		types = new HashMap<>();
+		material_names = new HashSet<>();
+		type_names = new HashSet<>();
 	}
 
 	@Override
@@ -68,8 +68,8 @@ public final class MaterialRegistry implements IMaterialRegistry {
 	}
 
 	public void initIcons() {
-		material_icons = new HashMap<String, ItemStack>();
-		type_icons = new HashMap<String, ItemStack>();
+		material_icons = new HashMap<>();
+		type_icons = new HashMap<>();
 	}
 
 	@Override

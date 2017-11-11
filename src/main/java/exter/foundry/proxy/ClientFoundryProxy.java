@@ -39,10 +39,7 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
-import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -51,13 +48,12 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ClientFoundryProxy extends CommonFoundryProxy {
 	static private class LiquidMetalItemMeshDefinition implements ItemMeshDefinition {
-		private ModelResourceLocation model;
+		private final ModelResourceLocation model;
 
 		LiquidMetalItemMeshDefinition(String name) {
 			model = new ModelResourceLocation("foundry:liquid" + name);
@@ -177,14 +173,9 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 			String name = e.getKey();
 			ModelBakery.registerItemVariants(item);
 			ModelLoader.setCustomMeshDefinition(item, new LiquidMetalItemMeshDefinition(name));
-			ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockFluidBase.LEVEL).build());
+			ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
 		}
-		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, new IRenderFactory<EntitySkeletonGun>() {
-			@Override
-			public Render<AbstractSkeleton> createRenderFor(RenderManager manager) {
-				return new RenderSkeleton(manager);
-			}
-		});
+		RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonGun.class, manager -> new RenderSkeleton(manager));
 		ModIntegrationManager.clientPreInit();
 	}
 

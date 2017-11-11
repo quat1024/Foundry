@@ -21,10 +21,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class LiquidMetalRegistry implements IFluidRegistry {
 	static public LiquidMetalRegistry instance = new LiquidMetalRegistry();
 
-	private Map<String, FluidLiquidMetal> registry;
+	private final Map<String, FluidLiquidMetal> registry;
 
 	private LiquidMetalRegistry() {
-		registry = new HashMap<String, FluidLiquidMetal>();
+		registry = new HashMap<>();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 

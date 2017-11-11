@@ -18,7 +18,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 	protected class FluidHandler implements IFluidHandler {
-		private IFluidTankProperties[] props;
+		private final IFluidTankProperties[] props;
 
 		public FluidHandler() {
 			props = new IFluidTankProperties[getTankCount()];
@@ -78,14 +78,14 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of();
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of(0);
 
-	private FluidTank tank;
+	private final FluidTank tank;
 
-	private IFluidHandler fluid_handler;
+	private final IFluidHandler fluid_handler;
 
 	private ICastingTableRecipe recipe;
 
 	private int progress;
-	private ItemHandlerTable item_handler;
+	private final ItemHandlerTable item_handler;
 
 	public TileEntityCastingTableBase() {
 		super();

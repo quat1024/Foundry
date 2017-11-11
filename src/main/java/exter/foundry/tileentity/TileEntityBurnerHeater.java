@@ -66,8 +66,8 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 	private int heat_provide;
 
 	private boolean update_burn_times;
-	private HeatProvider heat_provider;
-	private ItemHandlerFuel item_handler;
+	private final HeatProvider heat_provider;
+	private final ItemHandlerFuel item_handler;
 
 	public TileEntityBurnerHeater() {
 		burn_time = 0;
@@ -154,7 +154,7 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 
 	@Override
 	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		return super.hasCapability(cap, facing) || (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP);
+		return super.hasCapability(cap, facing) || cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP;
 	}
 
 	public boolean isBurning() {
@@ -168,7 +168,7 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
+		return world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
 	}
 
 	@Override

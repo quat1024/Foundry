@@ -21,7 +21,7 @@ public class AlloyMixerRecipe implements IAlloyMixerRecipe {
 		output = out.copy();
 		if (in == null) { throw new IllegalArgumentException("Alloy mixer recipe inputs cannot be null"); }
 		if (in.length > 4) { throw new IllegalArgumentException("Alloy mixer recipe cannot have more the 4 inputs"); }
-		inputs = new ArrayList<FluidStack>();
+		inputs = new ArrayList<>();
 		int i;
 		for (i = 0; i < in.length; i++) {
 			if (in[i] == null) { throw new IllegalArgumentException("Alloy mixer recipe input cannot be null"); }

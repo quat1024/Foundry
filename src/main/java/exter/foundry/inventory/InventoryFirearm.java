@@ -155,8 +155,8 @@ public class InventoryFirearm implements IInventory {
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		items.set(slot, stack);
-		if (stack.getCount() > this.getInventoryStackLimit()) {
-			stack.setCount(this.getInventoryStackLimit());
+		if (stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
 		markDirty();
 	}

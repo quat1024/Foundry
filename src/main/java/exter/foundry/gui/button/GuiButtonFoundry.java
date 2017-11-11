@@ -7,12 +7,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiButtonFoundry extends GuiButton {
-	private ResourceLocation gui_texture;
-	private int texture_x;
-	private int texture_y;
+	private final ResourceLocation gui_texture;
+	private final int texture_x;
+	private final int texture_y;
 
-	private int texture_mo_x;
-	private int texture_mo_y;
+	private final int texture_mo_x;
+	private final int texture_mo_y;
 
 	private int icon_x;
 	private int icon_y;
@@ -32,7 +32,7 @@ public class GuiButtonFoundry extends GuiButton {
 	}
 
 	public void drawButton(Minecraft mc, int x, int y) {
-		if (this.visible) {
+		if (visible) {
 			mc.getTextureManager().bindTexture(gui_texture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			int tex_x = texture_x;

@@ -88,7 +88,7 @@ public class MTCastingHandler {
 			CraftTweakerAPI.logError("Invalid mold item");
 			return;
 		}
-		CraftTweakerAPI.apply((new MoldAction(molditem).action_add));
+		CraftTweakerAPI.apply(new MoldAction(molditem).action_add);
 	}
 
 	@ZenMethod
@@ -103,7 +103,7 @@ public class MTCastingHandler {
 			CraftTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new CastingAction(recipe).action_add));
+		CraftTweakerAPI.apply(new CastingAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -115,7 +115,7 @@ public class MTCastingHandler {
 		}
 		for (ItemStack m : CastingRecipeManager.instance.molds) {
 			if (m.isItemEqual(molditem) && ItemStack.areItemStacksEqual(m, molditem)) {
-				CraftTweakerAPI.apply((new MoldAction(m)).action_remove);
+				CraftTweakerAPI.apply(new MoldAction(m).action_remove);
 				return;
 			}
 		}
@@ -129,6 +129,6 @@ public class MTCastingHandler {
 			CraftTweakerAPI.logWarning("Casting recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new CastingAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new CastingAction(recipe).action_remove);
 	}
 }

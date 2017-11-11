@@ -36,7 +36,7 @@ public class ItemComponent extends Item {
 		AMMO_PELLET_LUMIUM(20, "componentPelletLumium"),
 		COAL_COKE(21, "componentCoalCoke");
 
-		static private final Map<Integer, SubItem> value_map = new HashMap<Integer, SubItem>();
+		static private final Map<Integer, SubItem> value_map = new HashMap<>();
 		static {
 			for (SubItem sub : values()) {
 				value_map.put(sub.id, sub);

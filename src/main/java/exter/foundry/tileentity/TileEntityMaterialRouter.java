@@ -83,7 +83,7 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of(0, 1, 2);
 
-	private List<Route> routes;
+	private final List<Route> routes;
 	private int input_index;
 
 	public int gui_material_scroll;
@@ -92,17 +92,17 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 	public int gui_material_selected;
 	public int gui_type_selected;
 
-	private Map<EnumFacing, ItemHandler> item_handlers;
+	private final Map<EnumFacing, ItemHandler> item_handlers;
 
 	public TileEntityMaterialRouter() {
-		routes = new ArrayList<Route>();
+		routes = new ArrayList<>();
 		input_index = 0;
 		gui_material_scroll = 0;
 		gui_type_scroll = 0;
 		gui_route_scroll = 0;
 		gui_material_selected = 0;
 		gui_type_selected = 0;
-		item_handlers = new EnumMap<EnumFacing, ItemHandler>(EnumFacing.class);
+		item_handlers = new EnumMap<>(EnumFacing.class);
 		for (EnumFacing facing : EnumFacing.VALUES) {
 			item_handlers.put(facing, new ItemHandler(getSizeInventory(), IH_SLOTS_INPUT, ImmutableSet.of(SLOT_OUTPUT + facing.getIndex())));
 		}

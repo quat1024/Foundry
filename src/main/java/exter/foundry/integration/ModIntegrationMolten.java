@@ -92,11 +92,11 @@ public class ModIntegrationMolten implements IModIntegration {
 
 		FluidStack molten = toMolten(input);
 		if (molten != null) {
-			List<FluidStack> in = new ArrayList<FluidStack>(inputs);
+			List<FluidStack> in = new ArrayList<>(inputs);
 			in.add(molten);
 			convertAlloyMixerRecipe(mix, index + 1, in, true);
 		}
-		List<FluidStack> in = new ArrayList<FluidStack>(inputs);
+		List<FluidStack> in = new ArrayList<>(inputs);
 		in.add(input.copy());
 		convertAlloyMixerRecipe(mix, index + 1, in, has_mapped);
 	}
@@ -108,7 +108,7 @@ public class ModIntegrationMolten implements IModIntegration {
 
 	@Override
 	public void onAfterPostInit() {
-		liquid_map = new HashMap<String, String>();
+		liquid_map = new HashMap<>();
 		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
 			FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(name);
 			if (name.equals("Glass")) {
@@ -127,7 +127,7 @@ public class ModIntegrationMolten implements IModIntegration {
 		liquid_map.put(FoundryFluids.liquid_cupronickel.getName(), "constantan");
 
 		//Add support for "molten" fluids to the Metal Caster.
-		for (ICastingRecipe casting : new ArrayList<ICastingRecipe>(CastingRecipeManager.instance.getRecipes())) {
+		for (ICastingRecipe casting : new ArrayList<>(CastingRecipeManager.instance.getRecipes())) {
 			FluidStack input = toMolten(casting.getInput());
 			if (input != null) {
 				CastingRecipeManager.instance.addRecipe(casting.getOutputMatcher(), input, casting.getMold(), casting.getInputExtra(), casting.getCastingSpeed());
@@ -143,7 +143,7 @@ public class ModIntegrationMolten implements IModIntegration {
 		}
 
 		//Add support for "molten" fluids to the Atomizer.
-		for (IAtomizerRecipe atomize : new ArrayList<IAtomizerRecipe>(AtomizerRecipeManager.instance.getRecipes())) {
+		for (IAtomizerRecipe atomize : new ArrayList<>(AtomizerRecipeManager.instance.getRecipes())) {
 			FluidStack input = toMolten(atomize.getInput());
 			if (input != null) {
 				AtomizerRecipeManager.instance.addRecipe(atomize.getOutputMatcher(), input);
@@ -151,12 +151,12 @@ public class ModIntegrationMolten implements IModIntegration {
 		}
 
 		//Add support for "molten" fluid inputs to Alloying Crucible recipes.
-		for (IAlloyingCrucibleRecipe mix : new ArrayList<IAlloyingCrucibleRecipe>(AlloyingCrucibleRecipeManager.instance.getRecipes())) {
+		for (IAlloyingCrucibleRecipe mix : new ArrayList<>(AlloyingCrucibleRecipeManager.instance.getRecipes())) {
 			convertAlloyingCrucibleRecipe(mix);
 		}
 
 		//Add support for "molten" fluid inputs to Alloy Mixer recipes.
-		for (IAlloyMixerRecipe mix : new ArrayList<IAlloyMixerRecipe>(AlloyMixerRecipeManager.instance.getRecipes())) {
+		for (IAlloyMixerRecipe mix : new ArrayList<>(AlloyMixerRecipeManager.instance.getRecipes())) {
 			convertAlloyMixerRecipe(mix);
 		}
 	}

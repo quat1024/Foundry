@@ -68,7 +68,7 @@ public class MTCastingTableHandler {
 			CraftTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new CastingTableAction(recipe).action_add));
+		CraftTweakerAPI.apply(new CastingTableAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -97,7 +97,7 @@ public class MTCastingTableHandler {
 			CraftTweakerAPI.logWarning("Casting table recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new CastingTableAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new CastingTableAction(recipe).action_remove);
 	}
 
 	@ZenMethod

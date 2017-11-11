@@ -53,7 +53,7 @@ public class GuiMoldStation extends GuiFoundry {
 	public static final int GRID_OVERLAY_X = 176;
 	public static final int GRID_OVERLAY_Y = 107;
 
-	private TileEntityMoldStation te_ms;
+	private final TileEntityMoldStation te_ms;
 	private GuiButtonFoundry button_fire;
 
 	public GuiMoldStation(TileEntityMoldStation af, EntityPlayer player) {
@@ -97,7 +97,7 @@ public class GuiMoldStation extends GuiFoundry {
 				int gy = i / 6;
 				int sv = te_ms.getGridSlot(i);
 				if (sv > 0) {
-					drawTexturedModalRect(window_x + GRID_X + gx * GRID_SLOT_SIZE, window_y + GRID_Y + gy * GRID_SLOT_SIZE, GRID_OVERLAY_X, GRID_OVERLAY_Y + ((sv - 1) * GRID_SLOT_SIZE), GRID_SLOT_SIZE, GRID_SLOT_SIZE);
+					drawTexturedModalRect(window_x + GRID_X + gx * GRID_SLOT_SIZE, window_y + GRID_Y + gy * GRID_SLOT_SIZE, GRID_OVERLAY_X, GRID_OVERLAY_Y + (sv - 1) * GRID_SLOT_SIZE, GRID_SLOT_SIZE, GRID_SLOT_SIZE);
 				}
 			}
 		}
@@ -108,7 +108,7 @@ public class GuiMoldStation extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Mold Station", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 	}
 
 	@Override
@@ -120,13 +120,13 @@ public class GuiMoldStation extends GuiFoundry {
 			int x = (mousex - GRID_X - guiLeft) / GRID_SLOT_SIZE;
 			int y = (mousey - GRID_Y - guiTop) / GRID_SLOT_SIZE;
 
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			currenttip.add("Depth: " + te_ms.getGridSlot(y * 6 + x));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 
 		if (isPointInRegion(117, 15, button_fire.getWidth(), button_fire.getHeight(), mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			currenttip.add("Fire mold");
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}

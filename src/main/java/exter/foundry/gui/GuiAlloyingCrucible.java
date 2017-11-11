@@ -26,7 +26,7 @@ public class GuiAlloyingCrucible extends GuiFoundry {
 	private static final int TANK_OVERLAY_X = 176;
 	private static final int TANK_OVERLAY_Y = 0;
 
-	private TileEntityAlloyingCrucible te_alloymixer;
+	private final TileEntityAlloyingCrucible te_alloymixer;
 
 	public GuiAlloyingCrucible(TileEntityAlloyingCrucible am, EntityPlayer player) {
 		super(new ContainerAlloyingCrucible(am, player));
@@ -53,7 +53,7 @@ public class GuiAlloyingCrucible extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Alloying Crucible", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 
 	}
 
@@ -63,17 +63,17 @@ public class GuiAlloyingCrucible extends GuiFoundry {
 
 		//Draw tool tips.
 		if (isPointInRegion(TANK_INPUT_A_X, TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			addTankTooltip(currenttip, mousex, mousey, te_alloymixer.getTank(TileEntityAlloyingCrucible.TANK_INPUT_A));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 		if (isPointInRegion(TANK_INPUT_B_X, TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			addTankTooltip(currenttip, mousex, mousey, te_alloymixer.getTank(TileEntityAlloyingCrucible.TANK_INPUT_B));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 		if (isPointInRegion(TANK_OUTPUT_X, TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			addTankTooltip(currenttip, mousex, mousey, te_alloymixer.getTank(TileEntityAlloyingCrucible.TANK_OUTPUT));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}

@@ -23,7 +23,7 @@ public class ContainerMetalAtomizer extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 142;
-	private TileEntityMetalAtomizer te_atomizer;
+	private final TileEntityMetalAtomizer te_atomizer;
 
 	public ContainerMetalAtomizer(TileEntityMetalAtomizer caster, EntityPlayer player) {
 		te_atomizer = caster;

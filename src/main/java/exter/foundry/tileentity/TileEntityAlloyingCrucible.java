@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 	protected class FluidHandler implements IFluidHandler {
-		private IFluidTankProperties[] props;
+		private final IFluidTankProperties[] props;
 
 		public FluidHandler() {
 			props = new IFluidTankProperties[getTankCount()];
@@ -78,8 +78,8 @@ public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 
 	public int progress;
 
-	private FluidTank[] tanks;
-	private IFluidHandler fluid_handler;
+	private final FluidTank[] tanks;
+	private final IFluidHandler fluid_handler;
 
 	public TileEntityAlloyingCrucible() {
 		super();

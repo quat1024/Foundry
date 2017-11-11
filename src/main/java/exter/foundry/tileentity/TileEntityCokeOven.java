@@ -30,7 +30,7 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of(INVENTORY_INPUT);
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of(INVENTORY_OUTPUT);
 
-	private ItemHandler item_handler;
+	private final ItemHandler item_handler;
 
 	private int progress;
 

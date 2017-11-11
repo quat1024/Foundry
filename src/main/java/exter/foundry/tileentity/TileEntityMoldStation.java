@@ -35,7 +35,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 
 	private boolean update_burn_times;
 
-	private int[] grid;
+	private final int[] grid;
 
 	private IMoldRecipe current_recipe;
 
@@ -71,12 +71,12 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	 * the given side. Args: Slot, item, side
 	 */
 	public boolean canInsertItem(int par1, ItemStack par2ItemStack, EnumFacing side) {
-		return this.isItemValidForSlot(par1, par2ItemStack);
+		return isItemValidForSlot(par1, par2ItemStack);
 	}
 
 	private boolean canOutput(ItemStack output, int slot) {
 		ItemStack inv_output = getStackInSlot(slot);
-		return (inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize());
+		return inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize();
 	}
 
 	private boolean canRecipeOutput() {
@@ -232,7 +232,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
+		return world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
 	}
 
 	public void mend(int x1, int y1, int x2, int y2) {

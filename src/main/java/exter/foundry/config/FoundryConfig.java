@@ -53,7 +53,7 @@ public class FoundryConfig {
 
 		String[] keep_ingots = config.getStringList("remove_ingots_from_furnace.keep", "hardcore", new String[] { "Copper", "Tin", "Zinc", "Bronze", "Brass", "Lead" }, "Material names of ingots to keep furnace recipes (case sensitive).");
 
-		hardcore_furnace_keep_ingots = new HashSet<String>();
+		hardcore_furnace_keep_ingots = new HashSet<>();
 		for (String name : keep_ingots) {
 			hardcore_furnace_keep_ingots.add("ingot" + name);
 		}

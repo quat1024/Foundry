@@ -33,6 +33,7 @@ public class OreStackBracketHandler implements IBracketHandler {
 			return new ExpressionCallStatic(position, environment, method, new ExpressionString(position, name));
 		}
 	}
+
 	public static IIngredient getOreStack(String name) {
 		return new MTOreStack(new OreMatcher(name, 1));
 	}

@@ -26,7 +26,7 @@ public class ContainerMoldStation extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 166;
-	private TileEntityMoldStation te_station;
+	private final TileEntityMoldStation te_station;
 
 	public ContainerMoldStation(TileEntityMoldStation station, EntityPlayer player) {
 		te_station = station;

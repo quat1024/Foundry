@@ -17,7 +17,7 @@ public class InfuserRecipeManager implements IInfuserRecipeManager {
 	public List<IInfuserRecipe> recipes;
 
 	private InfuserRecipeManager() {
-		recipes = new ArrayList<IInfuserRecipe>();
+		recipes = new ArrayList<>();
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ContainerCokeOven extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 142;
-	private TileEntityCokeOven te_oven;
+	private final TileEntityCokeOven te_oven;
 
 	public ContainerCokeOven(TileEntityCokeOven icf, EntityPlayer player) {
 		te_oven = icf;

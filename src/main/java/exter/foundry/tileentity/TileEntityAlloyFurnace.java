@@ -51,8 +51,8 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	public int progress;
 	private boolean update_burn_times;
 
-	private ItemHandler item_handler;
-	private ItemHandlerFuel item_handler_fuel;
+	private final ItemHandler item_handler;
+	private final ItemHandlerFuel item_handler_fuel;
 
 	public TileEntityAlloyFurnace() {
 		burn_time = 0;
@@ -89,13 +89,13 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	@Deprecated
 	@Override
 	public boolean canInsertItem(int par1, ItemStack par2ItemStack, EnumFacing side) {
-		return this.isItemValidForSlot(par1, par2ItemStack);
+		return isItemValidForSlot(par1, par2ItemStack);
 	}
 
 	private boolean canOutput(IAlloyFurnaceRecipe recipe) {
 		ItemStack output = recipe.getOutput();
 		ItemStack inv_output = getStackInSlot(SLOT_OUTPUT);
-		return (inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize());
+		return inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize();
 	}
 
 	@Optional.Method(modid = "Botania")
@@ -212,7 +212,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
+		return world.getTileEntity(getPos()) != this ? false : par1EntityPlayer.getDistanceSq(getPos()) <= 64.0D;
 	}
 
 	@Override

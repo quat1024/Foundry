@@ -51,7 +51,7 @@ public class MTInfuserHandler {
 			CraftTweakerAPI.logError("Invalid infuser recipe: " + e.getMessage());
 			return;
 		}
-		CraftTweakerAPI.apply((new InfuserAction(recipe).action_add));
+		CraftTweakerAPI.apply(new InfuserAction(recipe).action_add);
 	}
 
 	@ZenMethod
@@ -61,6 +61,6 @@ public class MTInfuserHandler {
 			CraftTweakerAPI.logWarning("Infuser recipe not found.");
 			return;
 		}
-		CraftTweakerAPI.apply((new InfuserAction(recipe)).action_remove);
+		CraftTweakerAPI.apply(new InfuserAction(recipe).action_remove);
 	}
 }

@@ -15,7 +15,7 @@ public class MoldRecipeManager implements IMoldRecipeManager {
 	public List<IMoldRecipe> recipes;
 
 	private MoldRecipeManager() {
-		recipes = new ArrayList<IMoldRecipe>();
+		recipes = new ArrayList<>();
 	}
 
 	@Override

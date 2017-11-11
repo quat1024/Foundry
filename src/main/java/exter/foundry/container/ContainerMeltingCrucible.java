@@ -21,7 +21,7 @@ public class ContainerMeltingCrucible extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 142;
-	private TileEntityMeltingCrucibleBasic te_icf;
+	private final TileEntityMeltingCrucibleBasic te_icf;
 
 	public ContainerMeltingCrucible(TileEntityMeltingCrucibleBasic icf, EntityPlayer player) {
 		te_icf = icf;

@@ -121,7 +121,7 @@ public abstract class GuiFoundry extends GuiContainer {
 		itemRender.renderItemOverlayIntoGUI(font, stack, x, y, null);
 		zLevel = 0.0F;
 		itemRender.zLevel = 0.0F;
-		mc.renderEngine.bindTexture(this.getGUITexture());
+		mc.renderEngine.bindTexture(getGUITexture());
 		GL11.glPopMatrix();
 		RenderHelper.enableStandardItemLighting();
 		GL11.glEnable(GL11.GL_DEPTH_TEST);

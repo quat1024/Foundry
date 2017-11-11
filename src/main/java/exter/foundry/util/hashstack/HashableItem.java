@@ -51,7 +51,7 @@ public class HashableItem {
 		final int prime = 1289;
 		int result = 1;
 		result = prime * result + stack.getUnlocalizedName().hashCode();
-		result = prime * result + ((stack.getTagCompound() == null) ? 0 : stack.getTagCompound().hashCode());
+		result = prime * result + (stack.getTagCompound() == null ? 0 : stack.getTagCompound().hashCode());
 		result = prime * result + stack.getItemDamage();
 		return result;
 	}

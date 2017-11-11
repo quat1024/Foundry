@@ -56,8 +56,8 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 		@Override
 		public void drawTooltip(int x, int y) {
-			List<String> tooltip = new ArrayList<String>();
-			tooltip.add((new TextComponentTranslation("foundry.router.material." + name)).getUnformattedText());
+			List<String> tooltip = new ArrayList<>();
+			tooltip.add(new TextComponentTranslation("foundry.router.material." + name).getUnformattedText());
 			drawHoveringText(tooltip, x, y, fontRenderer);
 		}
 
@@ -81,8 +81,8 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 		@Override
 		public void drawTooltip(int x, int y) {
-			List<String> tooltip = new ArrayList<String>();
-			tooltip.add((new TextComponentTranslation("foundry.router.type." + name)).getUnformattedText());
+			List<String> tooltip = new ArrayList<>();
+			tooltip.add(new TextComponentTranslation("foundry.router.type." + name).getUnformattedText());
 			drawHoveringText(tooltip, x, y, fontRenderer);
 		}
 
@@ -95,10 +95,10 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation("foundry:textures/gui/materialrouter.png");
 
-	private TileEntityMaterialRouter te_router;
-	private List<FilterSlot> material_slots;
+	private final TileEntityMaterialRouter te_router;
+	private final List<FilterSlot> material_slots;
 
-	private List<FilterSlot> type_slots;
+	private final List<FilterSlot> type_slots;
 	private GuiButtonFoundry[] route_buttons;
 	private GuiButtonFoundry material_scroll_left;
 	private GuiButtonFoundry material_scroll_right;
@@ -116,18 +116,18 @@ public class GuiMaterialRouter extends GuiFoundry {
 		ySize = 229;
 		te_router = router;
 
-		material_slots = new ArrayList<FilterSlot>();
+		material_slots = new ArrayList<>();
 		material_slots.add(new FilterSlotMaterial(0, "_Any"));
-		List<String> materials = new ArrayList<String>(MaterialRegistry.instance.getMaterialNames());
+		List<String> materials = new ArrayList<>(MaterialRegistry.instance.getMaterialNames());
 		Collections.sort(materials, String.CASE_INSENSITIVE_ORDER);
 		int i = 1;
 		for (String name : materials) {
 			material_slots.add(new FilterSlotMaterial(i++, name));
 		}
 
-		type_slots = new ArrayList<FilterSlot>();
+		type_slots = new ArrayList<>();
 		type_slots.add(new FilterSlotType(0, "_Any"));
-		List<String> types = new ArrayList<String>(MaterialRegistry.instance.getTypeNames());
+		List<String> types = new ArrayList<>(MaterialRegistry.instance.getTypeNames());
 		Collections.sort(types, String.CASE_INSENSITIVE_ORDER);
 		i = 1;
 		for (String name : types) {
@@ -244,7 +244,7 @@ public class GuiMaterialRouter extends GuiFoundry {
 	protected void drawGuiContainerForegroundLayer(int mouse_x, int mouse_y) {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 		fontRenderer.drawString("Material Router", 6, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 32, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 32, ySize - 96 + 2, 0x404040);
 
 		fontRenderer.drawString("Materials(" + (te_router.gui_material_scroll / 8 + 1) + "/" + (int) Math.ceil((double) material_slots.size() / 8) + "):", 111, 14, 0x404040);
 		fontRenderer.drawString("Types(" + (te_router.gui_type_scroll / 8 + 1) + "/" + (int) Math.ceil((double) type_slots.size() / 8) + "):", 111, 60, 0x404040);
@@ -298,17 +298,17 @@ public class GuiMaterialRouter extends GuiFoundry {
 			TileEntityMaterialRouter.Route r = routes.get(index);
 			int y = 49 + i * 17;
 			if (isPointInRegion(29, y, 16, 16, mousex, mousey)) {
-				List<String> tooltip = new ArrayList<String>();
-				tooltip.add((new TextComponentTranslation("foundry.router.material." + r.material)).getUnformattedText());
+				List<String> tooltip = new ArrayList<>();
+				tooltip.add(new TextComponentTranslation("foundry.router.material." + r.material).getUnformattedText());
 				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
 			}
 			if (isPointInRegion(46, y, 16, 16, mousex, mousey)) {
-				List<String> tooltip = new ArrayList<String>();
-				tooltip.add((new TextComponentTranslation("foundry.router.type." + r.type)).getUnformattedText());
+				List<String> tooltip = new ArrayList<>();
+				tooltip.add(new TextComponentTranslation("foundry.router.type." + r.type).getUnformattedText());
 				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
 			}
 			if (isPointInRegion(81, y + 4, 8, 8, mousex, mousey)) {
-				List<String> tooltip = new ArrayList<String>();
+				List<String> tooltip = new ArrayList<>();
 				tooltip.add("Remove");
 				drawHoveringText(tooltip, mousex, mousey, fontRenderer);
 			}
@@ -337,7 +337,7 @@ public class GuiMaterialRouter extends GuiFoundry {
 		route_buttons = new GuiButtonFoundry[6];
 		int i;
 		for (i = 0; i < 6; i++) {
-			route_buttons[i] = new GuiButtonFoundry(i, window_x + 119 + (i % 3) * 18, window_y + 108 + (i / 3) * 18, 16, 16, GUI_TEXTURE, 200, 177, 216, 177).setIconTexture(201, i * 16 + 1, 14, 14);
+			route_buttons[i] = new GuiButtonFoundry(i, window_x + 119 + i % 3 * 18, window_y + 108 + i / 3 * 18, 16, 16, GUI_TEXTURE, 200, 177, 216, 177).setIconTexture(201, i * 16 + 1, 14, 14);
 			buttonList.add(route_buttons[i]);
 		}
 		material_scroll_left = new GuiButtonFoundry(6, window_x + 96, window_y + 28, 12, 25, GUI_TEXTURE, 200, 99, 212, 99);

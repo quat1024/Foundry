@@ -35,7 +35,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 
 	private final String item_texture;
 
-	private Map<HashableItem, Integer> colors;
+	private final Map<HashableItem, Integer> colors;
 
 	public CastingTableRenderer(int left, int right, int top, int bottom, int low, int high, String item_texture) {
 		this.left = (double) left / 16 - 0.005;
@@ -45,7 +45,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 		this.low = (double) low / 16 + 0.01;
 		this.high = (high - 0.1) / 16;
 		this.item_texture = item_texture;
-		colors = new HashMap<HashableItem, Integer>();
+		colors = new HashMap<>();
 	}
 
 	protected int getItemColor(ItemStack stack) {
@@ -68,16 +68,16 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 								for (int x = 1; x < w - 1; x++) {
 									int j = y * w + x;
 									int p = pixels[j];
-									int a = (p >>> 24) & 0xFF;
+									int a = p >>> 24 & 0xFF;
 									if (a > 127) {
-										int a1 = (pixels[j - 1] >>> 24) & 0xFF;
-										int a2 = (pixels[j + 1] >>> 24) & 0xFF;
-										int a3 = (pixels[j - w] >>> 24) & 0xFF;
-										int a4 = (pixels[j + w] >>> 24) & 0xFF;
+										int a1 = pixels[j - 1] >>> 24 & 0xFF;
+										int a2 = pixels[j + 1] >>> 24 & 0xFF;
+										int a3 = pixels[j - w] >>> 24 & 0xFF;
+										int a4 = pixels[j + w] >>> 24 & 0xFF;
 										if (a1 > 127 && a2 > 127 && a3 > 127 && a4 > 127) {
-											r += (p) & 0xFF;
-											g += (p >>> 8) & 0xFF;
-											b += (p >>> 16) & 0xFF;
+											r += p & 0xFF;
+											g += p >>> 8 & 0xFF;
+											b += p >>> 16 & 0xFF;
 											count++;
 										}
 									}
@@ -90,7 +90,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 			r /= count;
 			g /= count;
 			b /= count;
-			color = 0xFF000000 | (r & 0xFF) | ((g & 0xFF) << 8) | ((b & 0xFF) << 16);
+			color = 0xFF000000 | r & 0xFF | (g & 0xFF) << 8 | (b & 0xFF) << 16;
 			colors.put(new HashableItem(stack), color);
 		}
 		return color;
@@ -115,7 +115,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 			ItemStack stack = te.getStackInSlot(0);
 			TextureAtlasSprite texture = getItemTexture(stack);
 			int color = getItemColor(stack);
-			float alpha = ((color >> 24 & 255) / 255.0F);
+			float alpha = (color >> 24 & 255) / 255.0F;
 			float red = (color >> 16 & 255) / 255.0F;
 			float green = (color >> 8 & 255) / 255.0F;
 			float blue = (color & 255) / 255.0F;
@@ -149,7 +149,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 			if (te.getStackInSlot(0) == null) {
 				progress = 1.0f;
 			}
-			float alpha = ((color >> 24 & 255) / 255.0F) * (float) progress;
+			float alpha = (color >> 24 & 255) / 255.0F * (float) progress;
 			float red = (color >> 16 & 255) / 255.0F;
 			float green = (color >> 8 & 255) / 255.0F;
 			float blue = (color & 255) / 255.0F;

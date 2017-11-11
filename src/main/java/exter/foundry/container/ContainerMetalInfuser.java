@@ -21,7 +21,7 @@ public class ContainerMetalInfuser extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 185;
-	private TileEntityMetalInfuser te_infuser;
+	private final TileEntityMetalInfuser te_infuser;
 
 	public ContainerMetalInfuser(TileEntityMetalInfuser infuser, EntityPlayer player) {
 		te_infuser = infuser;

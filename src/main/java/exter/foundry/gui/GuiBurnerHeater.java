@@ -22,7 +22,7 @@ public class GuiBurnerHeater extends GuiFoundry {
 	public static final int BURN_OVERLAY_X = 176;
 	public static final int BURN_OVERLAY_Y = 0;
 
-	private TileEntityBurnerHeater te_bh;
+	private final TileEntityBurnerHeater te_bh;
 
 	public GuiBurnerHeater(TileEntityBurnerHeater bh, EntityPlayer player) {
 		super(new ContainerBurnerHeater(bh, player));
@@ -53,7 +53,7 @@ public class GuiBurnerHeater extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Burner Heater", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 
 	}
 

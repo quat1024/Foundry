@@ -40,8 +40,8 @@ public class MessageTileEntitySync implements IMessage {
 	}
 
 	static private class SyncRunnable implements Runnable {
-		private NBTTagCompound data;
-		private World world;
+		private final NBTTagCompound data;
+		private final World world;
 
 		public SyncRunnable(NBTTagCompound data, World world) {
 			this.data = data;

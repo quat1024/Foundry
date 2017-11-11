@@ -30,9 +30,9 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of(INVENTORY_SUBSTANCE_INPUT);
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of();
 
-	private FluidTank[] tanks;
-	private IFluidHandler fluid_handler;
-	private ItemHandler item_handler;
+	private final FluidTank[] tanks;
+	private final IFluidHandler fluid_handler;
+	private final ItemHandler item_handler;
 
 	private int progress;
 	private int extract_energy;

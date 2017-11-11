@@ -17,7 +17,7 @@ public class BurnerHeaterFuelManager implements IBurnerHeaterFuelManager {
 	public List<IBurnerHeaterFuel> fuels;
 
 	private BurnerHeaterFuelManager() {
-		fuels = new ArrayList<IBurnerHeaterFuel>();
+		fuels = new ArrayList<>();
 	}
 
 	@Override

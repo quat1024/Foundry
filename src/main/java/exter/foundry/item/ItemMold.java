@@ -40,7 +40,7 @@ public class ItemMold extends Item {
 		SHOTGUN_PUMP(24, "moldShotgunPump"),
 		SHOTGUN_FRAME(25, "moldShotgunFrame");
 
-		static private final Map<Integer, SubItem> value_map = new HashMap<Integer, SubItem>();
+		static private final Map<Integer, SubItem> value_map = new HashMap<>();
 		static {
 			for (SubItem sub : values()) {
 				value_map.put(sub.id, sub);

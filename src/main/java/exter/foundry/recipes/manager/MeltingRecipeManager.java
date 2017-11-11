@@ -15,10 +15,10 @@ public class MeltingRecipeManager implements IMeltingRecipeManager {
 
 	public static final MeltingRecipeManager INSTANCE = new MeltingRecipeManager();
 
-	private List<IMeltingRecipe> recipes;
+	private final List<IMeltingRecipe> recipes;
 
 	private MeltingRecipeManager() {
-		recipes = new ArrayList<IMeltingRecipe>();
+		recipes = new ArrayList<>();
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ContainerRefractoryHopper extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 141;
-	private TileEntityRefractoryHopper te_hopper;
+	private final TileEntityRefractoryHopper te_hopper;
 
 	public ContainerRefractoryHopper(TileEntityRefractoryHopper hopper, EntityPlayer player) {
 		te_hopper = hopper;

@@ -59,7 +59,7 @@ public class MTOreStack implements IIngredient {
 
 	@Override
 	public List<IItemStack> getItems() {
-		List<IItemStack> result = new ArrayList<IItemStack>();
+		List<IItemStack> result = new ArrayList<>();
 		for (ItemStack item : stack.getItems()) {
 			result.add(CraftTweakerMC.getIItemStack(item));
 		}

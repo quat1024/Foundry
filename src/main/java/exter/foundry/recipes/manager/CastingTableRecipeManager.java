@@ -19,7 +19,7 @@ public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 	public Map<ICastingTableRecipe.TableType, Map<String, ICastingTableRecipe>> recipes;
 
 	private CastingTableRecipeManager() {
-		recipes = new EnumMap<ICastingTableRecipe.TableType, Map<String, ICastingTableRecipe>>(ICastingTableRecipe.TableType.class);
+		recipes = new EnumMap<>(ICastingTableRecipe.TableType.class);
 		for (ICastingTableRecipe.TableType type : ICastingTableRecipe.TableType.values()) {
 			recipes.put(type, new HashMap<String, ICastingTableRecipe>());
 		}
@@ -40,7 +40,7 @@ public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 
 	@Override
 	public List<ICastingTableRecipe> getRecipes() {
-		List<ICastingTableRecipe> result = new ArrayList<ICastingTableRecipe>();
+		List<ICastingTableRecipe> result = new ArrayList<>();
 		for (ICastingTableRecipe.TableType type : ICastingTableRecipe.TableType.values()) {
 			result.addAll(recipes.get(type).values());
 		}

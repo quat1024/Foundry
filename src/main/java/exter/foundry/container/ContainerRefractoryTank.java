@@ -22,7 +22,7 @@ public class ContainerRefractoryTank extends Container {
 	private static final int SLOT_HOTBAR_X = 8;
 
 	private static final int SLOT_HOTBAR_Y = 141;
-	private TileEntityRefractoryTankBasic te_tank;
+	private final TileEntityRefractoryTankBasic te_tank;
 
 	public ContainerRefractoryTank(TileEntityRefractoryTankBasic tank, EntityPlayer player) {
 		te_tank = tank;

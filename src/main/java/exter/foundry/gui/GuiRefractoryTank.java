@@ -24,7 +24,7 @@ public class GuiRefractoryTank extends GuiFoundry {
 	private static final int TANK_OVERLAY_X = 176;
 	private static final int TANK_OVERLAY_Y = 0;
 
-	private TileEntityRefractoryTankBasic te_hopper;
+	private final TileEntityRefractoryTankBasic te_hopper;
 
 	public GuiRefractoryTank(TileEntityRefractoryTankBasic hopper, EntityPlayer player) {
 		super(new ContainerRefractoryTank(hopper, player));
@@ -49,7 +49,7 @@ public class GuiRefractoryTank extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Refractory Tank", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class GuiRefractoryTank extends GuiFoundry {
 		int i;
 		for (i = 0; i < 5; i++) {
 			if (isPointInRegion(TANK_X, TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-				List<String> currenttip = new ArrayList<String>();
+				List<String> currenttip = new ArrayList<>();
 				addTankTooltip(currenttip, mousex, mousey, te_hopper.getTank(i));
 				drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 			}

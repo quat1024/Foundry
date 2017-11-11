@@ -10,7 +10,7 @@ public class MoldRecipe implements IMoldRecipe {
 	public final int height;
 	public final int[] recipe;
 
-	private int[][] match_recipes;
+	private final int[][] match_recipes;
 
 	public final ItemStack output;
 
@@ -40,7 +40,7 @@ public class MoldRecipe implements IMoldRecipe {
 				Arrays.fill(match_grid, 0);
 				for (int y = 0; y < height; y++) {
 					for (int x = 0; x < width; x++) {
-						match_grid[(y + j) * 6 + (x + i)] = recipe[y * width + x];
+						match_grid[(y + j) * 6 + x + i] = recipe[y * width + x];
 					}
 				}
 			}

@@ -15,7 +15,7 @@ public class AlloyingCrucibleRecipeManager implements IAlloyingCrucibleRecipeMan
 	public List<IAlloyingCrucibleRecipe> recipes;
 
 	private AlloyingCrucibleRecipeManager() {
-		recipes = new ArrayList<IAlloyingCrucibleRecipe>();
+		recipes = new ArrayList<>();
 	}
 
 	@Override

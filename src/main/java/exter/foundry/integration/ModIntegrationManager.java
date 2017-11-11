@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class ModIntegrationManager {
-	static private Map<String, IModIntegration> integrations = new HashMap<String, IModIntegration>();
+	static private Map<String, IModIntegration> integrations = new HashMap<>();
 
 	static public void afterPostInit() {
 		for (IModIntegration m : integrations.values()) {

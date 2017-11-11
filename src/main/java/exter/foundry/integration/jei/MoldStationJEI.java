@@ -106,7 +106,7 @@ public class MoldStationJEI {
 		private final IDrawable[] carve_drawables;
 
 		public Wrapper(IMoldRecipe recipe) {
-			this.carve_drawables = new IDrawable[4];
+			carve_drawables = new IDrawable[4];
 			ResourceLocation location = new ResourceLocation("foundry", "textures/gui/moldstation.png");
 			for (int i = 0; i < 4; i++)
 				carve_drawables[i] = new DrawableResource(location, 176, 107 + i * 11, 11, 11, 0, 0, 0, 0, 256, 256);
@@ -121,8 +121,8 @@ public class MoldStationJEI {
 				int height = recipe.getHeight();
 				int[] grid = recipe.getRecipeGrid();
 
-				int left = (3 - FoundryMiscUtils.divCeil(width, 2));
-				int top = (3 - FoundryMiscUtils.divCeil(height, 2));
+				int left = 3 - FoundryMiscUtils.divCeil(width, 2);
+				int top = 3 - FoundryMiscUtils.divCeil(height, 2);
 
 				for (int y = 0; y < height; y++) {
 					for (int x = 0; x < width; x++) {

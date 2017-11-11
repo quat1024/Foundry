@@ -35,7 +35,7 @@ public class GuiMetalInfuser extends GuiFoundry {
 	private static final int PROGRESS_OVERLAY_X = 176;
 	private static final int PROGRESS_OVERLAY_Y = 53;
 
-	private TileEntityMetalInfuser te_infuser;
+	private final TileEntityMetalInfuser te_infuser;
 
 	public GuiMetalInfuser(TileEntityMetalInfuser inf, EntityPlayer player) {
 		super(new ContainerMetalInfuser(inf, player));
@@ -67,20 +67,20 @@ public class GuiMetalInfuser extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Metal Infuser", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 	}
 
 	@Override
 	public void drawScreen(int mousex, int mousey, float par3) {
 		super.drawScreen(mousex, mousey, par3);
 		if (isPointInRegion(INPUT_TANK_X, INPUT_TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			addTankTooltip(currenttip, mousex, mousey, te_infuser.getTank(TileEntityMetalInfuser.TANK_INPUT));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 
 		if (isPointInRegion(OUTPUT_TANK_X, OUTPUT_TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			addTankTooltip(currenttip, mousex, mousey, te_infuser.getTank(TileEntityMetalInfuser.TANK_OUTPUT));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}

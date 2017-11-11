@@ -49,6 +49,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 			}
 			return null;
 		}
+
 		public final int id;
 		public final String name;
 
@@ -57,7 +58,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		private EnumHopperFacing(int id, String name, EnumFacing target) {
 			this.id = id;
 			this.name = name;
-			this.facing = target;
+			facing = target;
 		}
 
 		@Override
@@ -77,7 +78,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 
 	protected static final AxisAlignedBB[] BOUNDS = new AxisAlignedBB[] { new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D), new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D), new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D) };
 
-	private Random rand = new Random();
+	private final Random rand = new Random();
 
 	public BlockRefractoryHopper() {
 		super(Material.IRON);
@@ -105,16 +106,16 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te != null && (te instanceof TileEntityFoundry) && !world.isRemote) {
+		if (te != null && te instanceof TileEntityFoundry && !world.isRemote) {
 			TileEntityFoundry tef = (TileEntityFoundry) te;
 			int i;
 			for (i = 0; i < tef.getSizeInventory(); i++) {
 				ItemStack is = tef.getStackInSlot(i);
 
 				if (!is.isEmpty()) {
-					double drop_x = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_y = (rand.nextFloat() * 0.3) + 0.35;
-					double drop_z = (rand.nextFloat() * 0.3) + 0.35;
+					double drop_x = rand.nextFloat() * 0.3 + 0.35;
+					double drop_y = rand.nextFloat() * 0.3 + 0.35;
+					double drop_z = rand.nextFloat() * 0.3 + 0.35;
 					EntityItem entityitem = new EntityItem(world, pos.getX() + drop_x, pos.getY() + drop_y, pos.getZ() + drop_z, is);
 					entityitem.setPickupDelay(10);
 

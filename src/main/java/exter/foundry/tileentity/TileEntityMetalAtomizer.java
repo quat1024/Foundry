@@ -20,7 +20,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 	protected class FluidHandler implements IFluidHandler {
-		private IFluidTankProperties[] props;
+		private final IFluidTankProperties[] props;
 
 		public FluidHandler() {
 			props = new IFluidTankProperties[getTankCount()];
@@ -67,9 +67,9 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 	static private final Set<Integer> IH_SLOTS_INPUT = ImmutableSet.of();
 	static private final Set<Integer> IH_SLOTS_OUTPUT = ImmutableSet.of(INVENTORY_OUTPUT);
 
-	private FluidTank[] tanks;
-	private IFluidHandler fluid_handler;
-	private ItemHandler item_handler;
+	private final FluidTank[] tanks;
+	private final IFluidHandler fluid_handler;
+	private final ItemHandler item_handler;
 
 	IAtomizerRecipe current_recipe;
 

@@ -54,7 +54,7 @@ public class GuiMeltingCrucible extends GuiFoundry {
 	private static final int RSMODE_TEXTURE_X = 176;
 	private static final int RSMODE_TEXTURE_Y = 100;
 
-	private TileEntityMeltingCrucibleBasic te_crucible;
+	private final TileEntityMeltingCrucibleBasic te_crucible;
 	private GuiButtonFoundry button_mode;
 
 	public GuiMeltingCrucible(TileEntityMeltingCrucibleBasic ms, EntityPlayer player) {
@@ -116,7 +116,7 @@ public class GuiMeltingCrucible extends GuiFoundry {
 		super.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
 
 		fontRenderer.drawString("Melting Crucible", 5, 6, 0x404040);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, 0x404040);
 
 	}
 
@@ -127,13 +127,13 @@ public class GuiMeltingCrucible extends GuiFoundry {
 		//Draw tool tips.
 
 		if (isPointInRegion(TANK_X, TANK_Y, 16, TANK_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			addTankTooltip(currenttip, mousex, mousey, te_crucible.getTank(0));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 
 		if (isPointInRegion(HEAT_BAR_X, HEAT_BAR_Y, HEAT_BAR_WIDTH, HEAT_BAR_HEIGHT, mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			int heat = te_crucible.getTemperature() / 100;
 			int melt_point = te_crucible.getMeltingPoint() / 100;
 			currenttip.add("Temperature: " + String.valueOf(heat) + " °K");
@@ -143,7 +143,7 @@ public class GuiMeltingCrucible extends GuiFoundry {
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.getWidth(), button_mode.getHeight(), mousex, mousey)) {
-			List<String> currenttip = new ArrayList<String>();
+			List<String> currenttip = new ArrayList<>();
 			currenttip.add(getRedstoenModeText(te_crucible.getRedstoneMode()));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}

@@ -15,7 +15,7 @@ public class InventoryShotgun extends InventoryFirearm {
 	@Override
 	public void closeInventory(EntityPlayer player) {
 		int i;
-		List<ItemStack> ammo = new ArrayList<ItemStack>();
+		List<ItemStack> ammo = new ArrayList<>();
 		for (i = 0; i < items.size(); i++) {
 			ItemStack a = items.get(i);
 			if (a != null) {

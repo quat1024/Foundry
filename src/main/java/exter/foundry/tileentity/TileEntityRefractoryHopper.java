@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityRefractoryHopper extends TileEntityFoundry {
 	protected class FluidHandler implements IFluidHandler {
-		private IFluidTankProperties[] props;
+		private final IFluidTankProperties[] props;
 
 		public FluidHandler() {
 			props = new IFluidTankProperties[getTankCount()];
@@ -63,15 +63,15 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 	static public final int INVENTORY_CONTAINER_DRAIN = 0;
 	static public final int INVENTORY_CONTAINER_FILL = 1;
 
-	private FluidTank tank;
-	private IFluidHandler fluid_handler;
+	private final FluidTank tank;
+	private final IFluidHandler fluid_handler;
 
 	private int next_drain;
 	private int next_world_drain;
 	private int next_fill;
 
 	// Used by world draining system.
-	private boolean[] visited;
+	private final boolean[] visited;
 
 	public TileEntityRefractoryHopper() {
 		visited = new boolean[41 * 20 * 41];
@@ -95,7 +95,7 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 	@Override
 	protected IFluidHandler getFluidHandler(EnumFacing facing) {
 		EnumFacing side = world.getBlockState(getPos()).getValue(BlockRefractoryHopper.FACING).facing;
-		return (facing == EnumFacing.UP || facing == side) ? fluid_handler : null;
+		return facing == EnumFacing.UP || facing == side ? fluid_handler : null;
 	}
 
 	@Override
@@ -170,9 +170,9 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 						visited[i] = false;
 					}
 
-					List<Integer> queue = new ArrayList<Integer>();
-					Set<Integer> newqueue = new HashSet<Integer>();
-					i = 20 + (20 * 20) * 41; // x = 20, y = 0, z = 20
+					List<Integer> queue = new ArrayList<>();
+					Set<Integer> newqueue = new HashSet<>();
+					i = 20 + 20 * 20 * 41; // x = 20, y = 0, z = 20
 					visited[i] = true;
 					int top_y = 0;
 
@@ -186,7 +186,7 @@ public class TileEntityRefractoryHopper extends TileEntityFoundry {
 						newqueue.clear();
 						for (int p : queue) {
 							int x = p % 41;
-							int y = (p / 41) % 20;
+							int y = p / 41 % 20;
 							int z = p / (41 * 20);
 
 							todrain = FoundryMiscUtils.drainFluidFromWorld(world, getPos().add(x - 20, y + 1, z - 20), false);

@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class SlotFirearmAmmo extends Slot {
-	private String type;
+	private final String type;
 
 	public SlotFirearmAmmo(InventoryFirearm inventory, int index, int x, int y, String ammo_type) {
 		super(inventory, index, x, y);

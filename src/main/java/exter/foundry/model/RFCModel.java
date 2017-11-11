@@ -87,7 +87,7 @@ public class RFCModel implements IModel {
 			this.transform = transform;
 			if (otherModel != null) {
 				this.otherModel = otherModel;
-				this.isCulled = true;
+				isCulled = true;
 			} else {
 				ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
 				for (BakedQuad quad : quads) {
@@ -432,9 +432,9 @@ public class RFCModel implements IModel {
 				}
 				break;
 			case COLOR: {
-				float a = (float) ((color >>> 24) & 0xFF) / 255;
-				float r = (float) ((color >>> 16) & 0xFF) / 255;
-				float g = (float) ((color >>> 8) & 0xFF) / 255;
+				float a = (float) (color >>> 24 & 0xFF) / 255;
+				float r = (float) (color >>> 16 & 0xFF) / 255;
+				float g = (float) (color >>> 8 & 0xFF) / 255;
 				float b = (float) (color & 0xFF) / 255;
 				builder.put(e, r, g, b, a);
 			}
@@ -462,6 +462,7 @@ public class RFCModel implements IModel {
 		texture_fg = new ResourceLocation("foundry", "items/container_foreground");
 		texture_bg = new ResourceLocation("foundry", "items/container_background");
 	}
+
 	@Override
 	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
 		Optional<TRSRTransformation> transform = state.apply(Optional.empty());
