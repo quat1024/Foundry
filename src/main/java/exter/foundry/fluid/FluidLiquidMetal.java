@@ -1,7 +1,9 @@
 package exter.foundry.fluid;
 
+import exter.foundry.Foundry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FluidLiquidMetal extends Fluid {
 
@@ -26,5 +28,10 @@ public class FluidLiquidMetal extends Fluid {
 	public FluidLiquidMetal setColor(int fluid_color) {
 		color = fluid_color | 0xFF000000;
 		return this;
+	}
+	
+	@Override
+	public String getLocalizedName(FluidStack stack) {
+		return Foundry.proxy.translate(this.getUnlocalizedName(stack) + ".name");
 	}
 }

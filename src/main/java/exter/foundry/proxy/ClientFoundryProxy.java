@@ -3,9 +3,11 @@ package exter.foundry.proxy;
 import java.util.List;
 import java.util.Map;
 
+import exter.foundry.FoundryRegistry;
 import exter.foundry.block.BlockCastingTable;
 import exter.foundry.block.BlockComponent;
 import exter.foundry.block.BlockFoundryMachine;
+import exter.foundry.block.BlockLiquidMetal;
 import exter.foundry.block.FoundryBlocks;
 import exter.foundry.config.FoundryConfig;
 import exter.foundry.entity.EntitySkeletonGun;
@@ -34,11 +36,14 @@ import exter.foundry.tileentity.renderer.HopperRenderer;
 import exter.foundry.tileentity.renderer.SpoutRenderer;
 import exter.foundry.tileentity.renderer.TankRenderer;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -82,7 +87,7 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 
 		ModIntegrationManager.clientInit();
 	}
-	
+
 	@SubscribeEvent
 	public void doModels(ModelRegistryEvent e) {
 		for (BlockFoundryMachine.EnumMachine m : BlockFoundryMachine.EnumMachine.values()) {
@@ -132,6 +137,13 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		registerItemModel(FoundryItems.item_shell_ap, "shellAP", 0);
 		registerItemModel(FoundryItems.item_shell_lumium, "shellLumium", 0);
 		registerItemModel(FoundryItems.item_container, "container", 0);
+
+		for (Block b : FoundryRegistry.BLOCKS) {
+			if (b instanceof BlockLiquidMetal) {
+				ModelLoader.setCustomStateMapper(b, new FluidStateMapper((BlockLiquidMetal) b));
+				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), 0, new ModelResourceLocation(b.getRegistryName(), "normal"));
+			}
+		}
 	}
 
 	@Override
@@ -204,4 +216,29 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(name, "inventory"));
 	}
 
+	public static class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {
+
+		public final BlockLiquidMetal fluid;
+		public final ModelResourceLocation location;
+
+		public FluidStateMapper(BlockLiquidMetal fluid) {
+			this.fluid = fluid;
+			this.location = new ModelResourceLocation(fluid.getRegistryName(), "normal");
+		}
+
+		@Override
+		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+			return this.location;
+		}
+
+		@Override
+		public ModelResourceLocation getModelLocation(ItemStack stack) {
+			return this.location;
+		}
+	}
+
+	@Override
+	public String translate(String string, Object... args) {
+		return I18n.format(string, args);
+	}
 }

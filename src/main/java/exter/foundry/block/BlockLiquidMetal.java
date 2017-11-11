@@ -49,7 +49,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	public void checkForHarden(World world, BlockPos pos, IBlockState state) {
 		if (isSourceBlock(world, pos)) {
 			if (solid_state == null && solid != null) {
-				ItemStack item = null;
+				ItemStack item = ItemStack.EMPTY;
 				if (solid instanceof ItemStack) {
 					item = (ItemStack) solid;
 				} else if (solid instanceof String) {
@@ -63,7 +63,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 					solid = null;
 				}
 
-				if (item == null) {
+				if (item.isEmpty()) {
 					solid = null;
 				}
 				solid_state = getBlockStateFromItemStack(item);
@@ -85,10 +85,12 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	}
 
 	private IBlockState getBlockStateFromItemStack(ItemStack stack) {
-		Block block = ((ItemBlock) stack.getItem()).getBlock();
-		int meta = stack.getMetadata();
-		for (IBlockState state : block.getBlockState().getValidStates()) {
-			if (state != null && block.damageDropped(state) == meta) { return state; }
+		if (stack.getItem() instanceof ItemBlock) {
+			Block block = ((ItemBlock) stack.getItem()).getBlock();
+			int meta = stack.getMetadata();
+			for (IBlockState state : block.getBlockState().getValidStates()) {
+				if (state != null && block.damageDropped(state) == meta) { return state; }
+			}
 		}
 		return null;
 	}
@@ -101,11 +103,6 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	@Override
 	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
 		return 0;
-	}
-
-	@Override
-	public String getLocalizedName() {
-		return stack.getLocalizedName();
 	}
 
 	@Override

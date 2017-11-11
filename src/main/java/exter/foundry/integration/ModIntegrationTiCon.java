@@ -88,7 +88,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 
 	@Override
 	public String getName() {
-		return "TiCon";
+		return "tconstruct";
 	}
 
 	@Override

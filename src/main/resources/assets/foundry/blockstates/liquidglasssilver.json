@@ -5,7 +5,7 @@
     "normal":
     {
       "model": "forge:fluid",
-      "custom": { "fluid": "liquidglass.gray" }
+      "custom": { "fluid": "liquidglasssilver" }
     }
   }
 }

@@ -117,9 +117,9 @@ public class GuiCokeOven extends GuiFoundry {
 			List<String> currenttip = new ArrayList<>();
 			int heat = te_oven.getTemperature() / 100;
 			int bake = TileEntityCokeOven.BAKE_TEMP / 100;
-			currenttip.add("Temperature: " + String.valueOf(heat) + " Â°K");
+			currenttip.add("Temperature: " + String.valueOf(heat) + " °K");
 			if (bake > 0) {
-				currenttip.add("Bake: " + String.valueOf(bake) + " Â°K");
+				currenttip.add("Bake: " + String.valueOf(bake) + " °K");
 			}
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
