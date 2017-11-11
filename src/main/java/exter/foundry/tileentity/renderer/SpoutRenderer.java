@@ -102,7 +102,7 @@ public class SpoutRenderer extends TileEntitySpecialRenderer<TileEntityRefractor
 				break;
 			}
 			GlStateManager.translate(-0.5f, 0, -0.5f);
-			TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
+			TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getFlowing(fluid).toString());
 
 			double low = 0;
 			BlockPos pos = te.getPos();

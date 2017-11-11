@@ -176,7 +176,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 					entityitem.setPickupDelay(1);
 
 					world.spawnEntity(entityitem);
-					te_ct.setInventorySlotContents(0, null);
+					te_ct.setInventorySlotContents(0, ItemStack.EMPTY);
 				}
 			}
 		}

@@ -124,8 +124,6 @@ public class Foundry {
 			GameRegistry.registerTileEntity(TileEntityCokeOven.class, "Foundry_CokeOven");
 		}
 
-		InitRecipes.init();
-
 		EntityRegistry.registerModEntity(new ResourceLocation("foundry", "gun_skeleton"), EntitySkeletonGun.class, "gunSkeleton", 0, this, 80, 1, true);
 		LootTableList.register(new ResourceLocation("foundry", "gun_skeleton"));
 

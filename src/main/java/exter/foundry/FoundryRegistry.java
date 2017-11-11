@@ -3,6 +3,8 @@ package exter.foundry;
 import java.util.List;
 
 import exter.foundry.init.InitRecipes;
+import exter.foundry.item.FoundryItems;
+import exter.foundry.item.ItemComponent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -10,6 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class FoundryRegistry {
 
@@ -30,7 +33,9 @@ public class FoundryRegistry {
 
 	@SubscribeEvent
 	public void registerRecipes(Register<IRecipe> e) {
+		OreDictionary.registerOre("fuelCoke", FoundryItems.component(ItemComponent.SubItem.COAL_COKE));
 		InitRecipes.preInit();
+		InitRecipes.init();
 		e.getRegistry().registerAll(RECIPES.toArray(new IRecipe[RECIPES.size()]));
 	}
 

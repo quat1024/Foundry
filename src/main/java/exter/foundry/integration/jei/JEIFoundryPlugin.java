@@ -45,11 +45,6 @@ public class JEIFoundryPlugin implements IModPlugin {
 	@Override
 	public void register(IModRegistry registry) {
 
-		table_ingot = new CastingTableJEI(BlockCastingTable.EnumTable.INGOT);
-		table_plate = new CastingTableJEI(BlockCastingTable.EnumTable.PLATE);
-		table_rod = new CastingTableJEI(BlockCastingTable.EnumTable.ROD);
-		table_block = new CastingTableJEI(BlockCastingTable.EnumTable.BLOCK);
-
 		IRecipeTransferRegistry transfer_registry = registry.getRecipeTransferRegistry();
 
 		transfer_registry.addRecipeTransferHandler(ContainerAlloyFurnace.class, FoundryJEIConstants.AF_UID, ContainerAlloyFurnace.SLOTS_TE, ContainerAlloyFurnace.SLOTS_TE_SIZE, ContainerAlloyFurnace.SLOTS_INVENTORY, 36);
@@ -107,6 +102,11 @@ public class JEIFoundryPlugin implements IModPlugin {
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registry) {
+		table_ingot = new CastingTableJEI(BlockCastingTable.EnumTable.INGOT);
+		table_plate = new CastingTableJEI(BlockCastingTable.EnumTable.PLATE);
+		table_rod = new CastingTableJEI(BlockCastingTable.EnumTable.ROD);
+		table_block = new CastingTableJEI(BlockCastingTable.EnumTable.BLOCK);
+		
 		IJeiHelpers helpers = registry.getJeiHelpers();
 		registry.addRecipeCategories(new AlloyFurnaceJEI.Category(helpers), new MeltingJEI.Category(helpers), new CastingJEI.Category(helpers), new AlloyMixerJEI.Category(helpers), new AlloyingCrucibleJEI.Category(helpers), new InfuserJEI.Category(helpers), new AtomizerJEI.Category(helpers), new MoldStationJEI.Category(helpers), table_ingot.new Category(helpers), table_plate.new Category(helpers), table_rod.new Category(helpers), table_block.new Category(helpers));
 	}

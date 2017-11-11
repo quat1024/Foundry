@@ -139,7 +139,7 @@ public class CastingTableRenderer extends TileEntitySpecialRenderer<TileEntityCa
 			}
 		}
 		if (fluid != null) {
-			TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
+			TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getStill(fluid).toString());
 
 			int color = fluid.getFluid().getColor();
 			int light = te.getWorld().getCombinedLight(te.getPos(), fluid.getFluid().getLuminosity());

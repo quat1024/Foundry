@@ -50,13 +50,20 @@ public class InitRecipes {
 		Fluid liquid_glowstone = FluidRegistry.getFluid("liquidglowstone");
 		Fluid liquid_enderpearl = FluidRegistry.getFluid("liquidenderpearl");
 
-		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustRedstone"), new FluidStack(liquid_redstone, 100));
-		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustGlowstone"), new FluidStack(liquid_glowstone, 250), liquid_glowstone.getTemperature(), 90);
-		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustEnderpearl"), new FluidStack(liquid_enderpearl, 250), liquid_enderpearl.getTemperature(), 75);
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Items.ENDER_PEARL), new FluidStack(liquid_enderpearl, 250), liquid_enderpearl.getTemperature(), 75);
+		if (liquid_redstone != null) {
+			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustRedstone"), new FluidStack(liquid_redstone, 100));
+			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockRedstone"), new FluidStack(liquid_redstone, 900));
+		}
 
-		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockRedstone"), new FluidStack(liquid_redstone, 900));
-		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockGlowstone"), new FluidStack(liquid_glowstone, 1000), liquid_glowstone.getTemperature(), 90);
+		if (liquid_glowstone != null) {
+			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustGlowstone"), new FluidStack(liquid_glowstone, 250), liquid_glowstone.getTemperature(), 90);
+			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockGlowstone"), new FluidStack(liquid_glowstone, 1000), liquid_glowstone.getTemperature(), 90);
+		}
+
+		if (liquid_enderpearl != null) {
+			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustEnderpearl"), new FluidStack(liquid_enderpearl, 250), liquid_enderpearl.getTemperature(), 75);
+			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Items.ENDER_PEARL), new FluidStack(liquid_enderpearl, 250), liquid_enderpearl.getTemperature(), 75);
+		}
 
 		MoldRecipeManager.instance.addRecipe(FoundryItems.mold(ItemMold.SubItem.INGOT), 2, 4, new int[] { 2, 2, 2, 2, 2, 2, 2, 2 });
 
@@ -203,7 +210,6 @@ public class InitRecipes {
 		ItemStack casing_stack = FoundryBlocks.block_component.asItemStack(BlockComponent.EnumVariant.CASING_STANDARD);
 		ItemStack casing_inferno_stack = FoundryBlocks.block_component.asItemStack(BlockComponent.EnumVariant.CASING_ADVANCED);
 		ItemStack piston_stack = new ItemStack(Blocks.PISTON);
-		ItemStack goldnugget_stack = new ItemStack(Items.GOLD_NUGGET);
 		ItemStack bronze_cauldron_stack = new ItemStack(FoundryBlocks.block_cauldron_bronze);
 		ItemStack cauldron_stack = new ItemStack(Items.CAULDRON);
 		ItemStack chest_stack = new ItemStack(Blocks.CHEST);
@@ -237,7 +243,7 @@ public class InitRecipes {
 
 		RecipeHelper.addOldShaped(emptycontainer2_stack, " T ", "BGB", " T ", 'T', "plateTin", 'B', refbrick_stack, 'G', refglass_stack);
 
-		RecipeHelper.addOldShaped(FoundryItems.component(ItemComponent.SubItem.HEATINGCOIL, 2), "CCC", "CRC", "CCC", 'C', "rodCupronickel", 'G', goldnugget_stack, 'R', redstone_stack);
+		RecipeHelper.addOldShaped(FoundryItems.component(ItemComponent.SubItem.HEATINGCOIL, 2), "CCC", "CRC", "CCC", 'C', "rodCupronickel", 'R', redstone_stack);
 
 		RecipeHelper.addOldShaped(casing_basic_stack, "IBI", "B B", "IBI", 'I', "plateBronze", 'B', refbrick_stack);
 
@@ -271,7 +277,7 @@ public class InitRecipes {
 
 		RecipeHelper.addOldShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.CRUCIBLE_ADVANCED), "BAB", "BCB", "BIB", 'B', infbrick_stack, 'I', "plateSilver", 'C', casing_inferno_stack, 'A', cauldron_stack);
 
-		RecipeHelper.addOldShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.INFUSER), " R ", "GCG", "HRH", 'R', redstone_stack, 'B', refbrick_stack, 'C', casing_stack, 'G', "gearInvar", 'H', heatingcoil_stack);
+		RecipeHelper.addOldShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.INFUSER), " R ", "GCG", "HRH", 'R', redstone_stack, 'C', casing_stack, 'G', "gearInvar", 'H', heatingcoil_stack);
 
 		RecipeHelper.addOldShaped(new ItemStack(FoundryBlocks.block_alloy_furnace), "BBB", "BFB", "BBB", 'B', refbrick_stack, 'F', furnace_stack);
 

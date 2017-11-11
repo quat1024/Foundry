@@ -1,5 +1,5 @@
 {
-    "parent": "foundry:block/castingTableIngot",
+    "parent": "foundry:block/castingtableingot",
     "display": {
         "gui": {
             "rotation": [ 30, 225, 0 ],

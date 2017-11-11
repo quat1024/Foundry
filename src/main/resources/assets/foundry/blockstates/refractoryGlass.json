@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "foundry:refractoryGlass" }
+        "normal": { "model": "foundry:refractoryglass" }
     }
 }

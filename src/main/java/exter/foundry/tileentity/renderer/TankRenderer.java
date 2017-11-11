@@ -93,7 +93,7 @@ public class TankRenderer extends TileEntitySpecialRenderer<TileEntityRefractory
 			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.resetColor();
 			GL11.glTranslatef((float) x, (float) y, (float) z);
-			TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
+			TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getStill(fluid).toString());
 			double fluid_z = (double) fluid.amount / te.getTank(0).getCapacity() * 11.99 + 2;
 
 			int color = fluid.getFluid().getColor();

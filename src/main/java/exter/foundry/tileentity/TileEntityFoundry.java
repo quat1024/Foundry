@@ -156,7 +156,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 		@Override
 		public final ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (!extract_slots.contains(slot) || !canExtract(slot)) { return null; }
+			if (!extract_slots.contains(slot) || !canExtract(slot)) { return ItemStack.EMPTY; }
 			ItemStack is = getStackInSlot(slot);
 			if (is.isEmpty()) { return ItemStack.EMPTY; }
 			if (amount > is.getCount()) {
@@ -187,7 +187,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 		@Override
 		public final ItemStack getStackInSlot(int slot) {
-			return getStackInSlot(slot);
+			return inventory.get(slot);
 		}
 
 		@Override

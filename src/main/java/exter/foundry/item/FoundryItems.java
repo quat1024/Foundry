@@ -16,7 +16,6 @@ import exter.foundry.item.firearm.ItemRevolver;
 import exter.foundry.item.firearm.ItemShotgun;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class FoundryItems {
 	static public ItemComponent item_component;
@@ -87,7 +86,5 @@ public class FoundryItems {
 		FoundryRegistry.ITEMS.add(item_shell_ap);
 		FoundryRegistry.ITEMS.add(item_shell_lumium);
 		FoundryRegistry.ITEMS.add(item_container);
-
-		OreDictionary.registerOre("fuelCoke", component(ItemComponent.SubItem.COAL_COKE));
 	}
 }
