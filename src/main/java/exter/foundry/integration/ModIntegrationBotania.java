@@ -90,27 +90,27 @@ public class ModIntegrationBotania implements IModIntegration {
 		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.FLUID_AMOUNT_BLOCK), mold_block, null);
 
 		if (FoundryConfig.recipe_equipment) {
-			ItemStack manasteel_pickaxe = getItemStack("manasteel_pick");
-			ItemStack manasteel_axe = getItemStack("manasteel_axe");
-			ItemStack manasteel_shovel = getItemStack("manasteel_shovel");
-			ItemStack manasteel_sword = getItemStack("manasteel_sword");
+			ItemStack manasteel_pickaxe = getItemStack("manasteelpick");
+			ItemStack manasteel_axe = getItemStack("manasteelaxe");
+			ItemStack manasteel_shovel = getItemStack("manasteelshovel");
+			ItemStack manasteel_sword = getItemStack("manasteelsword");
 
-			ItemStack manasteel_helmet = getItemStack("manasteel_helm");
-			ItemStack manasteel_chestplate = getItemStack("manasteel_chest");
-			ItemStack manasteel_leggings = getItemStack("manasteel_legs");
-			ItemStack manasteel_boots = getItemStack("manasteel_boots");
+			ItemStack manasteel_helmet = getItemStack("manasteelhelm");
+			ItemStack manasteel_chestplate = getItemStack("manasteelchest");
+			ItemStack manasteel_leggings = getItemStack("manasteellegs");
+			ItemStack manasteel_boots = getItemStack("manasteelboots");
 
-			ItemStack terrasteel_sword = getItemStack("terra_sword");
+			ItemStack terrasteel_sword = getItemStack("terrasword");
 
-			ItemStack elementium_pickaxe = getItemStack("elementium_pick");
-			ItemStack elementium_axe = getItemStack("elementium_axe");
-			ItemStack elementium_shovel = getItemStack("elementium_shovel");
-			ItemStack elementium_sword = getItemStack("elementium_sword");
+			ItemStack elementium_pickaxe = getItemStack("elementiumpick");
+			ItemStack elementium_axe = getItemStack("elementiumaxe");
+			ItemStack elementium_shovel = getItemStack("elementiumshovel");
+			ItemStack elementium_sword = getItemStack("elementiumsword");
 
-			ItemStack elementium_helmet = getItemStack("elementium_helm");
-			ItemStack elementium_chestplate = getItemStack("elementium_chest");
-			ItemStack elementium_leggings = getItemStack("elementium_legs");
-			ItemStack elementium_boots = getItemStack("elementium_boots");
+			ItemStack elementium_helmet = getItemStack("elementiumhelm");
+			ItemStack elementium_chestplate = getItemStack("elementiumchest");
+			ItemStack elementium_leggings = getItemStack("elementiumlegs");
+			ItemStack elementium_boots = getItemStack("elementiumboots");
 
 			ItemStack livingwood_twig = getItemStack("manaresource", 3);
 			ItemStack dreamwood_twig = getItemStack("manaresource", 13);
