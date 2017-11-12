@@ -18,11 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModIntegrationMinetweaker implements IModIntegration {
 
-	public static final String CRT = CraftTweaker.MODID;
-
 	@Override
 	public String getName() {
-		return CRT;
+		return CraftTweaker.NAME;
 	}
 
 	@Override
@@ -50,6 +48,15 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 
 	@Override
 	public void onInit() {
+	}
+
+	@Override
+	public void onPostInit() {
+
+	}
+
+	@Override
+	public void onPreInit(Configuration config) {
 		CraftTweakerAPI.registerBracketHandler(new OreStackBracketHandler());
 		CraftTweakerAPI.registerClass(MTMeltingHandler.class);
 		CraftTweakerAPI.registerClass(MTCastingHandler.class);
@@ -60,15 +67,5 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 		CraftTweakerAPI.registerClass(MTAtomizerHandler.class);
 		CraftTweakerAPI.registerClass(MTInfuserHandler.class);
 		CraftTweakerAPI.registerClass(MTMoldStationHandler.class);
-	}
-
-	@Override
-	public void onPostInit() {
-
-	}
-
-	@Override
-	public void onPreInit(Configuration config) {
-
 	}
 }

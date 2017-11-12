@@ -48,7 +48,7 @@ public class RecipeHelper {
 	 */
 	public static void addOldShaped(ItemStack output, Object... input) {
 		ShapedPrimer primer = CraftingHelper.parseShaped(input);
-		addRecipe(j++, new ShapedRecipes(new ResourceLocation(MODID, "recipes" + j).toString(), primer.width, primer.height, primer.input, output));
+		addRecipe(j++, new ShapedRecipes(new ResourceLocation(MODID, "recipe" + j).toString(), primer.width, primer.height, primer.input, output));
 	}
 
 	/*
@@ -75,7 +75,7 @@ public class RecipeHelper {
 	 * This adds a shapeless recipe to the list of crafting recipes, using the forge format.
 	 */
 	public static void addOldShapeless(ItemStack output, Object... input) {
-		addRecipe(j++, new ShapelessRecipes(new ResourceLocation(MODID, "recipes" + j).toString(), output, createInput(input)));
+		addRecipe(j++, new ShapelessRecipes(new ResourceLocation(MODID, "recipe" + j).toString(), output, createInput(input)));
 	}
 
 	/*
@@ -93,7 +93,7 @@ public class RecipeHelper {
 	 * This adds the recipe to the list of crafting recipes.  Since who cares about names, it adds it as recipesX, where X is the current recipe you are adding.
 	 */
 	public static void addRecipe(int j, IRecipe rec) {
-		if (rec.getRegistryName() == null) recipeList.add(rec.setRegistryName(new ResourceLocation(MODID, "recipes" + j)));
+		if (rec.getRegistryName() == null) recipeList.add(rec.setRegistryName(new ResourceLocation(MODID, "recipe" + j)));
 		else recipeList.add(rec);
 	}
 

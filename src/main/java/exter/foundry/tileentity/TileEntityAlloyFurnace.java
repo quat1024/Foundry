@@ -95,7 +95,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	private boolean canOutput(IAlloyFurnaceRecipe recipe) {
 		ItemStack output = recipe.getOutput();
 		ItemStack inv_output = getStackInSlot(SLOT_OUTPUT);
-		return inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize();
+		return inv_output.isEmpty() || (inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize());
 	}
 
 	@Optional.Method(modid = "Botania")
@@ -264,7 +264,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 
 		boolean reversed = false;
 		IAlloyFurnaceRecipe recipe = null;
-		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
+		if (!getStackInSlot(SLOT_INPUT_A).isEmpty() && !getStackInSlot(SLOT_INPUT_B).isEmpty()) {
 			recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
 			if (recipe == null) {
 				recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));

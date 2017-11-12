@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
 import slimeknights.tconstruct.library.smeltery.CastingRecipe;
@@ -88,7 +89,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 
 	@Override
 	public String getName() {
-		return "tconstruct";
+		return TConstruct.modName;
 	}
 
 	@Override

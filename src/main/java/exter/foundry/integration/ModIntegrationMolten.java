@@ -103,7 +103,7 @@ public class ModIntegrationMolten implements IModIntegration {
 
 	@Override
 	public String getName() {
-		return "MoltenMetalFluids";
+		return "Molten Fluids";
 	}
 
 	@Override

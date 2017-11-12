@@ -20,6 +20,7 @@ import exter.foundry.fluid.FoundryFluids;
 import exter.foundry.fluid.LiquidMetalRegistry;
 import exter.foundry.item.FoundryItems;
 import exter.foundry.item.ItemComponent;
+import exter.foundry.item.ItemComponent.SubItem;
 import exter.foundry.item.ItemMold;
 import exter.foundry.material.MaterialRegistry;
 import exter.foundry.material.OreDictMaterial;
@@ -138,6 +139,9 @@ public class InitRecipes {
 	}
 
 	static public void preInit() {
+		
+		RecipeHelper.addShapeless(FoundryItems.component(SubItem.DUST_SMALL_BLAZE, 4), Items.BLAZE_POWDER);
+		RecipeHelper.addShapeless(FoundryItems.component(SubItem.DUST_SMALL_GUNPOWDER, 4), Items.GUNPOWDER);
 
 		if (FoundryConfig.recipe_glass) {
 			final String[] oredict_names = { "dyeBlack", "dyeRed", "dyeGreen", "dyeBrown", "dyeBlue", "dyePurple", "dyeCyan", "dyeLightGray", "dyeGray", "dyePink", "dyeLime", "dyeYellow", "dyeLightBlue", "dyeMagenta", "dyeOrange", "dyeWhite" };
@@ -165,6 +169,7 @@ public class InitRecipes {
 			}
 		}
 		registerCrafting();
+		registerMachineRecipes();
 	}
 
 	public static void registerCrafting() {
@@ -240,7 +245,7 @@ public class InitRecipes {
 
 		RecipeHelper.addOldShaped(FoundryBlocks.block_casting_table.asItemStack(EnumTable.BLOCK), "BMB", " S ", 'S', new ItemStack(Blocks.STONE_SLAB), 'B', refbrick_stack, 'M', mold_block);
 
-		RecipeHelper.addOldShaped(FoundryBlocks.block_refractory_spout, "RL", "BB", "R ", 'R', "rodBronze", 'B', refbrick_stack, 'L', new ItemStack(Blocks.LEVER));
+		RecipeHelper.addOldShaped(FoundryBlocks.block_refractory_spout, "RL", "BB", "R ", 'R', "ingotBronze", 'B', refbrick_stack, 'L', new ItemStack(Blocks.LEVER));
 
 		RecipeHelper.addOldShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.INDUCTIONHEATER), "HIH", "RCR", "HRH", 'H', heatingcoil_stack, 'R', redstone_stack, 'I', "plateCopper", 'C', casing_stack);
 
@@ -264,7 +269,7 @@ public class InitRecipes {
 
 		RecipeHelper.addOldShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.ALLOYMIXER), " P ", "GCG", " R ", 'C', casing_stack, 'R', redstone_stack, 'G', "gearInvar", 'P', "plateInvar");
 
-		RecipeHelper.addOldShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.MATERIALROUTER), "GEG", "PRP", "GCG", 'R', casing_stack, 'P', "plateSignalum", 'C', comparator_stack, 'E', repeater_stack, 'G', "gearBrass");
+		RecipeHelper.addOldShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.MATERIALROUTER), "GEG", "PRP", "GCG", 'R', casing_stack, 'P', "plateSignalum", 'C', comparator_stack, 'E', repeater_stack, 'G', "gearGold");
 
 		RecipeHelper.addOldShaped(new ItemStack(FoundryBlocks.block_mold_station), "BWB", "BSB", "BFB", 'B', refbrick_stack, 'W', new ItemStack(Blocks.CRAFTING_TABLE), 'S', new ItemStack(Blocks.STONE_SLAB), 'F', furnace_stack);
 

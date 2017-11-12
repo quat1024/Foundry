@@ -98,7 +98,6 @@ public class Foundry {
 	public void init(FMLInitializationEvent event) {
 		ModIntegrationManager.init();
 		FoundrySounds.init();
-		InitRecipes.registerMachineRecipes();
 
 		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleBasic.class, "Foundry_MeltingCrucible");
 		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleStandard.class, "Foundry_MeltingCrucibleStandard");

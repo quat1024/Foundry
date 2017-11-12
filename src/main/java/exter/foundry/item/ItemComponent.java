@@ -8,8 +8,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemComponent extends Item {
 	static public enum SubItem {
@@ -34,7 +32,9 @@ public class ItemComponent extends Item {
 		INFERNOBRICK(18, "componentInfernoBrick"),
 		AMMO_BULLET_LUMIUM(19, "componentBulletLumium"),
 		AMMO_PELLET_LUMIUM(20, "componentPelletLumium"),
-		COAL_COKE(21, "componentCoalCoke");
+		COAL_COKE(21, "componentCoalCoke"),
+		DUST_SMALL_BLAZE(22, "dustSmallBlaze"),
+		DUST_SMALL_GUNPOWDER(23, "dustSmallGunpowder");
 
 		static private final Map<Integer, SubItem> value_map = new HashMap<>();
 		static {
@@ -72,7 +72,6 @@ public class ItemComponent extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tabs)) for (SubItem c : SubItem.values()) {
 			list.add(new ItemStack(this, 1, c.id));
