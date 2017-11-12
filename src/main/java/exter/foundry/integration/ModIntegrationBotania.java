@@ -41,7 +41,7 @@ public class ModIntegrationBotania implements IModIntegration {
 
 	@Override
 	public String getName() {
-		return BOTANIA;
+		return "Botania";
 	}
 
 	@Override
