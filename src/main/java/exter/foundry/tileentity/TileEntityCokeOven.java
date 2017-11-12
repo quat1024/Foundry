@@ -44,8 +44,8 @@ public class TileEntityCokeOven extends TileEntityFoundryHeatable {
 		if (getTemperature() <= BAKE_TEMP) { return false; }
 		ItemStack input = inventory.get(INVENTORY_INPUT);
 		ItemStack output = inventory.get(INVENTORY_OUTPUT);
-		if (input == null || input.getItem() != Items.COAL || input.getMetadata() != 0) { return false; }
-		if (output != null && output.getItem() != FoundryItems.item_component && output.getMetadata() != ItemComponent.SubItem.COAL_COKE.id && output.getCount() == output.getMaxStackSize()) { return false; }
+		if (input.isEmpty() || input.getItem() != Items.COAL || input.getMetadata() != 0) { return false; }
+		if (!output.isEmpty() && output.getItem() != FoundryItems.item_component && output.getMetadata() != ItemComponent.SubItem.COAL_COKE.id && output.getCount() == output.getMaxStackSize()) { return false; }
 		return true;
 	}
 

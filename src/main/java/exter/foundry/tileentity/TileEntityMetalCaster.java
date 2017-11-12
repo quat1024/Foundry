@@ -69,7 +69,7 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 		ItemStack recipe_output = current_recipe.getOutput();
 
 		ItemStack inv_output = inventory.get(INVENTORY_OUTPUT);
-		if (inv_output != null && (!inv_output.isItemEqual(recipe_output) || inv_output.getCount() + recipe_output.getCount() > inv_output.getMaxStackSize())) { return false; }
+		if (!inv_output.isEmpty() && (!inv_output.isItemEqual(recipe_output) || inv_output.getCount() + recipe_output.getCount() > inv_output.getMaxStackSize())) { return false; }
 		return true;
 	}
 

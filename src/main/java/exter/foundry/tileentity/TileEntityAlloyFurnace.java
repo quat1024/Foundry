@@ -101,7 +101,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	@Optional.Method(modid = "Botania")
 	@Override
 	public boolean canSmelt() {
-		if (getStackInSlot(SLOT_INPUT_A) != null && getStackInSlot(SLOT_INPUT_B) != null) {
+		if (!getStackInSlot(SLOT_INPUT_A).isEmpty() && getStackInSlot(SLOT_INPUT_B).isEmpty()) {
 			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
 			if (recipe == null) {
 				recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
@@ -109,7 +109,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 			if (recipe == null) { return false; }
 			ItemStack output = recipe.getOutput();
 			ItemStack inv_output = inventory.get(SLOT_OUTPUT);
-			if (inv_output != null && (!inv_output.isItemEqual(output) || inv_output.getCount() - output.getCount() > inv_output.getMaxStackSize())) { return false; }
+			if (!inv_output.isEmpty() && (!inv_output.isItemEqual(output) || inv_output.getCount() - output.getCount() > inv_output.getMaxStackSize())) { return false; }
 			return true;
 		}
 		return false;

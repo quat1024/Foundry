@@ -160,7 +160,7 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 	@Deprecated
 	@Override
 	public final ItemStack removeStackFromSlot(int slot) {
-		if (progress > 0) { return null; }
+		if (progress > 0) { return ItemStack.EMPTY; }
 		return super.removeStackFromSlot(slot);
 	}
 
@@ -174,7 +174,7 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 
 		recipe = CastingTableRecipeManager.INSTANCE.findRecipe(fluid, getTableType());
 		if (recipe != null) {
-			if (recipe.getOutput() == null) {
+			if (recipe.getOutput().isEmpty()) {
 				recipe = null;
 				tank.setCapacity(getDefaultCapacity());
 				updateValue("tank_capacity", tank.getCapacity());

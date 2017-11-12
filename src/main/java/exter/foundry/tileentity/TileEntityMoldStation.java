@@ -84,7 +84,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 		int clay_amount = getCarvedClayAmount();
 		ItemStack slot_clay = getStackInSlot(SLOT_CLAY);
 
-		return canOutput(output, SLOT_OUTPUT) && (slot_clay == null || slot_clay.getCount() + clay_amount <= slot_clay.getMaxStackSize());
+		return canOutput(output, SLOT_OUTPUT) && (slot_clay.isEmpty() || slot_clay.getCount() + clay_amount <= slot_clay.getMaxStackSize());
 	}
 
 	@Optional.Method(modid = "Botania")
@@ -139,7 +139,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 			} else {
 				getStackInSlot(SLOT_OUTPUT).grow(output.getCount());
 			}
-			if (getStackInSlot(SLOT_CLAY) == null) {
+			if (getStackInSlot(SLOT_CLAY).isEmpty()) {
 				setStackInSlot(SLOT_CLAY, FoundryItems.component(ItemComponent.SubItem.REFRACTORYCLAY_SMALL, clay));
 			} else {
 				getStackInSlot(SLOT_CLAY).grow(clay);
@@ -315,7 +315,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 
 		if (!has_block) {
 			ItemStack block = getStackInSlot(SLOT_BLOCK);
-			if (block != null) {
+			if (!block.isEmpty()) {
 				decrStackSize(SLOT_BLOCK, 1);
 				has_block = true;
 				updateValue("HasBlock", has_block);
@@ -330,7 +330,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 			if (burn_time == 0 && current_recipe != null && canRecipeOutput()) {
 				item_burn_time = burn_time = TileEntityFurnace.getItemBurnTime(getStackInSlot(SLOT_FUEL));
 				if (burn_time > 0) {
-					if (getStackInSlot(SLOT_FUEL) != null) {
+					if (!getStackInSlot(SLOT_FUEL).isEmpty()) {
 						getStackInSlot(SLOT_FUEL).shrink(1);
 						if (getStackInSlot(SLOT_FUEL).getCount() == 0) {
 							setStackInSlot(SLOT_FUEL, getStackInSlot(SLOT_FUEL).getItem().getContainerItem(getStackInSlot(SLOT_FUEL)));

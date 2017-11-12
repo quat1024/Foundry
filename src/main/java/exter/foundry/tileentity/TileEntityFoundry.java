@@ -194,13 +194,13 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		public final ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if (!insert_slots.contains(slot) || !canInsert(slot, stack)) { return stack; }
 			ItemStack is = getStackInSlot(slot);
-			if (is == null) {
+			if (is.isEmpty()) {
 				if (!simulate) {
 					setStackInSlot(slot, stack.copy());
 					updateInventoryItem(slot);
 					markDirty();
 				}
-				return null;
+				return ItemStack.EMPTY;
 			} else if (is.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(is, stack)) {
 				if (stack.getCount() + is.getCount() > is.getMaxStackSize()) {
 					stack = stack.copy();
@@ -212,7 +212,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 					if (!simulate) {
 						is.grow(stack.getCount());
 					}
-					stack = null;
+					stack = ItemStack.EMPTY;
 				}
 				if (!simulate) {
 					updateInventoryItem(slot);
@@ -490,7 +490,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		for (i = 0; i < getSizeInventory(); i++) {
 			NBTTagCompound tag = (NBTTagCompound) compound.getTag("Item_" + String.valueOf(i));
 			if (tag != null) {
-				ItemStack stack = null;
+				ItemStack stack = ItemStack.EMPTY;
 				if (!tag.getBoolean("empty")) {
 					stack = new ItemStack(tag);
 				}
