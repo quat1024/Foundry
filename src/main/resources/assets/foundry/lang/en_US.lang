@@ -331,6 +331,7 @@ item.foundry.moldShotgunPump.name=Shotgun Pump Mold
 item.foundry.moldShotgunFrame.name=Shotgun Frame Mold
 item.foundry.dustSmallBlaze.name=Small Pile of Blaze Powder
 item.foundry.dustSmallGunpowder.name=Small Pile of Gunpowder
+item.foundry.rodCupronickel.name=Constantan Rod
 
 item.foundry.fluidContainer.name=Refractory Fluid Container
 

@@ -91,7 +91,7 @@ public class FoundryMiscUtils {
 	static public ItemStack getModItemFromOreDictionary(String modid, String orename, int amount) {
 		modid = modid.toLowerCase();
 		if (OreDictionary.doesOreNameExist(orename)) for (ItemStack is : FoundryMiscUtils.getOresSafe(orename)) {
-			if (is.getItem().getRegistryName().getResourceDomain().equals(modid)) {
+			if (true /*is.getItem().getRegistryName().getResourceDomain().equals(modid)*/) {
 				is = is.copy();
 				is.setCount(amount);
 				return is;

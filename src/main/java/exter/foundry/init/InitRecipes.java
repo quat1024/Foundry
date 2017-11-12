@@ -121,17 +121,6 @@ public class InitRecipes {
 						CastingTableRecipeManager.INSTANCE.addRecipe(new OreMatcher("block" + name), fluidstack, ICastingTableRecipe.TableType.BLOCK);
 					}
 				}
-				
-				ores = OreDictionary.doesOreNameExist("plate" + name) ? OreDictionary.getOres("plate" + name) : new ArrayList<>();
-				fluidstack = new FluidStack(LiquidMetalRegistry.instance.getFluid(name), FoundryAPI.FLUID_AMOUNT_PLATE);
-				if (ores != null && ores.size() > 0) {
-					if (CastingRecipeManager.INSTANCE.findRecipe(fluidstack, block_mold, null) == null) {
-						CastingRecipeManager.INSTANCE.addRecipe(new OreMatcher("plate" + name), fluidstack, block_mold, null);
-					}
-					if (CastingTableRecipeManager.INSTANCE.findRecipe(fluidstack, ICastingTableRecipe.TableType.PLATE) == null) {
-						CastingTableRecipeManager.INSTANCE.addRecipe(new OreMatcher("plate" + name), fluidstack, ICastingTableRecipe.TableType.PLATE);
-					}
-				}
 			}
 		}
 

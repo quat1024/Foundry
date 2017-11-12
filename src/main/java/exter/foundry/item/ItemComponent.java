@@ -34,7 +34,8 @@ public class ItemComponent extends Item {
 		AMMO_PELLET_LUMIUM(20, "componentPelletLumium"),
 		COAL_COKE(21, "componentCoalCoke"),
 		DUST_SMALL_BLAZE(22, "dustSmallBlaze"),
-		DUST_SMALL_GUNPOWDER(23, "dustSmallGunpowder");
+		DUST_SMALL_GUNPOWDER(23, "dustSmallGunpowder"),
+		ROD_CUPRONICKEL(24, "rodCupronickel");
 
 		static private final Map<Integer, SubItem> value_map = new HashMap<>();
 		static {

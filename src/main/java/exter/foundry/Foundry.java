@@ -81,7 +81,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.0.0";
+	public static final String MODVERSION = "3.0.0.1";
 
 	@Instance(MODID)
 	public static Foundry instance;
@@ -99,30 +99,30 @@ public class Foundry {
 		ModIntegrationManager.init();
 		FoundrySounds.init();
 
-		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleBasic.class, "Foundry_MeltingCrucible");
-		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleStandard.class, "Foundry_MeltingCrucibleStandard");
-		GameRegistry.registerTileEntity(TileEntityMetalCaster.class, "Foundry_MetalCaster");
-		GameRegistry.registerTileEntity(TileEntityAlloyMixer.class, "Foundry_AlloyMixer");
-		GameRegistry.registerTileEntity(TileEntityMetalInfuser.class, "Foundry_MetalInfuser");
-		GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "Foundry_AlloyFurnace");
-		GameRegistry.registerTileEntity(TileEntityMoldStation.class, "Foundry_MoldStation");
-		GameRegistry.registerTileEntity(TileEntityMaterialRouter.class, "Foundry_MaterialRouter");
-		GameRegistry.registerTileEntity(TileEntityRefractoryHopper.class, "Foundry_RefractoryHopper");
-		GameRegistry.registerTileEntity(TileEntityMetalAtomizer.class, "Foundry_MetalAtomizer");
-		GameRegistry.registerTileEntity(TileEntityInductionHeater.class, "Foundry_InductionHeater");
-		GameRegistry.registerTileEntity(TileEntityBurnerHeater.class, "Foundry_BurnerHeater");
-		GameRegistry.registerTileEntity(TileEntityCastingTableIngot.class, "Foundry_CastingTable_Ingot");
-		GameRegistry.registerTileEntity(TileEntityCastingTablePlate.class, "Foundry_CastingTable_Plate");
-		GameRegistry.registerTileEntity(TileEntityCastingTableRod.class, "Foundry_CastingTable_Rod");
-		GameRegistry.registerTileEntity(TileEntityCastingTableBlock.class, "Foundry_CastingTable_Block");
-		GameRegistry.registerTileEntity(TileEntityRefractorySpout.class, "Foundry_RefractorySpout");
-		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleAdvanced.class, "Foundry_MeltingCrucibleAdvanced");
-		GameRegistry.registerTileEntity(TileEntityRefractoryTankBasic.class, "Foundry_RefractoryTank");
-		GameRegistry.registerTileEntity(TileEntityRefractoryTankStandard.class, "Foundry_RefractoryTank_Standard");
-		GameRegistry.registerTileEntity(TileEntityRefractoryTankAdvanced.class, "Foundry_InfernoTank");
-		GameRegistry.registerTileEntity(TileEntityAlloyingCrucible.class, "Foundry_AlloyingCrucible");
+		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleBasic.class, MODID + ":melt_crucible_basic");
+		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleStandard.class, MODID + ":melt_crucible_standard");
+		GameRegistry.registerTileEntity(TileEntityMetalCaster.class, MODID + ":metal_caster");
+		GameRegistry.registerTileEntity(TileEntityAlloyMixer.class, MODID + ":alloy_mixer");
+		GameRegistry.registerTileEntity(TileEntityMetalInfuser.class, MODID + ":metal_infuser");
+		GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, MODID + ":alloy_furnace");
+		GameRegistry.registerTileEntity(TileEntityMoldStation.class, MODID + ":mold_station");
+		GameRegistry.registerTileEntity(TileEntityMaterialRouter.class, MODID + ":material_router");
+		GameRegistry.registerTileEntity(TileEntityRefractoryHopper.class, MODID + ":refractory_hopper");
+		GameRegistry.registerTileEntity(TileEntityMetalAtomizer.class, MODID + ":atomizer");
+		GameRegistry.registerTileEntity(TileEntityInductionHeater.class, MODID + ":induction_heater");
+		GameRegistry.registerTileEntity(TileEntityBurnerHeater.class, MODID + ":burner_heater");
+		GameRegistry.registerTileEntity(TileEntityCastingTableIngot.class, MODID + ":cast_table_ingot");
+		GameRegistry.registerTileEntity(TileEntityCastingTablePlate.class, MODID + ":cast_table_plate");
+		GameRegistry.registerTileEntity(TileEntityCastingTableRod.class, MODID + ":cast_table_rod");
+		GameRegistry.registerTileEntity(TileEntityCastingTableBlock.class, MODID + ":cast_table_block");
+		GameRegistry.registerTileEntity(TileEntityRefractorySpout.class, MODID + ":refractory_spout");
+		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleAdvanced.class, MODID + ":melt_crucible_advanced");
+		GameRegistry.registerTileEntity(TileEntityRefractoryTankBasic.class, MODID + ":tank_basic");
+		GameRegistry.registerTileEntity(TileEntityRefractoryTankStandard.class, MODID + ":tank_standard");
+		GameRegistry.registerTileEntity(TileEntityRefractoryTankAdvanced.class, MODID + ":tank_advanced");
+		GameRegistry.registerTileEntity(TileEntityAlloyingCrucible.class, MODID + ":alloy_crucible");
 		if (FoundryConfig.block_cokeoven) {
-			GameRegistry.registerTileEntity(TileEntityCokeOven.class, "Foundry_CokeOven");
+			GameRegistry.registerTileEntity(TileEntityCokeOven.class, MODID + ":coke_oven");
 		}
 
 		EntityRegistry.registerModEntity(new ResourceLocation("foundry", "gun_skeleton"), EntitySkeletonGun.class, "gunSkeleton", 0, this, 80, 1, true);
