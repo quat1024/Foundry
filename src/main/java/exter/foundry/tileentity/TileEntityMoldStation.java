@@ -291,7 +291,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 				current_recipe = null;
 			}
 			if (tag.hasKey("command_fire")) {
-				current_recipe = MoldRecipeManager.instance.findRecipe(grid);
+				current_recipe = MoldRecipeManager.INSTANCE.findRecipe(grid);
 			}
 			((BlockMoldStation) getBlockType()).setMachineState(world, getPos(), world.getBlockState(getPos()), burn_time > 0);
 		}

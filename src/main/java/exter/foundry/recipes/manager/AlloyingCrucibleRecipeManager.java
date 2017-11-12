@@ -1,26 +1,30 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IAlloyingCrucibleRecipe;
 import exter.foundry.api.recipe.manager.IAlloyingCrucibleRecipeManager;
 import exter.foundry.recipes.AlloyingCrucibleRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 public class AlloyingCrucibleRecipeManager implements IAlloyingCrucibleRecipeManager {
-	public static final AlloyingCrucibleRecipeManager instance = new AlloyingCrucibleRecipeManager();
+	public static final AlloyingCrucibleRecipeManager INSTANCE = new AlloyingCrucibleRecipeManager();
 
-	public List<IAlloyingCrucibleRecipe> recipes;
+	private final NonNullList<IAlloyingCrucibleRecipe> recipes;
 
 	private AlloyingCrucibleRecipeManager() {
-		recipes = new ArrayList<>();
+		recipes = NonNullList.create();
 	}
 
 	@Override
 	public void addRecipe(FluidStack out, FluidStack in_a, FluidStack in_b) {
 		recipes.add(new AlloyingCrucibleRecipe(out, in_a, in_b));
+	}
+
+	public void addRecipe(IAlloyingCrucibleRecipe recipe) {
+		recipes.add(recipe);
 	}
 
 	@Override

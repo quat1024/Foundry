@@ -1,5 +1,6 @@
 package exter.foundry.proxy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,27 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ClientFoundryProxy extends CommonFoundryProxy {
+	public static class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {
+
+		public final BlockLiquidMetal fluid;
+		public final ModelResourceLocation location;
+
+		public FluidStateMapper(BlockLiquidMetal fluid) {
+			this.fluid = fluid;
+			this.location = new ModelResourceLocation(fluid.getRegistryName(), "normal");
+		}
+
+		@Override
+		public ModelResourceLocation getModelLocation(ItemStack stack) {
+			return this.location;
+		}
+
+		@Override
+		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+			return this.location;
+		}
+	}
+
 	static private class LiquidMetalItemMeshDefinition implements ItemMeshDefinition {
 		private final ModelResourceLocation model;
 
@@ -70,22 +92,6 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		public ModelResourceLocation getModelLocation(ItemStack stack) {
 			return model;
 		}
-	}
-
-	@Override
-	public void init() {
-
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableIngot.class, new CastingTableRenderer(6, 10, 4, 12, 9, 12, "foundry:blocks/castingtable_top_ingot"));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTablePlate.class, new CastingTableRenderer(3, 13, 3, 13, 11, 12, "foundry:blocks/castingtable_top_plate"));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableRod.class, new CastingTableRenderer(7, 9, 2, 14, 10, 12, "foundry:blocks/castingtable_top_rod"));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableBlock.class, new CastingTableRendererBlock());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractorySpout.class, new SpoutRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryHopper.class, new HopperRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankBasic.class, new TankRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankStandard.class, new TankRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankAdvanced.class, new TankRenderer());
-
-		ModIntegrationManager.clientInit();
 	}
 
 	@SubscribeEvent
@@ -147,14 +153,30 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 	}
 
 	@Override
+	public void init() {
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableIngot.class, new CastingTableRenderer(6, 10, 4, 12, 9, 12, "foundry:blocks/castingtable_top_ingot"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTablePlate.class, new CastingTableRenderer(3, 13, 3, 13, 11, 12, "foundry:blocks/castingtable_top_plate"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableRod.class, new CastingTableRenderer(7, 9, 2, 14, 10, 12, "foundry:blocks/castingtable_top_rod"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCastingTableBlock.class, new CastingTableRendererBlock());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractorySpout.class, new SpoutRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryHopper.class, new HopperRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankBasic.class, new TankRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankStandard.class, new TankRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRefractoryTankAdvanced.class, new TankRenderer());
+
+		ModIntegrationManager.clientInit();
+	}
+
+	@Override
 	public void postInit() {
 		for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
-			List<ItemStack> ores = OreDictionary.getOres(material.default_prefix + material.suffix);
+			List<ItemStack> ores = OreDictionary.doesOreNameExist(material.default_prefix + material.suffix) ? OreDictionary.getOres(material.default_prefix + material.suffix) : new ArrayList<>();
 			if (ores.size() > 0) {
 				MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
 			} else {
 				for (OreDictType type : OreDictType.TYPES) {
-					ores = OreDictionary.getOres(type.prefix + material.suffix);
+					ores = OreDictionary.doesOreNameExist(type.prefix + material.suffix) ? OreDictionary.getOres(type.prefix + material.suffix) : new ArrayList<>();
 					if (ores.size() > 0) {
 						MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
 						break;
@@ -164,12 +186,12 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		}
 
 		for (OreDictType type : OreDictType.TYPES) {
-			List<ItemStack> ores = OreDictionary.getOres(type.prefix + type.default_suffix);
+			List<ItemStack> ores = OreDictionary.doesOreNameExist(type.prefix + type.default_suffix) ? OreDictionary.getOres(type.prefix + type.default_suffix) : new ArrayList<>();
 			if (ores.size() > 0) {
 				MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
 			} else {
 				for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
-					ores = OreDictionary.getOres(type.prefix + material.suffix);
+					ores = OreDictionary.doesOreNameExist(type.prefix + material.suffix) ? OreDictionary.getOres(type.prefix + material.suffix) : new ArrayList<>();
 					if (ores.size() > 0) {
 						MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
 						break;
@@ -214,27 +236,6 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		name = "foundry:" + name;
 		ModelBakery.registerItemVariants(item, new ResourceLocation(name));
 		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(name, "inventory"));
-	}
-
-	public static class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {
-
-		public final BlockLiquidMetal fluid;
-		public final ModelResourceLocation location;
-
-		public FluidStateMapper(BlockLiquidMetal fluid) {
-			this.fluid = fluid;
-			this.location = new ModelResourceLocation(fluid.getRegistryName(), "normal");
-		}
-
-		@Override
-		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-			return this.location;
-		}
-
-		@Override
-		public ModelResourceLocation getModelLocation(ItemStack stack) {
-			return this.location;
-		}
 	}
 
 	@Override

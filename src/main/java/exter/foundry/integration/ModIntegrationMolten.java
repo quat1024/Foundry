@@ -51,13 +51,13 @@ public class ModIntegrationMolten implements IModIntegration {
 		FluidStack mapped_a = toMolten(in_a);
 		FluidStack mapped_b = toMolten(in_b);
 		if (mapped_a != null) {
-			AlloyingCrucibleRecipeManager.instance.addRecipe(out, mapped_a, in_b);
+			AlloyingCrucibleRecipeManager.INSTANCE.addRecipe(out, mapped_a, in_b);
 		}
 		if (mapped_b != null) {
-			AlloyingCrucibleRecipeManager.instance.addRecipe(out, in_a, mapped_b);
+			AlloyingCrucibleRecipeManager.INSTANCE.addRecipe(out, in_a, mapped_b);
 		}
 		if (mapped_a != null && mapped_b != null) {
-			AlloyingCrucibleRecipeManager.instance.addRecipe(out, mapped_a, mapped_b);
+			AlloyingCrucibleRecipeManager.INSTANCE.addRecipe(out, mapped_a, mapped_b);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class ModIntegrationMolten implements IModIntegration {
 			}
 			result.amount /= div;
 
-			AlloyMixerRecipeManager.instance.addRecipe(result, in);
+			AlloyMixerRecipeManager.INSTANCE.addRecipe(result, in);
 			return;
 		}
 
@@ -127,36 +127,36 @@ public class ModIntegrationMolten implements IModIntegration {
 		liquid_map.put(FoundryFluids.liquid_cupronickel.getName(), "constantan");
 
 		//Add support for "molten" fluids to the Metal Caster.
-		for (ICastingRecipe casting : new ArrayList<>(CastingRecipeManager.instance.getRecipes())) {
+		for (ICastingRecipe casting : new ArrayList<>(CastingRecipeManager.INSTANCE.getRecipes())) {
 			FluidStack input = toMolten(casting.getInput());
 			if (input != null) {
-				CastingRecipeManager.instance.addRecipe(casting.getOutputMatcher(), input, casting.getMold(), casting.getInputExtra(), casting.getCastingSpeed());
+				CastingRecipeManager.INSTANCE.addRecipe(casting.getOutputMatcher(), input, casting.getMold(), casting.getInputExtra(), casting.getCastingSpeed());
 			}
 		}
 
 		//Add support for "molten" fluids to the Casting Tables.
-		for (ICastingTableRecipe casting : CastingTableRecipeManager.instance.getRecipes()) {
+		for (ICastingTableRecipe casting : CastingTableRecipeManager.INSTANCE.getRecipes()) {
 			FluidStack input = toMolten(casting.getInput());
 			if (input != null) {
-				CastingTableRecipeManager.instance.addRecipe(casting.getOutputMatcher(), input, casting.getTableType());
+				CastingTableRecipeManager.INSTANCE.addRecipe(casting.getOutputMatcher(), input, casting.getTableType());
 			}
 		}
 
 		//Add support for "molten" fluids to the Atomizer.
-		for (IAtomizerRecipe atomize : new ArrayList<>(AtomizerRecipeManager.instance.getRecipes())) {
+		for (IAtomizerRecipe atomize : new ArrayList<>(AtomizerRecipeManager.INSTANCE.getRecipes())) {
 			FluidStack input = toMolten(atomize.getInput());
 			if (input != null) {
-				AtomizerRecipeManager.instance.addRecipe(atomize.getOutputMatcher(), input);
+				AtomizerRecipeManager.INSTANCE.addRecipe(atomize.getOutputMatcher(), input);
 			}
 		}
 
 		//Add support for "molten" fluid inputs to Alloying Crucible recipes.
-		for (IAlloyingCrucibleRecipe mix : new ArrayList<>(AlloyingCrucibleRecipeManager.instance.getRecipes())) {
+		for (IAlloyingCrucibleRecipe mix : new ArrayList<>(AlloyingCrucibleRecipeManager.INSTANCE.getRecipes())) {
 			convertAlloyingCrucibleRecipe(mix);
 		}
 
 		//Add support for "molten" fluid inputs to Alloy Mixer recipes.
-		for (IAlloyMixerRecipe mix : new ArrayList<>(AlloyMixerRecipeManager.instance.getRecipes())) {
+		for (IAlloyMixerRecipe mix : new ArrayList<>(AlloyMixerRecipeManager.INSTANCE.getRecipes())) {
 			convertAlloyMixerRecipe(mix);
 		}
 	}

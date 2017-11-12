@@ -2,6 +2,8 @@ package exter.foundry.util;
 
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 import exter.foundry.Foundry;
 import exter.foundry.FoundryRegistry;
 import net.minecraft.block.Block;
@@ -15,14 +17,30 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class RecipeHelper {
 
+	public static class SafeOreIngredient {
+
+		private final OreIngredient internal;
+
+		public SafeOreIngredient(String ore) {
+			Preconditions.checkArgument(OreDictionary.doesOreNameExist(ore), "Attempted to create an invalid OreIngredient! Name: " + ore);
+			internal = new OreIngredient(ore);
+		}
+
+		public OreIngredient get() {
+			return internal;
+		}
+
+	}
 	private static int j = 0;
 	private static final String MODID = Foundry.MODID;
 	private static final String MODNAME = Foundry.MODNAME;
+
 	public static final List<IRecipe> recipeList = FoundryRegistry.RECIPES;
 
 	/*
@@ -160,7 +178,7 @@ public class RecipeHelper {
 		for (int i = 0; i < input.length; i++) {
 			Object k = input[i];
 			if (k instanceof String) {
-				inputL.add(i, new OreIngredient((String) k));
+				inputL.add(i, new SafeOreIngredient((String) k).get());
 			} else if (k instanceof ItemStack) {
 				inputL.add(i, Ingredient.fromStacks((ItemStack) k));
 			} else if (k instanceof Item) {
@@ -181,7 +199,7 @@ public class RecipeHelper {
 		for (int i = 0; i < input.length; i++) {
 			Object k = input[i];
 			if (k instanceof String) {
-				inputL.add(i, new OreIngredient((String) k));
+				inputL.add(i, new SafeOreIngredient((String) k).get());
 			} else if (k instanceof ItemStack && !((ItemStack) k).isEmpty()) {
 				inputL.add(i, Ingredient.fromStacks((ItemStack) k));
 			} else if (k instanceof Item) {
@@ -204,7 +222,7 @@ public class RecipeHelper {
 		for (int i = 0; i < input.length; i++) {
 			Object k = input[i];
 			if (k instanceof String) {
-				inputL.add(i, new OreIngredient((String) k));
+				inputL.add(i, new SafeOreIngredient((String) k).get());
 			} else if (k instanceof ItemStack && !((ItemStack) k).isEmpty()) {
 				inputL.add(i, Ingredient.fromStacks((ItemStack) k));
 			} else if (k instanceof Item) {

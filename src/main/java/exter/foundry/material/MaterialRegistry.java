@@ -83,7 +83,7 @@ public final class MaterialRegistry implements IMaterialRegistry {
 
 	@Override
 	public void registerItem(String oredict_name, String material, String type) {
-		for (ItemStack item : OreDictionary.getOres(oredict_name)) {
+		if (OreDictionary.doesOreNameExist(oredict_name)) for (ItemStack item : OreDictionary.getOres(oredict_name)) {
 			registerItem(item, material, type);
 		}
 	}

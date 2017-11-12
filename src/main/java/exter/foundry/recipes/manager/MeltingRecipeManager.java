@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,22 +7,24 @@ import exter.foundry.api.recipe.IMeltingRecipe;
 import exter.foundry.api.recipe.manager.IMeltingRecipeManager;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.recipes.MeltingRecipe;
+import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MeltingRecipeManager implements IMeltingRecipeManager {
 
 	public static final MeltingRecipeManager INSTANCE = new MeltingRecipeManager();
 
-	private final List<IMeltingRecipe> recipes;
+	private final NonNullList<IMeltingRecipe> recipes;
 
 	private MeltingRecipeManager() {
-		recipes = new ArrayList<>();
+		recipes = NonNullList.create();
 	}
 
 	@Override
 	public void addRecipe(IItemMatcher solid, FluidStack fluid_stack) {
-		addRecipe(solid, fluid_stack, fluid_stack.getFluid().getTemperature(), 100);
+		if (!FoundryMiscUtils.isInvalid(solid)) addRecipe(solid, fluid_stack, fluid_stack.getFluid().getTemperature(), 100);
 	}
 
 	@Override

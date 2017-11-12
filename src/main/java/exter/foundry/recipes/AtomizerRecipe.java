@@ -14,9 +14,8 @@ public class AtomizerRecipe implements IAtomizerRecipe {
 	private final IItemMatcher output;
 
 	public AtomizerRecipe(IItemMatcher result, FluidStack in_fluid) {
-		output = result;
-
 		if (in_fluid == null) { throw new IllegalArgumentException("Atomizer recipe input cannot be null"); }
+		output = result;
 		fluid = in_fluid.copy();
 	}
 

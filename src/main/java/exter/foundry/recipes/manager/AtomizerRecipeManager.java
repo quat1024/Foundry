@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,21 +7,27 @@ import exter.foundry.api.recipe.IAtomizerRecipe;
 import exter.foundry.api.recipe.manager.IAtomizerRecipeManager;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.recipes.AtomizerRecipe;
+import exter.foundry.util.FoundryMiscUtils;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 public class AtomizerRecipeManager implements IAtomizerRecipeManager {
-	public static final AtomizerRecipeManager instance = new AtomizerRecipeManager();
+	public static final AtomizerRecipeManager INSTANCE = new AtomizerRecipeManager();
 
-	public List<IAtomizerRecipe> recipes;
+	private final NonNullList<IAtomizerRecipe> recipes;
 
 	private AtomizerRecipeManager() {
-		recipes = new ArrayList<>();
+		recipes = NonNullList.create();
+	}
+
+	public void addRecipe(IAtomizerRecipe recipe) {
+		recipes.add(recipe);
+
 	}
 
 	@Override
 	public void addRecipe(IItemMatcher result, FluidStack in_fluid) {
-		IAtomizerRecipe recipe = new AtomizerRecipe(result, in_fluid);
-		recipes.add(recipe);
+		if (!FoundryMiscUtils.isInvalid(result)) recipes.add(new AtomizerRecipe(result, in_fluid));
 	}
 
 	@Override

@@ -28,9 +28,9 @@ public class MTCastingHandler {
 		@Override
 		protected void add() {
 			if (recipe.requiresExtra()) {
-				CastingRecipeManager.instance.recipes.add(0, recipe);
+				CastingRecipeManager.INSTANCE.addRecipe(0, recipe);
 			} else {
-				CastingRecipeManager.instance.recipes.add(recipe);
+				CastingRecipeManager.INSTANCE.addRecipe(recipe);
 			}
 		}
 
@@ -48,7 +48,7 @@ public class MTCastingHandler {
 
 		@Override
 		protected void remove() {
-			CastingRecipeManager.instance.recipes.remove(recipe);
+			CastingRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class MTCastingHandler {
 
 		@Override
 		protected void add() {
-			CastingRecipeManager.instance.molds.add(mold);
+			CastingRecipeManager.INSTANCE.addMold(mold);
 		}
 
 		@Override
@@ -77,7 +77,7 @@ public class MTCastingHandler {
 
 		@Override
 		protected void remove() {
-			CastingRecipeManager.instance.molds.remove(mold);
+			CastingRecipeManager.INSTANCE.removeMold(mold);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class MTCastingHandler {
 			CraftTweakerAPI.logWarning("Invalid mold item");
 			return;
 		}
-		for (ItemStack m : CastingRecipeManager.instance.molds) {
+		for (ItemStack m : CastingRecipeManager.INSTANCE.getMolds()) {
 			if (m.isItemEqual(molditem) && ItemStack.areItemStacksEqual(m, molditem)) {
 				CraftTweakerAPI.apply(new MoldAction(m).action_remove);
 				return;
@@ -124,7 +124,7 @@ public class MTCastingHandler {
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input, IItemStack mold, @Optional IItemStack extra) {
-		ICastingRecipe recipe = CastingRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
+		ICastingRecipe recipe = CastingRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Casting recipe not found.");
 			return;

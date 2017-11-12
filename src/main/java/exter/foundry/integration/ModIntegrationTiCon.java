@@ -68,7 +68,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 			}
 			result.amount /= div;
 
-			AlloyMixerRecipeManager.instance.addRecipe(result, in);
+			AlloyMixerRecipeManager.INSTANCE.addRecipe(result, in);
 			return;
 		}
 
@@ -167,18 +167,18 @@ public class ModIntegrationTiCon implements IModIntegration {
 							mapped_liquid = new FluidStack(LiquidMetalRegistry.instance.getFluid(mapped), FoundryMiscUtils.divCeil(casting.getFluid().amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
 						}
 						for (ItemStack cast : casting.cast.getInputs()) {
-							if (!CastingRecipeManager.instance.isItemMold(cast)) {
+							if (!CastingRecipeManager.INSTANCE.isItemMold(cast)) {
 								//Register the cast as a mold
-								CastingRecipeManager.instance.addMold(cast);
+								CastingRecipeManager.INSTANCE.addMold(cast);
 							}
 
 							if (mapped_liquid != null) {
 								if (mapped_liquid.amount <= 6000) {
-									CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(casting.getResult()), mapped_liquid, cast, null);
+									CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(casting.getResult()), mapped_liquid, cast, null);
 								}
 							}
 							if (casting.getFluid().amount <= 6000) {
-								CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(casting.getResult()), casting.getFluid(), cast, null);
+								CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(casting.getResult()), casting.getFluid(), cast, null);
 							}
 						}
 					}
@@ -194,8 +194,8 @@ public class ModIntegrationTiCon implements IModIntegration {
 					continue;
 				}
 				FluidStack fluid = casting.getFluid();
-				if (casting.getFluid().amount <= 6000 && casting.cast == null && CastingRecipeManager.instance.findRecipe(fluid, block_mold, null) == null) {
-					CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(casting.getResult()), fluid, block_mold, null);
+				if (casting.getFluid().amount <= 6000 && casting.cast == null && CastingRecipeManager.INSTANCE.findRecipe(fluid, block_mold, null) == null) {
+					CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(casting.getResult()), fluid, block_mold, null);
 				}
 			}
 		}

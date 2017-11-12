@@ -28,12 +28,14 @@ public class MeltingRecipe implements IMeltingRecipe {
 	private final int melting_speed;
 
 	public MeltingRecipe(IItemMatcher item, FluidStack fluid_stack, int melt, int speed) {
+
+		if (fluid_stack == null) throw new IllegalArgumentException("Melting recipe fluid cannot be null.");
+		if (melt <= 295) throw new IllegalArgumentException("Melting recipe melting point must be > 295.");
+		if (speed < 1) throw new IllegalArgumentException("Melting recipe speed must be > 0.");
+
 		solid = item;
-		if (fluid_stack == null) { throw new IllegalArgumentException("Melting recipe fluid cannot be null."); }
 		fluid = fluid_stack.copy();
-		if (melt <= 295) { throw new IllegalArgumentException("Melting recipe melting point must be > 295."); }
 		melting_point = melt;
-		if (speed < 1) { throw new IllegalArgumentException("Melting recipe speed must be > 0."); }
 		melting_speed = speed;
 	}
 

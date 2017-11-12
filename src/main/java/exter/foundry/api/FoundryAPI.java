@@ -27,6 +27,7 @@ public class FoundryAPI {
 	static public final int FLUID_AMOUNT_ROD = 54;
 	static public final int FLUID_AMOUNT_NUGGET = 12;
 	static public final int FLUID_AMOUNT_ORE = 216;
+	static public final int FLUID_AMOUNT_GEAR = 432;
 
 	/**
 	 * Tank capacity for machines.

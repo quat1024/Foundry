@@ -114,20 +114,20 @@ public class ModIntegrationEnderIO implements IModIntegration {
 		Fluid liquid_glowstone = FluidRegistry.getFluid("liquidglowstone");
 
 		if (silicon != null) {
-			InfuserRecipeManager.instance.addRecipe(new FluidStack(liquid_redstone_alloy, 108), new FluidStack(liquid_redstone, 100), new ItemStackMatcher(silicon), 50000);
+			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_redstone_alloy, 108), new FluidStack(liquid_redstone, 100), new ItemStackMatcher(silicon), 50000);
 
-			InfuserRecipeManager.instance.addRecipe(new FluidStack(liquid_electrical_steel, 108), new FluidStack(FoundryFluids.liquid_steel, 108), new ItemStackMatcher(silicon), 30000);
+			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_electrical_steel, 108), new FluidStack(FoundryFluids.liquid_steel, 108), new ItemStackMatcher(silicon), 30000);
 		}
 
-		AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(liquid_energetic_alloy, 54), new FluidStack[] { new FluidStack(FoundryFluids.liquid_gold, 54), new FluidStack(liquid_redstone, 50), new FluidStack(liquid_glowstone, 125) });
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_energetic_alloy, 54), new FluidStack[] { new FluidStack(FoundryFluids.liquid_gold, 54), new FluidStack(liquid_redstone, 50), new FluidStack(liquid_glowstone, 125) });
 
-		AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(liquid_vibrant_alloy, 54), new FluidStack[] { new FluidStack(liquid_energetic_alloy, 54), new FluidStack(liquid_enderpearl, 125) });
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_vibrant_alloy, 54), new FluidStack[] { new FluidStack(liquid_energetic_alloy, 54), new FluidStack(liquid_enderpearl, 125) });
 
-		AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(liquid_phased_iron, 54), new FluidStack[] { new FluidStack(FoundryFluids.liquid_iron, 54), new FluidStack(liquid_enderpearl, 125) });
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_phased_iron, 54), new FluidStack[] { new FluidStack(FoundryFluids.liquid_iron, 54), new FluidStack(liquid_enderpearl, 125) });
 
-		AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(liquid_dark_steel, 27), new FluidStack[] { new FluidStack(FoundryFluids.liquid_steel, 27), new FluidStack(FluidRegistry.LAVA, 250), });
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_dark_steel, 27), new FluidStack[] { new FluidStack(FoundryFluids.liquid_steel, 27), new FluidStack(FluidRegistry.LAVA, 250), });
 
-		InfuserRecipeManager.instance.addRecipe(new FluidStack(liquid_soularium, 108), new FluidStack(FoundryFluids.liquid_gold, 108), new ItemStackMatcher(new ItemStack(Blocks.SOUL_SAND)), 50000);
+		InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_soularium, 108), new FluidStack(FoundryFluids.liquid_gold, 108), new ItemStackMatcher(new ItemStack(Blocks.SOUL_SAND)), 50000);
 	}
 
 	@Override

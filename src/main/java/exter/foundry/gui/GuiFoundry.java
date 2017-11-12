@@ -39,12 +39,6 @@ public abstract class GuiFoundry extends GuiContainer {
 			tooltip.add("0 / " + String.valueOf(tank.getCapacity()) + " mB");
 		}
 	}
-	
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
-	}
 
 	/**
 	 * Draw a tank in the GUI.
@@ -134,6 +128,12 @@ public abstract class GuiFoundry extends GuiContainer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		//GL11.glTranslatef(0.0F, 0.0F, -32.0F);
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	/**

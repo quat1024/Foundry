@@ -28,23 +28,23 @@ public class InitToolRecipes {
 		ItemStack mold_helmet = FoundryItems.mold(ItemMold.SubItem.HELMET);
 		ItemStack mold_boots = FoundryItems.mold(ItemMold.SubItem.BOOTS);
 
-		MoldRecipeManager.instance.addRecipe(mold_helmet, 4, 3, new int[] { 3, 3, 3, 3, 3, 1, 1, 3, 3, 1, 1, 3 });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_helmet, 4, 3, new int[] { 3, 3, 3, 3, 3, 1, 1, 3, 3, 1, 1, 3 });
 
-		MoldRecipeManager.instance.addRecipe(mold_chestplate, 6, 6, new int[] { 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3 });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_chestplate, 6, 6, new int[] { 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3 });
 
-		MoldRecipeManager.instance.addRecipe(mold_leggings, 6, 6, new int[] { 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3 });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_leggings, 6, 6, new int[] { 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3, 3, 1, 0, 0, 1, 3 });
 
-		MoldRecipeManager.instance.addRecipe(mold_boots, 6, 6, new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 3, 2, 3, 3, 0, 0, 3, 3, 3, 3, 0, 0, 3, 3 });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_boots, 6, 6, new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 3, 2, 3, 3, 0, 0, 3, 3, 3, 3, 0, 0, 3, 3 });
 
-		MoldRecipeManager.instance.addRecipe(mold_pickaxe, 5, 5, new int[] { 0, 2, 2, 2, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0 });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_pickaxe, 5, 5, new int[] { 0, 2, 2, 2, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0 });
 
-		MoldRecipeManager.instance.addRecipe(mold_axe, 3, 5, new int[] { 1, 2, 2, 1, 2, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1 });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_axe, 3, 5, new int[] { 1, 2, 2, 1, 2, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1 });
 
-		MoldRecipeManager.instance.addRecipe(mold_shovel, 3, 6, new int[] { 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0 });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_shovel, 3, 6, new int[] { 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0 });
 
-		MoldRecipeManager.instance.addRecipe(mold_hoe, 3, 5, new int[] { 0, 2, 2, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_hoe, 3, 5, new int[] { 0, 2, 2, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, });
 
-		MoldRecipeManager.instance.addRecipe(mold_sword, 3, 6, new int[] { 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 2, 1, 0, 1, 0, });
+		MoldRecipeManager.INSTANCE.addRecipe(mold_sword, 3, 6, new int[] { 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 2, 1, 0, 1, 0, });
 
 		FoundryMiscUtils.registerCasting(new ItemStack(Items.IRON_PICKAXE), FoundryFluids.liquid_iron, 3, ItemMold.SubItem.PICKAXE, extra_sticks2);
 		FoundryMiscUtils.registerCasting(new ItemStack(Items.GOLDEN_PICKAXE), FoundryFluids.liquid_gold, 3, ItemMold.SubItem.PICKAXE, extra_sticks2);

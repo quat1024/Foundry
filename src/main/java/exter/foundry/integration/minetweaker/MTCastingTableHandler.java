@@ -24,7 +24,7 @@ public class MTCastingTableHandler {
 
 		@Override
 		protected void add() {
-			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).put(recipe.getInput().getFluid().getName(), recipe);
+			CastingTableRecipeManager.INSTANCE.addRecipe(recipe.getTableType(), recipe.getInput().getFluid().getName(), recipe);
 		}
 
 		@Override
@@ -39,7 +39,7 @@ public class MTCastingTableHandler {
 
 		@Override
 		protected void remove() {
-			CastingTableRecipeManager.instance.recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
+			CastingTableRecipeManager.INSTANCE.removeRecipe(recipe.getTableType(), recipe.getInput().getFluid().getName());
 		}
 	}
 
@@ -92,7 +92,7 @@ public class MTCastingTableHandler {
 	}
 
 	static public void removeRecipe(ILiquidStack input, ICastingTableRecipe.TableType table) {
-		ICastingTableRecipe recipe = CastingTableRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), table);
+		ICastingTableRecipe recipe = CastingTableRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), table);
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Casting table recipe not found.");
 			return;

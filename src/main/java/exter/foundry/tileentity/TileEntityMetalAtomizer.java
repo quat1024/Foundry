@@ -191,7 +191,7 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 		checkCurrentRecipe();
 
 		if (current_recipe == null) {
-			current_recipe = AtomizerRecipeManager.instance.findRecipe(tanks[TANK_INPUT].getFluid());
+			current_recipe = AtomizerRecipeManager.INSTANCE.findRecipe(tanks[TANK_INPUT].getFluid());
 			progress = -1;
 		}
 

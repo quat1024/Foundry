@@ -34,6 +34,7 @@ public class InfuserRecipe implements IInfuserRecipe {
 		if (energy < 1) { throw new IllegalArgumentException("Infuser substance recipe energy nust be > 0."); }
 		if (in_fluid == null) { throw new IllegalArgumentException("Infuser recipe input cannot be null"); }
 		if (result == null) { throw new IllegalArgumentException("Infuser recipe output cannot be null"); }
+
 		item = in_item;
 		fluid = in_fluid.copy();
 		extract_energy = energy;

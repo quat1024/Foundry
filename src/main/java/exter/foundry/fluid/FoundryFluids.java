@@ -30,6 +30,7 @@ public class FoundryFluids {
 	static public Fluid liquid_lumium;
 	static public Fluid liquid_enderium;
 	static public Fluid liquid_glass;
+	static public Fluid[] liquid_glass_colored = new Fluid[16];
 
 	static public void init() {
 		liquid_iron = LiquidMetalRegistry.instance.registerLiquidMetal("Iron", 1800, 15);
@@ -62,7 +63,7 @@ public class FoundryFluids {
 		LiquidMetalRegistry.instance.registerLiquidMetal("StainlessSteel", 1900, 15);
 		LiquidMetalRegistry.instance.registerLiquidMetal("Kanthal", 1900, 15);
 		LiquidMetalRegistry.instance.registerLiquidMetal("Nichrome", 1950, 15);
-		
+
 		int temp = 1550;
 		liquid_glass = LiquidMetalRegistry.instance.registerSpecialLiquidMetal("glass", temp, 12, new ItemStack(Blocks.GLASS));
 		for (EnumDyeColor dye : EnumDyeColor.values()) {
@@ -77,7 +78,7 @@ public class FoundryFluids {
 			int meta = dye.getMetadata();
 			ItemStack stained_glass = new ItemStack(Blocks.STAINED_GLASS, 1, meta);
 
-			LiquidMetalRegistry.instance.registerSpecialLiquidMetal("glass" + name, temp, 12, "liquidglass", fluid_color, stained_glass);
+			liquid_glass_colored[meta] = LiquidMetalRegistry.instance.registerSpecialLiquidMetal("glass" + name, temp, 12, "liquidglass", fluid_color, stained_glass);
 		}
 	}
 }

@@ -22,7 +22,7 @@ public class MTAlloyMixerHandler {
 
 		@Override
 		protected void add() {
-			AlloyMixerRecipeManager.instance.recipes.add(recipe);
+			AlloyMixerRecipeManager.INSTANCE.addRecipe(recipe);
 		}
 
 		@Override
@@ -49,7 +49,7 @@ public class MTAlloyMixerHandler {
 
 		@Override
 		protected void remove() {
-			AlloyMixerRecipeManager.instance.recipes.remove(recipe);
+			AlloyMixerRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class MTAlloyMixerHandler {
 			in[i] = CraftTweakerMC.getLiquidStack(inputs[i]);
 		}
 
-		IAlloyMixerRecipe recipe = AlloyMixerRecipeManager.instance.findRecipe(in, null);
+		IAlloyMixerRecipe recipe = AlloyMixerRecipeManager.INSTANCE.findRecipe(in, null);
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
 			return;

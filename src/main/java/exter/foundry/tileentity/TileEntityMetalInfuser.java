@@ -179,7 +179,7 @@ public class TileEntityMetalInfuser extends TileEntityFoundryPowered {
 		checkCurrentRecipe();
 
 		if (current_recipe == null) {
-			current_recipe = InfuserRecipeManager.instance.findRecipe(tanks[TANK_INPUT].getFluid(), getStackInSlot(INVENTORY_SUBSTANCE_INPUT));
+			current_recipe = InfuserRecipeManager.INSTANCE.findRecipe(tanks[TANK_INPUT].getFluid(), getStackInSlot(INVENTORY_SUBSTANCE_INPUT));
 			progress = 0;
 		}
 

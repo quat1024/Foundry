@@ -22,7 +22,7 @@ public class MTAlloyFurnaceHandler {
 
 		@Override
 		protected void add() {
-			AlloyFurnaceRecipeManager.INSTANCE.recipes.add(recipe);
+			AlloyFurnaceRecipeManager.INSTANCE.addRecipe(recipe);
 		}
 
 		@Override
@@ -37,7 +37,7 @@ public class MTAlloyFurnaceHandler {
 
 		@Override
 		protected void remove() {
-			AlloyFurnaceRecipeManager.INSTANCE.recipes.remove(recipe);
+			AlloyFurnaceRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 

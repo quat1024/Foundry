@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,20 +8,22 @@ import exter.foundry.api.recipe.manager.IBurnerHeaterFuelManager;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.recipes.BurnerHeaterFuel;
 import exter.foundry.tileentity.TileEntityFoundryHeatable;
+import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class BurnerHeaterFuelManager implements IBurnerHeaterFuelManager {
-	public static final BurnerHeaterFuelManager instance = new BurnerHeaterFuelManager();
+	public static final BurnerHeaterFuelManager INSTANCE = new BurnerHeaterFuelManager();
 
-	public List<IBurnerHeaterFuel> fuels;
+	private final NonNullList<IBurnerHeaterFuel> fuels;
 
 	private BurnerHeaterFuelManager() {
-		fuels = new ArrayList<>();
+		fuels = NonNullList.create();
 	}
 
 	@Override
 	public void addFuel(IItemMatcher fuel, int burn_time, int heat) {
-		fuels.add(new BurnerHeaterFuel(fuel, burn_time, heat));
+		if (!FoundryMiscUtils.isInvalid(fuel)) fuels.add(new BurnerHeaterFuel(fuel, burn_time, heat));
 	}
 
 	@Override

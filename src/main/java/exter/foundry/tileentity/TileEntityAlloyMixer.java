@@ -167,7 +167,7 @@ public class TileEntityAlloyMixer extends TileEntityFoundryPowered {
 			input_tank_fluids[i] = tanks[i].getFluid();
 		}
 
-		IAlloyMixerRecipe recipe = AlloyMixerRecipeManager.instance.findRecipe(input_tank_fluids, recipe_order);
+		IAlloyMixerRecipe recipe = AlloyMixerRecipeManager.INSTANCE.findRecipe(input_tank_fluids, recipe_order);
 		if (recipe == null) { return; }
 		int energy_used = 0;
 		while (true) {

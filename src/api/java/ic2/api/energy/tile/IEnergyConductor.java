@@ -15,11 +15,11 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	double getConductionLoss();
 
 	/**
-	 * Amount of energy the insulation will handle before shocking nearby players and mobs.
+	 * Amount of energy the conductor will handle before it melts.
 	 * 
-	 * @return Insulation energy absorption in EU
+	 * @return Conductor-destroying energy in EU
 	 */
-	double getInsulationEnergyAbsorption();
+	double getConductorBreakdownEnergy();
 
 	/**
 	 * Amount of energy the insulation will handle before it is destroyed.
@@ -30,18 +30,11 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	double getInsulationBreakdownEnergy();
 
 	/**
-	 * Amount of energy the conductor will handle before it melts.
+	 * Amount of energy the insulation will handle before shocking nearby players and mobs.
 	 * 
-	 * @return Conductor-destroying energy in EU
+	 * @return Insulation energy absorption in EU
 	 */
-	double getConductorBreakdownEnergy();
-
-	/**
-	 * Remove the conductor's insulation if the insulation breakdown energy was exceeded.
-	 * 
-	 * @see #getInsulationBreakdownEnergy()
-	 */
-	void removeInsulation();
+	double getInsulationEnergyAbsorption();
 
 	/**
 	 * Remove the conductor if the conductor breakdown energy was exceeded.
@@ -49,4 +42,11 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	 * @see #getConductorBreakdownEnergy()
 	 */
 	void removeConductor();
+
+	/**
+	 * Remove the conductor's insulation if the insulation breakdown energy was exceeded.
+	 * 
+	 * @see #getInsulationBreakdownEnergy()
+	 */
+	void removeInsulation();
 }

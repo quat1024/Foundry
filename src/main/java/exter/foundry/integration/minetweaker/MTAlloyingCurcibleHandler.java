@@ -22,7 +22,7 @@ public class MTAlloyingCurcibleHandler {
 
 		@Override
 		protected void add() {
-			AlloyingCrucibleRecipeManager.instance.recipes.add(recipe);
+			AlloyingCrucibleRecipeManager.INSTANCE.addRecipe(recipe);
 		}
 
 		@Override
@@ -37,7 +37,7 @@ public class MTAlloyingCurcibleHandler {
 
 		@Override
 		protected void remove() {
-			AlloyingCrucibleRecipeManager.instance.recipes.remove(recipe);
+			AlloyingCrucibleRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 
@@ -64,12 +64,12 @@ public class MTAlloyingCurcibleHandler {
 		FluidStack in_a = CraftTweakerMC.getLiquidStack(input_a);
 		FluidStack in_b = CraftTweakerMC.getLiquidStack(input_b);
 
-		IAlloyingCrucibleRecipe recipe = AlloyingCrucibleRecipeManager.instance.findRecipe(in_a, in_b);
+		IAlloyingCrucibleRecipe recipe = AlloyingCrucibleRecipeManager.INSTANCE.findRecipe(in_a, in_b);
 		if (recipe == null) {
-			recipe = AlloyingCrucibleRecipeManager.instance.findRecipe(in_b, in_a);
+			recipe = AlloyingCrucibleRecipeManager.INSTANCE.findRecipe(in_b, in_a);
 		}
 		if (recipe == null) {
-			recipe = AlloyingCrucibleRecipeManager.instance.findRecipe(in_a, in_b);
+			recipe = AlloyingCrucibleRecipeManager.INSTANCE.findRecipe(in_a, in_b);
 			CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
 			return;
 		}

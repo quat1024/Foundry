@@ -62,29 +62,29 @@ public class JEIFoundryPlugin implements IModPlugin {
 		transfer_registry.addRecipeTransferHandler(ContainerMetalCaster.class, FoundryJEIConstants.CAST_UID, ContainerMetalCaster.SLOTS_TE, ContainerMetalCaster.SLOTS_TE_SIZE, ContainerMetalCaster.SLOTS_INVENTORY, 36);
 		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.CASTER), FoundryJEIConstants.CAST_UID);
 		registry.handleRecipes(ICastingRecipe.class, CastingJEI.Wrapper::new, FoundryJEIConstants.CAST_UID);
-		registry.addRecipes(CastingRecipeManager.instance.getRecipes(), FoundryJEIConstants.CAST_UID);
+		registry.addRecipes(CastingRecipeManager.INSTANCE.getRecipes(), FoundryJEIConstants.CAST_UID);
 
 		transfer_registry.addRecipeTransferHandler(ContainerMetalInfuser.class, FoundryJEIConstants.INF_UID, ContainerMetalInfuser.SLOTS_TE, ContainerMetalInfuser.SLOTS_TE_SIZE, ContainerMetalInfuser.SLOTS_INVENTORY, 36);
 		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.INFUSER), FoundryJEIConstants.INF_UID);
 		registry.handleRecipes(IInfuserRecipe.class, InfuserJEI.Wrapper::new, FoundryJEIConstants.INF_UID);
-		registry.addRecipes(InfuserRecipeManager.instance.getRecipes(), FoundryJEIConstants.INF_UID);
+		registry.addRecipes(InfuserRecipeManager.INSTANCE.getRecipes(), FoundryJEIConstants.INF_UID);
 
 		transfer_registry.addRecipeTransferHandler(ContainerMoldStation.class, FoundryJEIConstants.MOLD_UID, ContainerMoldStation.SLOTS_TE, ContainerMoldStation.SLOTS_TE_SIZE, ContainerMoldStation.SLOTS_INVENTORY, 36);
 		registry.addRecipeCatalyst(new ItemStack(FoundryBlocks.block_mold_station), FoundryJEIConstants.MOLD_UID);
 		registry.handleRecipes(IMoldRecipe.class, MoldStationJEI.Wrapper::new, FoundryJEIConstants.MOLD_UID);
-		registry.addRecipes(MoldRecipeManager.instance.getRecipes(), FoundryJEIConstants.MOLD_UID);
+		registry.addRecipes(MoldRecipeManager.INSTANCE.getRecipes(), FoundryJEIConstants.MOLD_UID);
 
 		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ALLOYMIXER), FoundryJEIConstants.AM_UID);
 		registry.handleRecipes(IAlloyMixerRecipe.class, AlloyMixerJEI.Wrapper::new, FoundryJEIConstants.AM_UID);
-		registry.addRecipes(AlloyMixerRecipeManager.instance.getRecipes(), FoundryJEIConstants.AM_UID);
+		registry.addRecipes(AlloyMixerRecipeManager.INSTANCE.getRecipes(), FoundryJEIConstants.AM_UID);
 
 		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ATOMIZER), FoundryJEIConstants.ATOM_UID);
 		registry.handleRecipes(IAtomizerRecipe.class, AtomizerJEI.Wrapper::new, FoundryJEIConstants.ATOM_UID);
-		registry.addRecipes(AtomizerRecipeManager.instance.getRecipes(), FoundryJEIConstants.ATOM_UID);
+		registry.addRecipes(AtomizerRecipeManager.INSTANCE.getRecipes(), FoundryJEIConstants.ATOM_UID);
 
 		registry.addRecipeCatalyst(FoundryBlocks.block_machine.asItemStack(BlockFoundryMachine.EnumMachine.ALLOYING_CRUCIBLE), FoundryJEIConstants.AC_UID);
 		registry.handleRecipes(IAlloyingCrucibleRecipe.class, AlloyingCrucibleJEI.Wrapper::new, FoundryJEIConstants.AC_UID);
-		registry.addRecipes(AlloyingCrucibleRecipeManager.instance.getRecipes(), FoundryJEIConstants.AC_UID);
+		registry.addRecipes(AlloyingCrucibleRecipeManager.INSTANCE.getRecipes(), FoundryJEIConstants.AC_UID);
 
 		registry.addRecipeCatalyst(FoundryBlocks.block_casting_table.asItemStack(BlockCastingTable.EnumTable.INGOT), "foundry.casting_table.ingot");
 
@@ -106,7 +106,7 @@ public class JEIFoundryPlugin implements IModPlugin {
 		table_plate = new CastingTableJEI(BlockCastingTable.EnumTable.PLATE);
 		table_rod = new CastingTableJEI(BlockCastingTable.EnumTable.ROD);
 		table_block = new CastingTableJEI(BlockCastingTable.EnumTable.BLOCK);
-		
+
 		IJeiHelpers helpers = registry.getJeiHelpers();
 		registry.addRecipeCategories(new AlloyFurnaceJEI.Category(helpers), new MeltingJEI.Category(helpers), new CastingJEI.Category(helpers), new AlloyMixerJEI.Category(helpers), new AlloyingCrucibleJEI.Category(helpers), new InfuserJEI.Category(helpers), new AtomizerJEI.Category(helpers), new MoldStationJEI.Category(helpers), table_ingot.new Category(helpers), table_plate.new Category(helpers), table_rod.new Category(helpers), table_block.new Category(helpers));
 	}
@@ -114,7 +114,7 @@ public class JEIFoundryPlugin implements IModPlugin {
 	private void setupTable(IModRegistry registry, CastingTableJEI table) {
 		registry.addRecipeCatalyst(FoundryBlocks.block_casting_table.asItemStack(table.getType()), table.getUID());
 		registry.handleRecipes(ICastingTableRecipe.class, CastingTableJEI.Wrapper::new, table.getUID());
-		registry.addRecipes(CastingTableRecipeManager.instance.getRecipes(table.getType().type), table.getUID());
+		registry.addRecipes(CastingTableRecipeManager.INSTANCE.getRecipes(table.getType().type), table.getUID());
 	}
 
 }

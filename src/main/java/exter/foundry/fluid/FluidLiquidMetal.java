@@ -25,13 +25,13 @@ public class FluidLiquidMetal extends Fluid {
 		return color;
 	}
 
-	public FluidLiquidMetal setColor(int fluid_color) {
-		color = fluid_color | 0xFF000000;
-		return this;
-	}
-	
 	@Override
 	public String getLocalizedName(FluidStack stack) {
 		return Foundry.proxy.translate(this.getUnlocalizedName(stack) + ".name");
+	}
+
+	public FluidLiquidMetal setColor(int fluid_color) {
+		color = fluid_color | 0xFF000000;
+		return this;
 	}
 }

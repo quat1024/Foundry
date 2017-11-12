@@ -1,5 +1,9 @@
 package exter.foundry.recipes;
 
+import javax.annotation.Nullable;
+
+import com.google.common.base.Preconditions;
+
 import exter.foundry.api.recipe.ICastingRecipe;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import net.minecraft.item.ItemStack;
@@ -17,21 +21,20 @@ public class CastingRecipe implements ICastingRecipe {
 
 	private final int speed;
 
-	public CastingRecipe(IItemMatcher result, FluidStack in_fluid, ItemStack in_mold, IItemMatcher in_extra, int cast_speed) {
-		if (result == null) { throw new IllegalArgumentException("Casting recipe result cannot be null."); }
+	public CastingRecipe(IItemMatcher result, FluidStack in_fluid, ItemStack in_mold, @Nullable IItemMatcher in_extra, int cast_speed) {
+
+		Preconditions.checkArgument(in_fluid != null);
+		Preconditions.checkArgument(!in_mold.isEmpty());
+		Preconditions.checkArgument(cast_speed > 0);
 		output = result;
-		if (in_fluid == null) { throw new IllegalArgumentException("Casting recipe fluid cannot be null."); }
 		fluid = in_fluid.copy();
-		if (in_mold == null) { throw new IllegalArgumentException("Casting recipe mold cannot be null."); }
 		mold = in_mold.copy();
 		extra = in_extra;
-		if (cast_speed < 1) { throw new IllegalArgumentException("Casting recipe speed must be > 0."); }
 		speed = cast_speed;
 	}
 
 	@Override
 	public boolean containsExtra(ItemStack stack) {
-		if (stack == null) { return extra == null; }
 		return extra.apply(stack);
 	}
 

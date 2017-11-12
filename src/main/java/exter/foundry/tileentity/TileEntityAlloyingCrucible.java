@@ -165,9 +165,9 @@ public class TileEntityAlloyingCrucible extends TileEntityFoundry {
 		boolean reversed = false;
 		IAlloyingCrucibleRecipe recipe = null;
 		if (tanks[TANK_INPUT_A].getFluid() != null && tanks[TANK_INPUT_B].getFluid() != null) {
-			recipe = AlloyingCrucibleRecipeManager.instance.findRecipe(tanks[TANK_INPUT_A].getFluid(), tanks[TANK_INPUT_B].getFluid());
+			recipe = AlloyingCrucibleRecipeManager.INSTANCE.findRecipe(tanks[TANK_INPUT_A].getFluid(), tanks[TANK_INPUT_B].getFluid());
 			if (recipe == null) {
-				recipe = AlloyingCrucibleRecipeManager.instance.findRecipe(tanks[TANK_INPUT_B].getFluid(), tanks[TANK_INPUT_A].getFluid());
+				recipe = AlloyingCrucibleRecipeManager.INSTANCE.findRecipe(tanks[TANK_INPUT_B].getFluid(), tanks[TANK_INPUT_A].getFluid());
 				if (recipe != null) {
 					reversed = true;
 				}

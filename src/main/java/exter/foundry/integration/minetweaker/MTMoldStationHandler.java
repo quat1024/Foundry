@@ -21,7 +21,7 @@ public class MTMoldStationHandler {
 
 		@Override
 		protected void add() {
-			MoldRecipeManager.instance.recipes.add(recipe);
+			MoldRecipeManager.INSTANCE.addRecipe(recipe);
 		}
 
 		@Override
@@ -47,7 +47,7 @@ public class MTMoldStationHandler {
 
 		@Override
 		protected void remove() {
-			MoldRecipeManager.instance.recipes.remove(recipe);
+			MoldRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class MTMoldStationHandler {
 			CraftTweakerAPI.logWarning("Invalid mold station grid size: expected 36 instead of " + grid.length);
 			return;
 		}
-		IMoldRecipe recipe = MoldRecipeManager.instance.findRecipe(grid);
+		IMoldRecipe recipe = MoldRecipeManager.INSTANCE.findRecipe(grid);
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Mold station recipe not found.");
 			return;

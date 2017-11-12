@@ -2,24 +2,24 @@ package exter.foundry.api.recipe.matcher;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class ItemStackMatcher implements IItemMatcher {
 	private final ItemStack match;
 
 	public ItemStackMatcher(Block match) {
-		this.match = new ItemStack(match);
+		this(new ItemStack(match));
 	}
 
 	public ItemStackMatcher(Item match) {
-		this.match = new ItemStack(match);
+		this(new ItemStack(match));
 	}
 
 	public ItemStackMatcher(ItemStack match) {
+		if (match.isEmpty()) throw new IllegalArgumentException("Invalid ItemStackMatcher: Cannot use an empty stack!");
 		this.match = match.copy();
 	}
 
@@ -40,6 +40,11 @@ public class ItemStackMatcher implements IItemMatcher {
 
 	@Override
 	public List<ItemStack> getItems() {
-		return Lists.newArrayList(match.copy());
+		return NonNullList.withSize(1, match.copy());
+	}
+
+	@Override
+	public String toString() {
+		return "ItemStackMatcher(Stack: " + match + ")";
 	}
 }

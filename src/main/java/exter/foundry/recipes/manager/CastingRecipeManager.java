@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,22 +8,26 @@ import exter.foundry.api.recipe.manager.ICastingRecipeManager;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.recipes.CastingRecipe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CastingRecipeManager implements ICastingRecipeManager {
-	public static final CastingRecipeManager instance = new CastingRecipeManager();
-	public List<ICastingRecipe> recipes;
-
-	public List<ItemStack> molds;
+	public static final CastingRecipeManager INSTANCE = new CastingRecipeManager();
+	private final NonNullList<ICastingRecipe> recipes;
+	private final NonNullList<ItemStack> molds;
 
 	private CastingRecipeManager() {
-		recipes = new ArrayList<>();
-		molds = new ArrayList<>();
+		recipes = NonNullList.create();
+		molds = NonNullList.create();
 	}
 
 	@Override
 	public void addMold(ItemStack mold) {
 		molds.add(mold.copy());
+	}
+
+	public void addRecipe(ICastingRecipe recipe) {
+		recipes.add(recipe);
 	}
 
 	@Override
@@ -40,6 +43,10 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 		} else {
 			recipes.add(recipe);
 		}
+	}
+
+	public void addRecipe(int i, ICastingRecipe recipe) {
+		recipes.add(i, recipe);
 	}
 
 	@Override
@@ -68,6 +75,10 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 			if (m.isItemEqual(stack)) { return true; }
 		}
 		return false;
+	}
+
+	public void removeMold(ItemStack mold) {
+		molds.remove(mold);
 	}
 
 	@Override

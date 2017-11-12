@@ -23,7 +23,7 @@ public class MTInfuserHandler {
 
 		@Override
 		protected void add() {
-			InfuserRecipeManager.instance.recipes.add(recipe);
+			InfuserRecipeManager.INSTANCE.addRecipe(recipe);
 		}
 
 		@Override
@@ -38,7 +38,7 @@ public class MTInfuserHandler {
 
 		@Override
 		protected void remove() {
-			InfuserRecipeManager.instance.recipes.remove(recipe);
+			InfuserRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 
@@ -56,7 +56,7 @@ public class MTInfuserHandler {
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input, IItemStack substance) {
-		IInfuserRecipe recipe = InfuserRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(substance));
+		IInfuserRecipe recipe = InfuserRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(substance));
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Infuser recipe not found.");
 			return;

@@ -1,5 +1,6 @@
 package exter.foundry;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import exter.foundry.api.FoundryAPI;
@@ -89,14 +90,15 @@ public class Foundry {
 	@SidedProxy(clientSide = "exter.foundry.proxy.ClientFoundryProxy", serverSide = "exter.foundry.proxy.CommonFoundryProxy")
 	public static CommonFoundryProxy proxy;
 
-	public static Logger log;
+	public static Logger log = LogManager.getLogger(MODID);
 
 	public static SimpleNetworkWrapper network_channel;
 
 	@EventHandler
-	public void load(FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event) {
 		ModIntegrationManager.init();
 		FoundrySounds.init();
+		InitRecipes.registerMachineRecipes();
 
 		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleBasic.class, "Foundry_MeltingCrucible");
 		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleStandard.class, "Foundry_MeltingCrucibleStandard");
@@ -143,7 +145,6 @@ public class Foundry {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new FoundryRegistry());
-		log = event.getModLog();
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 
@@ -156,17 +157,17 @@ public class Foundry {
 		FoundryAPI.fluids = LiquidMetalRegistry.instance;
 
 		FoundryAPI.recipes_melting = MeltingRecipeManager.INSTANCE;
-		FoundryAPI.recipes_casting = CastingRecipeManager.instance;
-		FoundryAPI.recipes_casting_table = CastingTableRecipeManager.instance;
-		FoundryAPI.recipes_alloymixer = AlloyMixerRecipeManager.instance;
-		FoundryAPI.recipes_infuser = InfuserRecipeManager.instance;
+		FoundryAPI.recipes_casting = CastingRecipeManager.INSTANCE;
+		FoundryAPI.recipes_casting_table = CastingTableRecipeManager.INSTANCE;
+		FoundryAPI.recipes_alloymixer = AlloyMixerRecipeManager.INSTANCE;
+		FoundryAPI.recipes_infuser = InfuserRecipeManager.INSTANCE;
 		FoundryAPI.recipes_alloyfurnace = AlloyFurnaceRecipeManager.INSTANCE;
-		FoundryAPI.recipes_atomizer = AtomizerRecipeManager.instance;
-		FoundryAPI.recipes_mold = MoldRecipeManager.instance;
-		FoundryAPI.recipes_alloyingcrucible = AlloyingCrucibleRecipeManager.instance;
+		FoundryAPI.recipes_atomizer = AtomizerRecipeManager.INSTANCE;
+		FoundryAPI.recipes_mold = MoldRecipeManager.INSTANCE;
+		FoundryAPI.recipes_alloyingcrucible = AlloyingCrucibleRecipeManager.INSTANCE;
 
 		FoundryAPI.materials = MaterialRegistry.instance;
-		FoundryAPI.burnerheater_fuel = BurnerHeaterFuelManager.instance;
+		FoundryAPI.burnerheater_fuel = BurnerHeaterFuelManager.INSTANCE;
 
 		CapabilityHeatProvider.init();
 		CapabilityFirearmRound.init();

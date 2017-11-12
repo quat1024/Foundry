@@ -22,7 +22,7 @@ public class MTAtomizerHandler {
 
 		@Override
 		protected void add() {
-			AtomizerRecipeManager.instance.recipes.add(recipe);
+			AtomizerRecipeManager.INSTANCE.addRecipe(recipe);
 		}
 
 		@Override
@@ -37,7 +37,7 @@ public class MTAtomizerHandler {
 
 		@Override
 		protected void remove() {
-			AtomizerRecipeManager.instance.recipes.remove(recipe);
+			AtomizerRecipeManager.INSTANCE.removeRecipe(recipe);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class MTAtomizerHandler {
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input) {
-		IAtomizerRecipe recipe = AtomizerRecipeManager.instance.findRecipe(CraftTweakerMC.getLiquidStack(input));
+		IAtomizerRecipe recipe = AtomizerRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input));
 		if (recipe == null) {
 			CraftTweakerAPI.logWarning("Atomizer recipe not found.");
 			return;

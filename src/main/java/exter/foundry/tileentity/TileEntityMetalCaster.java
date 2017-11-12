@@ -148,7 +148,7 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 		checkCurrentRecipe();
 
 		if (current_recipe == null) {
-			current_recipe = CastingRecipeManager.instance.findRecipe(tank.getFluid(), inventory.get(INVENTORY_MOLD), inventory.get(INVENTORY_EXTRA));
+			current_recipe = CastingRecipeManager.INSTANCE.findRecipe(tank.getFluid(), inventory.get(INVENTORY_MOLD), inventory.get(INVENTORY_EXTRA));
 			progress = -1;
 		}
 

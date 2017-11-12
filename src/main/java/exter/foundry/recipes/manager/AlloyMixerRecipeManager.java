@@ -1,29 +1,33 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IAlloyMixerRecipe;
 import exter.foundry.api.recipe.manager.IAlloyMixerRecipeManager;
 import exter.foundry.recipes.AlloyMixerRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 public class AlloyMixerRecipeManager implements IAlloyMixerRecipeManager {
-	public static final AlloyMixerRecipeManager instance = new AlloyMixerRecipeManager();
+	public static final AlloyMixerRecipeManager INSTANCE = new AlloyMixerRecipeManager();
 
-	public List<IAlloyMixerRecipe> recipes;
+	private final NonNullList<IAlloyMixerRecipe> recipes;
 
 	private final int[] recipe_order;
 
 	private AlloyMixerRecipeManager() {
-		recipes = new ArrayList<>();
+		recipes = NonNullList.create();
 		recipe_order = new int[4];
 	}
 
 	@Override
 	public void addRecipe(FluidStack out, FluidStack[] in) {
 		recipes.add(new AlloyMixerRecipe(out, in));
+	}
+
+	public void addRecipe(IAlloyMixerRecipe recipe) {
+		recipes.add(recipe);
 	}
 
 	@Override

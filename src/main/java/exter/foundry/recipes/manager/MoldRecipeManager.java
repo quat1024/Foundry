@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,14 +7,19 @@ import exter.foundry.api.recipe.IMoldRecipe;
 import exter.foundry.api.recipe.manager.IMoldRecipeManager;
 import exter.foundry.recipes.MoldRecipe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class MoldRecipeManager implements IMoldRecipeManager {
-	public static final MoldRecipeManager instance = new MoldRecipeManager();
+	public static final MoldRecipeManager INSTANCE = new MoldRecipeManager();
 
-	public List<IMoldRecipe> recipes;
+	private final NonNullList<IMoldRecipe> recipes;
 
 	private MoldRecipeManager() {
-		recipes = new ArrayList<>();
+		recipes = NonNullList.create();
+	}
+
+	public void addRecipe(IMoldRecipe recipe) {
+		recipes.add(recipe);
 	}
 
 	@Override

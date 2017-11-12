@@ -79,7 +79,7 @@ public class ContainerMetalCaster extends Container {
 			slot_stack = stack.copy();
 
 			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
-				if (CastingRecipeManager.instance.isItemMold(stack)) {
+				if (CastingRecipeManager.INSTANCE.isItemMold(stack)) {
 					int mold_slot = SLOTS_TE + TileEntityMetalCaster.INVENTORY_MOLD;
 					if (((SlotCasterMold) inventorySlots.get(mold_slot)).getStack().isEmpty()) {
 						if (!mergeItemStack(stack, mold_slot, mold_slot + 1, false)) { return ItemStack.EMPTY; }

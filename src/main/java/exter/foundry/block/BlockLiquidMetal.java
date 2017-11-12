@@ -3,6 +3,7 @@ package exter.foundry.block;
 import java.util.Random;
 
 import exter.foundry.creativetab.FoundryTabFluids;
+import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,6 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockLiquidMetal extends BlockFluidClassic {
 	private Object solid;
@@ -53,7 +53,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 				if (solid instanceof ItemStack) {
 					item = (ItemStack) solid;
 				} else if (solid instanceof String) {
-					for (ItemStack i : OreDictionary.getOres((String) solid)) {
+					for (ItemStack i : FoundryMiscUtils.getOresSafe((String) solid)) {
 						if (i.getItem() instanceof ItemBlock) {
 							item = i;
 							break;

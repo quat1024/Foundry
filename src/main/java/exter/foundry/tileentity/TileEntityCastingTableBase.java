@@ -172,7 +172,7 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 			return;
 		}
 
-		recipe = CastingTableRecipeManager.instance.findRecipe(fluid, getTableType());
+		recipe = CastingTableRecipeManager.INSTANCE.findRecipe(fluid, getTableType());
 		if (recipe != null) {
 			if (recipe.getOutput() == null) {
 				recipe = null;

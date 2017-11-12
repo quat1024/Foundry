@@ -15,17 +15,14 @@ public class MoldRecipe implements IMoldRecipe {
 	public final ItemStack output;
 
 	public MoldRecipe(ItemStack output, int width, int height, int[] recipe) {
-		if (output == null) { throw new IllegalArgumentException("Mold recipe output cannot be null"); }
+		if (output.isEmpty()) throw new IllegalArgumentException("Mold recipe output cannot be empty");
+		if (width < 1 || width > 6) throw new IllegalArgumentException("Mold recipe width must be between 1 and 6.");
+		if (height < 1 || height > 6) throw new IllegalArgumentException("Mold recipe height must be between 1 and 6.");
+		if (recipe == null || recipe.length < width * height) throw new IllegalArgumentException("Mold recipe array cannot be null and the length must be at least width*height.");
+		for (int v : recipe)
+			if (v < 0 || v > 4) throw new IllegalArgumentException("Mold recipe grid values must be between 0 and 4.");
+
 		this.output = output.copy();
-
-		if (width < 1 || width > 6) { throw new IllegalArgumentException("Mold recipe width must be between 1 and 6."); }
-		if (height < 1 || height > 6) { throw new IllegalArgumentException("Mold recipe height must be between 1 and 6."); }
-		if (recipe == null || recipe.length < width * height) { throw new IllegalArgumentException("Mold recipe array cannot be null and the length must be at least width*height."); }
-
-		for (int v : recipe) {
-			if (v < 0 || v > 4) { throw new IllegalArgumentException("Mold recipe grid values must be between 0 and 4."); }
-		}
-
 		this.width = width;
 		this.height = height;
 		this.recipe = recipe.clone();

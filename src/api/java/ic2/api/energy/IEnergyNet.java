@@ -11,6 +11,45 @@ import net.minecraft.world.World;
  */
 public interface IEnergyNet {
 	/**
+	 * Retrieve statistics for the tile entity specified.
+	 *
+	 * The statistics apply to the last simulated tick.
+	 *
+	 * @param tile Tile entity to check.
+	 * @return Statistics for the tile entity.
+	 */
+	NodeStats getNodeStats(IEnergyTile tile);
+
+	BlockPos getPos(IEnergyTile tile);
+
+	/**
+	 * Determine the typical power used by the specific tier, e.g. 128 eu/t for tier 2.
+	 *
+	 * @param tier tier
+	 * @return power in eu/t
+	 */
+	double getPowerFromTier(int tier);
+
+	/**
+	 * Get the sub tile at the specified position.
+	 *
+	 * See the description of {@link #getTile} about whether getTile or getSubTile is applicable.
+	 *
+	 * @param world World containing the tile
+	 * @param pos position
+	 * @return sub tile at the specified position or null if none is registered
+	 */
+	IEnergyTile getSubTile(World world, BlockPos pos);
+
+	/**
+	 * Determine minimum tier required to handle the specified power, e.g. tier 2 for 128 eu/t.
+	 *
+	 * @param power in eu/t
+	 * @return tier
+	 */
+	int getTierFromPower(double power);
+
+	/**
 	 * Get the EnergyNet-registered tile for the specified position.
 	 *
 	 * The returned tile is always the main tile implementing IEnergySource/-Sink/-Conductor, which
@@ -32,44 +71,5 @@ public interface IEnergyNet {
 	 */
 	IEnergyTile getTile(World world, BlockPos pos);
 
-	/**
-	 * Get the sub tile at the specified position.
-	 *
-	 * See the description of {@link #getTile} about whether getTile or getSubTile is applicable.
-	 *
-	 * @param world World containing the tile
-	 * @param pos position
-	 * @return sub tile at the specified position or null if none is registered
-	 */
-	IEnergyTile getSubTile(World world, BlockPos pos);
-
 	World getWorld(IEnergyTile tile);
-
-	BlockPos getPos(IEnergyTile tile);
-
-	/**
-	 * Retrieve statistics for the tile entity specified.
-	 *
-	 * The statistics apply to the last simulated tick.
-	 *
-	 * @param tile Tile entity to check.
-	 * @return Statistics for the tile entity.
-	 */
-	NodeStats getNodeStats(IEnergyTile tile);
-
-	/**
-	 * Determine the typical power used by the specific tier, e.g. 128 eu/t for tier 2.
-	 *
-	 * @param tier tier
-	 * @return power in eu/t
-	 */
-	double getPowerFromTier(int tier);
-
-	/**
-	 * Determine minimum tier required to handle the specified power, e.g. tier 2 for 128 eu/t.
-	 *
-	 * @param power in eu/t
-	 * @return tier
-	 */
-	int getTierFromPower(double power);
 }

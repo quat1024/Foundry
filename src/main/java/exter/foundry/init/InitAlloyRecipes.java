@@ -31,9 +31,9 @@ public class InitAlloyRecipes {
 		Fluid fluid_in_a = LiquidMetalRegistry.instance.getFluid(input_a);
 		Fluid fluid_in_b = LiquidMetalRegistry.instance.getFluid(input_b);
 
-		AlloyingCrucibleRecipeManager.instance.addRecipe(new FluidStack(fluid_out, (amount_a + amount_b) * 3), new FluidStack(fluid_in_a, amount_a * 3), new FluidStack(fluid_in_b, amount_b * 3));
+		AlloyingCrucibleRecipeManager.INSTANCE.addRecipe(new FluidStack(fluid_out, (amount_a + amount_b) * 3), new FluidStack(fluid_in_a, amount_a * 3), new FluidStack(fluid_in_b, amount_b * 3));
 
-		AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(fluid_out, amount_a + amount_b), new FluidStack[] { new FluidStack(fluid_in_a, amount_a), new FluidStack(fluid_in_b, amount_b) });
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(fluid_out, amount_a + amount_b), new FluidStack[] { new FluidStack(fluid_in_a, amount_a), new FluidStack(fluid_in_b, amount_b) });
 	}
 
 	static public void init() {
@@ -54,17 +54,17 @@ public class InitAlloyRecipes {
 		Fluid liquid_glowstone = FluidRegistry.getFluid("liquidglowstone");
 		Fluid liquid_enderpearl = FluidRegistry.getFluid("liquidenderpearl");
 
-		if(liquid_redstone != null) AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(FoundryFluids.liquid_signalum, 108), new FluidStack[] { new FluidStack(FoundryFluids.liquid_copper, 81), new FluidStack(FoundryFluids.liquid_silver, 27), new FluidStack(liquid_redstone, 250) });
+		if (liquid_redstone != null) AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_signalum, 108), new FluidStack[] { new FluidStack(FoundryFluids.liquid_copper, 81), new FluidStack(FoundryFluids.liquid_silver, 27), new FluidStack(liquid_redstone, 250) });
 
-		if(liquid_glowstone != null) AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(FoundryFluids.liquid_lumium, 108), new FluidStack[] { new FluidStack(FoundryFluids.liquid_tin, 81), new FluidStack(FoundryFluids.liquid_silver, 27), new FluidStack(liquid_glowstone, 250) });
+		if (liquid_glowstone != null) AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_lumium, 108), new FluidStack[] { new FluidStack(FoundryFluids.liquid_tin, 81), new FluidStack(FoundryFluids.liquid_silver, 27), new FluidStack(liquid_glowstone, 250) });
 
-		if(liquid_enderpearl != null) AlloyMixerRecipeManager.instance.addRecipe(new FluidStack(FoundryFluids.liquid_enderium, 108), new FluidStack[] { new FluidStack(FoundryFluids.liquid_tin, 54), new FluidStack(FoundryFluids.liquid_silver, 27), new FluidStack(FoundryFluids.liquid_platinum, 27), new FluidStack(liquid_enderpearl, 250) });
+		if (liquid_enderpearl != null) AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_enderium, 108), new FluidStack[] { new FluidStack(FoundryFluids.liquid_tin, 54), new FluidStack(FoundryFluids.liquid_silver, 27), new FluidStack(FoundryFluids.liquid_platinum, 27), new FluidStack(liquid_enderpearl, 250) });
 
 		if (FoundryConfig.recipe_steel) {
-			InfuserRecipeManager.instance.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 36), new FluidStack(FoundryFluids.liquid_iron, 36), new OreMatcher("dustCoal"), 160000);
-			InfuserRecipeManager.instance.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 12), new FluidStack(FoundryFluids.liquid_iron, 12), new OreMatcher("dustCharcoal"), 160000);
-			InfuserRecipeManager.instance.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 9), new FluidStack(FoundryFluids.liquid_iron, 9), new OreMatcher("dustSmallCoal"), 40000);
-			InfuserRecipeManager.instance.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 3), new FluidStack(FoundryFluids.liquid_iron, 3), new OreMatcher("dustSmallCharcoal"), 40000);
+			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 36), new FluidStack(FoundryFluids.liquid_iron, 36), new OreMatcher("dustCoal"), 160000);
+			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 12), new FluidStack(FoundryFluids.liquid_iron, 12), new OreMatcher("dustCharcoal"), 160000);
+			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 9), new FluidStack(FoundryFluids.liquid_iron, 9), new OreMatcher("dustSmallCoal"), 40000);
+			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 3), new FluidStack(FoundryFluids.liquid_iron, 3), new OreMatcher("dustSmallCharcoal"), 40000);
 		}
 	}
 }

@@ -11,12 +11,13 @@ import exter.foundry.api.recipe.ICastingTableRecipe;
 import exter.foundry.api.recipe.manager.ICastingTableRecipeManager;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.recipes.CastingTableRecipe;
+import exter.foundry.util.FoundryMiscUtils;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CastingTableRecipeManager implements ICastingTableRecipeManager {
-	public static final CastingTableRecipeManager instance = new CastingTableRecipeManager();
+	public static final CastingTableRecipeManager INSTANCE = new CastingTableRecipeManager();
 
-	public Map<ICastingTableRecipe.TableType, Map<String, ICastingTableRecipe>> recipes;
+	private final Map<ICastingTableRecipe.TableType, Map<String, ICastingTableRecipe>> recipes;
 
 	private CastingTableRecipeManager() {
 		recipes = new EnumMap<>(ICastingTableRecipe.TableType.class);
@@ -25,8 +26,14 @@ public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 		}
 	}
 
+	public void addRecipe(ICastingTableRecipe.TableType tableType, String name, ICastingTableRecipe recipe) {
+		recipes.get(tableType).put(name, recipe);
+
+	}
+
 	@Override
 	public void addRecipe(IItemMatcher result, FluidStack fluid, ICastingTableRecipe.TableType type) {
+		if (FoundryMiscUtils.isInvalid(result)) return;
 		ICastingTableRecipe recipe = new CastingTableRecipe(result, fluid, type);
 		recipes.get(recipe.getTableType()).put(recipe.getInput().getFluid().getName(), recipe);
 	}
@@ -54,5 +61,9 @@ public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 	@Override
 	public void removeRecipe(ICastingTableRecipe recipe) {
 		recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
+	}
+
+	public void removeRecipe(ICastingTableRecipe.TableType tableType, String name) {
+		recipes.get(tableType).remove(name);
 	}
 }

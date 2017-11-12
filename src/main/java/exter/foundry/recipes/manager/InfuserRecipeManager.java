@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,21 +7,27 @@ import exter.foundry.api.recipe.IInfuserRecipe;
 import exter.foundry.api.recipe.manager.IInfuserRecipeManager;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.recipes.InfuserRecipe;
+import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 public class InfuserRecipeManager implements IInfuserRecipeManager {
-	public static final InfuserRecipeManager instance = new InfuserRecipeManager();
+	public static final InfuserRecipeManager INSTANCE = new InfuserRecipeManager();
 
-	public List<IInfuserRecipe> recipes;
+	private final NonNullList<IInfuserRecipe> recipes;
 
 	private InfuserRecipeManager() {
-		recipes = new ArrayList<>();
+		recipes = NonNullList.create();
 	}
 
 	@Override
 	public void addRecipe(FluidStack result, FluidStack in_fluid, IItemMatcher item, int energy) {
-		recipes.add(new InfuserRecipe(result, in_fluid, item, energy));
+		if (!FoundryMiscUtils.isInvalid(item)) recipes.add(new InfuserRecipe(result, in_fluid, item, energy));
+	}
+
+	public void addRecipe(IInfuserRecipe recipe) {
+		recipes.add(recipe);
 	}
 
 	@Override

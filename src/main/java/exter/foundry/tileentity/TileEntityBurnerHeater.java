@@ -218,7 +218,7 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 				ItemStack item = getStackInSlot(i);
 				if (!item.isEmpty()) {
 					int burn = 0;
-					IBurnerHeaterFuel fuel = BurnerHeaterFuelManager.instance.getFuel(item);
+					IBurnerHeaterFuel fuel = BurnerHeaterFuelManager.INSTANCE.getFuel(item);
 					if (fuel != null) {
 						burn = fuel.getBurnTime() * 10;
 						heat_provide = fuel.getHeat();

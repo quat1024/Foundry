@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.FoundryUtils;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
@@ -15,6 +16,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -43,14 +45,14 @@ public class FoundryMiscUtils {
 			return fluid_block.drain(world, pos, do_drain);
 		}
 
-		if (state.getMaterial() == Material.WATER && Integer.valueOf(0).equals(state.getValue(BlockLiquid.LEVEL))) {
+		if (state.getMaterial() == Material.WATER && state.getValue(BlockLiquid.LEVEL) == 0) {
 			if (do_drain) {
 				world.setBlockToAir(pos);
 			}
 			return new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
 		}
 
-		if (state.getMaterial() == Material.LAVA && Integer.valueOf(0).equals(state.getValue(BlockLiquid.LEVEL))) {
+		if (state.getMaterial() == Material.LAVA && state.getValue(BlockLiquid.LEVEL) == 0) {
 			if (do_drain) {
 				world.setBlockToAir(pos);
 			}
@@ -62,7 +64,7 @@ public class FoundryMiscUtils {
 	static public Set<String> getAllItemOreDictionaryNames(ItemStack stack) {
 		Set<String> result = new HashSet<>();
 		for (String name : OreDictionary.getOreNames()) {
-			List<ItemStack> ores = OreDictionary.getOres(name);
+			List<ItemStack> ores = FoundryMiscUtils.getOresSafe(name);
 			for (ItemStack i : ores) {
 				if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) {
 					result.add(name);
@@ -74,7 +76,7 @@ public class FoundryMiscUtils {
 
 	static public String getItemOreDictionaryName(ItemStack stack) {
 		for (String name : OreDictionary.getOreNames()) {
-			List<ItemStack> ores = OreDictionary.getOres(name);
+			List<ItemStack> ores = getOresSafe(name);
 			for (ItemStack i : ores) {
 				if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) { return name; }
 			}
@@ -88,7 +90,7 @@ public class FoundryMiscUtils {
 
 	static public ItemStack getModItemFromOreDictionary(String modid, String orename, int amount) {
 		modid = modid.toLowerCase();
-		for (ItemStack is : OreDictionary.getOres(orename)) {
+		if (OreDictionary.doesOreNameExist(orename)) for (ItemStack is : FoundryMiscUtils.getOresSafe(orename)) {
 			if (is.getItem().getRegistryName().getResourceDomain().equals(modid)) {
 				is = is.copy();
 				is.setCount(amount);
@@ -96,6 +98,18 @@ public class FoundryMiscUtils {
 			}
 		}
 		return null;
+	}
+
+	public static NonNullList<ItemStack> getOresSafe(String orename) {
+		if (OreDictionary.doesOreNameExist(orename)) return OreDictionary.getOres(orename);
+		return NonNullList.withSize(0, ItemStack.EMPTY);
+	}
+
+	public static boolean isInvalid(IItemMatcher matcher) {
+		if (matcher == null) Foundry.log.error("Null IItemMatcher! Instance: " + matcher);
+		if (matcher.getItem().isEmpty()) Foundry.log.error("Invalid IItemMatcher with an empty match stack! Instance: " + matcher);
+		if (matcher.getItems().isEmpty()) Foundry.log.error("Invalid IItemMatcher with an empty match list! Instance: " + matcher);
+		return matcher == null || matcher.getItem().isEmpty() || matcher.getItems().isEmpty();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -117,8 +131,8 @@ public class FoundryMiscUtils {
 		if (item != null) {
 			ItemStack mold = FoundryItems.mold(mold_meta);
 			ItemStack extra_item = extra != null ? extra.getItem() : null;
-			if (CastingRecipeManager.instance.findRecipe(new FluidStack(fluid.getFluid(), FoundryAPI.CASTER_TANK_CAPACITY), mold, extra_item) == null) {
-				CastingRecipeManager.instance.addRecipe(new ItemStackMatcher(item), fluid, mold, extra);
+			if (CastingRecipeManager.INSTANCE.findRecipe(new FluidStack(fluid.getFluid(), FoundryAPI.CASTER_TANK_CAPACITY), mold, extra_item) == null) {
+				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(item), fluid, mold, extra);
 			}
 		}
 	}
