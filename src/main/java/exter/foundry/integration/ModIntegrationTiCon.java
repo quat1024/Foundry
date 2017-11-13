@@ -206,7 +206,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
 			if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
 				slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
-				if (/*temp fix until tic fixes issues*/ casting.getResult() != null && casting.getResult().isEmpty()) {
+				if (/*temp fix until tic fixes issues*/ casting.getResult() == null || casting.getResult().isEmpty()) {
 					continue;
 				}
 				String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
