@@ -152,7 +152,7 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 		if (compound.hasKey("progress")) {
 			progress = compound.getInteger("progress");
 		}
-		if (world.isRemote && compound.hasKey("tank_capacity")) {
+		if (world != null && world.isRemote && compound.hasKey("tank_capacity")) {
 			tank.setCapacity(compound.getInteger("tank_capacity"));
 		}
 	}

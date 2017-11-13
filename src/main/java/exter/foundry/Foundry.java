@@ -77,11 +77,11 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = Foundry.MODID, name = Foundry.MODNAME, version = Foundry.MODVERSION, dependencies = "after:jei;after:tconstruct")
+@Mod(modid = Foundry.MODID, name = Foundry.MODNAME, version = Foundry.MODVERSION, dependencies = "required-after:thermalfoundation;after:jei;after:tconstruct")
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.0.0.1";
+	public static final String MODVERSION = "3.0.1.0";
 
 	@Instance(MODID)
 	public static Foundry instance;

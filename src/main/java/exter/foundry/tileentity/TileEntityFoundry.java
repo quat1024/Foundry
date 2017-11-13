@@ -642,7 +642,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 	}
 
 	protected final void updateValue(String name, int value) {
-		if (world.isRemote) { return; }
+		if (world != null && world.isRemote) { return; }
 		if (update_packet == null) {
 			update_packet = new NBTTagCompound();
 			super.writeToNBT(update_packet);

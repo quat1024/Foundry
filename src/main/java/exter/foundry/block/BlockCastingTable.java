@@ -171,7 +171,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 			if (te_ct.getProgress() == 0) {
 				ItemStack is = te_ct.getStackInSlot(0);
 
-				if (is.isEmpty()) {
+				if (!is.isEmpty()) {
 					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.9375, pos.getZ() + 0.5, is);
 					entityitem.setPickupDelay(1);
 
