@@ -136,9 +136,9 @@ public class GuiMeltingCrucible extends GuiFoundry {
 			List<String> currenttip = new ArrayList<>();
 			int heat = te_crucible.getTemperature() / 100;
 			int melt_point = te_crucible.getMeltingPoint() / 100;
-			currenttip.add("Temperature: " + String.valueOf(heat) + " \u00B0K");
+			currenttip.add("Temperature: " + String.valueOf(heat) + " " + GuiFoundry.DEG_K);
 			if (melt_point > 0) {
-				currenttip.add("Melt: " + String.valueOf(melt_point) + " \u00B0K");
+				currenttip.add("Melt: " + String.valueOf(melt_point) + " " + GuiFoundry.DEG_K);
 			}
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
