@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import exter.foundry.Foundry;
 import exter.foundry.api.recipe.IMoldRecipe;
 import exter.foundry.util.FoundryMiscUtils;
 import mezz.jei.api.IGuiHelper;
@@ -70,8 +71,7 @@ public class MoldStationJEI {
 
 		@Override
 		public String getModName() {
-			// TODO Auto-generated method stub
-			return null;
+			return Foundry.MODID;
 		}
 
 		@Nonnull
@@ -88,7 +88,7 @@ public class MoldStationJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.mold";
+			return FoundryJEIConstants.MOLD_UID;
 		}
 
 		@Override

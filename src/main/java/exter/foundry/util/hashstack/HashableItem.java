@@ -24,8 +24,8 @@ public class HashableItem {
 	}
 
 	public HashableItem(ItemStack item_stack) {
-		if (item_stack == null) {
-			stack = null;
+		if (item_stack.isEmpty()) {
+			stack = ItemStack.EMPTY;
 			return;
 		}
 		stack = item_stack.copy();
@@ -47,7 +47,7 @@ public class HashableItem {
 
 	@Override
 	public int hashCode() {
-		if (stack == null) { return 0; }
+		if (stack.isEmpty()) { return 0; }
 		final int prime = 1289;
 		int result = 1;
 		result = prime * result + stack.getUnlocalizedName().hashCode();

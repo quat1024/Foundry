@@ -35,7 +35,7 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 	}
 
 	@Override
-	public long getFoundryEnergyCapacity() {
+	public int getFoundryEnergyCapacity() {
 		return 25000;
 	}
 

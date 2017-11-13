@@ -80,7 +80,7 @@ public class AlloyingCrucibleJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.alloyingcrucible";
+			return FoundryJEIConstants.AC_UID;
 		}
 
 		@Override

@@ -57,7 +57,7 @@ public class InventoryFirearm implements IInventory {
 				return is;
 			}
 		} else {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 

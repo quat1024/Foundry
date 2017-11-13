@@ -134,7 +134,7 @@ public class TileEntityMetalAtomizer extends TileEntityFoundryPowered {
 	}
 
 	@Override
-	public long getFoundryEnergyCapacity() {
+	public int getFoundryEnergyCapacity() {
 		return 60000;
 	}
 

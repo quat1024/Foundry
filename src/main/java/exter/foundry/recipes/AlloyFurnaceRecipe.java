@@ -14,7 +14,7 @@ public class AlloyFurnaceRecipe implements IAlloyFurnaceRecipe {
 	public ItemStack output;
 
 	public AlloyFurnaceRecipe(ItemStack out, IItemMatcher in_a, IItemMatcher in_b) {
-		if (out == null) { throw new IllegalArgumentException("Alloy recipe output cannot be null"); }
+		if (out.isEmpty()) { throw new IllegalArgumentException("Alloy recipe output cannot be empty"); }
 		output = out.copy();
 
 		input_a = in_a;

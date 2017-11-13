@@ -63,7 +63,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 	private boolean added_enet;
 	protected boolean update_energy;
 	protected boolean update_energy_tick;
-	private long energy_stored;
+	private int energy_stored;
 
 	private final ForgeEnergyConsumer fe;
 
@@ -95,7 +95,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		return (double) (getFoundryEnergyCapacity() - getStoredFoundryEnergy()) / RATIO_EU;
 	}
 
-	public abstract long getFoundryEnergyCapacity();
+	public abstract int getFoundryEnergyCapacity();
 
 	@Optional.Method(modid = "ic2")
 	@Override
@@ -103,8 +103,8 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		return 1;
 	}
 
-	public long getStoredFoundryEnergy() {
-		long capacity = getFoundryEnergyCapacity();
+	public int getStoredFoundryEnergy() {
+		int capacity = getFoundryEnergyCapacity();
 		if (energy_stored > capacity) {
 			return capacity;
 		} else {
@@ -151,7 +151,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if (compound.hasKey("energy")) {
-			energy_stored = compound.getLong("energy");
+			energy_stored = compound.getInteger("energy");
 		}
 	}
 
@@ -159,9 +159,9 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		return (double) receiveFoundryEnergy((int) (eu * RATIO_EU), do_receive, true) / RATIO_EU;
 	}
 
-	private long receiveFoundryEnergy(long en, boolean do_receive, boolean allow_overflow) {
+	private int receiveFoundryEnergy(int en, boolean do_receive, boolean allow_overflow) {
 		if (!allow_overflow) {
-			long needed = getFoundryEnergyCapacity() - energy_stored;
+			int needed = getFoundryEnergyCapacity() - energy_stored;
 			if (en > needed) {
 				en = needed;
 			}
@@ -224,7 +224,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 	}
 
-	public long useFoundryEnergy(long amount, boolean do_use) {
+	public int useFoundryEnergy(int amount, boolean do_use) {
 		if (amount > energy_stored) {
 			amount = energy_stored;
 		}
@@ -241,7 +241,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 			compound = new NBTTagCompound();
 		}
 		super.writeToNBT(compound);
-		compound.setLong("energy", energy_stored);
+		compound.setInteger("energy", energy_stored);
 		return compound;
 	}
 }

@@ -17,7 +17,7 @@ public class EntityAIAttackRangedGun extends EntityAIAttackRangedBow<EntitySkele
 	@Override
 	protected boolean isBowInMainhand() {
 		ItemStack mainhand = entity.getHeldItemMainhand();
-		if (mainhand == null) { return false; }
+		if (mainhand.isEmpty()) { return false; }
 		Item item = mainhand.getItem();
 		return item == FoundryItems.item_revolver || item == FoundryItems.item_shotgun;
 	}

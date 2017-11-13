@@ -78,7 +78,7 @@ public class AlloyMixerJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.alloymixer";
+			return FoundryJEIConstants.AM_UID;
 		}
 
 		@Override

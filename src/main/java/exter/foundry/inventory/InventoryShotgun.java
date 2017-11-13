@@ -18,7 +18,7 @@ public class InventoryShotgun extends InventoryFirearm {
 		List<ItemStack> ammo = new ArrayList<>();
 		for (i = 0; i < items.size(); i++) {
 			ItemStack a = items.get(i);
-			if (a != null) {
+			if (!a.isEmpty()) {
 				ammo.add(a);
 			}
 		}

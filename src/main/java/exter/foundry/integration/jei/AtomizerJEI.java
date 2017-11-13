@@ -91,7 +91,7 @@ public class AtomizerJEI {
 		@Nonnull
 		@Override
 		public String getUid() {
-			return "foundry.atomizer";
+			return FoundryJEIConstants.ATOM_UID;
 		}
 
 		@Override

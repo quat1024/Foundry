@@ -70,7 +70,7 @@ public class InitRecipes {
 		for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
 			ItemStack stack = entry.getKey();
 
-			if (stack != null && stack.getItem() != null && MeltingRecipeManager.INSTANCE.findRecipe(stack) == null) {
+			if (!stack.isEmpty() && MeltingRecipeManager.INSTANCE.findRecipe(stack) == null) {
 				ItemStack result = entry.getValue();
 				IMeltingRecipe recipe = MeltingRecipeManager.INSTANCE.findRecipe(result);
 				if (recipe != null) {
@@ -344,7 +344,7 @@ public class InitRecipes {
 
 			// Ingot
 			ItemStack ingot = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "ingot" + name);
-			if (ingot != null) {
+			if (!ingot.isEmpty()) {
 				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT);
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(ingot), fluid_stack, mold_ingot, null);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(ingot), fluid_stack, ICastingTableRecipe.TableType.INGOT);
@@ -352,7 +352,7 @@ public class InitRecipes {
 
 			// Block
 			ItemStack block = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "block" + name);
-			if (block != null) {
+			if (!block.isEmpty()) {
 				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_BLOCK);
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, mold_block, null);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, ICastingTableRecipe.TableType.BLOCK);
@@ -360,7 +360,7 @@ public class InitRecipes {
 
 			// Slab
 			ItemStack slab = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "slab" + name);
-			if (slab != null) {
+			if (!slab.isEmpty()) {
 				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_BLOCK / 2);
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(slab), fluid_stack, mold_slab, null);
@@ -369,7 +369,7 @@ public class InitRecipes {
 
 			// Stairs
 			ItemStack stairs = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "stairs" + name);
-			if (stairs != null) {
+			if (!stairs.isEmpty()) {
 				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_BLOCK * 3 / 4);
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack, mold_stairs, null);
 				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack);
@@ -377,13 +377,13 @@ public class InitRecipes {
 
 			// Dust
 			ItemStack dust = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "dust" + name);
-			if (dust != null) {
+			if (!dust.isEmpty()) {
 				AtomizerRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(dust), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
 			}
 
 			// Gear
 			ItemStack gear = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "gear" + name);
-			if (gear != null) {
+			if (!gear.isEmpty()) {
 				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT * 4);
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack, mold_gear, null);
 				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack);
@@ -391,7 +391,7 @@ public class InitRecipes {
 
 			// Plate
 			ItemStack plate = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "plate" + name);
-			if (plate != null) {
+			if (!plate.isEmpty()) {
 				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT);
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, mold_plate, null);
@@ -401,7 +401,7 @@ public class InitRecipes {
 
 			// Rod
 			ItemStack rod = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "rod" + name);
-			if (rod != null) {
+			if (!rod.isEmpty()) {
 				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 2);
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, mold_rod, null);

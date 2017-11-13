@@ -36,7 +36,7 @@ public class AtomizerRecipe implements IAtomizerRecipe {
 
 	@Override
 	public boolean matchesRecipe(FluidStack fluid_stack) {
-		if (getOutput() == null) { return false; }
+		if (getOutput().isEmpty()) { return false; }
 		return fluid_stack != null && fluid_stack.containsFluid(fluid);
 	}
 }

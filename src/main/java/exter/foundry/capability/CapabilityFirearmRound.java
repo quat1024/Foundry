@@ -32,7 +32,7 @@ public class CapabilityFirearmRound {
 
 		@Override
 		public ItemStack getCasing() {
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 		@Override

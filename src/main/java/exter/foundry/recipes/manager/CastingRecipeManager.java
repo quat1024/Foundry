@@ -51,7 +51,7 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 
 	@Override
 	public ICastingRecipe findRecipe(FluidStack fluid, ItemStack mold, ItemStack extra) {
-		if (mold == null || fluid == null || fluid.amount == 0) { return null; }
+		if (mold.isEmpty() || fluid == null || fluid.amount == 0) { return null; }
 		for (ICastingRecipe cr : recipes) {
 			if (cr.matchesRecipe(mold, fluid, extra)) { return cr; }
 		}
@@ -70,7 +70,7 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 
 	@Override
 	public boolean isItemMold(ItemStack stack) {
-		if (stack == null) { return false; }
+		if (stack.isEmpty()) { return false; }
 		for (ItemStack m : molds) {
 			if (m.isItemEqual(stack)) { return true; }
 		}

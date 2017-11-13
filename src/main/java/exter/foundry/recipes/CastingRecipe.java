@@ -70,7 +70,7 @@ public class CastingRecipe implements ICastingRecipe {
 
 	@Override
 	public boolean matchesRecipe(ItemStack mold_stack, FluidStack fluid_stack, ItemStack in_extra) {
-		if (getOutput() == null) { return false; }
+		if (getOutput().isEmpty()) { return false; }
 		return fluid_stack != null && fluid_stack.containsFluid(fluid) && mold_stack != null && mold.isItemEqual(mold_stack) && ItemStack.areItemStackTagsEqual(mold, mold_stack) && (extra == null || extra.apply(in_extra));
 	}
 

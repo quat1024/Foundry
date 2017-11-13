@@ -31,7 +31,7 @@ public abstract class ItemFirearm extends Item {
 	static private Random random = new Random();
 
 	static public boolean roundMatches(ItemStack stack, String type) {
-		if (stack == null) { return false; }
+		if (stack.isEmpty()) { return false; }
 		if (!stack.hasCapability(FoundryAPI.capability_firearmround, null)) { return false; }
 		return stack.getCapability(FoundryAPI.capability_firearmround, null).getRoundType().equals(type);
 	}
@@ -125,11 +125,11 @@ public abstract class ItemFirearm extends Item {
 		Vec3d tend = new Vec3d(end.x, end.y, end.z);
 		RayTraceResult obj = world.rayTraceBlocks(tstart, tend, false, true, false);
 
-		List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(shooter, shooter.getEntityBoundingBox().expand(150, 150, 150));
+		List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(shooter, shooter.getEntityBoundingBox().grow(150, 150, 150));
 		double min_dist = obj != null ? obj.hitVec.distanceTo(start) : 150;
 		for (Entity ent : entities) {
 			if (ent.canBeCollidedWith() && ent.getEntityBoundingBox() != null) {
-				RayTraceResult ent_obj = ent.getEntityBoundingBox().expand(0.1, 0.1, 0.1).calculateIntercept(start, end);
+				RayTraceResult ent_obj = ent.getEntityBoundingBox().grow(0.1, 0.1, 0.1).calculateIntercept(start, end);
 				if (ent_obj != null) {
 					if (ent_obj.typeOfHit == RayTraceResult.Type.BLOCK) {
 						ent_obj.typeOfHit = RayTraceResult.Type.ENTITY;

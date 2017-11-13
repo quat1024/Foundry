@@ -47,7 +47,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 	}
 
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
-		AxisAlignedBB[] bounds = null;
+		AxisAlignedBB[] bounds = new AxisAlignedBB[0];
 		switch (state.getValue(FACING)) {
 		case EAST:
 			bounds = COLLISION_EAST;
@@ -127,7 +127,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 		case WEST:
 			return getDefaultState().withProperty(FACING, EnumMachineFacing.EAST).withProperty(STATE, EnumMachineState.ON);
 		default:
-			return null;
+			return getDefaultState();
 		}
 	}
 

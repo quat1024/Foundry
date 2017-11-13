@@ -92,7 +92,7 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 	}
 
 	@Override
-	public long getFoundryEnergyCapacity() {
+	public int getFoundryEnergyCapacity() {
 		return 40000;
 	}
 

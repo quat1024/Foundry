@@ -161,7 +161,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 				if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
 					CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
 
-					if (casting.cast != null && !casting.consumesCast() && casting.getResult() != null) {
+					if (casting.cast != null && !casting.consumesCast() && !casting.getResult().isEmpty()) {
 						String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
 						FluidStack mapped_liquid = null;
 						if (mapped != null) {
@@ -191,7 +191,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllBasinCastingRecipes()) {
 			if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
 				slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
-				if (casting.getResult() == null || casting.cast != null) {
+				if (casting.getResult().isEmpty() || casting.cast != null) {
 					continue;
 				}
 				FluidStack fluid = casting.getFluid();
@@ -206,7 +206,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
 			if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
 				slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
-				if (casting.getResult() == null) {
+				if (casting.getResult().isEmpty()) {
 					continue;
 				}
 				String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
@@ -232,7 +232,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 				if (casting.cast != null) {
 					continue;
 				}
-				if (casting.getResult() == null) { return; }
+				if (casting.getResult().isEmpty()) { return; }
 				String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
 				if (mapped == null) {
 					continue;

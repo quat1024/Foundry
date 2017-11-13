@@ -135,12 +135,12 @@ public class ItemShotgun extends ItemFirearm {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int count) {
 		if (!player.isSneaking()) {
-			ItemStack round = null;
+			ItemStack round = ItemStack.EMPTY;
 			int i;
 			int shot = -1;
 			for (i = 4; i >= 0; i--) {
 				round = getAmmo(stack, i);
-				if (round != null) {
+				if (round.isEmpty()) {
 					shot = i;
 					break;
 				}
@@ -170,7 +170,7 @@ public class ItemShotgun extends ItemFirearm {
 					casing.motionZ = look_x * 0.2;
 					world.spawnEntity(casing);
 				}
-				setAmmo(stack, shot, null);
+				setAmmo(stack, shot, ItemStack.EMPTY);
 				stack.damageItem(1, player);
 			} else {
 				if (!world.isRemote) {
@@ -191,7 +191,7 @@ public class ItemShotgun extends ItemFirearm {
 		}
 
 		NBTTagCompound ammo_tag = new NBTTagCompound();
-		if (ammo == null) {
+		if (ammo.isEmpty()) {
 			ammo_tag.setBoolean("Empty", true);
 		} else {
 			ammo_tag.setBoolean("Empty", false);

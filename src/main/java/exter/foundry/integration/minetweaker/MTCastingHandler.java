@@ -84,7 +84,7 @@ public class MTCastingHandler {
 	@ZenMethod
 	static public void addMold(IItemStack mold) {
 		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
-		if (molditem == null) {
+		if (molditem.isEmpty()) {
 			CraftTweakerAPI.logError("Invalid mold item");
 			return;
 		}
@@ -109,7 +109,7 @@ public class MTCastingHandler {
 	@ZenMethod
 	static public void removeMold(IItemStack mold) {
 		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
-		if (molditem == null) {
+		if (molditem.isEmpty()) {
 			CraftTweakerAPI.logWarning("Invalid mold item");
 			return;
 		}

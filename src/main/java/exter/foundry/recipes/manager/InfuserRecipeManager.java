@@ -32,7 +32,7 @@ public class InfuserRecipeManager implements IInfuserRecipeManager {
 
 	@Override
 	public IInfuserRecipe findRecipe(FluidStack fluid, ItemStack item) {
-		if (fluid == null || item == null) { return null; }
+		if (fluid == null || item.isEmpty()) { return null; }
 		for (IInfuserRecipe ir : recipes) {
 			if (ir.matchesRecipe(fluid, item)) { return ir; }
 		}

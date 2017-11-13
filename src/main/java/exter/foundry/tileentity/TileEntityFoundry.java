@@ -416,7 +416,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(null);
+		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
@@ -460,7 +460,6 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		if (world.isRemote) {
 			readFromNBT(pkt.getNbtCompound());
 		}
-		//world.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
 	protected abstract void onInitialize();

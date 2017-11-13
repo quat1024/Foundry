@@ -97,7 +97,7 @@ public class FoundryMiscUtils {
 				return is;
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	public static NonNullList<ItemStack> getOresSafe(String orename) {
@@ -128,9 +128,9 @@ public class FoundryMiscUtils {
 	}
 
 	static public void registerCasting(ItemStack item, FluidStack fluid, ItemMold.SubItem mold_meta, IItemMatcher extra) {
-		if (item != null) {
+		if (!item.isEmpty()) {
 			ItemStack mold = FoundryItems.mold(mold_meta);
-			ItemStack extra_item = extra != null ? extra.getItem() : null;
+			ItemStack extra_item = extra != null ? extra.getItem() : ItemStack.EMPTY;
 			if (CastingRecipeManager.INSTANCE.findRecipe(new FluidStack(fluid.getFluid(), FoundryAPI.CASTER_TANK_CAPACITY), mold, extra_item) == null) {
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(item), fluid, mold, extra);
 			}
@@ -143,7 +143,7 @@ public class FoundryMiscUtils {
 	 * @param stack Item to register.
 	 */
 	static public void registerInOreDictionary(String name, ItemStack stack) {
-		if (stack == null) { return; }
+		if (stack.isEmpty()) { return; }
 		if (!FoundryUtils.isItemInOreDictionary(name, stack)) {
 			OreDictionary.registerOre(name, stack);
 		}

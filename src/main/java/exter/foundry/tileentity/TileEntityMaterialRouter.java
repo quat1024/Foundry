@@ -198,7 +198,7 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 	private void routeItem(int in_slot, int out_slot) {
 		ItemStack input = inventory.get(in_slot);
 		ItemStack output = inventory.get(out_slot);
-		if (output == null) {
+		if (output.isEmpty()) {
 			inventory.set(out_slot, input);
 			inventory.set(in_slot, ItemStack.EMPTY);
 			updateInventoryItem(in_slot);
@@ -238,7 +238,7 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		if (input_index % 4 == 0) {
 			int i = input_index / 4;
 			ItemStack input = inventory.get(i);
-			if (input != null) {
+			if (!input.isEmpty()) {
 				for (Route r : routes) {
 					if (r.matchesItem(input)) {
 						routeItem(i, SLOT_OUTPUT + r.side.getIndex());
