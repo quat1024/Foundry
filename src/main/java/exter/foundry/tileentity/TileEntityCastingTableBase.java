@@ -196,12 +196,12 @@ public abstract class TileEntityCastingTableBase extends TileEntityFoundry {
 
 		if (progress > 0) {
 			if (--progress == 0) {
+				setInventorySlotContents(0, recipe.getOutput());
 				tank.setFluid(null);
 				updateTank(0);
 				setRecipe(null);
 			}
 		} else if (inventory.get(0).isEmpty() && recipe != null && tank.getFluid().amount == recipe.getInput().amount) {
-			setInventorySlotContents(0, recipe.getOutput());
 			progress = CAST_TIME;
 		}
 

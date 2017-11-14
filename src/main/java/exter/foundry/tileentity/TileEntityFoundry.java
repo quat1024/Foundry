@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * Base class for all machines.
@@ -135,12 +136,13 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		}
 	}
 
-	public class ItemHandler implements IItemHandler {
+	public class ItemHandler extends ItemStackHandler {
 		protected final int slots;
 		protected final ImmutableSet<Integer> insert_slots;
 		protected final ImmutableSet<Integer> extract_slots;
 
 		public ItemHandler(int slots, Set<Integer> insert_slots, Set<Integer> extract_slots) {
+			super(TileEntityFoundry.this.inventory);
 			this.slots = slots;
 			this.insert_slots = ImmutableSet.copyOf(insert_slots);
 			this.extract_slots = ImmutableSet.copyOf(extract_slots);
@@ -157,22 +159,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		@Override
 		public final ItemStack extractItem(int slot, int amount, boolean simulate) {
 			if (!extract_slots.contains(slot) || !canExtract(slot)) { return ItemStack.EMPTY; }
-			ItemStack is = getStackInSlot(slot);
-			if (is.isEmpty()) { return ItemStack.EMPTY; }
-			if (amount > is.getCount()) {
-				amount = is.getCount();
-			}
-			if (!simulate) {
-				is.shrink(amount);
-				if (is.isEmpty()) {
-					setStackInSlot(slot, ItemStack.EMPTY);
-				}
-				updateInventoryItem(slot);
-				markDirty();
-			}
-			is = is.copy();
-			is.setCount(amount);
-			return is;
+			return super.extractItem(slot, amount, simulate);
 		}
 
 		@Override
@@ -193,34 +180,13 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 		@Override
 		public final ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if (!insert_slots.contains(slot) || !canInsert(slot, stack)) { return stack; }
-			ItemStack is = getStackInSlot(slot);
-			if (is.isEmpty()) {
-				if (!simulate) {
-					setStackInSlot(slot, stack.copy());
-					updateInventoryItem(slot);
-					markDirty();
-				}
-				return ItemStack.EMPTY;
-			} else if (is.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(is, stack)) {
-				if (stack.getCount() + is.getCount() > is.getMaxStackSize()) {
-					stack = stack.copy();
-					stack.setCount(stack.getCount() - is.getMaxStackSize() + is.getCount());
-					if (!simulate) {
-						is.setCount(is.getMaxStackSize());
-					}
-				} else {
-					if (!simulate) {
-						is.grow(stack.getCount());
-					}
-					stack = ItemStack.EMPTY;
-				}
-				if (!simulate) {
-					updateInventoryItem(slot);
-					markDirty();
-				}
-				return stack;
-			}
-			return stack;
+			return super.insertItem(slot, stack, simulate);
+		}
+		
+		@Override
+		protected void onContentsChanged(int slot) {
+			updateInventoryItem(slot);
+			markDirty();
 		}
 	}
 
