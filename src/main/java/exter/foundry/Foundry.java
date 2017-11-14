@@ -81,7 +81,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.0.1.0";
+	public static final String MODVERSION = "3.0.1.1";
 
 	@Instance(MODID)
 	public static Foundry instance;
