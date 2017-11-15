@@ -4,6 +4,7 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IMoldRecipe;
+import exter.foundry.integration.ModIntegrationMinetweaker;
 import exter.foundry.recipes.MoldRecipe;
 import exter.foundry.recipes.manager.MoldRecipeManager;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -53,27 +54,31 @@ public class MTMoldStationHandler {
 
 	@ZenMethod
 	static public void addRecipe(IItemStack output, int width, int height, int[] grid) {
-		IMoldRecipe recipe = null;
-		try {
-			recipe = new MoldRecipe(CraftTweakerMC.getItemStack(output), width, height, grid);
-		} catch (IllegalArgumentException e) {
-			CraftTweakerAPI.logError("Invalid mold station recipe: " + e.getMessage());
-			return;
-		}
-		CraftTweakerAPI.apply(new MoldStationAction(recipe).action_add);
+		ModIntegrationMinetweaker.queue(() -> {
+			IMoldRecipe recipe = null;
+			try {
+				recipe = new MoldRecipe(CraftTweakerMC.getItemStack(output), width, height, grid);
+			} catch (IllegalArgumentException e) {
+				CraftTweakerAPI.logError("Invalid mold station recipe: " + e.getMessage());
+				return;
+			}
+			CraftTweakerAPI.apply(new MoldStationAction(recipe).action_add);
+		});
 	}
 
 	@ZenMethod
 	static public void removeRecipe(int[] grid) {
-		if (grid.length != 36) {
-			CraftTweakerAPI.logWarning("Invalid mold station grid size: expected 36 instead of " + grid.length);
-			return;
-		}
-		IMoldRecipe recipe = MoldRecipeManager.INSTANCE.findRecipe(grid);
-		if (recipe == null) {
-			CraftTweakerAPI.logWarning("Mold station recipe not found.");
-			return;
-		}
-		CraftTweakerAPI.apply(new MoldStationAction(recipe).action_remove);
+		ModIntegrationMinetweaker.queue(() -> {
+			if (grid.length != 36) {
+				CraftTweakerAPI.logWarning("Invalid mold station grid size: expected 36 instead of " + grid.length);
+				return;
+			}
+			IMoldRecipe recipe = MoldRecipeManager.INSTANCE.findRecipe(grid);
+			if (recipe == null) {
+				CraftTweakerAPI.logWarning("Mold station recipe not found.");
+				return;
+			}
+			CraftTweakerAPI.apply(new MoldStationAction(recipe).action_remove);
+		});
 	}
 }

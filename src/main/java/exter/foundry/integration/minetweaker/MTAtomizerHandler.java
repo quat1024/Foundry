@@ -6,6 +6,7 @@ import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAtomizerRecipe;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
+import exter.foundry.integration.ModIntegrationMinetweaker;
 import exter.foundry.recipes.AtomizerRecipe;
 import exter.foundry.recipes.manager.AtomizerRecipeManager;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -43,23 +44,28 @@ public class MTAtomizerHandler {
 
 	@ZenMethod
 	static public void addRecipe(IItemStack output, ILiquidStack input) {
-		IAtomizerRecipe recipe = null;
-		try {
-			recipe = new AtomizerRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input));
-		} catch (IllegalArgumentException e) {
-			CraftTweakerAPI.logError("Invalid atomizer recipe: " + e.getMessage());
-			return;
-		}
-		CraftTweakerAPI.apply(new AtomizerAction(recipe).action_add);
+		ModIntegrationMinetweaker.queue(() -> {
+			IAtomizerRecipe recipe = null;
+			try {
+				recipe = new AtomizerRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input));
+			} catch (IllegalArgumentException e) {
+				CraftTweakerAPI.logError("Invalid atomizer recipe: " + e.getMessage());
+				return;
+			}
+			CraftTweakerAPI.apply(new AtomizerAction(recipe).action_add);
+		});
 	}
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input) {
-		IAtomizerRecipe recipe = AtomizerRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input));
-		if (recipe == null) {
-			CraftTweakerAPI.logWarning("Atomizer recipe not found.");
-			return;
-		}
-		CraftTweakerAPI.apply(new AtomizerAction(recipe).action_remove);
+		ModIntegrationMinetweaker.queue(() -> {
+
+			IAtomizerRecipe recipe = AtomizerRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input));
+			if (recipe == null) {
+				CraftTweakerAPI.logWarning("Atomizer recipe not found.");
+				return;
+			}
+			CraftTweakerAPI.apply(new AtomizerAction(recipe).action_remove);
+		});
 	}
 }

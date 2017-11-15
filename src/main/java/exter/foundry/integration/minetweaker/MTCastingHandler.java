@@ -8,6 +8,7 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.ICastingRecipe;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
+import exter.foundry.integration.ModIntegrationMinetweaker;
 import exter.foundry.recipes.CastingRecipe;
 import exter.foundry.recipes.manager.CastingRecipeManager;
 import net.minecraft.item.ItemStack;
@@ -108,27 +109,32 @@ public class MTCastingHandler {
 
 	@ZenMethod
 	static public void removeMold(IItemStack mold) {
-		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
-		if (molditem.isEmpty()) {
-			CraftTweakerAPI.logWarning("Invalid mold item");
-			return;
-		}
-		for (ItemStack m : CastingRecipeManager.INSTANCE.getMolds()) {
-			if (m.isItemEqual(molditem) && ItemStack.areItemStacksEqual(m, molditem)) {
-				CraftTweakerAPI.apply(new MoldAction(m).action_remove);
+		ModIntegrationMinetweaker.queue(() -> {
+
+			ItemStack molditem = CraftTweakerMC.getItemStack(mold);
+			if (molditem.isEmpty()) {
+				CraftTweakerAPI.logWarning("Invalid mold item");
 				return;
 			}
-		}
-		CraftTweakerAPI.logWarning("Mold not found.");
+			for (ItemStack m : CastingRecipeManager.INSTANCE.getMolds()) {
+				if (m.isItemEqual(molditem) && ItemStack.areItemStacksEqual(m, molditem)) {
+					CraftTweakerAPI.apply(new MoldAction(m).action_remove);
+					return;
+				}
+			}
+			CraftTweakerAPI.logWarning("Mold not found.");
+		});
 	}
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input, IItemStack mold, @Optional IItemStack extra) {
-		ICastingRecipe recipe = CastingRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
-		if (recipe == null) {
-			CraftTweakerAPI.logWarning("Casting recipe not found.");
-			return;
-		}
-		CraftTweakerAPI.apply(new CastingAction(recipe).action_remove);
+		ModIntegrationMinetweaker.queue(() -> {
+			ICastingRecipe recipe = CastingRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
+			if (recipe == null) {
+				CraftTweakerAPI.logWarning("Casting recipe not found.");
+				return;
+			}
+			CraftTweakerAPI.apply(new CastingAction(recipe).action_remove);
+		});
 	}
 }

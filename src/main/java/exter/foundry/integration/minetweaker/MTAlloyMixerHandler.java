@@ -4,6 +4,7 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAlloyMixerRecipe;
+import exter.foundry.integration.ModIntegrationMinetweaker;
 import exter.foundry.recipes.AlloyMixerRecipe;
 import exter.foundry.recipes.manager.AlloyMixerRecipeManager;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,39 +56,43 @@ public class MTAlloyMixerHandler {
 
 	@ZenMethod
 	static public void addRecipe(ILiquidStack output, ILiquidStack[] inputs) {
+		ModIntegrationMinetweaker.queue(() -> {
+			FluidStack out = (FluidStack) output.getInternal();
+			FluidStack[] in = new FluidStack[inputs.length];
 
-		FluidStack out = (FluidStack) output.getInternal();
-		FluidStack[] in = new FluidStack[inputs.length];
+			int i;
+			for (i = 0; i < inputs.length; i++) {
+				in[i] = CraftTweakerMC.getLiquidStack(inputs[i]);
+			}
 
-		int i;
-		for (i = 0; i < inputs.length; i++) {
-			in[i] = CraftTweakerMC.getLiquidStack(inputs[i]);
-		}
-
-		IAlloyMixerRecipe recipe = null;
-		try {
-			recipe = new AlloyMixerRecipe(out, in);
-		} catch (IllegalArgumentException e) {
-			CraftTweakerAPI.logError("Invalid alloy mixer recipe: " + e.getMessage());
-			return;
-		}
-		CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_add);
+			IAlloyMixerRecipe recipe = null;
+			try {
+				recipe = new AlloyMixerRecipe(out, in);
+			} catch (IllegalArgumentException e) {
+				CraftTweakerAPI.logError("Invalid alloy mixer recipe: " + e.getMessage());
+				return;
+			}
+			CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_add);
+		});
 	}
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack[] inputs) {
-		FluidStack[] in = new FluidStack[inputs.length];
+		ModIntegrationMinetweaker.queue(() -> {
 
-		int i;
-		for (i = 0; i < inputs.length; i++) {
-			in[i] = CraftTweakerMC.getLiquidStack(inputs[i]);
-		}
+			FluidStack[] in = new FluidStack[inputs.length];
 
-		IAlloyMixerRecipe recipe = AlloyMixerRecipeManager.INSTANCE.findRecipe(in, null);
-		if (recipe == null) {
-			CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
-			return;
-		}
-		CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_remove);
+			int i;
+			for (i = 0; i < inputs.length; i++) {
+				in[i] = CraftTweakerMC.getLiquidStack(inputs[i]);
+			}
+
+			IAlloyMixerRecipe recipe = AlloyMixerRecipeManager.INSTANCE.findRecipe(in, null);
+			if (recipe == null) {
+				CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
+				return;
+			}
+			CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_remove);
+		});
 	}
 }

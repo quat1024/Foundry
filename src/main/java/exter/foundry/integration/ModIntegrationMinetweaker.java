@@ -3,10 +3,7 @@ package exter.foundry.integration;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Supplier;
-
 import crafttweaker.CraftTweakerAPI;
-import crafttweaker.IAction;
 import crafttweaker.mc1120.CraftTweaker;
 import exter.foundry.integration.minetweaker.MTAlloyFurnaceHandler;
 import exter.foundry.integration.minetweaker.MTAlloyMixerHandler;
@@ -24,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModIntegrationMinetweaker implements IModIntegration {
 
-	private static final List<Supplier<IAction>> QUEUE = new ArrayList<>();
+	private static final List<Runnable> CRT_QUEUE = new ArrayList<>();
 
 	@Override
 	public String getName() {
@@ -33,9 +30,9 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 
 	@Override
 	public void onAfterPostInit() {
-		for (Supplier<IAction> a : QUEUE)
-			CraftTweakerAPI.apply(a.get());
-		QUEUE.clear();
+		for (Runnable r : CRT_QUEUE)
+			r.run();
+		CRT_QUEUE.clear();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -79,7 +76,7 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 		CraftTweakerAPI.registerClass(MTMoldStationHandler.class);
 	}
 
-	public static void queueAction(Supplier<IAction> action) {
-		QUEUE.add(action);
+	public static void queue(Runnable action) {
+		CRT_QUEUE.add(action);
 	}
 }

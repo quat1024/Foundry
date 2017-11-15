@@ -5,6 +5,7 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import exter.foundry.api.recipe.IAlloyFurnaceRecipe;
+import exter.foundry.integration.ModIntegrationMinetweaker;
 import exter.foundry.recipes.AlloyFurnaceRecipe;
 import exter.foundry.recipes.manager.AlloyFurnaceRecipeManager;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -43,24 +44,28 @@ public class MTAlloyFurnaceHandler {
 
 	@ZenMethod
 	static public void addRecipe(IItemStack output, IIngredient input_a, IIngredient input_b) {
-		IAlloyFurnaceRecipe recipe = null;
-		try {
-			recipe = new AlloyFurnaceRecipe(CraftTweakerMC.getItemStack(output), MTHelper.getIngredient(input_a), MTHelper.getIngredient(input_b));
-		} catch (IllegalArgumentException e) {
-			CraftTweakerAPI.logError("Invalid alloy furnace recipe: " + e.getMessage());
-			return;
-		}
-		CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_add);
+		ModIntegrationMinetweaker.queue(() -> {
+			IAlloyFurnaceRecipe recipe = null;
+			try {
+				recipe = new AlloyFurnaceRecipe(CraftTweakerMC.getItemStack(output), MTHelper.getIngredient(input_a), MTHelper.getIngredient(input_b));
+			} catch (IllegalArgumentException e) {
+				CraftTweakerAPI.logError("Invalid alloy furnace recipe: " + e.getMessage());
+				return;
+			}
+			CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_add);
+		});
 	}
 
 	@ZenMethod
 	static public void removeRecipe(IItemStack input_a, IItemStack input_b) {
 
-		IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getItemStack(input_a), CraftTweakerMC.getItemStack(input_b));
-		if (recipe == null) {
-			CraftTweakerAPI.logWarning("Alloy furnace recipe not found.");
-			return;
-		}
-		CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_remove);
+		ModIntegrationMinetweaker.queue(() -> {
+			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getItemStack(input_a), CraftTweakerMC.getItemStack(input_b));
+			if (recipe == null) {
+				CraftTweakerAPI.logWarning("Alloy furnace recipe not found.");
+				return;
+			}
+			CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_remove);
+		});
 	}
 }
