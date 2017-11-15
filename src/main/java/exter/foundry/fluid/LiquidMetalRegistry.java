@@ -8,6 +8,7 @@ import java.util.Set;
 import exter.foundry.api.registry.IFluidRegistry;
 import exter.foundry.block.BlockLiquidMetal;
 import exter.foundry.block.FoundryBlocks;
+import exter.foundry.config.FoundryConfig;
 import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -58,7 +59,7 @@ public class LiquidMetalRegistry implements IFluidRegistry {
 		FluidRegistry.registerFluid(fluid);
 
 		String block_name = "block" + metal_name;
-		Object solid = FoundryMiscUtils.getModItemFromOreDictionary("substratum", block_name);
+		Object solid = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, block_name);
 		if (solid == null) {
 			solid = block_name;
 		}

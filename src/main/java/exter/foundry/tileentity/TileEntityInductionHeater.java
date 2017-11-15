@@ -15,7 +15,7 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 			if (max_heat > MAX_PROVIDE) {
 				max_heat = MAX_PROVIDE;
 			}
-			return (int) useFoundryEnergy(max_heat * 3 / 2, true) * 2 / 3;
+			return useFoundryEnergy(max_heat * 3 / 2, true) * 2 / 3;
 		}
 	}
 

@@ -76,7 +76,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 
 	private boolean canOutput(ItemStack output, int slot) {
 		ItemStack inv_output = getStackInSlot(slot);
-		if(inv_output.isEmpty()) return true;
+		if (inv_output.isEmpty()) return true;
 		return inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize();
 	}
 
@@ -328,7 +328,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 			--burn_time;
 		}
 		if (has_block && progress >= 0) {
-			if(current_recipe == null) current_recipe = MoldRecipeManager.INSTANCE.findRecipe(this.grid);
+			if (current_recipe == null) current_recipe = MoldRecipeManager.INSTANCE.findRecipe(this.grid);
 			if (burn_time == 0 && current_recipe != null && canRecipeOutput()) {
 				item_burn_time = burn_time = TileEntityFurnace.getItemBurnTime(getStackInSlot(SLOT_FUEL));
 				if (burn_time > 0) {

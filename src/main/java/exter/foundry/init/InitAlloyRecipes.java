@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class InitAlloyRecipes {
 	// Create recipes for all alloy making machines.
 	static private void addSimpleAlloy(String output, String input_a, int amount_a, String input_b, int amount_b) {
-		ItemStack alloy_ingot = FoundryMiscUtils.getModItemFromOreDictionary("substratum", "ingot" + output, amount_a + amount_b);
+		ItemStack alloy_ingot = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "ingot" + output, amount_a + amount_b);
 		if (!alloy_ingot.isEmpty()) {
 			AlloyFurnaceRecipeManager.INSTANCE.addRecipe(alloy_ingot, new IItemMatcher[] { new OreMatcher("ingot" + input_a, amount_a), new OreMatcher("dust" + input_a, amount_a) }, new IItemMatcher[] { new OreMatcher("ingot" + input_b, amount_b), new OreMatcher("dust" + input_b, amount_b) });
 		}

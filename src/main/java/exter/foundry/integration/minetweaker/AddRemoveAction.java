@@ -3,6 +3,12 @@ package exter.foundry.integration.minetweaker;
 import crafttweaker.IAction;
 
 abstract public class AddRemoveAction {
+	
+	public static final IAction EMPTY = new IAction() {
+		public void apply() {}
+		public String describe() { return ""; };
+	};
+	
 	private final class Add implements IAction {
 		@Override
 		public void apply() {

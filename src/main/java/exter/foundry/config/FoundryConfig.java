@@ -3,6 +3,7 @@ package exter.foundry.config;
 import java.util.HashSet;
 import java.util.Set;
 
+import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraftforge.common.config.Configuration;
 
 public class FoundryConfig {
@@ -20,6 +21,8 @@ public class FoundryConfig {
 	public static Set<String> hardcore_furnace_keep_ingots;
 	public static boolean hardcore_remove_ingot_nugget;
 	public static boolean hardcore_remove_block_ingot;
+
+	public static String prefModID = ThermalFoundation.MOD_ID;
 
 	static public boolean getAndRemove(Configuration config, String category, String name, boolean def) {
 		boolean res = config.get(category, name, def).getBoolean(def);
@@ -57,5 +60,7 @@ public class FoundryConfig {
 		for (String name : keep_ingots) {
 			hardcore_furnace_keep_ingots.add("ingot" + name);
 		}
+
+		prefModID = config.getString("Preferred Mod ID", "recipes", ThermalFoundation.MOD_ID, "The priority MODID for Foundry recipes to try using.");
 	}
 }

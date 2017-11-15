@@ -77,7 +77,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = Foundry.MODID, name = Foundry.MODNAME, version = Foundry.MODVERSION, dependencies = "required-after:thermalfoundation;after:jei;after:tconstruct")
+@Mod(modid = Foundry.MODID, name = Foundry.MODNAME, version = Foundry.MODVERSION, dependencies = "required-after:thermalfoundation;after:jei;after:tconstruct;after:mekanism")
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
@@ -98,6 +98,7 @@ public class Foundry {
 	public void init(FMLInitializationEvent event) {
 		ModIntegrationManager.init();
 		FoundrySounds.init();
+		InitRecipes.init();
 
 		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleBasic.class, MODID + ":melt_crucible_basic");
 		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleStandard.class, MODID + ":melt_crucible_standard");

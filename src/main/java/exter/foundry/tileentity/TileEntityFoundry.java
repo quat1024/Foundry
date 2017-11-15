@@ -182,7 +182,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 			if (!insert_slots.contains(slot) || !canInsert(slot, stack)) { return stack; }
 			return super.insertItem(slot, stack, simulate);
 		}
-		
+
 		@Override
 		protected void onContentsChanged(int slot) {
 			updateInventoryItem(slot);

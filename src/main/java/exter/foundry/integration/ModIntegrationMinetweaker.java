@@ -1,10 +1,16 @@
 package exter.foundry.integration;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.base.Supplier;
+
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
 import crafttweaker.mc1120.CraftTweaker;
 import exter.foundry.integration.minetweaker.MTAlloyFurnaceHandler;
 import exter.foundry.integration.minetweaker.MTAlloyMixerHandler;
-import exter.foundry.integration.minetweaker.MTAlloyingCurcibleHandler;
+import exter.foundry.integration.minetweaker.MTAlloyingCrucibleHandler;
 import exter.foundry.integration.minetweaker.MTAtomizerHandler;
 import exter.foundry.integration.minetweaker.MTCastingHandler;
 import exter.foundry.integration.minetweaker.MTCastingTableHandler;
@@ -18,6 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModIntegrationMinetweaker implements IModIntegration {
 
+	private static final List<Supplier<IAction>> QUEUE = new ArrayList<>();
+
 	@Override
 	public String getName() {
 		return CraftTweaker.NAME;
@@ -25,7 +33,9 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 
 	@Override
 	public void onAfterPostInit() {
-
+		for (Supplier<IAction> a : QUEUE)
+			CraftTweakerAPI.apply(a.get());
+		QUEUE.clear();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -63,9 +73,13 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 		CraftTweakerAPI.registerClass(MTCastingTableHandler.class);
 		CraftTweakerAPI.registerClass(MTAlloyMixerHandler.class);
 		CraftTweakerAPI.registerClass(MTAlloyFurnaceHandler.class);
-		CraftTweakerAPI.registerClass(MTAlloyingCurcibleHandler.class);
+		CraftTweakerAPI.registerClass(MTAlloyingCrucibleHandler.class);
 		CraftTweakerAPI.registerClass(MTAtomizerHandler.class);
 		CraftTweakerAPI.registerClass(MTInfuserHandler.class);
 		CraftTweakerAPI.registerClass(MTMoldStationHandler.class);
+	}
+
+	public static void queueAction(Supplier<IAction> action) {
+		QUEUE.add(action);
 	}
 }

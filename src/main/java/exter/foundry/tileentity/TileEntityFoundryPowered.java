@@ -40,7 +40,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 
 		@Override
 		public int getEnergyStored() {
-			return (int) (energy_stored / RATIO_FE);
+			return energy_stored / RATIO_FE;
 		}
 
 		@Override
@@ -50,7 +50,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 
 		@Override
 		public int receiveEnergy(int maxReceive, boolean simulate) {
-			return (int) receiveFoundryEnergy(maxReceive * RATIO_FE, !simulate, false) / RATIO_FE;
+			return receiveFoundryEnergy(maxReceive * RATIO_FE, !simulate, false) / RATIO_FE;
 		}
 	}
 

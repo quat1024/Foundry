@@ -37,6 +37,7 @@ public class RecipeHelper {
 		}
 
 	}
+
 	private static int j = 0;
 	private static final String MODID = Foundry.MODID;
 	private static final String MODNAME = Foundry.MODNAME;

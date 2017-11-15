@@ -96,7 +96,7 @@ public class GuiMetalAtomizer extends GuiFoundry {
 		}
 
 		//Draw stored power bar.
-		int power = (int) (te_atomizer.getStoredFoundryEnergy() * POWER_HEIGHT / te_atomizer.getFoundryEnergyCapacity());
+		int power = te_atomizer.getStoredFoundryEnergy() * POWER_HEIGHT / te_atomizer.getFoundryEnergyCapacity();
 		if (power > 0) {
 			drawTexturedModalRect(window_x + POWER_X, window_y + POWER_Y + POWER_HEIGHT - power, POWER_OVERLAY_X, POWER_OVERLAY_Y + POWER_HEIGHT - power, POWER_WIDTH, power);
 		}

@@ -95,6 +95,7 @@ fluid.liquidDarkSteel.name=Liquid Dark Steel
 fluid.liquidPulsatingIron.name=Liquid Pulsating Iron
 fluid.liquidElectricalSteel.name=Liquid Electrical Steel
 fluid.liquidSoularium.name=Liquid Soularium
+fluid.liquidOsmium.name=Liquid Osmium
 
 foundry.router.material._Any=All
 foundry.router.material.Aluminium=Aluminium

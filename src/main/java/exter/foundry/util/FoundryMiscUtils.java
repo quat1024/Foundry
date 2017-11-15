@@ -89,20 +89,28 @@ public class FoundryMiscUtils {
 	}
 
 	static public ItemStack getModItemFromOreDictionary(String modid, String orename, int amount) {
-		modid = modid.toLowerCase();
-		if (OreDictionary.doesOreNameExist(orename)) for (ItemStack is : FoundryMiscUtils.getOresSafe(orename)) {
-			if (true /*is.getItem().getRegistryName().getResourceDomain().equals(modid)*/) {
-				is = is.copy();
-				is.setCount(amount);
-				return is;
-			}
-		}
-		return ItemStack.EMPTY;
+		return getStackFromDictWithPreference(modid, orename, amount);
 	}
 
 	public static NonNullList<ItemStack> getOresSafe(String orename) {
 		if (OreDictionary.doesOreNameExist(orename)) return OreDictionary.getOres(orename);
 		return NonNullList.withSize(0, ItemStack.EMPTY);
+	}
+
+	public static ItemStack getStackFromDictWithPreference(String domain, String ore, int amount) {
+		for (ItemStack is : FoundryMiscUtils.getOresSafe(ore)) {
+			if (is.getItem().getRegistryName().getResourceDomain().equals(domain)) {
+				is = is.copy();
+				is.setCount(amount);
+				return is;
+			}
+		}
+		for (ItemStack is : FoundryMiscUtils.getOresSafe(ore)) {
+			is = is.copy();
+			is.setCount(amount);
+			return is;
+		}
+		return ItemStack.EMPTY;
 	}
 
 	public static boolean isInvalid(IItemMatcher matcher) {
