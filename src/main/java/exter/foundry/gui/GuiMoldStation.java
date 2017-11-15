@@ -125,7 +125,7 @@ public class GuiMoldStation extends GuiFoundry {
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 
-		if (isPointInRegion(117, 15, button_fire.getWidth(), button_fire.getHeight(), mousex, mousey)) {
+		if (isPointInRegion(117, 15, button_fire.width, button_fire.height, mousex, mousey)) {
 			List<String> currenttip = new ArrayList<>();
 			currenttip.add("Fire mold");
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);

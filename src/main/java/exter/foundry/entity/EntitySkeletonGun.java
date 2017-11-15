@@ -30,12 +30,12 @@ public class EntitySkeletonGun extends EntitySkeleton {
 		float damage = world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
 		if (getHeldItem(EnumHand.MAIN_HAND).getItem() == FoundryItems.item_shotgun) {
 			if (!world.isRemote) {
-				playSound(FoundrySounds.sound_shotgun_fire, 0.9F, 1F);
+				playSound(FoundrySounds.SHOTGUN_FIRE, 0.9F, 1F);
 			}
 			ItemFirearm.shoot(new ItemStack(FoundryItems.item_shell), world, this, target, 6, 0.4f, damage);
 		} else {
 			if (!world.isRemote) {
-				playSound(FoundrySounds.sound_revolver_fire, 0.9F, 1F);
+				playSound(FoundrySounds.REVOLVER_FIRE, 0.9F, 1F);
 			}
 			ItemFirearm.shoot(new ItemStack(FoundryItems.item_round), world, this, target, 1, 0.015f, damage);
 		}

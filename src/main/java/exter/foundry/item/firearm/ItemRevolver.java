@@ -148,7 +148,7 @@ public class ItemRevolver extends ItemFirearm {
 			ItemStack round = getAmmo(stack, position);
 			if (roundMatches(round, AMMO_TYPE)) {
 				if (!world.isRemote) {
-					world.playSound(null, player.posX, player.posY, player.posZ, FoundrySounds.sound_revolver_fire, SoundCategory.PLAYERS, 1, 1);
+					world.playSound(null, player.posX, player.posY, player.posZ, FoundrySounds.REVOLVER_FIRE, SoundCategory.PLAYERS, 1, 1);
 				}
 				shoot(round, world, player, null, 1, 0.01f, 1.0f);
 				setAmmo(stack, position, round.getCapability(FoundryAPI.capability_firearmround, null).getCasing().copy());

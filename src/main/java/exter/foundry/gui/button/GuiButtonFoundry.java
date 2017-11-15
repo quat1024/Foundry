@@ -31,7 +31,8 @@ public class GuiButtonFoundry extends GuiButton {
 		icon_height = 0;
 	}
 
-	public void drawButton(Minecraft mc, int x, int y) {
+	@Override
+	public void drawButton(Minecraft mc, int x, int y, float partialTicks) {
 		if (visible) {
 			mc.getTextureManager().bindTexture(gui_texture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -48,14 +49,6 @@ public class GuiButtonFoundry extends GuiButton {
 				drawTexturedModalRect(this.x + (width - icon_width) / 2, this.y + (height - icon_height) / 2, icon_x, icon_y, icon_width, icon_height);
 			}
 		}
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
 	}
 
 	public GuiButtonFoundry setIconTexture(int x, int y, int w, int h) {

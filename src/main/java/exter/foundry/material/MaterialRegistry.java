@@ -43,7 +43,7 @@ public final class MaterialRegistry implements IMaterialRegistry {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getMaterialIcon(String material) {
-		return material_icons.get(material);
+		return material_icons.getOrDefault(material, ItemStack.EMPTY);
 	}
 
 	@Override

@@ -25,6 +25,13 @@ public class GuiRevolver extends GuiContainer {
 	}
 
 	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+	}
+
+	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == button_unload.id) {
 			for (Slot slot : inventorySlots.inventorySlots) {

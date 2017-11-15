@@ -3,8 +3,8 @@ Foundry
 
 Minecraft mod centered around melting and casting with metal.
 
-[MCF Thread](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292684-foundry-melt-ores-and-metals-into-liquid-cast-them)
+[MCF Thread](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292684
 
-[CurseForge](http://minecraft.curseforge.com/mc-mods/228297-foundry)
+[New CurseForge)[] Doesn't actually exist yet!
 
-[Latest Snapshot](https://drone.io/github.com/EXTER7/Foundry/files)
+[Old CurseForge](https://minecraft.curseforge.com/projects/foundry)

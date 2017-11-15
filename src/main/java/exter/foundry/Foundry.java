@@ -81,7 +81,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.0.1.1";
+	public static final String MODVERSION = "3.0.2.0";
 
 	@Instance(MODID)
 	public static Foundry instance;
@@ -97,7 +97,6 @@ public class Foundry {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		ModIntegrationManager.init();
-		FoundrySounds.init();
 		InitRecipes.init();
 
 		GameRegistry.registerTileEntity(TileEntityMeltingCrucibleBasic.class, MODID + ":melt_crucible_basic");
@@ -171,7 +170,8 @@ public class Foundry {
 
 		CapabilityHeatProvider.init();
 		CapabilityFirearmRound.init();
-
+		FoundrySounds.init();
+		
 		FoundryConfig.load(config);
 		FoundryItems.registerItems(config);
 		FoundryBlocks.registerBlocks(config);

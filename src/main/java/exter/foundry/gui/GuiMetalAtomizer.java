@@ -136,7 +136,7 @@ public class GuiMetalAtomizer extends GuiFoundry {
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
 		}
 
-		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.getWidth(), button_mode.getHeight(), mousex, mousey)) {
+		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.width, button_mode.height, mousex, mousey)) {
 			List<String> currenttip = new ArrayList<>();
 			currenttip.add(getRedstoenModeText(te_atomizer.getRedstoneMode()));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);

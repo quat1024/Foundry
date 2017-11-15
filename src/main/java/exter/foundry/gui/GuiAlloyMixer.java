@@ -99,7 +99,7 @@ public class GuiAlloyMixer extends GuiFoundry {
 			}
 		}
 
-		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.getWidth(), button_mode.getHeight(), mousex, mousey)) {
+		if (isPointInRegion(RSMODE_X, RSMODE_Y, button_mode.width, button_mode.height, mousex, mousey)) {
 			List<String> currenttip = new ArrayList<>();
 			currenttip.add(getRedstoenModeText(te_alloymixer.getRedstoneMode()));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);

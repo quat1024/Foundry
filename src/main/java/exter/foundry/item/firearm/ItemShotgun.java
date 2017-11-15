@@ -126,7 +126,7 @@ public class ItemShotgun extends ItemFirearm {
 		} else {
 			player.setActiveHand(hand);
 			if (!world.isRemote) {
-				world.playSound(null, player.posX, player.posY, player.posZ, FoundrySounds.sound_shotgun_cock, SoundCategory.PLAYERS, 0.8f, 1);
+				world.playSound(null, player.posX, player.posY, player.posZ, FoundrySounds.SHOTGUN_COCK, SoundCategory.PLAYERS, 0.8f, 1);
 			}
 		}
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
@@ -140,14 +140,14 @@ public class ItemShotgun extends ItemFirearm {
 			int shot = -1;
 			for (i = 4; i >= 0; i--) {
 				round = getAmmo(stack, i);
-				if (round.isEmpty()) {
+				if (!round.isEmpty()) {
 					shot = i;
 					break;
 				}
 			}
 			if (roundMatches(round, AMMO_TYPE)) {
 				if (!world.isRemote) {
-					world.playSound(null, player.posX, player.posY, player.posZ, FoundrySounds.sound_shotgun_fire, SoundCategory.PLAYERS, 1, 1);
+					world.playSound(null, player.posX, player.posY, player.posZ, FoundrySounds.SHOTGUN_FIRE, SoundCategory.PLAYERS, 1, 1);
 				}
 				shoot(round, world, player, null, 6, 0.35f, 1.0f);
 				float pitch = -player.rotationPitch;
