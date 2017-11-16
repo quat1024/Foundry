@@ -18,6 +18,7 @@ public class OreMatcher implements IItemMatcher {
 
 	public OreMatcher(String match, int amount) {
 		if (amount < 1) throw new IllegalArgumentException("Amount must be > 1");
+		if (!OreDictionary.doesOreNameExist(match)) throw new IllegalArgumentException("Invalid OreMatcher (" + match + ")");
 		this.match = match;
 		this.amount = amount;
 	}

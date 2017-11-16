@@ -119,13 +119,11 @@ public class ItemRefractoryFluidContainer extends Item {
 	}
 
 	public ItemRefractoryFluidContainer() {
-		super();
 		setCreativeTab(FoundryTabFluids.tab);
 		setMaxStackSize(1);
 		setUnlocalizedName("foundry.fluidContainer");
-		setRegistryName("fluidContainer");
+		setRegistryName("fluidcontainer");
 		setHasSubtypes(true);
-
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
