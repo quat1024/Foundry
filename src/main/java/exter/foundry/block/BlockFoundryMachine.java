@@ -62,13 +62,14 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 
 		public final int id;
 		public final String name;
-
 		public final String model;
+		private String tooltip;
 
 		private EnumMachine(int id, String name, String model) {
 			this.id = id;
 			this.name = name;
 			this.model = model;
+			this.tooltip = name;
 		}
 
 		@Override
@@ -79,6 +80,14 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		@Override
 		public String toString() {
 			return getName();
+		}
+		
+		public String getTooltipKey() {
+			return tooltip;
+		}
+		
+		public void setTooltip(String tooltip) {
+			this.tooltip = tooltip;
 		}
 	}
 
@@ -99,7 +108,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		FoundryMiscUtils.localizeTooltip("tooltip.foundry.machine." + getStateFromMeta(stack.getMetadata()).getValue(MACHINE).name, tooltip);
+		FoundryMiscUtils.localizeTooltip("tooltip.foundry.machine." + getStateFromMeta(stack.getMetadata()).getValue(MACHINE).getTooltipKey(), tooltip);
 	}
 
 	public ItemStack asItemStack(EnumMachine machine) {

@@ -319,6 +319,8 @@ public class InitRecipes {
 
 		MoldRecipeManager.INSTANCE.addRecipe(FoundryItems.mold(ItemMold.SubItem.STAIRS), 6, 6, new int[] { 0, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });
 
+		MoldRecipeManager.INSTANCE.addRecipe(FoundryItems.mold(ItemMold.SubItem.NUGGET), 3, 3, new int[] {1, 1, 1, 1, 1, 1, 0, 1, 0});
+		
 		InitAlloyRecipes.init();
 
 		ItemStack mold_ingot = FoundryItems.mold(ItemMold.SubItem.INGOT);
@@ -328,6 +330,7 @@ public class InitRecipes {
 		ItemStack mold_block = FoundryItems.mold(ItemMold.SubItem.BLOCK);
 		ItemStack mold_gear = FoundryItems.mold(ItemMold.SubItem.GEAR);
 		ItemStack mold_rod = FoundryItems.mold(ItemMold.SubItem.ROD);
+		ItemStack mold_nugget = FoundryItems.mold(ItemMold.SubItem.NUGGET);
 
 		for (ItemMold.SubItem sub : ItemMold.SubItem.values()) {
 			CastingRecipeManager.INSTANCE.addMold(FoundryItems.mold(sub));
@@ -387,15 +390,23 @@ public class InitRecipes {
 			// Gear
 			ItemStack gear = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "gear" + name);
 			if (!gear.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT * 4);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_GEAR);
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack, mold_gear, null);
 				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack);
+			}
+			
+			// Nugget
+			ItemStack nugget = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "nugget" + name);
+			if (!nugget.isEmpty()) {
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_NUGGET);
+				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(nugget), fluid_stack, mold_nugget, null);
+				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(nugget), fluid_stack);
 			}
 
 			// Plate
 			ItemStack plate = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "plate" + name);
 			if (!plate.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_PLATE);
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, mold_plate, null);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, ICastingTableRecipe.TableType.PLATE);
@@ -405,7 +416,7 @@ public class InitRecipes {
 			// Rod
 			ItemStack rod = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "rod" + name);
 			if (!rod.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 2);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_ROD);
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, mold_rod, null);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, ICastingTableRecipe.TableType.ROD);

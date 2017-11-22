@@ -158,9 +158,8 @@ public class ModIntegrationTiCon implements IModIntegration {
 		//Convert TiCon table casting recipes to Foundry Metal Caster recipes.
 		for (ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
 			if (!icasting.consumesCast()) {
-				if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
-					CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
-
+				if (icasting instanceof CastingRecipe) {
+					CastingRecipe casting = (CastingRecipe) icasting;
 					if (casting.cast != null && !casting.consumesCast() && /*temp fix until tic resolves issues*/casting.getResult() != null && !casting.getResult().isEmpty()) {
 						String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
 						FluidStack mapped_liquid = null;
@@ -188,10 +187,10 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 
 		ItemStack block_mold = FoundryItems.mold(ItemMold.SubItem.BLOCK);
-		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllBasinCastingRecipes()) {
-			if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
-				slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
-				if (casting.getResult().isEmpty() || casting.cast != null) {
+		for (ICastingRecipe icasting : TinkerRegistry.getAllBasinCastingRecipes()) {
+			if (icasting instanceof CastingRecipe) {
+				CastingRecipe casting = (CastingRecipe) icasting;
+				if (/*temp fix until tic resolves issues*/casting.getResult() != null && casting.getResult().isEmpty() || casting.cast != null) {
 					continue;
 				}
 				FluidStack fluid = casting.getFluid();
@@ -202,11 +201,11 @@ public class ModIntegrationTiCon implements IModIntegration {
 		}
 
 		//Add support for Foundry's fluid to the TiCon casting table.
-		List<slimeknights.tconstruct.library.smeltery.CastingRecipe> recipes = new ArrayList<>();
-		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
-			if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
-				slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
-				if (/*temp fix until tic fixes issues*/ casting.getResult() == null || casting.getResult().isEmpty()) {
+		List<CastingRecipe> recipes = new ArrayList<>();
+		for (ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
+			if (icasting instanceof CastingRecipe) {
+				CastingRecipe casting = (CastingRecipe) icasting;
+				if (/*temp fix until tic resolves issues*/casting.getResult() != null && casting.getResult().isEmpty()) {
 					continue;
 				}
 				String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
@@ -215,35 +214,35 @@ public class ModIntegrationTiCon implements IModIntegration {
 				}
 				FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(mapped);
 				FluidStack mapped_liquid = new FluidStack(fluid, mapped.equals("Glass") ? casting.getFluid().amount : FoundryMiscUtils.divCeil(casting.getFluid().amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
-				slimeknights.tconstruct.library.smeltery.CastingRecipe recipe = new slimeknights.tconstruct.library.smeltery.CastingRecipe(casting.getResult(), casting.cast, mapped_liquid, casting.consumesCast(), casting.switchOutputs());
+				CastingRecipe recipe = new CastingRecipe(casting.getResult(), casting.cast, mapped_liquid, casting.consumesCast(), casting.switchOutputs());
 				recipes.add(recipe);
 			}
 		}
-		for (slimeknights.tconstruct.library.smeltery.CastingRecipe r : recipes) {
+		for (CastingRecipe r : recipes) {
 			TinkerRegistry.registerTableCasting(r);
 		}
 
 		//Add support for Foundry's fluid to the TiCon casting basin.
 		recipes.clear();
-		for (slimeknights.tconstruct.library.smeltery.ICastingRecipe icasting : TinkerRegistry.getAllBasinCastingRecipes()) {
-			if (icasting instanceof slimeknights.tconstruct.library.smeltery.CastingRecipe) {
-				slimeknights.tconstruct.library.smeltery.CastingRecipe casting = (slimeknights.tconstruct.library.smeltery.CastingRecipe) icasting;
+		for (ICastingRecipe icasting : TinkerRegistry.getAllBasinCastingRecipes()) {
+			if (icasting instanceof CastingRecipe) {
+				CastingRecipe casting = (CastingRecipe) icasting;
 
 				if (casting.cast != null) {
 					continue;
 				}
-				if (casting.getResult().isEmpty()) { return; }
+				if (/*temp fix until tic resolves issues*/casting.getResult() != null && casting.getResult().isEmpty()) { return; }
 				String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
 				if (mapped == null) {
 					continue;
 				}
 				FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(mapped);
 				FluidStack mapped_liquid = new FluidStack(fluid, mapped.equals("Glass") ? casting.getFluid().amount : FoundryMiscUtils.divCeil(casting.getFluid().amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
-				slimeknights.tconstruct.library.smeltery.CastingRecipe recipe = new slimeknights.tconstruct.library.smeltery.CastingRecipe(casting.getResult(), null, mapped_liquid, casting.consumesCast(), casting.switchOutputs());
+				CastingRecipe recipe = new CastingRecipe(casting.getResult(), null, mapped_liquid, casting.consumesCast(), casting.switchOutputs());
 				recipes.add(recipe);
 			}
 		}
-		for (slimeknights.tconstruct.library.smeltery.CastingRecipe r : recipes) {
+		for (CastingRecipe r : recipes) {
 			TinkerRegistry.registerBasinCasting(r);
 		}
 	}

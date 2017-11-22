@@ -12,7 +12,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.12.2-3.0.2.0"
+version = "1.12.2-3.0.2.1"
 group = "exter.foundry"
 archivesBaseName = "Foundry"
 
@@ -36,6 +36,8 @@ repositories {
 dependencies {
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:+"
     deobfCompile "mezz.jei:jei_1.12.2:+"
+	deobfCompile "slimeknights:TConstruct:1.12-2.7.+"
+	deobfCompile "slimeknights.mantle:Mantle:1.12-+"
 }
 
 

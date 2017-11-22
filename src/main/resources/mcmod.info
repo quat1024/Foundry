@@ -2,13 +2,15 @@
 {
   "modid" : "foundry",
   "name" : "Foundry",
-  "version" : "2.2.3.0",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
   "credits" : "",
   "authors": [
-    "EXTER"
+    "EXTER",
+	"Shadows_of_Fire"
   ],
   "description": "Liquid Metals",
-  "url" : "https://github.com/EXTER7/Foundry",
+  "url" : "https://github.com/Shadows-of-Fire/Foundry",
   "updateUrl" : "",
   "logoFile" : "",
   "parent" : "",

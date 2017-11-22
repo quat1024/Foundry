@@ -8,8 +8,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMold extends Item {
 	static public enum SubItem {
@@ -38,7 +36,8 @@ public class ItemMold extends Item {
 		PELLET(22, "moldPellet"),
 		SHELL_CASING(23, "moldShellCasing"),
 		SHOTGUN_PUMP(24, "moldShotgunPump"),
-		SHOTGUN_FRAME(25, "moldShotgunFrame");
+		SHOTGUN_FRAME(25, "moldShotgunFrame"),
+		NUGGET(26, "moldNugget");
 
 		static private final Map<Integer, SubItem> value_map = new HashMap<>();
 		static {
@@ -71,7 +70,6 @@ public class ItemMold extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tabs)) for (SubItem m : SubItem.values()) {
 			ItemStack itemstack = new ItemStack(this, 1, m.id);

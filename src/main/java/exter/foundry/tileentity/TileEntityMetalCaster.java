@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet;
 
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.recipe.ICastingRecipe;
+import exter.foundry.config.FoundryConfig;
 import exter.foundry.recipes.manager.CastingRecipeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,8 +56,8 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 	}
 
 	private void beginCasting() {
-		if (current_recipe != null && canCastCurrentRecipe() && getStoredFoundryEnergy() >= ENERGY_REQUIRED) {
-			useFoundryEnergy(ENERGY_REQUIRED, true);
+		if (current_recipe != null && canCastCurrentRecipe() && ((!FoundryConfig.metalCasterPower) || getStoredFoundryEnergy() >= ENERGY_REQUIRED)) {
+			if(FoundryConfig.metalCasterPower) useFoundryEnergy(ENERGY_REQUIRED, true);
 			progress = 0;
 		}
 	}
