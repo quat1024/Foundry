@@ -64,8 +64,8 @@ public class InitAlloyRecipes {
 		if (FoundryConfig.recipe_steel) {
 			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 36), new FluidStack(FoundryFluids.liquid_iron, 36), new OreMatcher("dustCoal"), 160000);
 			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 12), new FluidStack(FoundryFluids.liquid_iron, 12), new OreMatcher("dustCharcoal"), 160000);
-			if(OreDictionary.doesOreNameExist("dustSmallCoal")) InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 9), new FluidStack(FoundryFluids.liquid_iron, 9), new OreMatcher("dustSmallCoal"), 40000);
-			if(OreDictionary.doesOreNameExist("dustSmallCharcoal")) InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 3), new FluidStack(FoundryFluids.liquid_iron, 3), new OreMatcher("dustSmallCharcoal"), 40000);
+			if (OreDictionary.doesOreNameExist("dustSmallCoal")) InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 9), new FluidStack(FoundryFluids.liquid_iron, 9), new OreMatcher("dustSmallCoal"), 40000);
+			if (OreDictionary.doesOreNameExist("dustSmallCharcoal")) InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_steel, 3), new FluidStack(FoundryFluids.liquid_iron, 3), new OreMatcher("dustSmallCharcoal"), 40000);
 		}
 	}
 }

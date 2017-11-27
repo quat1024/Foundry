@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @ObjectHolder(Foundry.MODID)
 public class FoundrySounds {
-	
+
 	public static final SoundEvent REVOLVER_FIRE = null;
 	public static final SoundEvent SHOTGUN_FIRE = null;
 	public static final SoundEvent SHOTGUN_COCK = null;

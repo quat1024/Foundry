@@ -23,7 +23,7 @@ public class FoundryConfig {
 	public static Set<String> hardcore_furnace_keep_ingots;
 	public static boolean hardcore_remove_ingot_nugget;
 	public static boolean hardcore_remove_block_ingot;
-	
+
 	public static boolean metalCasterPower;
 
 	public static String prefModID = ThermalFoundation.MOD_ID;
@@ -66,12 +66,12 @@ public class FoundryConfig {
 		}
 
 		prefModID = config.getString("Preferred Mod ID", "recipes", ThermalFoundation.MOD_ID, "The priority MODID for Foundry recipes to try using.");
-	
+
 		metalCasterPower = config.getBoolean("Metal Caster Power", "general", true, "If the Metal Caster requires power to operate.");
-		if(!metalCasterPower) {
+		if (!metalCasterPower) {
 			BlockFoundryMachine.EnumMachine.CASTER.setTooltip("caster2");
 		}
-		
+
 		FoundryAPI.FLUID_AMOUNT_INGOT = config.getInt("Fluid Ingot Value", "general", 108, 36, Integer.MAX_VALUE, "The value, in mB, of an ingot.");
 	}
 }

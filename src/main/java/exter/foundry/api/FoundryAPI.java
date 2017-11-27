@@ -22,12 +22,30 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  */
 public class FoundryAPI {
 	static public int FLUID_AMOUNT_INGOT = 108; //Can be changed by foundry configs!  Nobody else should be setting this value.
-	static public final int FLUID_AMOUNT_BLOCK = FLUID_AMOUNT_INGOT * 9;
-	static public final int FLUID_AMOUNT_PLATE = FLUID_AMOUNT_INGOT;
-	static public final int FLUID_AMOUNT_ROD = FLUID_AMOUNT_INGOT / 2;
-	static public final int FLUID_AMOUNT_NUGGET = FLUID_AMOUNT_INGOT / 9;
-	static public final int FLUID_AMOUNT_ORE = FLUID_AMOUNT_INGOT * 2;
-	static public final int FLUID_AMOUNT_GEAR = FLUID_AMOUNT_INGOT * 4;
+
+	static public int getAmountBlock() {
+		return FLUID_AMOUNT_INGOT * 9;
+	}
+
+	static public int getAmountPlate() {
+		return FLUID_AMOUNT_INGOT;
+	}
+
+	static public int getAmountRod() {
+		return FLUID_AMOUNT_INGOT / 2;
+	}
+
+	static public int getAmountNugget() {
+		return FLUID_AMOUNT_INGOT / 9;
+	}
+
+	static public int getAmountOre() {
+		return FLUID_AMOUNT_INGOT * 2;
+	}
+
+	static public int getAmountGear() {
+		return FLUID_AMOUNT_INGOT * 4;
+	}
 
 	/**
 	 * Tank capacity for machines.

@@ -81,11 +81,11 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		public String toString() {
 			return getName();
 		}
-		
+
 		public String getTooltipKey() {
 			return tooltip;
 		}
-		
+
 		public void setTooltip(String tooltip) {
 			this.tooltip = tooltip;
 		}

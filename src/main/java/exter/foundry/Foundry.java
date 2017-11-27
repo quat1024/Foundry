@@ -171,7 +171,7 @@ public class Foundry {
 		CapabilityHeatProvider.init();
 		CapabilityFirearmRound.init();
 		FoundrySounds.init();
-		
+
 		FoundryConfig.load(config);
 		FoundryItems.registerItems(config);
 		FoundryBlocks.registerBlocks(config);

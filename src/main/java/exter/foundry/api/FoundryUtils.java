@@ -39,15 +39,15 @@ public class FoundryUtils {
 		if (FoundryAPI.recipes_melting != null) {
 			if (exists("ingot" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("ingot" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
 
-			if (exists("block" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("block" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_BLOCK));
+			if (exists("block" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("block" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountBlock()));
 
-			if (exists("nugget" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("nugget" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_NUGGET));
+			if (exists("nugget" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("nugget" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountNugget()));
 
 			if (exists("dust" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dust" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
 
-			if (exists("ore" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("ore" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_ORE));
+			if (exists("ore" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("ore" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountOre()));
 
-			if (exists("orePoor" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("orePoor" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_NUGGET * 2));
+			if (exists("orePoor" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("orePoor" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountNugget() * 2));
 
 			if (exists("dustSmall" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dustSmall" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 

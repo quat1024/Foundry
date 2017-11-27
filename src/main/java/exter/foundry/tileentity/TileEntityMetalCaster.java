@@ -57,7 +57,7 @@ public class TileEntityMetalCaster extends TileEntityFoundryPowered {
 
 	private void beginCasting() {
 		if (current_recipe != null && canCastCurrentRecipe() && ((!FoundryConfig.metalCasterPower) || getStoredFoundryEnergy() >= ENERGY_REQUIRED)) {
-			if(FoundryConfig.metalCasterPower) useFoundryEnergy(ENERGY_REQUIRED, true);
+			if (FoundryConfig.metalCasterPower) useFoundryEnergy(ENERGY_REQUIRED, true);
 			progress = 0;
 		}
 	}

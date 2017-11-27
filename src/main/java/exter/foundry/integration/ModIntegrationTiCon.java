@@ -160,7 +160,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 			if (!icasting.consumesCast()) {
 				if (icasting instanceof CastingRecipe) {
 					CastingRecipe casting = (CastingRecipe) icasting;
-					if (casting.cast != null && !casting.consumesCast() && /*temp fix until tic resolves issues*/casting.getResult() != null && !casting.getResult().isEmpty()) {
+					if (casting.cast != null && !casting.consumesCast() && !casting.getResult().isEmpty()) {
 						String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
 						FluidStack mapped_liquid = null;
 						if (mapped != null) {
@@ -190,7 +190,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		for (ICastingRecipe icasting : TinkerRegistry.getAllBasinCastingRecipes()) {
 			if (icasting instanceof CastingRecipe) {
 				CastingRecipe casting = (CastingRecipe) icasting;
-				if (/*temp fix until tic resolves issues*/casting.getResult() != null && casting.getResult().isEmpty() || casting.cast != null) {
+				if (casting.getResult().isEmpty() || casting.cast != null) {
 					continue;
 				}
 				FluidStack fluid = casting.getFluid();
@@ -205,7 +205,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		for (ICastingRecipe icasting : TinkerRegistry.getAllTableCastingRecipes()) {
 			if (icasting instanceof CastingRecipe) {
 				CastingRecipe casting = (CastingRecipe) icasting;
-				if (/*temp fix until tic resolves issues*/casting.getResult() != null && casting.getResult().isEmpty()) {
+				if (casting.getResult().isEmpty()) {
 					continue;
 				}
 				String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
@@ -231,7 +231,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 				if (casting.cast != null) {
 					continue;
 				}
-				if (/*temp fix until tic resolves issues*/casting.getResult() != null && casting.getResult().isEmpty()) { return; }
+				if (casting.getResult().isEmpty()) { return; }
 				String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
 				if (mapped == null) {
 					continue;

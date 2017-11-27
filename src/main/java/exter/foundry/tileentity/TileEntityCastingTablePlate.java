@@ -11,7 +11,7 @@ public class TileEntityCastingTablePlate extends TileEntityCastingTableBase {
 
 	@Override
 	public int getDefaultCapacity() {
-		return FoundryAPI.FLUID_AMOUNT_PLATE;
+		return FoundryAPI.getAmountPlate();
 	}
 
 	@Override

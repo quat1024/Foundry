@@ -63,16 +63,16 @@ public class InitFirearmRecipes {
 		ItemStack bullet_lumium = FoundryItems.component(ItemComponent.SubItem.AMMO_BULLET_LUMIUM);
 		ItemStack pellet_lumium = FoundryItems.component(ItemComponent.SubItem.AMMO_PELLET_LUMIUM);
 
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.FLUID_AMOUNT_NUGGET * 3));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_hollow), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.FLUID_AMOUNT_NUGGET * 3));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_jacketed), new FluidStack(FoundryFluids.liquid_copper, FoundryAPI.FLUID_AMOUNT_NUGGET));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.FLUID_AMOUNT_NUGGET));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.FLUID_AMOUNT_NUGGET));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(shell_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.FLUID_AMOUNT_NUGGET * 2));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_NUGGET * 3));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_NUGGET));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.FLUID_AMOUNT_NUGGET * 3));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.FLUID_AMOUNT_NUGGET));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.getAmountNugget() * 3));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_hollow), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.getAmountNugget() * 3));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_jacketed), new FluidStack(FoundryFluids.liquid_copper, FoundryAPI.getAmountNugget()));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.getAmountNugget()));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.getAmountNugget()));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(shell_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.getAmountNugget() * 2));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.getAmountNugget() * 3));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.getAmountNugget()));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.getAmountNugget() * 3));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.getAmountNugget()));
 
 		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gun_barrel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_INGOT));
 		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(revolver_drum), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_INGOT * 3 / 4));
@@ -80,16 +80,16 @@ public class InitFirearmRecipes {
 		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(shotgun_pump), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_INGOT / 2));
 		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(shotgun_frame), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_INGOT * 3 / 2));
 
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.FLUID_AMOUNT_NUGGET * 3), mold_bullet, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_hollow), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.FLUID_AMOUNT_NUGGET * 3), mold_bullet_hollow, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_jacketed), new FluidStack(FoundryFluids.liquid_copper, FoundryAPI.FLUID_AMOUNT_NUGGET), mold_bullet, new ItemStackMatcher(bullet));
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.FLUID_AMOUNT_NUGGET), mold_round_casing, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.FLUID_AMOUNT_NUGGET), mold_pellet, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(shell_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.FLUID_AMOUNT_NUGGET * 2), mold_shell_casing, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_NUGGET * 3), mold_bullet, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_NUGGET), mold_pellet, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.FLUID_AMOUNT_NUGGET * 3), mold_bullet, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.FLUID_AMOUNT_NUGGET), mold_pellet, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.getAmountNugget() * 3), mold_bullet, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_hollow), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.getAmountNugget() * 3), mold_bullet_hollow, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_jacketed), new FluidStack(FoundryFluids.liquid_copper, FoundryAPI.getAmountNugget()), mold_bullet, new ItemStackMatcher(bullet));
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.getAmountNugget()), mold_round_casing, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.getAmountNugget()), mold_pellet, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(shell_casing), new FluidStack(FoundryFluids.liquid_brass, FoundryAPI.getAmountNugget() * 2), mold_shell_casing, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.getAmountNugget() * 3), mold_bullet, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_steel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.getAmountNugget()), mold_pellet, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(bullet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.getAmountNugget() * 3), mold_bullet, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(pellet_lumium), new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.getAmountNugget()), mold_pellet, null);
 
 		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gun_barrel), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_INGOT), mold_gun_barrel, null);
 		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(revolver_drum), new FluidStack(FoundryFluids.liquid_steel, FoundryAPI.FLUID_AMOUNT_INGOT * 3 / 4), mold_revolver_drum, null);

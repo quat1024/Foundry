@@ -11,7 +11,7 @@ public class TileEntityCastingTableRod extends TileEntityCastingTableBase {
 
 	@Override
 	public int getDefaultCapacity() {
-		return FoundryAPI.FLUID_AMOUNT_ROD;
+		return FoundryAPI.getAmountRod();
 	}
 
 	@Override

@@ -84,7 +84,7 @@ public class InitRecipes {
 					int[] ids = OreDictionary.getOreIDs(stack);
 					for (int j : ids) {
 						if (OreDictionary.getOreName(j).startsWith("ore") && !OreDictionary.getOreName(j).startsWith("orePoor")) {
-							base_amount = FoundryAPI.FLUID_AMOUNT_ORE;
+							base_amount = FoundryAPI.getAmountOre();
 							break;
 						}
 					}
@@ -116,7 +116,7 @@ public class InitRecipes {
 				}
 
 				ores = OreDictionary.doesOreNameExist("block" + name) ? OreDictionary.getOres("block" + name) : new ArrayList<>();
-				fluidstack = new FluidStack(LiquidMetalRegistry.instance.getFluid(name), FoundryAPI.FLUID_AMOUNT_BLOCK);
+				fluidstack = new FluidStack(LiquidMetalRegistry.instance.getFluid(name), FoundryAPI.getAmountBlock());
 				if (ores != null && ores.size() > 0) {
 					if (CastingRecipeManager.INSTANCE.findRecipe(fluidstack, block_mold, null) == null) {
 						CastingRecipeManager.INSTANCE.addRecipe(new OreMatcher("block" + name), fluidstack, block_mold, null);
@@ -319,8 +319,8 @@ public class InitRecipes {
 
 		MoldRecipeManager.INSTANCE.addRecipe(FoundryItems.mold(ItemMold.SubItem.STAIRS), 6, 6, new int[] { 0, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });
 
-		MoldRecipeManager.INSTANCE.addRecipe(FoundryItems.mold(ItemMold.SubItem.NUGGET), 3, 3, new int[] {1, 1, 1, 1, 1, 1, 0, 1, 0});
-		
+		MoldRecipeManager.INSTANCE.addRecipe(FoundryItems.mold(ItemMold.SubItem.NUGGET), 3, 3, new int[] { 1, 1, 1, 1, 1, 1, 0, 1, 0 });
+
 		InitAlloyRecipes.init();
 
 		ItemStack mold_ingot = FoundryItems.mold(ItemMold.SubItem.INGOT);
@@ -359,7 +359,7 @@ public class InitRecipes {
 			// Block
 			ItemStack block = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "block" + name);
 			if (!block.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_BLOCK);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock());
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, mold_block, null);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, ICastingTableRecipe.TableType.BLOCK);
 			}
@@ -367,7 +367,7 @@ public class InitRecipes {
 			// Slab
 			ItemStack slab = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "slab" + name);
 			if (!slab.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_BLOCK / 2);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock() / 2);
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(slab), fluid_stack, mold_slab, null);
 				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(slab), fluid_stack);
@@ -376,7 +376,7 @@ public class InitRecipes {
 			// Stairs
 			ItemStack stairs = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "stairs" + name);
 			if (!stairs.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_BLOCK * 3 / 4);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock() * 3 / 4);
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack, mold_stairs, null);
 				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack);
 			}
@@ -390,15 +390,15 @@ public class InitRecipes {
 			// Gear
 			ItemStack gear = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "gear" + name);
 			if (!gear.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_GEAR);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountGear());
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack, mold_gear, null);
 				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack);
 			}
-			
+
 			// Nugget
 			ItemStack nugget = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "nugget" + name);
 			if (!nugget.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_NUGGET);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountNugget());
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(nugget), fluid_stack, mold_nugget, null);
 				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(nugget), fluid_stack);
 			}
@@ -406,7 +406,7 @@ public class InitRecipes {
 			// Plate
 			ItemStack plate = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "plate" + name);
 			if (!plate.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_PLATE);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountPlate());
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, mold_plate, null);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, ICastingTableRecipe.TableType.PLATE);
@@ -416,7 +416,7 @@ public class InitRecipes {
 			// Rod
 			ItemStack rod = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "rod" + name);
 			if (!rod.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_ROD);
+				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountRod());
 
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, mold_rod, null);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, ICastingTableRecipe.TableType.ROD);
@@ -426,9 +426,9 @@ public class InitRecipes {
 
 		if (FoundryConfig.recipe_alumina_melts_to_aluminium) {
 			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("ingotAlumina"), new FluidStack(FoundryFluids.liquid_aluminium, FoundryAPI.FLUID_AMOUNT_INGOT), 2100);
-			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("nuggetAlumina"), new FluidStack(FoundryFluids.liquid_aluminium, FoundryAPI.FLUID_AMOUNT_NUGGET), 2100);
+			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("nuggetAlumina"), new FluidStack(FoundryFluids.liquid_aluminium, FoundryAPI.getAmountNugget()), 2100);
 			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustAlumina"), new FluidStack(FoundryFluids.liquid_aluminium, FoundryAPI.FLUID_AMOUNT_INGOT), 2100);
-			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("oreAlumina"), new FluidStack(FoundryFluids.liquid_aluminium, FoundryAPI.FLUID_AMOUNT_ORE), 2100);
+			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("oreAlumina"), new FluidStack(FoundryFluids.liquid_aluminium, FoundryAPI.getAmountOre()), 2100);
 		} else {
 			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_aluminium, 216), new FluidStack(FoundryFluids.liquid_alumina, 216), new OreMatcher("dustCoal"), 240000);
 			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_aluminium, 216), new FluidStack(FoundryFluids.liquid_alumina, 216), new OreMatcher("dustCharcoal"), 240000);
@@ -449,8 +449,8 @@ public class InitRecipes {
 		BurnerHeaterFuelManager.INSTANCE.addFuel(new OreMatcher("fuelCoke"), 3200, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(215000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
 		BurnerHeaterFuelManager.INSTANCE.addFuel(new OreMatcher("dustCoal"), 800, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(195000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
 		BurnerHeaterFuelManager.INSTANCE.addFuel(new OreMatcher("dustCharcoal"), 800, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(192000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
-		if(OreDictionary.doesOreNameExist("dustSmallCoal"))BurnerHeaterFuelManager.INSTANCE.addFuel(new OreMatcher("dustSmallCoal"), 200, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(195000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
-		if(OreDictionary.doesOreNameExist("dustSmallCharcoal")) BurnerHeaterFuelManager.INSTANCE.addFuel(new OreMatcher("dustSmallCharcoal"), 200, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(192000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
+		if (OreDictionary.doesOreNameExist("dustSmallCoal")) BurnerHeaterFuelManager.INSTANCE.addFuel(new OreMatcher("dustSmallCoal"), 200, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(195000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
+		if (OreDictionary.doesOreNameExist("dustSmallCharcoal")) BurnerHeaterFuelManager.INSTANCE.addFuel(new OreMatcher("dustSmallCharcoal"), 200, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(192000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
 
 		BurnerHeaterFuelManager.INSTANCE.addFuel(new ItemStackMatcher(Items.BLAZE_ROD), 2000, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(220000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
 

@@ -81,13 +81,13 @@ public class ModIntegrationBotania implements IModIntegration {
 		ItemStack elementium_block = getItemStack("storage", 2);
 		ItemStack mold_block = FoundryItems.mold(ItemMold.SubItem.BLOCK);
 
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(manasteel_block), new FluidStack(liquid_manasteel, FoundryAPI.FLUID_AMOUNT_BLOCK));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(terrasteel_block), new FluidStack(liquid_terrasteel, FoundryAPI.FLUID_AMOUNT_BLOCK));
-		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.FLUID_AMOUNT_BLOCK));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(manasteel_block), new FluidStack(liquid_manasteel, FoundryAPI.getAmountBlock()));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(terrasteel_block), new FluidStack(liquid_terrasteel, FoundryAPI.getAmountBlock()));
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.getAmountBlock()));
 
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(manasteel_block), new FluidStack(liquid_manasteel, FoundryAPI.FLUID_AMOUNT_BLOCK), mold_block, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(terrasteel_block), new FluidStack(liquid_terrasteel, FoundryAPI.FLUID_AMOUNT_BLOCK), mold_block, null);
-		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.FLUID_AMOUNT_BLOCK), mold_block, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(manasteel_block), new FluidStack(liquid_manasteel, FoundryAPI.getAmountBlock()), mold_block, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(terrasteel_block), new FluidStack(liquid_terrasteel, FoundryAPI.getAmountBlock()), mold_block, null);
+		CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(elementium_block), new FluidStack(liquid_elementium, FoundryAPI.getAmountBlock()), mold_block, null);
 
 		if (FoundryConfig.recipe_equipment) {
 			ItemStack manasteel_pickaxe = getItemStack("manasteelpick");
