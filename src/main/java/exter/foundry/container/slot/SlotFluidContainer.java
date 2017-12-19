@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class SlotFluidContainer extends Slot {
-	public SlotFluidContainer(IInventory inventory, int par2, int par3, int par4) {
-		super(inventory, par2, par3, par4);
+	public SlotFluidContainer(IInventory inventory, int index, int x, int y) {
+		super(inventory, index, x, y);
 	}
 
 	@Override

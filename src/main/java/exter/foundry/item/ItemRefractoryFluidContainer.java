@@ -119,7 +119,7 @@ public class ItemRefractoryFluidContainer extends Item {
 	}
 
 	public ItemRefractoryFluidContainer() {
-		setCreativeTab(FoundryTabFluids.tab);
+		setCreativeTab(FoundryTabFluids.INSTANCE);
 		setMaxStackSize(1);
 		setUnlocalizedName("foundry.fluidContainer");
 		setRegistryName("fluidcontainer");
@@ -252,10 +252,10 @@ public class ItemRefractoryFluidContainer extends Item {
 
 			if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, obj.sideHit)) {
 				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, obj.sideHit);
-				if (player.isSneaking()) {
+				if (!player.isSneaking()) {
 					//Drain from container to the Tile Entity.
 
-					FluidStack drained = drain(stack, 50, false);
+					FluidStack drained = drain(stack, 250, false);
 					if (drained == null || drained.amount == 0) { return ActionResult.newResult(EnumActionResult.SUCCESS, stack); }
 					int filled = handler.fill(drained, false);
 					if (filled == 0) { return ActionResult.newResult(EnumActionResult.SUCCESS, stack); }
@@ -266,7 +266,7 @@ public class ItemRefractoryFluidContainer extends Item {
 				} else {
 					//Fill container from the Tile Entity.
 
-					FluidStack drained = handler.drain(50, false);
+					FluidStack drained = handler.drain(250, false);
 					if (drained == null || drained.amount == 0) { return ActionResult.newResult(EnumActionResult.SUCCESS, stack); }
 					int filled = fill(stack, drained, false, true);
 					if (filled == 0) { return ActionResult.newResult(EnumActionResult.SUCCESS, stack); }

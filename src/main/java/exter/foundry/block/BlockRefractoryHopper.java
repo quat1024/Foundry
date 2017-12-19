@@ -82,7 +82,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 
 	public BlockRefractoryHopper() {
 		super(Material.IRON);
-		setCreativeTab(FoundryTabMachines.tab);
+		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setUnlocalizedName("foundry.refractoryHopper");
@@ -204,7 +204,7 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		if (world.isRemote) {
 			return true;
 		} else {
-			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REFRACTORYHOPPER, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(Foundry.INSTANCE, CommonFoundryProxy.GUI_REFRACTORYHOPPER, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 	}

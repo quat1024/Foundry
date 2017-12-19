@@ -63,7 +63,7 @@ public class ItemMold extends Item {
 	public ItemMold() {
 		super();
 		maxStackSize = 1;
-		setCreativeTab(FoundryTabMolds.tab);
+		setCreativeTab(FoundryTabMolds.INSTANCE);
 		setHasSubtypes(true);
 		setUnlocalizedName("mold");
 		setRegistryName("mold");

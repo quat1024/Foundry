@@ -76,24 +76,14 @@ public class ContainerShotgun extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
-				if (!mergeItemStack(stack, SLOTS_HOTBAR, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
+				if (!mergeItemStack(stack, SLOTS_SHOTGUN, SLOTS_SHOTGUN + 5, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else if (slot_index < SLOTS_INVENTORY) {
-				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else {
-				return ItemStack.EMPTY;
-			}
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-			if (stack.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
+			slot.onSlotChanged();
 			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
-
 			slot.onTake(player, stack);
 		}
 

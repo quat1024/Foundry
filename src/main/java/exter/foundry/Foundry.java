@@ -76,23 +76,28 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import shadows.placebo.registry.RegistryInformation;
+import shadows.placebo.util.RecipeHelper;
 
-@Mod(modid = Foundry.MODID, name = Foundry.MODNAME, version = Foundry.MODVERSION, dependencies = "required-after:thermalfoundation;after:jei;after:tconstruct;after:mekanism")
+@Mod(modid = Foundry.MODID, name = Foundry.MODNAME, version = Foundry.MODVERSION, dependencies = "required-after:placebo@[1.1.1,);required-after:thermalfoundation;after:jei;after:tconstruct;after:mekanism")
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.0.2.2";
+	public static final String MODVERSION = "3.1.0.0";
 
-	@Instance(MODID)
-	public static Foundry instance;
-
-	// Says where the client and server 'proxy' code is loaded.
 	@SidedProxy(clientSide = "exter.foundry.proxy.ClientFoundryProxy", serverSide = "exter.foundry.proxy.CommonFoundryProxy")
 	public static CommonFoundryProxy proxy;
 
-	public static Logger log = LogManager.getLogger(MODID);
+	@Instance
+	public static Foundry INSTANCE = null;
 
-	public static SimpleNetworkWrapper network_channel;
+	public static final Logger LOGGER = LogManager.getLogger(MODID);
+
+	public static final SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+
+	public static final RegistryInformation INFO = new RegistryInformation(MODID, null);
+
+	public static final RecipeHelper HELPER = new RecipeHelper(MODID, MODNAME, INFO.getRecipeList());
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
@@ -121,9 +126,7 @@ public class Foundry {
 		GameRegistry.registerTileEntity(TileEntityRefractoryTankStandard.class, MODID + ":tank_standard");
 		GameRegistry.registerTileEntity(TileEntityRefractoryTankAdvanced.class, MODID + ":tank_advanced");
 		GameRegistry.registerTileEntity(TileEntityAlloyingCrucible.class, MODID + ":alloy_crucible");
-		if (FoundryConfig.block_cokeoven) {
-			GameRegistry.registerTileEntity(TileEntityCokeOven.class, MODID + ":coke_oven");
-		}
+		if (FoundryConfig.block_cokeoven) GameRegistry.registerTileEntity(TileEntityCokeOven.class, MODID + ":coke_oven");
 
 		EntityRegistry.registerModEntity(new ResourceLocation("foundry", "gun_skeleton"), EntitySkeletonGun.class, "gunSkeleton", 0, this, 80, 1, true);
 		LootTableList.register(new ResourceLocation("foundry", "gun_skeleton"));
@@ -147,9 +150,9 @@ public class Foundry {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 
+		ModIntegrationManager.registerIntegration(config, new ModIntegrationMolten());
 		if (Loader.isModLoaded("crafttweaker")) ModIntegrationManager.registerIntegration(config, new ModIntegrationMinetweaker());
 		if (Loader.isModLoaded("tconstruct")) ModIntegrationManager.registerIntegration(config, new ModIntegrationTiCon());
-		ModIntegrationManager.registerIntegration(config, new ModIntegrationMolten());
 		if (Loader.isModLoaded("enderio")) ModIntegrationManager.registerIntegration(config, new ModIntegrationEnderIO());
 		if (Loader.isModLoaded("botania")) ModIntegrationManager.registerIntegration(config, new ModIntegrationBotania());
 
@@ -182,9 +185,8 @@ public class Foundry {
 
 		config.save();
 
-		network_channel = NetworkRegistry.INSTANCE.newSimpleChannel("EXTER.FOUNDRY");
-		network_channel.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.SERVER);
-		network_channel.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.CLIENT);
+		NETWORK.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.SERVER);
+		NETWORK.registerMessage(MessageTileEntitySync.Handler.class, MessageTileEntitySync.class, 0, Side.CLIENT);
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 		proxy.preInit();

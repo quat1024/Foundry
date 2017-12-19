@@ -485,19 +485,19 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 
 	protected void sendPacketToNearbyPlayers(NBTTagCompound data) {
 		data.setInteger("dim", world.provider.getDimension());
-		Foundry.network_channel.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
+		Foundry.NETWORK.sendToAllAround(new MessageTileEntitySync(data), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 192));
 	}
 
 	protected void sendPacketToPlayer(NBTTagCompound data, EntityPlayerMP player) {
 		data.setInteger("dim", world.provider.getDimension());
-		Foundry.network_channel.sendTo(new MessageTileEntitySync(data), player);
+		Foundry.NETWORK.sendTo(new MessageTileEntitySync(data), player);
 	}
 
 	protected void sendToServer(NBTTagCompound tag) {
 		if (world.isRemote) {
 			super.writeToNBT(tag);
 			tag.setInteger("dim", world.provider.getDimension());
-			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
+			Foundry.NETWORK.sendToServer(new MessageTileEntitySync(tag));
 		}
 	}
 

@@ -5,6 +5,7 @@ import exter.foundry.tileentity.TileEntityAlloyFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -33,7 +34,7 @@ public class ContainerAlloyFurnace extends Container {
 		addSlotToContainer(new Slot(te_alloyfurnace, TileEntityAlloyFurnace.SLOT_INPUT_A, 38, 17));
 		addSlotToContainer(new Slot(te_alloyfurnace, TileEntityAlloyFurnace.SLOT_INPUT_B, 56, 17));
 		addSlotToContainer(new SlotOutput(te_alloyfurnace, TileEntityAlloyFurnace.SLOT_OUTPUT, 116, 35));
-		addSlotToContainer(new Slot(te_alloyfurnace, TileEntityAlloyFurnace.SLOT_FUEL, 48, 53));
+		addSlotToContainer(new SlotFurnaceFuel(te_alloyfurnace, TileEntityAlloyFurnace.SLOT_FUEL, 48, 53));
 
 		//Player Inventory
 		for (i = 0; i < 3; ++i) {
@@ -66,26 +67,20 @@ public class ContainerAlloyFurnace extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
 				if (TileEntityFurnace.isItemFuel(stack)) {
 					int s = SLOTS_TE + TileEntityAlloyFurnace.SLOT_FUEL;
 					if (!mergeItemStack(stack, s, s + 1, false)) { return ItemStack.EMPTY; }
-				} else if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + TileEntityAlloyFurnace.SLOT_INPUT_B + 1, false)) { return ItemStack.EMPTY; }
+				}
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-			if (stack.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
+			slot.onSlotChanged();
 			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
-
 			slot.onTake(player, stack);
 		}
-
 		return slot_stack;
 	}
 }

@@ -152,7 +152,7 @@ public abstract class ItemFirearm extends Item {
 
 	public ItemFirearm() {
 		setMaxDamage(800);
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setMaxStackSize(1);
 		MinecraftForge.EVENT_BUS.register(this);
 	}

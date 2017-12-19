@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRoundNormal extends Item {
 	public ItemRoundNormal() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setRegistryName("roundNormal");
 		setUnlocalizedName("roundNormal");
 	}

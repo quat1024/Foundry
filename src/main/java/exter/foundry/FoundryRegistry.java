@@ -8,7 +8,6 @@ import exter.foundry.item.ItemComponent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -18,10 +17,10 @@ import net.minecraftforge.oredict.OreDictionary;
 @EventBusSubscriber
 public class FoundryRegistry {
 
-	public static final List<Block> BLOCKS = NonNullList.create();
-	public static final List<Item> ITEMS = NonNullList.create();
-	public static final List<SoundEvent> SOUNDS = NonNullList.create();
-	public static final List<IRecipe> RECIPES = NonNullList.create();
+	public static final List<Block> BLOCKS = Foundry.INFO.getBlockList();
+	public static final List<Item> ITEMS = Foundry.INFO.getItemList();
+	public static final List<SoundEvent> SOUNDS = Foundry.INFO.getSoundList();
+	public static final List<IRecipe> RECIPES = Foundry.INFO.getRecipeList();
 
 	@SubscribeEvent
 	public void registerBlocks(Register<Block> e) {

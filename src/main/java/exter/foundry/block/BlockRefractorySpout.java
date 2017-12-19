@@ -39,7 +39,7 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 
 	public BlockRefractorySpout() {
 		super(Material.ROCK);
-		setCreativeTab(FoundryTabMachines.tab);
+		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setUnlocalizedName("foundry.refractorySpout");

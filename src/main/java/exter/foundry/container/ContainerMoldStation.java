@@ -8,6 +8,7 @@ import exter.foundry.tileentity.TileEntityMoldStation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -36,7 +37,7 @@ public class ContainerMoldStation extends Container {
 		addSlotToContainer(new SlotFiltered(te_station, TileEntityMoldStation.SLOT_BLOCK, 8, 16, FoundryBlocks.block_component.asItemStack(BlockComponent.EnumVariant.REFCLAYBLOCK)));
 		addSlotToContainer(new SlotOutput(te_station, TileEntityMoldStation.SLOT_CLAY, 8, 76));
 		addSlotToContainer(new SlotOutput(te_station, TileEntityMoldStation.SLOT_OUTPUT, 147, 38));
-		addSlotToContainer(new Slot(te_station, TileEntityMoldStation.SLOT_FUEL, 119, 76));
+		addSlotToContainer(new SlotFurnaceFuel(te_station, TileEntityMoldStation.SLOT_FUEL, 119, 76));
 
 		//Player Inventory
 		for (i = 0; i < 3; ++i) {
@@ -69,26 +70,20 @@ public class ContainerMoldStation extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
 				if (TileEntityFurnace.isItemFuel(stack)) {
 					int s = SLOTS_TE + TileEntityMoldStation.SLOT_FUEL;
 					if (!mergeItemStack(stack, s, s + 1, false)) { return ItemStack.EMPTY; }
-				} else if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + TileEntityMoldStation.SLOT_BLOCK, false)) { return ItemStack.EMPTY; }
+				}
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-			if (stack.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
+			slot.onSlotChanged();
 			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
-
 			slot.onTake(player, stack);
 		}
-
 		return slot_stack;
 	}
 }

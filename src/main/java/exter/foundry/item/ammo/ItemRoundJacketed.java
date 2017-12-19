@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRoundJacketed extends Item {
 	public ItemRoundJacketed() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("roundJacketed");
 		setRegistryName("roundJacketed");
 	}

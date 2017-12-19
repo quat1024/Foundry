@@ -1,5 +1,7 @@
 package exter.foundry.container;
 
+import exter.foundry.recipes.manager.BurnerHeaterFuelManager;
+import exter.foundry.tileentity.TileEntityAlloyFurnace;
 import exter.foundry.tileentity.TileEntityBurnerHeater;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -31,7 +33,12 @@ public class ContainerBurnerHeater extends Container {
 
 		for (i = 0; i < 2; ++i) {
 			for (j = 0; j < 2; ++j) {
-				addSlotToContainer(new Slot(te_burner, i * 2 + j, 71 + i * 18, 34 + j * 18));
+				addSlotToContainer(new Slot(te_burner, i * 2 + j, 71 + i * 18, 34 + j * 18) {
+					@Override
+					public boolean isItemValid(ItemStack stack) {
+						return BurnerHeaterFuelManager.INSTANCE.getFuel(stack) != null;
+					}
+				});
 			}
 		}
 
@@ -66,25 +73,20 @@ public class ContainerBurnerHeater extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
 				if (TileEntityFurnace.isItemFuel(stack)) {
-					if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 4, false)) { return ItemStack.EMPTY; }
+					int s = SLOTS_TE + TileEntityAlloyFurnace.SLOT_FUEL;
+					if (!mergeItemStack(stack, s, s + 1, false)) { return ItemStack.EMPTY; }
 				}
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-			if (stack.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
+			slot.onSlotChanged();
 			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
-
 			slot.onTake(player, stack);
 		}
-
 		return slot_stack;
 	}
 }

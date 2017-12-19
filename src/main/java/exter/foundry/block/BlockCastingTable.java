@@ -90,7 +90,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 		setResistance(8.0F);
 		setSoundType(SoundType.STONE);
 		setUnlocalizedName("foundry.castingTable");
-		setCreativeTab(FoundryTabMachines.tab);
+		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setRegistryName("castingTable");
 	}
 

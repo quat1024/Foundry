@@ -11,6 +11,7 @@ public class ContainerMaterialRouter extends Container {
 
 	// Slot numbers
 	private static final int SLOTS_TE = 0;
+	private static final int SLOTS_TE_SIZE = 1;
 
 	//private static final int SLOTS_TE_SIZE = 3;
 	private static final int SLOTS_INVENTORY = 9;
@@ -66,20 +67,14 @@ public class ContainerMaterialRouter extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
-				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 1, false)) { return ItemStack.EMPTY; }
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-			if (stack.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
+			slot.onSlotChanged();
 			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
-
 			slot.onTake(player, stack);
 		}
 

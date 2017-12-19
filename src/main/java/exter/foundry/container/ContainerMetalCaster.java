@@ -78,7 +78,7 @@ public class ContainerMetalCaster extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
 				if (CastingRecipeManager.INSTANCE.isItemMold(stack)) {
 					int mold_slot = SLOTS_TE + TileEntityMetalCaster.INVENTORY_MOLD;
 					if (((SlotCasterMold) inventorySlots.get(mold_slot)).getStack().isEmpty()) {
@@ -88,8 +88,7 @@ public class ContainerMetalCaster extends Container {
 						if (!mergeItemStack(stack, mold_slot, mold_slot + SLOTS_TE_MOLD_STORAGE_SIZE, false)) { return ItemStack.EMPTY; }
 					}
 				} else {
-					int merge_slot = SLOTS_TE + TileEntityMetalCaster.INVENTORY_EXTRA;
-					if (!mergeItemStack(stack, merge_slot, merge_slot + 1, false)) { return ItemStack.EMPTY; }
+					if (!mergeItemStack(stack, SLOTS_TE, TileEntityMetalCaster.INVENTORY_CONTAINER_FILL + 1, true)) { return ItemStack.EMPTY; }
 				}
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
@@ -105,7 +104,7 @@ public class ContainerMetalCaster extends Container {
 				output_slot.putStack(tmp);
 				storage_slot.onSlotChanged();
 				output_slot.onSlotChanged();
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
 			if (stack.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);

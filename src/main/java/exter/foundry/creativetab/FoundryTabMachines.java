@@ -6,7 +6,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
 public class FoundryTabMachines extends CreativeTabs {
-	public static FoundryTabMachines tab = new FoundryTabMachines();
+	
+	public static final FoundryTabMachines INSTANCE = new FoundryTabMachines();
 
 	private FoundryTabMachines() {
 		super("foundryMachines");

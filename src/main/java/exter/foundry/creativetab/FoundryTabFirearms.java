@@ -5,7 +5,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
 public class FoundryTabFirearms extends CreativeTabs {
-	public static FoundryTabFirearms tab = new FoundryTabFirearms();
+	
+	public static final FoundryTabFirearms INSTANCE = new FoundryTabFirearms();
 
 	private FoundryTabFirearms() {
 		super("foundryFirearms");

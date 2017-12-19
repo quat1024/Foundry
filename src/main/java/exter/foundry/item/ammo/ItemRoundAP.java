@@ -27,7 +27,7 @@ public class ItemRoundAP extends Item {
 	}
 
 	public ItemRoundAP() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("roundAP");
 		setRegistryName("roundAP");
 	}

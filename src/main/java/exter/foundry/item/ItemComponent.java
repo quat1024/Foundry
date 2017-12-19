@@ -60,7 +60,7 @@ public class ItemComponent extends Item {
 
 	public ItemComponent() {
 		super();
-		setCreativeTab(FoundryTabMaterials.tab);
+		setCreativeTab(FoundryTabMaterials.INSTANCE);
 		setHasSubtypes(true);
 		setUnlocalizedName("component");
 		setRegistryName("component");

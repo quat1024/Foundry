@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRoundHollow extends Item {
 	public ItemRoundHollow() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("roundHollow");
 		setRegistryName("roundHollow");
 	}

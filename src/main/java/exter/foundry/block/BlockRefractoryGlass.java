@@ -15,7 +15,7 @@ public class BlockRefractoryGlass extends BlockBreakable {
 
 	public BlockRefractoryGlass() {
 		super(Material.GLASS, false);
-		setCreativeTab(FoundryTabMaterials.tab);
+		setCreativeTab(FoundryTabMaterials.INSTANCE);
 		setHardness(0.4F);
 		setSoundType(SoundType.GLASS);
 		setUnlocalizedName("foundry.refractoryGlass");

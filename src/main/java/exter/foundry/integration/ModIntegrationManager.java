@@ -14,7 +14,7 @@ public final class ModIntegrationManager {
 
 	static public void afterPostInit() {
 		for (IModIntegration m : integrations.values()) {
-			Foundry.log.info("AfterPostInit integration: " + m.getName());
+			Foundry.LOGGER.info("AfterPostInit integration: " + m.getName());
 			m.onAfterPostInit();
 		}
 	}
@@ -46,21 +46,21 @@ public final class ModIntegrationManager {
 
 	static public void init() {
 		for (IModIntegration m : integrations.values()) {
-			Foundry.log.info("Init integration: " + m.getName());
+			Foundry.LOGGER.info("Init integration: " + m.getName());
 			m.onInit();
 		}
 	}
 
 	static public void postInit() {
 		for (IModIntegration m : integrations.values()) {
-			Foundry.log.info("PostInit integration: " + m.getName());
+			Foundry.LOGGER.info("PostInit integration: " + m.getName());
 			m.onPostInit();
 		}
 	}
 
 	static public void preInit(Configuration config) {
 		for (IModIntegration m : integrations.values()) {
-			Foundry.log.info("PreInit integration: " + m.getName());
+			Foundry.LOGGER.info("PreInit integration: " + m.getName());
 			m.onPreInit(config);
 		}
 	}

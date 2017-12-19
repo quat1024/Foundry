@@ -37,7 +37,7 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 	public BlockRefractoryTankBasic() {
 		super(Material.IRON);
 		setSoundType(SoundType.STONE);
-		setCreativeTab(FoundryTabMachines.tab);
+		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setUnlocalizedName("foundry.refractoryTankBasic");
@@ -126,7 +126,7 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 		if (world.isRemote) {
 			return true;
 		} else {
-			player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(Foundry.INSTANCE, CommonFoundryProxy.GUI_REFRACTORYTANK, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 	}

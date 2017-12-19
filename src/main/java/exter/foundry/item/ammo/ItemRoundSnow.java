@@ -34,7 +34,7 @@ public class ItemRoundSnow extends Item {
 	}
 
 	public ItemRoundSnow() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("roundSnow");
 		setRegistryName("roundSnow");
 	}

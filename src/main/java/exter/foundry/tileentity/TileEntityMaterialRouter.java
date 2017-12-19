@@ -44,9 +44,9 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		}
 
 		public boolean matchesItem(ItemStack stack) {
-			Foundry.log.info("Item: " + stack.getUnlocalizedName());
-			Foundry.log.info("Material: " + MaterialRegistry.instance.getMaterial(stack));
-			Foundry.log.info("Type: " + MaterialRegistry.instance.getType(stack));
+			Foundry.LOGGER.info("Item: " + stack.getUnlocalizedName());
+			Foundry.LOGGER.info("Material: " + MaterialRegistry.instance.getMaterial(stack));
+			Foundry.LOGGER.info("Type: " + MaterialRegistry.instance.getType(stack));
 			if (!material.equals("_Any")) {
 				String stack_material = MaterialRegistry.instance.getMaterial(stack);
 				if (!material.equals(stack_material)) { return false; }
@@ -222,7 +222,7 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		writeRoutesToNBT(tag);
 		if (world.isRemote) {
 			tag.setInteger("dim", world.provider.getDimension());
-			Foundry.network_channel.sendToServer(new MessageTileEntitySync(tag));
+			Foundry.NETWORK.sendToServer(new MessageTileEntitySync(tag));
 		} else {
 			sendPacketToNearbyPlayers(tag);
 		}

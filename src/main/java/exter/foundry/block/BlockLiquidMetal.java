@@ -36,7 +36,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 		setLightLevel(1.0f);
 		solid = solid_block;
 		setUnlocalizedName(name);
-		setCreativeTab(FoundryTabFluids.tab);
+		setCreativeTab(FoundryTabFluids.INSTANCE);
 		setRegistryName(name);
 	}
 

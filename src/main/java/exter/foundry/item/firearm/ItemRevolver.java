@@ -133,7 +133,7 @@ public class ItemRevolver extends ItemFirearm {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (player.isSneaking()) {
 			if (!world.isRemote) {
-				player.openGui(Foundry.instance, CommonFoundryProxy.GUI_REVOLVER, world, 0, 0, 0);
+				player.openGui(Foundry.INSTANCE, CommonFoundryProxy.GUI_REVOLVER, world, 0, 0, 0);
 			}
 		} else {
 			player.setActiveHand(hand);

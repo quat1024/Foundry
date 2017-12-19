@@ -32,7 +32,7 @@ public class ItemRoundLumium extends Item {
 	}
 
 	public ItemRoundLumium() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("roundLumium");
 		setRegistryName("roundLumium");
 	}

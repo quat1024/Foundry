@@ -42,7 +42,7 @@ public class ItemRoundFire extends Item {
 	}
 
 	public ItemRoundFire() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("roundFire");
 		setRegistryName("roundFire");
 	}

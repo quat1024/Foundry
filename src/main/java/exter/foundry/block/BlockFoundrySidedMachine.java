@@ -96,7 +96,7 @@ public abstract class BlockFoundrySidedMachine extends BlockContainer {
 
 	public BlockFoundrySidedMachine(Material material) {
 		super(material);
-		setCreativeTab(FoundryTabMachines.tab);
+		setCreativeTab(FoundryTabMachines.INSTANCE);
 	}
 
 	@Override

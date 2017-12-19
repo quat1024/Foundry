@@ -62,7 +62,7 @@ public class MessageTileEntitySync implements IMessage {
 						tile.markDirty();
 					}
 				} else if (FoundryConfig.debug) {
-					Foundry.log.debug("TileEntitySync: Unexpected null tile at " + x + ", " + y + ", " + z + ", " + dim);
+					Foundry.LOGGER.debug("TileEntitySync: Unexpected null tile at " + x + ", " + y + ", " + z + ", " + dim);
 				}
 			}
 		}

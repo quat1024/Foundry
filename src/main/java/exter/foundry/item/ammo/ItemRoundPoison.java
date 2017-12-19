@@ -32,7 +32,7 @@ public class ItemRoundPoison extends Item {
 	}
 
 	public ItemRoundPoison() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("roundPoison");
 		setRegistryName("roundPoison");
 	}

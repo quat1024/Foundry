@@ -3,6 +3,7 @@ package exter.foundry.container;
 import exter.foundry.container.slot.SlotOutput;
 import exter.foundry.tileentity.TileEntityCokeOven;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,12 @@ public class ContainerCokeOven extends Container {
 		te_oven.openInventory(player);
 		int i, j;
 
-		addSlotToContainer(new Slot(te_oven, TileEntityCokeOven.INVENTORY_INPUT, 56, 23));
+		addSlotToContainer(new Slot(te_oven, TileEntityCokeOven.INVENTORY_INPUT, 56, 23) {
+			@Override
+			public boolean isItemValid(ItemStack stack) {
+				return stack.getItem() == Items.COAL && stack.getMetadata() == 0;
+			}
+		});
 		addSlotToContainer(new SlotOutput(te_oven, TileEntityCokeOven.INVENTORY_OUTPUT, 103, 23));
 
 		//Player Inventory
@@ -62,20 +68,14 @@ public class ContainerCokeOven extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
-				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 1, false)) { return ItemStack.EMPTY; }
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-			if (stack.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
+			slot.onSlotChanged();
 			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
-
 			slot.onTake(player, stack);
 		}
 

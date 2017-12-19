@@ -1,11 +1,14 @@
 package exter.foundry.container;
 
 import exter.foundry.container.slot.SlotFluidContainer;
+import exter.foundry.recipes.manager.MeltingRecipeManager;
 import exter.foundry.tileentity.TileEntityMeltingCrucibleBasic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class ContainerMeltingCrucible extends Container {
 
@@ -28,7 +31,12 @@ public class ContainerMeltingCrucible extends Container {
 		te_icf.openInventory(player);
 		int i, j;
 
-		addSlotToContainer(new Slot(te_icf, TileEntityMeltingCrucibleBasic.INVENTORY_INPUT, 55, 23));
+		addSlotToContainer(new Slot(te_icf, TileEntityMeltingCrucibleBasic.INVENTORY_INPUT, 55, 23) {
+			@Override
+			public boolean isItemValid(ItemStack stack) {
+				return MeltingRecipeManager.INSTANCE.findRecipe(stack) != null;
+			}
+		});
 		addSlotToContainer(new SlotFluidContainer(te_icf, TileEntityMeltingCrucibleBasic.INVENTORY_CONTAINER_DRAIN, 135, 22));
 		addSlotToContainer(new SlotFluidContainer(te_icf, TileEntityMeltingCrucibleBasic.INVENTORY_CONTAINER_FILL, 135, 53));
 
@@ -63,20 +71,20 @@ public class ContainerMeltingCrucible extends Container {
 			ItemStack stack = slot.getStack();
 			slot_stack = stack.copy();
 
-			if (slot_index >= SLOTS_INVENTORY && slot_index < SLOTS_HOTBAR) {
-				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + 1, false)) { return ItemStack.EMPTY; }
+			if (slot_index >= SLOTS_INVENTORY && slot_index <= SLOTS_HOTBAR + 9) {
+				if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+					FluidStack f = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).getTankProperties()[0].getContents();
+					if (f != null && mergeItemStack(stack, TileEntityMeltingCrucibleBasic.INVENTORY_CONTAINER_DRAIN, TileEntityMeltingCrucibleBasic.INVENTORY_CONTAINER_DRAIN + 1, false)) {
+						return ItemStack.EMPTY;
+					} else if (mergeItemStack(stack, TileEntityMeltingCrucibleBasic.INVENTORY_CONTAINER_FILL, TileEntityMeltingCrucibleBasic.INVENTORY_CONTAINER_FILL + 1, false)) { return ItemStack.EMPTY; }
+				}
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
 			} else if (slot_index >= SLOTS_HOTBAR && slot_index < SLOTS_HOTBAR + 9) {
 				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
-			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-			if (stack.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
+			slot.onSlotChanged();
 			if (stack.getCount() == slot_stack.getCount()) { return ItemStack.EMPTY; }
-
 			slot.onTake(player, stack);
 		}
 

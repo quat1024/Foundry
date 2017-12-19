@@ -32,7 +32,7 @@ public class ItemShellLumium extends Item {
 	}
 
 	public ItemShellLumium() {
-		setCreativeTab(FoundryTabFirearms.tab);
+		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setUnlocalizedName("shellLumium");
 		setRegistryName("shellLumium");
 	}
