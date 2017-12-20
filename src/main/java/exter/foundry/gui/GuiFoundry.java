@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 public abstract class GuiFoundry extends GuiContainer {
 
-	public static final String DEG_K = new String(Character.toChars(0x00B0)) + "K";
+	public static final String DEG_K = "K";
 	private static final ResourceLocation BLOCK_TEXTURE = TextureMap.LOCATION_BLOCKS_TEXTURE;
 
 	public GuiFoundry(Container container) {
