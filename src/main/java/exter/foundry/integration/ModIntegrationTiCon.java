@@ -120,7 +120,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		for (MeltingRecipe recipe : TinkerRegistry.getAllMeltingRecipies()) {
 
 			for (ItemStack stack : recipe.input.getInputs()) {
-				if (MeltingRecipeManager.INSTANCE.findRecipe(stack) == null) {
+				if (!stack.isEmpty() && MeltingRecipeManager.INSTANCE.findRecipe(stack) == null) {
 					FluidStack result = recipe.output;
 					String mapped = liquid_map.get(result.getFluid().getName());
 					if (mapped != null) {
