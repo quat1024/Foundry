@@ -22,7 +22,7 @@ public class AlloyMixerRecipeManager implements IAlloyMixerRecipeManager {
 	}
 
 	@Override
-	public void addRecipe(FluidStack out, FluidStack[] in) {
+	public void addRecipe(FluidStack out, FluidStack... in) {
 		recipes.add(new AlloyMixerRecipe(out, in));
 	}
 

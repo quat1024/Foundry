@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cofh.thermalfoundation.init.TFFluids;
 import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.FoundryUtils;
@@ -26,6 +27,7 @@ import exter.foundry.item.ItemMold;
 import exter.foundry.material.MaterialRegistry;
 import exter.foundry.material.OreDictMaterial;
 import exter.foundry.material.OreDictType;
+import exter.foundry.recipes.manager.AlloyMixerRecipeManager;
 import exter.foundry.recipes.manager.AtomizerRecipeManager;
 import exter.foundry.recipes.manager.BurnerHeaterFuelManager;
 import exter.foundry.recipes.manager.CastingRecipeManager;
@@ -40,7 +42,6 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -286,24 +287,11 @@ public class InitRecipes {
 		FoundryUtils.registerBasicMeltingRecipes("Aluminum", LiquidMetalRegistry.instance.getFluid("Aluminium"));
 		FoundryUtils.registerBasicMeltingRecipes("Constantan", LiquidMetalRegistry.instance.getFluid("Cupronickel"));
 
-		Fluid liquid_redstone = FluidRegistry.getFluid("liquidredstone");
-		Fluid liquid_glowstone = FluidRegistry.getFluid("liquidglowstone");
-		Fluid liquid_enderpearl = FluidRegistry.getFluid("liquidenderpearl");
-
-		if (liquid_redstone != null) {
-			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustRedstone"), new FluidStack(liquid_redstone, 100));
-			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockRedstone"), new FluidStack(liquid_redstone, 900));
-		}
-
-		if (liquid_glowstone != null) {
-			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustGlowstone"), new FluidStack(liquid_glowstone, 250), liquid_glowstone.getTemperature(), 90);
-			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockGlowstone"), new FluidStack(liquid_glowstone, 1000), liquid_glowstone.getTemperature(), 90);
-		}
-
-		if (liquid_enderpearl != null) {
-			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustEnderpearl"), new FluidStack(liquid_enderpearl, 250), liquid_enderpearl.getTemperature(), 75);
-			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Items.ENDER_PEARL), new FluidStack(liquid_enderpearl, 250), liquid_enderpearl.getTemperature(), 75);
-		}
+		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustRedstone"), new FluidStack(TFFluids.fluidRedstone, 100));
+		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockRedstone"), new FluidStack(TFFluids.fluidRedstone, 900));
+		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustGlowstone"), new FluidStack(TFFluids.fluidGlowstone, 250), TFFluids.fluidGlowstone.getTemperature(), 90);
+		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("glowstone"), new FluidStack(TFFluids.fluidGlowstone, 1000), TFFluids.fluidGlowstone.getTemperature(), 90);
+		MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Items.ENDER_PEARL), new FluidStack(TFFluids.fluidEnder, 250), TFFluids.fluidEnder.getTemperature(), 75);
 
 		MoldRecipeManager.INSTANCE.addRecipe(FoundryItems.mold(ItemMold.SubItem.INGOT), 2, 4, new int[] { 2, 2, 2, 2, 2, 2, 2, 2 });
 
@@ -323,15 +311,6 @@ public class InitRecipes {
 
 		InitAlloyRecipes.init();
 
-		ItemStack mold_ingot = FoundryItems.mold(ItemMold.SubItem.INGOT);
-		ItemStack mold_slab = FoundryItems.mold(ItemMold.SubItem.SLAB);
-		ItemStack mold_stairs = FoundryItems.mold(ItemMold.SubItem.STAIRS);
-		ItemStack mold_plate = FoundryItems.mold(ItemMold.SubItem.PLATE);
-		ItemStack mold_block = FoundryItems.mold(ItemMold.SubItem.BLOCK);
-		ItemStack mold_gear = FoundryItems.mold(ItemMold.SubItem.GEAR);
-		ItemStack mold_rod = FoundryItems.mold(ItemMold.SubItem.ROD);
-		ItemStack mold_nugget = FoundryItems.mold(ItemMold.SubItem.NUGGET);
-
 		for (ItemMold.SubItem sub : ItemMold.SubItem.values()) {
 			CastingRecipeManager.INSTANCE.addMold(FoundryItems.mold(sub));
 		}
@@ -342,87 +321,15 @@ public class InitRecipes {
 
 		//Base casting recipes.
 		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
-			FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(name);
-
-			if (fluid.special) {
-				continue;
-			}
-
-			// Ingot
-			ItemStack ingot = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "ingot" + name);
-			if (!ingot.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT);
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(ingot), fluid_stack, mold_ingot, null);
-				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(ingot), fluid_stack, ICastingTableRecipe.TableType.INGOT);
-			}
-
-			// Block
-			ItemStack block = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "block" + name);
-			if (!block.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock());
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, mold_block, null);
-				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, ICastingTableRecipe.TableType.BLOCK);
-			}
-
-			// Slab
-			ItemStack slab = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "slab" + name);
-			if (!slab.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock() / 2);
-
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(slab), fluid_stack, mold_slab, null);
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(slab), fluid_stack);
-			}
-
-			// Stairs
-			ItemStack stairs = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "stairs" + name);
-			if (!stairs.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock() * 3 / 4);
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack, mold_stairs, null);
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack);
-			}
-
-			// Dust
-			ItemStack dust = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "dust" + name);
-			if (!dust.isEmpty()) {
-				AtomizerRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(dust), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
-			}
-
-			// Gear
-			ItemStack gear = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "gear" + name);
-			if (!gear.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountGear());
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack, mold_gear, null);
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack);
-			}
-
-			// Nugget
-			ItemStack nugget = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "nugget" + name);
-			if (!nugget.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountNugget());
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(nugget), fluid_stack, mold_nugget, null);
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(nugget), fluid_stack);
-			}
-
-			// Plate
-			ItemStack plate = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "plate" + name);
-			if (!plate.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountPlate());
-
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, mold_plate, null);
-				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, ICastingTableRecipe.TableType.PLATE);
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack);
-			}
-
-			// Rod
-			ItemStack rod = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "rod" + name);
-			if (!rod.isEmpty()) {
-				FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountRod());
-
-				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, mold_rod, null);
-				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, ICastingTableRecipe.TableType.ROD);
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack);
-			}
+			addDefaultCasting(LiquidMetalRegistry.instance.getFluid(name), name);
 		}
+
+		addDefaultCasting(LiquidMetalRegistry.instance.getFluid("Aluminium"), "Aluminum");
+		addDefaultCasting(LiquidMetalRegistry.instance.getFluid("Cupronickel"), "Constantan");
+
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.FLUID_AMOUNT_INGOT), new FluidStack(TFFluids.fluidGlowstone, 250), new FluidStack(FoundryFluids.liquid_tin, FoundryAPI.FLUID_AMOUNT_INGOT / 4 * 3), new FluidStack(FoundryFluids.liquid_silver, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_signalum, FoundryAPI.FLUID_AMOUNT_INGOT), new FluidStack(TFFluids.fluidRedstone, 250), new FluidStack(FoundryFluids.liquid_copper, FoundryAPI.FLUID_AMOUNT_INGOT / 4 * 3), new FluidStack(FoundryFluids.liquid_silver, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
+		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_enderium, FoundryAPI.FLUID_AMOUNT_INGOT), new FluidStack(TFFluids.fluidEnder, 250), new FluidStack(FoundryFluids.liquid_lead, FoundryAPI.FLUID_AMOUNT_INGOT / 4 * 3), new FluidStack(FoundryFluids.liquid_platinum, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 
 		if (FoundryConfig.recipe_alumina_melts_to_aluminium) {
 			MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("ingotAlumina"), new FluidStack(FoundryFluids.liquid_aluminium, FoundryAPI.FLUID_AMOUNT_INGOT), 2100);
@@ -454,5 +361,89 @@ public class InitRecipes {
 
 		BurnerHeaterFuelManager.INSTANCE.addFuel(new ItemStackMatcher(Items.BLAZE_ROD), 2000, BurnerHeaterFuelManager.INSTANCE.getHeatNeeded(220000, FoundryAPI.CRUCIBLE_BASIC_TEMP_LOSS_RATE));
 
+	}
+
+	static ItemStack mold_ingot = FoundryItems.mold(ItemMold.SubItem.INGOT);
+	static ItemStack mold_slab = FoundryItems.mold(ItemMold.SubItem.SLAB);
+	static ItemStack mold_stairs = FoundryItems.mold(ItemMold.SubItem.STAIRS);
+	static ItemStack mold_plate = FoundryItems.mold(ItemMold.SubItem.PLATE);
+	static ItemStack mold_block = FoundryItems.mold(ItemMold.SubItem.BLOCK);
+	static ItemStack mold_gear = FoundryItems.mold(ItemMold.SubItem.GEAR);
+	static ItemStack mold_rod = FoundryItems.mold(ItemMold.SubItem.ROD);
+	static ItemStack mold_nugget = FoundryItems.mold(ItemMold.SubItem.NUGGET);
+
+	public static void addDefaultCasting(FluidLiquidMetal fluid, String name) {
+		if (fluid.special) { return; }
+
+		// Ingot
+		ItemStack ingot = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "ingot" + name);
+		if (!ingot.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT);
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(ingot), fluid_stack, mold_ingot, null);
+			CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(ingot), fluid_stack, ICastingTableRecipe.TableType.INGOT);
+		}
+
+		// Block
+		ItemStack block = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "block" + name);
+		if (!block.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock());
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, mold_block, null);
+			CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(block), fluid_stack, ICastingTableRecipe.TableType.BLOCK);
+		}
+
+		// Slab
+		ItemStack slab = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "slab" + name);
+		if (!slab.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock() / 2);
+
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(slab), fluid_stack, mold_slab, null);
+			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(slab), fluid_stack);
+		}
+
+		// Stairs
+		ItemStack stairs = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "stairs" + name);
+		if (!stairs.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountBlock() * 3 / 4);
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack, mold_stairs, null);
+			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stairs), fluid_stack);
+		}
+
+		// Dust
+		ItemStack dust = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "dust" + name);
+		if (!dust.isEmpty()) {
+			AtomizerRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(dust), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
+		}
+
+		// Gear
+		ItemStack gear = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "gear" + name);
+		if (!gear.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountGear());
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(gear), fluid_stack, mold_gear, null);
+		}
+
+		// Nugget
+		ItemStack nugget = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "nugget" + name);
+		if (!nugget.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountNugget());
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(nugget), fluid_stack, mold_nugget, null);
+		}
+
+		// Plate
+		ItemStack plate = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "plate" + name);
+		if (!plate.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountPlate());
+
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, mold_plate, null);
+			CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(plate), fluid_stack, ICastingTableRecipe.TableType.PLATE);
+		}
+
+		// Rod
+		ItemStack rod = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "rod" + name);
+		if (!rod.isEmpty()) {
+			FluidStack fluid_stack = new FluidStack(fluid, FoundryAPI.getAmountRod());
+
+			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, mold_rod, null);
+			CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(rod), fluid_stack, ICastingTableRecipe.TableType.ROD);
+		}
 	}
 }

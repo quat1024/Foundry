@@ -11,7 +11,7 @@ public interface IAlloyMixerRecipeManager {
 	 * @param out Output (fluid type and amount).
 	 * @param in Inputs (fluid type and amount required), length must be less or equal 4.
 	 */
-	public void addRecipe(FluidStack out, FluidStack[] in);
+	public void addRecipe(FluidStack out, FluidStack... in);
 
 	/**
 	 * Find a valid recipe that contains the given inputs.

@@ -52,6 +52,10 @@ public class FoundryUtils {
 			if (exists("dustSmall" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dustSmall" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 
 			if (exists("dustTiny" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dustTiny" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
+			
+			if (exists("plate" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("plate" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountPlate()));
+			
+			if (exists("gear" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("gear" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountGear()));
 		}
 	}
 }
