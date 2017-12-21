@@ -141,10 +141,12 @@ public class InitRecipes {
 			final String[] oredict_names = { "dyeBlack", "dyeRed", "dyeGreen", "dyeBrown", "dyeBlue", "dyePurple", "dyeCyan", "dyeLightGray", "dyeGray", "dyePink", "dyeLime", "dyeYellow", "dyeLightBlue", "dyeMagenta", "dyeOrange", "dyeWhite" };
 
 			int temp = 1550;
+			int melt = 500;
 			Fluid liquid_glass = FoundryFluids.liquid_glass;
-			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.SAND), new FluidStack(liquid_glass, 1000), temp, 250);
-			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.GLASS), new FluidStack(liquid_glass, 1000), temp, 250);
-			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.GLASS_PANE), new FluidStack(liquid_glass, 375), temp, 250);
+
+			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.SAND), new FluidStack(liquid_glass, 1000), temp, melt);
+			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.GLASS), new FluidStack(liquid_glass, 1000), temp, melt);
+			MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.GLASS_PANE), new FluidStack(liquid_glass, 375), temp, melt);
 			CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.GLASS), new FluidStack(liquid_glass, 1000), FoundryItems.mold(ItemMold.SubItem.BLOCK), null, 400);
 			CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(Blocks.GLASS), new FluidStack(liquid_glass, 1000), ICastingTableRecipe.TableType.BLOCK);
 			for (EnumDyeColor dye : EnumDyeColor.values()) {
@@ -154,8 +156,8 @@ public class InitRecipes {
 
 				Fluid liquid_glass_colored = FoundryFluids.liquid_glass_colored[meta];
 
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stained_glass), new FluidStack(liquid_glass_colored, 1000), temp, 250);
-				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(new ItemStack(Blocks.STAINED_GLASS_PANE, 1, meta)), new FluidStack(liquid_glass_colored, 375), temp, 250);
+				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stained_glass), new FluidStack(liquid_glass_colored, 1000), temp, melt);
+				MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(new ItemStack(Blocks.STAINED_GLASS_PANE, 1, meta)), new FluidStack(liquid_glass_colored, 375), temp, melt);
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stained_glass), new FluidStack(liquid_glass_colored, 1000), FoundryItems.mold(ItemMold.SubItem.BLOCK), null, 400);
 				CastingTableRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stained_glass), new FluidStack(liquid_glass_colored, 1000), ICastingTableRecipe.TableType.BLOCK);
 
