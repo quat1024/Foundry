@@ -33,6 +33,7 @@ public class AlloyFurnaceRecipeManager implements IAlloyFurnaceRecipeManager {
 	public void addRecipe(ItemStack out, IItemMatcher[] in_a, IItemMatcher[] in_b) {
 		for (IItemMatcher a : in_a) {
 			for (IItemMatcher b : in_b) {
+				if(a != null && b != null && !out.isEmpty())
 				addRecipe(out, a, b);
 			}
 		}

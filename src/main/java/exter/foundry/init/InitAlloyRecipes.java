@@ -25,7 +25,7 @@ public class InitAlloyRecipes {
 	static private void addSimpleAlloy(String output, String input_a, int amount_a, String input_b, int amount_b) {
 		ItemStack alloy_ingot = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "ingot" + output, amount_a + amount_b);
 		if (!alloy_ingot.isEmpty()) {
-			AlloyFurnaceRecipeManager.INSTANCE.addRecipe(alloy_ingot, new IItemMatcher[] { new OreMatcher("ingot" + input_a, amount_a), new OreMatcher("dust" + input_a, amount_a) }, new IItemMatcher[] { new OreMatcher("ingot" + input_b, amount_b), new OreMatcher("dust" + input_b, amount_b) });
+			checkAndAddRecipe(alloy_ingot, input_a, amount_a, input_b, amount_b);
 		}
 
 		Fluid fluid_out = LiquidMetalRegistry.instance.getFluid(output);
@@ -35,6 +35,17 @@ public class InitAlloyRecipes {
 		AlloyingCrucibleRecipeManager.INSTANCE.addRecipe(new FluidStack(fluid_out, (amount_a + amount_b) * 3), new FluidStack(fluid_in_a, amount_a * 3), new FluidStack(fluid_in_b, amount_b * 3));
 
 		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(fluid_out, amount_a + amount_b), new FluidStack[] { new FluidStack(fluid_in_a, amount_a), new FluidStack(fluid_in_b, amount_b) });
+	}
+
+	private static void checkAndAddRecipe(ItemStack alloy_ingot, String input_a, int amount_a, String input_b, int amount_b) {
+		IItemMatcher[] a = new IItemMatcher[2];
+		IItemMatcher[] b = new IItemMatcher[2];
+		if (OreDictionary.doesOreNameExist("ingot" + input_a)) a[0] = new OreMatcher("ingot" + input_a, amount_a);
+		if (OreDictionary.doesOreNameExist("dust" + input_a)) a[1] = new OreMatcher("dust" + input_a, amount_a);
+		if (OreDictionary.doesOreNameExist("ingot" + input_b)) b[0] = new OreMatcher("ingot" + input_b, amount_b);
+		if (OreDictionary.doesOreNameExist("dust" + input_b)) b[1] = new OreMatcher("dust" + input_b, amount_b);
+
+		AlloyFurnaceRecipeManager.INSTANCE.addRecipe(alloy_ingot, a, b);
 	}
 
 	static public void init() {
