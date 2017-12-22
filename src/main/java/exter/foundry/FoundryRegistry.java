@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
@@ -48,11 +47,12 @@ public class FoundryRegistry {
 		e.getRegistry().registerAll(SOUNDS.toArray(new SoundEvent[SOUNDS.size()]));
 	}
 	
+	/*
 	@SubscribeEvent
 	public void tooltips(ItemTooltipEvent e) {
 		if(e.getItemStack().isEmpty()) return;
 		for(int i : OreDictionary.getOreIDs(e.getItemStack()))
 			e.getToolTip().add(OreDictionary.getOreName(i));
 	}
-
+	*/
 }
