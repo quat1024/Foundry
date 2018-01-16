@@ -2,6 +2,7 @@ package exter.foundry.item.ammo;
 
 import java.util.List;
 
+import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabFirearms;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -33,8 +34,8 @@ public class ItemRoundLumium extends Item {
 
 	public ItemRoundLumium() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName("roundLumium");
-		setRegistryName("roundLumium");
+		setUnlocalizedName(Foundry.MODID + ".roundLumium");
+		setRegistryName(Foundry.MODID, "roundLumium");
 	}
 
 	@Override

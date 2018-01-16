@@ -18,15 +18,15 @@ import net.minecraft.world.World;
 
 public class EntitySkeletonGun extends EntitySkeleton {
 
-	public EntitySkeletonGun(World p_i1741_1_) {
-		super(p_i1741_1_);
+	public EntitySkeletonGun(World world) {
+		super(world);
 		EntityAIAttackRangedGun task = new EntityAIAttackRangedGun(this, 1.0D, 20, 15.0F);
 		task.setAttackCooldown(30);
 		tasks.addTask(4, task);
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		float damage = world.getDifficulty().getDifficultyId() * 0.1f + 0.7f;
 		if (getHeldItem(EnumHand.MAIN_HAND).getItem() == FoundryItems.item_shotgun) {
 			if (!world.isRemote) {

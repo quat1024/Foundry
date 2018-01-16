@@ -2,6 +2,7 @@ package exter.foundry.item.ammo;
 
 import java.util.List;
 
+import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabFirearms;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -28,8 +29,8 @@ public class ItemShellAP extends Item {
 
 	public ItemShellAP() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName("shellAP");
-		setRegistryName("shellAP");
+		setUnlocalizedName(Foundry.MODID + ".shellAP");
+		setRegistryName(Foundry.MODID, "shellAP");
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -128,7 +128,8 @@ public class Foundry {
 		GameRegistry.registerTileEntity(TileEntityAlloyingCrucible.class, MODID + ":alloy_crucible");
 		if (FoundryConfig.block_cokeoven) GameRegistry.registerTileEntity(TileEntityCokeOven.class, MODID + ":coke_oven");
 
-		EntityRegistry.registerModEntity(new ResourceLocation("foundry", "gun_skeleton"), EntitySkeletonGun.class, "gunSkeleton", 0, this, 80, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("foundry", "gun_skeleton"), EntitySkeletonGun.class, "foundry.gunSkeleton", 0, this, 80, 1, true);
+		EntityRegistry.registerEgg(new ResourceLocation("foundry", "gun_skeleton"), 0xd3d3d3, 0x808080);
 		LootTableList.register(new ResourceLocation("foundry", "gun_skeleton"));
 
 		EntityRegistry.addSpawn(EntitySkeletonGun.class, 8, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS).toArray(new Biome[0]));

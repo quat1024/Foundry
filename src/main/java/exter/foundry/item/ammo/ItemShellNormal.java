@@ -2,6 +2,7 @@ package exter.foundry.item.ammo;
 
 import java.util.List;
 
+import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabFirearms;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -17,8 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemShellNormal extends Item {
 	public ItemShellNormal() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName("shellNormal");
-		setRegistryName("shellNormal");
+		setUnlocalizedName(Foundry.MODID + ".shellNormal");
+		setRegistryName(Foundry.MODID, "shellNormal");
 	}
 
 	@SideOnly(Side.CLIENT)

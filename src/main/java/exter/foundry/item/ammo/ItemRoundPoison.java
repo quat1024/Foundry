@@ -2,6 +2,7 @@ package exter.foundry.item.ammo;
 
 import java.util.List;
 
+import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabFirearms;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -33,8 +34,8 @@ public class ItemRoundPoison extends Item {
 
 	public ItemRoundPoison() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName("roundPoison");
-		setRegistryName("roundPoison");
+		setUnlocalizedName(Foundry.MODID + ".roundPoison");
+		setRegistryName(Foundry.MODID, "roundPoison");
 	}
 
 	@Override

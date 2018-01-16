@@ -338,19 +338,19 @@ item.foundry.rodCupronickel.name=Constantan Rod
 
 item.foundry.fluidContainer.name=Refractory Fluid Container
 
-item.revolver.name=Revolver
-item.shotgun.name=Shotgun
-item.roundNormal.name=Standard Round
-item.roundJacketed.name=Jacketed Round
-item.roundHollow.name=Hollow Point Round
-item.roundFire.name=Incendiary Round
-item.roundPoison.name=Poison Round
-item.roundAP.name=Armor Piercing Round
-item.shellNormal.name=Standard Shell
-item.shellAP.name=Armor Piercing Shell
-item.roundLumium.name=Lumium Round
-item.shellLumium.name=Lumium Shell
-item.roundSnow.name=Snow Round
+item.foundry.revolver.name=Revolver
+item.foundry.shotgun.name=Shotgun
+item.foundry.roundNormal.name=Standard Round
+item.foundry.roundJacketed.name=Jacketed Round
+item.foundry.roundHollow.name=Hollow Point Round
+item.foundry.roundFire.name=Incendiary Round
+item.foundry.roundPoison.name=Poison Round
+item.foundry.roundAP.name=Armor Piercing Round
+item.foundry.shellNormal.name=Standard Shell
+item.foundry.shellAP.name=Armor Piercing Shell
+item.foundry.roundLumium.name=Lumium Round
+item.foundry.shellLumium.name=Lumium Shell
+item.foundry.roundSnow.name=Snow Round
 
 entity.foundry.gunSkeleton.name=Gun Skeleton
 

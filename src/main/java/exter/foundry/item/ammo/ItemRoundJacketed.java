@@ -2,6 +2,7 @@ package exter.foundry.item.ammo;
 
 import java.util.List;
 
+import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabFirearms;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -17,8 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemRoundJacketed extends Item {
 	public ItemRoundJacketed() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName("roundJacketed");
-		setRegistryName("roundJacketed");
+		setUnlocalizedName(Foundry.MODID + ".roundJacketed");
+		setRegistryName(Foundry.MODID, "roundJacketed");
 	}
 
 	@SideOnly(Side.CLIENT)
