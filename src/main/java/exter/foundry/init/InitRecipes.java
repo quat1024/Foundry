@@ -39,6 +39,7 @@ import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fluids.Fluid;
@@ -74,6 +75,9 @@ public class InitRecipes {
 
 		for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
 			ItemStack stack = entry.getKey();
+			Item item = entry.getValue().getItem();
+
+			if (item == Items.GOLD_NUGGET || item == Items.IRON_NUGGET) continue;
 
 			if (!stack.isEmpty() && MeltingRecipeManager.INSTANCE.findRecipe(stack) == null) {
 				ItemStack result = entry.getValue();

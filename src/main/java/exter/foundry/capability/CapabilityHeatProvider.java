@@ -29,6 +29,6 @@ public class CapabilityHeatProvider {
 	}
 
 	static public void init() {
-		CapabilityManager.INSTANCE.register(IHeatProvider.class, new Storage(), DummyHeatProvider.class);
+		CapabilityManager.INSTANCE.register(IHeatProvider.class, new Storage(), DummyHeatProvider::new);
 	}
 }

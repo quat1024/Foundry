@@ -2,8 +2,8 @@ package exter.foundry.init;
 
 import java.util.Map.Entry;
 
+import exter.foundry.api.FoundryUtils;
 import exter.foundry.api.recipe.matcher.OreMatcher;
-import exter.foundry.config.FoundryConfig;
 import exter.foundry.fluid.FluidLiquidMetal;
 import exter.foundry.fluid.FoundryFluids;
 import exter.foundry.fluid.LiquidMetalRegistry;
@@ -75,15 +75,7 @@ public class InitToolRecipes {
 		FoundryMiscUtils.registerCasting(new ItemStack(Items.GOLDEN_BOOTS), FoundryFluids.liquid_gold, 4, ItemMold.SubItem.BOOTS);
 
 		for (Entry<String, FluidLiquidMetal> metal : LiquidMetalRegistry.instance.getFluids().entrySet()) {
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "pickaxe" + metal.getKey()), metal.getValue(), 3, ItemMold.SubItem.PICKAXE, extra_sticks2);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "axe" + metal.getKey()), metal.getValue(), 3, ItemMold.SubItem.AXE, extra_sticks2);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "shovel" + metal.getKey()), metal.getValue(), 1, ItemMold.SubItem.SHOVEL, extra_sticks2);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "hoe" + metal.getKey()), metal.getValue(), 2, ItemMold.SubItem.HOE, extra_sticks2);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "sword" + metal.getKey()), metal.getValue(), 2, ItemMold.SubItem.SWORD, extra_sticks1);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "helmet" + metal.getKey()), metal.getValue(), 5, ItemMold.SubItem.HELMET);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "chestplate" + metal.getKey()), metal.getValue(), 8, ItemMold.SubItem.CHESTPLATE);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "leggings" + metal.getKey()), metal.getValue(), 7, ItemMold.SubItem.LEGGINGS);
-			FoundryMiscUtils.registerCasting(FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, "boots" + metal.getKey()), metal.getValue(), 4, ItemMold.SubItem.BOOTS);
+			FoundryUtils.tryAddToolArmorRecipes(metal.getKey(), metal.getValue());
 		}
 	}
 }

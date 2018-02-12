@@ -74,6 +74,6 @@ public class CapabilityFirearmRound {
 	}
 
 	static public void init() {
-		CapabilityManager.INSTANCE.register(IFirearmRound.class, new Storage(), ReferenceFirearmRound.class);
+		CapabilityManager.INSTANCE.register(IFirearmRound.class, new Storage(), ReferenceFirearmRound::new);
 	}
 }
