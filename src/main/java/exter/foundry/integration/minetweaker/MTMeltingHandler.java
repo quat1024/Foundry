@@ -30,7 +30,7 @@ public class MTMeltingHandler {
 
 		@Override
 		public String getDescription() {
-			return String.format(" %s -> %s", MTHelper.getItemDescription(recipe.getInput()), MTHelper.getFluidDescription(recipe.getOutput()));
+			return String.format("%s -> %s", MTHelper.getItemDescription(recipe.getInput()), MTHelper.getFluidDescription(recipe.getOutput()));
 		}
 
 		@Override

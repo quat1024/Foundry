@@ -2,6 +2,7 @@ package exter.foundry.recipes;
 
 import exter.foundry.api.recipe.IMeltingRecipe;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
+import exter.foundry.integration.minetweaker.MTHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -62,5 +63,10 @@ public class MeltingRecipe implements IMeltingRecipe {
 	@Override
 	public boolean matchesRecipe(ItemStack item) {
 		return solid.apply(item);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Melting recipe: %s -> %s", MTHelper.getItemDescription(solid), MTHelper.getFluidDescription(fluid));
 	}
 }

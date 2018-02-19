@@ -43,9 +43,9 @@ public class MeltingRecipeManager implements IMeltingRecipeManager {
 
 	@Override
 	public IMeltingRecipe findRecipe(ItemStack item) {
-		if (item == null) { return null; }
+		if (item.isEmpty()) return null;
 		for (IMeltingRecipe r : recipes) {
-			if (r.matchesRecipe(item)) { return r; }
+			if (r.matchesRecipe(item)) return r;
 		}
 		return null;
 	}

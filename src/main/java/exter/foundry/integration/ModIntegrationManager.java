@@ -1,7 +1,7 @@
 package exter.foundry.integration;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import exter.foundry.Foundry;
 import exter.foundry.config.FoundryConfig;
@@ -10,57 +10,53 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class ModIntegrationManager {
-	static private Map<String, IModIntegration> integrations = new HashMap<>();
+	private static List<IModIntegration> integrations = new ArrayList<>();
 
-	static public void afterPostInit() {
-		for (IModIntegration m : integrations.values()) {
-			Foundry.LOGGER.info("AfterPostInit integration: " + m.getName());
+	static public void finalStep() {
+		Foundry.LOGGER.info("Integration Final Step");
+		for (IModIntegration m : integrations) {
 			m.onAfterPostInit();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	static public void clientInit() {
-		for (IModIntegration m : integrations.values()) {
+		for (IModIntegration m : integrations) {
 			m.onClientInit();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	static public void clientPostInit() {
-		for (IModIntegration m : integrations.values()) {
+		for (IModIntegration m : integrations) {
 			m.onClientPostInit();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	static public void clientPreInit() {
-		for (IModIntegration m : integrations.values()) {
+		for (IModIntegration m : integrations) {
 			m.onClientPreInit();
 		}
 	}
 
-	static public IModIntegration getIntegration(String name) {
-		return integrations.get(name);
-	}
-
 	static public void init() {
-		for (IModIntegration m : integrations.values()) {
-			Foundry.LOGGER.info("Init integration: " + m.getName());
+		Foundry.LOGGER.info("Integration Init");
+		for (IModIntegration m : integrations) {
 			m.onInit();
 		}
 	}
 
 	static public void postInit() {
-		for (IModIntegration m : integrations.values()) {
-			Foundry.LOGGER.info("PostInit integration: " + m.getName());
+		Foundry.LOGGER.info("Integration Post Init");
+		for (IModIntegration m : integrations) {
 			m.onPostInit();
 		}
 	}
 
 	static public void preInit(Configuration config) {
-		for (IModIntegration m : integrations.values()) {
-			Foundry.LOGGER.info("PreInit integration: " + m.getName());
+		Foundry.LOGGER.info("Integration Pre Init");
+		for (IModIntegration m : integrations) {
 			m.onPreInit(config);
 		}
 	}
@@ -70,7 +66,7 @@ public final class ModIntegrationManager {
 		boolean enable = FoundryConfig.getAndRemove(config, "integration", "enable." + name, true);
 		enable = config.getBoolean("enable", "integration." + name, true, "Enable/disable mod integration.");
 		if (enable) {
-			integrations.put(name, imod);
+			integrations.add(imod);
 		}
 	}
 

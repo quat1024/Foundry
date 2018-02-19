@@ -83,7 +83,7 @@ import shadows.placebo.util.RecipeHelper;
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.1.1.0";
+	public static final String MODVERSION = "3.1.1.1";
 
 	@SidedProxy(clientSide = "exter.foundry.proxy.ClientFoundryProxy", serverSide = "exter.foundry.proxy.CommonFoundryProxy")
 	public static CommonFoundryProxy proxy;
@@ -142,7 +142,7 @@ public class Foundry {
 		ModIntegrationManager.postInit();
 		InitRecipes.postInit();
 		proxy.postInit();
-		ModIntegrationManager.afterPostInit();
+		ModIntegrationManager.finalStep();
 	}
 
 	@EventHandler
@@ -152,10 +152,10 @@ public class Foundry {
 		config.load();
 
 		ModIntegrationManager.registerIntegration(config, new ModIntegrationMolten());
-		if (Loader.isModLoaded("crafttweaker")) ModIntegrationManager.registerIntegration(config, new ModIntegrationMinetweaker());
 		if (Loader.isModLoaded("tconstruct")) ModIntegrationManager.registerIntegration(config, new ModIntegrationTiCon());
 		if (Loader.isModLoaded("enderio")) ModIntegrationManager.registerIntegration(config, new ModIntegrationEnderIO());
 		if (Loader.isModLoaded("botania")) ModIntegrationManager.registerIntegration(config, new ModIntegrationBotania());
+		if (Loader.isModLoaded("crafttweaker")) ModIntegrationManager.registerIntegration(config, new ModIntegrationMinetweaker());
 
 		FoundryAPI.fluids = LiquidMetalRegistry.instance;
 
