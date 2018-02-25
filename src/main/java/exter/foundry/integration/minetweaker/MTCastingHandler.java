@@ -99,7 +99,7 @@ public class MTCastingHandler {
 		}
 		ICastingRecipe recipe = null;
 		try {
-			recipe = new CastingRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), MTHelper.getIngredient(extra), speed);
+			recipe = new CastingRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), extra == null ? null : MTHelper.getIngredient(extra), speed);
 		} catch (IllegalArgumentException e) {
 			CraftTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
 			return;
