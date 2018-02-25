@@ -50,7 +50,7 @@ public class MTInfuserHandler {
 			try {
 				recipe = new InfuserRecipe(CraftTweakerMC.getLiquidStack(output), CraftTweakerMC.getLiquidStack(input), MTHelper.getIngredient(substance), energy);
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid infuser recipe: " + e.getMessage());
+				MTHelper.printCrt("Invalid infuser recipe: " + e.getMessage());
 				return;
 			}
 			CraftTweakerAPI.apply(new InfuserAction(recipe).action_add);

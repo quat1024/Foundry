@@ -86,7 +86,7 @@ public class MTCastingHandler {
 	static public void addMold(IItemStack mold) {
 		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
 		if (molditem.isEmpty()) {
-			CraftTweakerAPI.logError("Invalid mold item");
+			MTHelper.printCrt("Invalid mold item");
 			return;
 		}
 		CraftTweakerAPI.apply(new MoldAction(molditem).action_add);
@@ -101,7 +101,7 @@ public class MTCastingHandler {
 		try {
 			recipe = new CastingRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), extra == null ? null : MTHelper.getIngredient(extra), speed);
 		} catch (IllegalArgumentException e) {
-			CraftTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
+			MTHelper.printCrt("Invalid casting recipe: " + e.getMessage());
 			return;
 		}
 		CraftTweakerAPI.apply(new CastingAction(recipe).action_add);

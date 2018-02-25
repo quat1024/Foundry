@@ -51,7 +51,7 @@ public class MTMeltingHandler {
 			try {
 				recipe = new MeltingRecipe(MTHelper.getIngredient(input), CraftTweakerMC.getLiquidStack(output), melting_point == 0 ? output.getTemperature() : melting_point, speed == 0 ? 100 : speed);
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid melting recipe.");
+				MTHelper.printCrt("Invalid melting recipe.");
 				return;
 			}
 			CraftTweakerAPI.apply(new MeltingAction(recipe).action_add);

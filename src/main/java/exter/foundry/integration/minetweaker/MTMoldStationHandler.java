@@ -59,7 +59,7 @@ public class MTMoldStationHandler {
 			try {
 				recipe = new MoldRecipe(CraftTweakerMC.getItemStack(output), width, height, grid);
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid mold station recipe: " + e.getMessage());
+				MTHelper.printCrt("Invalid mold station recipe: " + e.getMessage());
 				return;
 			}
 			CraftTweakerAPI.apply(new MoldStationAction(recipe).action_add);

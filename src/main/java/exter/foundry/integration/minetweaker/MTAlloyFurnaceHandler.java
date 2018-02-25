@@ -49,7 +49,7 @@ public class MTAlloyFurnaceHandler {
 			try {
 				recipe = new AlloyFurnaceRecipe(CraftTweakerMC.getItemStack(output), MTHelper.getIngredient(input_a), MTHelper.getIngredient(input_b));
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid alloy furnace recipe: " + e.getMessage());
+				MTHelper.printCrt("Invalid alloy furnace recipe: " + e.getMessage());
 				return;
 			}
 			CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_add);

@@ -25,25 +25,11 @@ public class FoundryConfig {
 	public static boolean hardcore_remove_block_ingot;
 
 	public static boolean metalCasterPower;
+	public static boolean crtError;
 
 	public static String prefModID = ThermalFoundation.MOD_ID;
 
-	static public boolean getAndRemove(Configuration config, String category, String name, boolean def) {
-		boolean res = config.get(category, name, def).getBoolean(def);
-		config.getCategory(category).remove(name);
-		return res;
-	}
-
 	static public void load(Configuration config) {
-
-		//Old config values
-		recipe_equipment = getAndRemove(config, "recipe", "recipe.tools_armor.use", true);
-		recipe_glass = getAndRemove(config, "recipe", "recipe.glass.use", true);
-		recipe_steel = getAndRemove(config, "recipe", "recipe.enable_infuser_steel", true);
-		block_cokeoven = getAndRemove(config, "block", "block.enable_coke_ovenl", true);
-		if (config.hasCategory("recipe")) {
-			config.removeCategory(config.getCategory("recipe"));
-		}
 
 		debug = config.getBoolean("debug", "debug", false, "Enable debug logging.");
 		recipe_equipment = config.getBoolean("equipment", "recipes", recipe_equipment, "Enable/disable casting recipes for equipment");
@@ -71,6 +57,8 @@ public class FoundryConfig {
 		if (!metalCasterPower) {
 			BlockFoundryMachine.EnumMachine.CASTER.setTooltip("caster2");
 		}
+		
+		crtError = config.getBoolean("CrT Errors", "general", true, "If foundry's CraftTweaker integration logs errors instead of info");
 
 		FoundryAPI.FLUID_AMOUNT_INGOT = config.getInt("Fluid Ingot Value", "general", 108, 36, Integer.MAX_VALUE, "The value, in mB, of an ingot.");
 	}

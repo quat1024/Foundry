@@ -69,7 +69,7 @@ public class MTAlloyMixerHandler {
 			try {
 				recipe = new AlloyMixerRecipe(out, in);
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid alloy mixer recipe: " + e.getMessage());
+				MTHelper.printCrt("Invalid alloy mixer recipe: " + e.getMessage());
 				return;
 			}
 			CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_add);

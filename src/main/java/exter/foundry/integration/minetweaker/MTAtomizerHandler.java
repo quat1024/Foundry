@@ -49,7 +49,7 @@ public class MTAtomizerHandler {
 			try {
 				recipe = new AtomizerRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input));
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid atomizer recipe: " + e.getMessage());
+				MTHelper.printCrt("Invalid atomizer recipe: " + e.getMessage());
 				return;
 			}
 			CraftTweakerAPI.apply(new AtomizerAction(recipe).action_add);

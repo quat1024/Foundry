@@ -2,6 +2,7 @@ package exter.foundry.integration.minetweaker;
 
 import com.google.common.base.Preconditions;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -9,6 +10,7 @@ import crafttweaker.api.oredict.IOreDictEntry;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.api.recipe.matcher.OreMatcher;
+import exter.foundry.config.FoundryConfig;
 import exter.foundry.integration.minetweaker.orestack.MTOreStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,5 +45,10 @@ public class MTHelper {
 		String desc = String.format("<%s:%d> * %d", stack.getItem().getRegistryName(), stack.getItemDamage(), stack.getCount());
 		if (stack.hasTagCompound()) desc += " with tag " + stack.getTagCompound().toString();
 		return desc;
+	}
+
+	public static void printCrt(String print) {
+		if (FoundryConfig.crtError) CraftTweakerAPI.logError(print);
+		else CraftTweakerAPI.logInfo(print);
 	}
 }

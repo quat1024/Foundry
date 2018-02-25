@@ -53,7 +53,7 @@ public class MTAlloyingCrucibleHandler {
 			try {
 				recipe = new AlloyingCrucibleRecipe(out, in_a, in_b);
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid alloying crucible recipe: " + e.getMessage());
+				MTHelper.printCrt("Invalid alloying crucible recipe: " + e.getMessage());
 				return;
 			}
 			CraftTweakerAPI.apply(new AlloyingCrucibleAction(recipe).action_add);

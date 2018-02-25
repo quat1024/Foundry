@@ -67,7 +67,7 @@ public class MTCastingTableHandler {
 			try {
 				recipe = new CastingTableRecipe(out, in, table);
 			} catch (IllegalArgumentException e) {
-				CraftTweakerAPI.logError("Invalid casting recipe: " + e.getMessage());
+				MTHelper.printCrt("Invalid casting recipe: " + e.getMessage());
 				return;
 			}
 			CraftTweakerAPI.apply(new CastingTableAction(recipe).action_add);

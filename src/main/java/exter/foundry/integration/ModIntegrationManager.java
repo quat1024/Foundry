@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exter.foundry.Foundry;
-import exter.foundry.config.FoundryConfig;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -63,9 +62,7 @@ public final class ModIntegrationManager {
 
 	static public void registerIntegration(Configuration config, IModIntegration imod) {
 		String name = imod.getName();
-		boolean enable = FoundryConfig.getAndRemove(config, "integration", "enable." + name, true);
-		enable = config.getBoolean("enable", "integration." + name, true, "Enable/disable mod integration.");
-		if (enable) {
+		if (config.getBoolean("enable", "integration." + name, true, "Enable/disable mod integration.")) {
 			integrations.add(imod);
 		}
 	}
