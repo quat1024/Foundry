@@ -54,11 +54,10 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 		}
 	}
 
-	static public int RATIO_RF = 10;
-	static public int RATIO_TESLA = 10;
-	static public int RATIO_FE = 10;
+	static public int RATIO_RF = 1;
+	static public int RATIO_FE = 1;
 
-	static public int RATIO_EU = 40;
+	static public int RATIO_EU = 4;
 
 	private boolean added_enet;
 	protected boolean update_energy;
