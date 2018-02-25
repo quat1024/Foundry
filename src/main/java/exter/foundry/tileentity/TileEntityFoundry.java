@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -91,6 +92,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 					drained = handler.drain(filled, true);
 					tank.fill(drained, true);
 					container_timer = filled / 25;
+					if(handler instanceof IFluidHandlerItem && handler.getTankProperties()[0].getContents() == null) TileEntityFoundry.this.setStackInSlot(slot, ((IFluidHandlerItem) handler).getContainer());
 					updateTank(tank_slot);
 					updateInventoryItem(slot);
 				}
