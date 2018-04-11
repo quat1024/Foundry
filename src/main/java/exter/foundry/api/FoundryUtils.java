@@ -1,13 +1,10 @@
 package exter.foundry.api;
 
-import java.util.List;
-
 import cofh.thermalfoundation.ThermalFoundation;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.api.recipe.matcher.OreMatcher;
 import exter.foundry.item.FoundryItems;
 import exter.foundry.item.ItemMold.SubItem;
-import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -28,10 +25,11 @@ public class FoundryUtils {
 	 * @return true if the item is registered, false otherwise.
 	 */
 	static public boolean isItemInOreDictionary(String name, ItemStack stack) {
-		if (!OreDictionary.doesOreNameExist(name)) return false;
-		List<ItemStack> ores = FoundryMiscUtils.getOresSafe(name);
-		for (ItemStack i : ores) {
-			if (i.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(i, stack)) { return true; }
+		if (!stack.isEmpty() && OreDictionary.doesOreNameExist(name)) {
+			int[] ids = OreDictionary.getOreIDs(stack);
+			int idx = OreDictionary.getOreID(name);
+			for (int i : ids)
+				if (i == idx) return true;
 		}
 		return false;
 	}
@@ -90,14 +88,14 @@ public class FoundryUtils {
 			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(boots), new FluidStack(fluid, FoundryAPI.getAmountHelm()));
 			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(boots), new FluidStack(fluid, FoundryAPI.getAmountHelm()), FoundryItems.mold(SubItem.BOOTS), null);
 		}
-		
+
 		ItemStack pickaxe = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ThermalFoundation.MOD_ID, "tool.pickaxe_" + name)));
 		ItemStack axe = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ThermalFoundation.MOD_ID, "tool.axe_" + name)));
 		ItemStack shovel = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ThermalFoundation.MOD_ID, "tool.shovel_" + name)));
 		ItemStack hoe = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ThermalFoundation.MOD_ID, "tool.hoe_" + name)));
 		ItemStack sword = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ThermalFoundation.MOD_ID, "tool.sword_" + name)));
 		OreMatcher stick = new OreMatcher("stickWood", 2);
-		
+
 		if (!pickaxe.isEmpty()) {
 			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(pickaxe), new FluidStack(fluid, FoundryAPI.getAmountPickaxe()));
 			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(pickaxe), new FluidStack(fluid, FoundryAPI.getAmountPickaxe()), FoundryItems.mold(SubItem.PICKAXE), stick);
@@ -117,7 +115,7 @@ public class FoundryUtils {
 			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(hoe), new FluidStack(fluid, FoundryAPI.getAmountHoe()));
 			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(hoe), new FluidStack(fluid, FoundryAPI.getAmountHoe()), FoundryItems.mold(SubItem.HOE), stick);
 		}
-		
+
 		if (!sword.isEmpty()) {
 			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(sword), new FluidStack(fluid, FoundryAPI.getAmountSword()));
 			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(sword), new FluidStack(fluid, FoundryAPI.getAmountSword()), FoundryItems.mold(SubItem.SWORD), new OreMatcher("stickWood"));

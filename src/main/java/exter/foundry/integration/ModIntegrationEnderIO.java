@@ -1,5 +1,6 @@
 package exter.foundry.integration;
 
+import cofh.thermalfoundation.init.TFFluids;
 import exter.foundry.api.FoundryUtils;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.api.recipe.matcher.OreMatcher;
@@ -41,7 +42,6 @@ public class ModIntegrationEnderIO implements IModIntegration {
 
 	private ItemStack getItemStack(String name, int meta) {
 		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ENDERIO, name));
-		if (item == null) { return null; }
 		return new ItemStack(item, 1, meta);
 	}
 
@@ -86,15 +86,14 @@ public class ModIntegrationEnderIO implements IModIntegration {
 			OreMatcher extra_sticks1 = new OreMatcher("stickWood", 1);
 			OreMatcher extra_sticks2 = new OreMatcher("stickWood", 2);
 
-			ItemStack dark_steel_pickaxe = getItemStack("darkSteel_pickaxe");
-			ItemStack dark_steel_axe = getItemStack("darkSteel_axe");
-			ItemStack dark_steel_shovel = getItemStack("darkSteel_shovel");
-			ItemStack dark_steel_sword = getItemStack("darkSteel_sword");
+			ItemStack dark_steel_pickaxe = getItemStack("item_dark_steel_pickaxe");
+			ItemStack dark_steel_axe = getItemStack("item_dark_steel_axe");
+			ItemStack dark_steel_sword = getItemStack("item_dark_steel_sword");
 
-			ItemStack dark_steel_helmet = getItemStack("darkSteel_helmet");
-			ItemStack dark_steel_chestplate = getItemStack("darkSteel_chestplate");
-			ItemStack dark_steel_leggings = getItemStack("darkSteel_leggings");
-			ItemStack dark_steel_boots = getItemStack("darkSteel_boots");
+			ItemStack dark_steel_helmet = getItemStack("item_dark_steel_helmet");
+			ItemStack dark_steel_chestplate = getItemStack("item_dark_steel_chestplate");
+			ItemStack dark_steel_leggings = getItemStack("item_dark_steel_leggings");
+			ItemStack dark_steel_boots = getItemStack("item_dark_steel_boots");
 
 			FoundryMiscUtils.registerCasting(dark_steel_chestplate, liquid_dark_steel, 8, ItemMold.SubItem.CHESTPLATE, null);
 			FoundryMiscUtils.registerCasting(dark_steel_helmet, liquid_dark_steel, 5, ItemMold.SubItem.HELMET, null);
@@ -103,15 +102,14 @@ public class ModIntegrationEnderIO implements IModIntegration {
 
 			FoundryMiscUtils.registerCasting(dark_steel_pickaxe, liquid_dark_steel, 3, ItemMold.SubItem.PICKAXE, extra_sticks2);
 			FoundryMiscUtils.registerCasting(dark_steel_axe, liquid_dark_steel, 3, ItemMold.SubItem.AXE, extra_sticks2);
-			FoundryMiscUtils.registerCasting(dark_steel_shovel, liquid_dark_steel, 1, ItemMold.SubItem.SHOVEL, extra_sticks2);
 			FoundryMiscUtils.registerCasting(dark_steel_sword, liquid_dark_steel, 2, ItemMold.SubItem.SWORD, extra_sticks1);
 
 		}
-		ItemStack silicon = getItemStack("itemMaterial", 0);
+		ItemStack silicon = getItemStack("item_material", 5);
 
-		Fluid liquid_redstone = FluidRegistry.getFluid("liquidredstone");
-		Fluid liquid_enderpearl = FluidRegistry.getFluid("liquidenderpearl");
-		Fluid liquid_glowstone = FluidRegistry.getFluid("liquidglowstone");
+		Fluid liquid_redstone = TFFluids.fluidRedstone;
+		Fluid liquid_enderpearl = TFFluids.fluidEnder;
+		Fluid liquid_glowstone = TFFluids.fluidGlowstone;
 
 		if (silicon != null) {
 			InfuserRecipeManager.INSTANCE.addRecipe(new FluidStack(liquid_redstone_alloy, 108), new FluidStack(liquid_redstone, 100), new ItemStackMatcher(silicon), 50000);

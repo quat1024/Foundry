@@ -22,15 +22,19 @@ public class BurnerHeaterFuelManager implements IBurnerHeaterFuelManager {
 	}
 
 	@Override
+	public void addFuel(IBurnerHeaterFuel fuel) {
+		if (!fuels.contains(fuel)) fuels.add(fuel);
+	}
+
+	@Override
 	public void addFuel(IItemMatcher fuel, int burn_time, int heat) {
-		if (!FoundryMiscUtils.isInvalid(fuel)) fuels.add(new BurnerHeaterFuel(fuel, burn_time, heat));
+		if (!FoundryMiscUtils.isInvalid(fuel)) addFuel(new BurnerHeaterFuel(fuel, burn_time, heat));
 	}
 
 	@Override
 	public IBurnerHeaterFuel getFuel(ItemStack item) {
-		for (IBurnerHeaterFuel f : fuels) {
-			if (f.getFuel().apply(item)) { return f; }
-		}
+		for (IBurnerHeaterFuel f : fuels)
+			if (f.getFuel().apply(item)) return f;
 		return null;
 	}
 

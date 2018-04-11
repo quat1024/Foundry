@@ -10,8 +10,8 @@ public class BurnerHeaterFuel implements IBurnerHeaterFuel {
 	public final IItemMatcher fuel;
 
 	public BurnerHeaterFuel(IItemMatcher fuel, int burn_time, int heat) {
-		if (burn_time < 1) { throw new IllegalArgumentException("Fuel burn time must be > 0."); }
-		if (heat < 1) { throw new IllegalArgumentException("Fuel heat must be > 0."); }
+		if (burn_time < 1) throw new IllegalArgumentException("Fuel burn time must be > 0.");
+		if (heat < 1) throw new IllegalArgumentException("Fuel heat must be > 0.");
 		this.fuel = fuel;
 		this.burn_time = burn_time;
 		this.heat = heat;

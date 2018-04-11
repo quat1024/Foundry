@@ -5,7 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
 public class FoundryTabFluids extends CreativeTabs {
-	
+
 	public static final FoundryTabFluids INSTANCE = new FoundryTabFluids();
 
 	private FoundryTabFluids() {

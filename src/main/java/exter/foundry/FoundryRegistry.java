@@ -46,7 +46,7 @@ public class FoundryRegistry {
 	public void registerSounds(Register<SoundEvent> e) {
 		e.getRegistry().registerAll(SOUNDS.toArray(new SoundEvent[SOUNDS.size()]));
 	}
-	
+
 	/*
 	@SubscribeEvent
 	public void tooltips(ItemTooltipEvent e) {

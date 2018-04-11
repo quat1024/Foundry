@@ -142,7 +142,7 @@ public class FoundryMiscUtils {
 			if (CastingRecipeManager.INSTANCE.findRecipe(new FluidStack(fluid.getFluid(), FoundryAPI.CASTER_TANK_CAPACITY), mold, extra_item) == null) {
 				CastingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(item), fluid, mold, extra);
 			}
-		}
+		} else Foundry.LOGGER.error("Attempted to add a casting recipe with an invalid output!  Item: {}, Fluid: {}, Mold: {}, Extra: {}", item, fluid, mold_meta, extra);
 	}
 
 	/**

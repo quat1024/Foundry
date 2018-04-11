@@ -72,7 +72,7 @@ public class MTAlloyingCrucibleHandler {
 			}
 			if (recipe == null) {
 				recipe = AlloyingCrucibleRecipeManager.INSTANCE.findRecipe(in_a, in_b);
-				CraftTweakerAPI.logWarning("Alloy mixer recipe not found.");
+				MTHelper.printCrt("Alloy mixer recipe not found.");
 				return;
 			}
 			CraftTweakerAPI.apply(new AlloyingCrucibleAction(recipe).action_remove);

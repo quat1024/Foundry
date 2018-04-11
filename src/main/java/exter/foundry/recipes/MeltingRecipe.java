@@ -64,7 +64,7 @@ public class MeltingRecipe implements IMeltingRecipe {
 	public boolean matchesRecipe(ItemStack item) {
 		return solid.apply(item);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("Melting recipe: %s -> %s", MTHelper.getItemDescription(solid), MTHelper.getFluidDescription(fluid));

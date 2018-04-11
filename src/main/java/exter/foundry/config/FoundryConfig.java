@@ -9,23 +9,23 @@ import exter.foundry.block.BlockFoundryMachine;
 import net.minecraftforge.common.config.Configuration;
 
 public class FoundryConfig {
-	public static boolean debug;
 
-	public static boolean recipe_steel;
+	public static boolean debug = false;
 
-	public static boolean recipe_equipment;
-	public static boolean recipe_glass;
-	public static boolean recipe_alumina_melts_to_aluminium;
+	public static boolean recipe_steel = true;
+	public static boolean recipe_equipment = true;
+	public static boolean recipe_glass = true;
+	public static boolean recipe_alumina_melts_to_aluminium = true;
 
-	public static boolean block_cokeoven;
+	public static boolean block_cokeoven = true;
 
-	public static boolean hardcore_furnace_remove_ingots;
+	public static boolean hardcore_furnace_remove_ingots = false;
 	public static Set<String> hardcore_furnace_keep_ingots;
-	public static boolean hardcore_remove_ingot_nugget;
-	public static boolean hardcore_remove_block_ingot;
+	public static boolean hardcore_remove_ingot_nugget = false;
+	public static boolean hardcore_remove_block_ingot = false;
 
-	public static boolean metalCasterPower;
-	public static boolean crtError;
+	public static boolean metalCasterPower = true;
+	public static boolean crtError = true;
 
 	public static String prefModID = ThermalFoundation.MOD_ID;
 
@@ -57,7 +57,7 @@ public class FoundryConfig {
 		if (!metalCasterPower) {
 			BlockFoundryMachine.EnumMachine.CASTER.setTooltip("caster2");
 		}
-		
+
 		crtError = config.getBoolean("CrT Errors", "general", true, "If foundry's CraftTweaker integration logs errors instead of info");
 
 		FoundryAPI.FLUID_AMOUNT_INGOT = config.getInt("Fluid Ingot Value", "general", 108, 36, Integer.MAX_VALUE, "The value, in mB, of an ingot.");

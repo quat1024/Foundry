@@ -92,7 +92,7 @@ public abstract class TileEntityFoundry extends TileEntity implements ITickable,
 					drained = handler.drain(filled, true);
 					tank.fill(drained, true);
 					container_timer = filled / 25;
-					if(handler instanceof IFluidHandlerItem && handler.getTankProperties()[0].getContents() == null) TileEntityFoundry.this.setStackInSlot(slot, ((IFluidHandlerItem) handler).getContainer());
+					if (handler instanceof IFluidHandlerItem && handler.getTankProperties()[0].getContents() == null) TileEntityFoundry.this.setStackInSlot(slot, ((IFluidHandlerItem) handler).getContainer());
 					updateTank(tank_slot);
 					updateInventoryItem(slot);
 				}

@@ -46,44 +46,42 @@ public class FoundryAPI {
 	static public int getAmountGear() {
 		return FLUID_AMOUNT_INGOT * 4;
 	}
-	
+
 	static public int getAmountHelm() {
 		return FLUID_AMOUNT_INGOT * 5;
 	}
-	
+
 	static public int getAmountChest() {
 		return FLUID_AMOUNT_INGOT * 8;
 	}
-	
+
 	static public int getAmountLegs() {
 		return FLUID_AMOUNT_INGOT * 7;
 	}
-	
+
 	static public int getAmountBoots() {
 		return FLUID_AMOUNT_INGOT * 4;
 	}
-	
+
 	static public int getAmountPickaxe() {
 		return FLUID_AMOUNT_INGOT * 3;
 	}
-	
+
 	static public int getAmountShovel() {
 		return FLUID_AMOUNT_INGOT * 1;
 	}
-	
+
 	static public int getAmountAxe() {
 		return FLUID_AMOUNT_INGOT * 3;
 	}
-	
+
 	static public int getAmountHoe() {
 		return FLUID_AMOUNT_INGOT * 2;
 	}
-	
+
 	static public int getAmountSword() {
 		return FLUID_AMOUNT_INGOT * 2;
 	}
-	
-	
 
 	/**
 	 * Tank capacity for machines.

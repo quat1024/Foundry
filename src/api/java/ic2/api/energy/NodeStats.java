@@ -16,9 +16,11 @@ public class NodeStats {
 	public double getEnergyIn() {
 		return energyIn;
 	}
+
 	public double getEnergyOut() {
 		return energyOut;
 	}
+
 	public double getVoltage() {
 		return voltage;
 	}

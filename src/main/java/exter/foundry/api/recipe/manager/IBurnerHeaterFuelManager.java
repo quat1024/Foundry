@@ -7,6 +7,9 @@ import exter.foundry.api.recipe.matcher.IItemMatcher;
 import net.minecraft.item.ItemStack;
 
 public interface IBurnerHeaterFuelManager {
+
+	public void addFuel(IBurnerHeaterFuel fuel);
+
 	public void addFuel(IItemMatcher item, int burn_time, int heat);
 
 	public IBurnerHeaterFuel getFuel(ItemStack item);

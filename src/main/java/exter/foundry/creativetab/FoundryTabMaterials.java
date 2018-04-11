@@ -6,7 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
 public class FoundryTabMaterials extends CreativeTabs {
-	
+
 	public static final FoundryTabMaterials INSTANCE = new FoundryTabMaterials();
 
 	private FoundryTabMaterials() {
