@@ -57,6 +57,7 @@ public class LiquidMetalRegistry implements IFluidRegistry {
 	public FluidLiquidMetal registerLiquidMetal(String metal_name, int temperature, int luminosity, String texture, int color) {
 		FluidLiquidMetal fluid = new FluidLiquidMetal("liquid" + metal_name, new ResourceLocation("foundry", "blocks/" + texture + "_still"), new ResourceLocation("foundry", "blocks/" + texture + "_flow"), color, false, temperature, luminosity);
 		FluidRegistry.registerFluid(fluid);
+		FluidRegistry.addBucketForFluid(fluid);
 
 		String block_name = "block" + metal_name;
 		Object solid = FoundryMiscUtils.getModItemFromOreDictionary(FoundryConfig.prefModID, block_name);
@@ -80,6 +81,7 @@ public class LiquidMetalRegistry implements IFluidRegistry {
 	public FluidLiquidMetal registerSpecialLiquidMetal(String metal_name, int temperature, int luminosity, String texture, int color, ItemStack solid) {
 		FluidLiquidMetal fluid = new FluidLiquidMetal("liquid" + metal_name, new ResourceLocation("foundry", "blocks/" + texture + "_still"), new ResourceLocation("foundry", "blocks/" + texture + "_flow"), color, true, temperature, luminosity);
 		FluidRegistry.registerFluid(fluid);
+		FluidRegistry.addBucketForFluid(fluid);
 
 		Block liquid_block = new BlockLiquidMetal(fluid, "liquid" + metal_name, solid);
 		FoundryBlocks.register(liquid_block);

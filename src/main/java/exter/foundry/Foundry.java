@@ -63,6 +63,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -83,7 +84,7 @@ import shadows.placebo.util.RecipeHelper;
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.1.2.0";
+	public static final String MODVERSION = "3.1.2.1";
 
 	@SidedProxy(clientSide = "exter.foundry.proxy.ClientFoundryProxy", serverSide = "exter.foundry.proxy.CommonFoundryProxy")
 	public static CommonFoundryProxy proxy;
@@ -99,6 +100,10 @@ public class Foundry {
 
 	public static final RecipeHelper HELPER = new RecipeHelper(MODID, MODNAME, INFO.getRecipeList());
 
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
+	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		ModIntegrationManager.init();
