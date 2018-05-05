@@ -54,7 +54,7 @@ public class InitAlloyRecipes {
 
 		addSimpleAlloy("Bronze", "Copper", 3, "Tin", 1);
 
-		addSimpleAlloy("Brass", "Copper", 3, "Zinc", 1);
+		addSimpleAlloy("Brass", "Copper", 3, !OreDictionary.getOres("ingotZinc", false).isEmpty() ? "Zinc" : "Aluminium", 1);
 
 		addSimpleAlloy("Invar", "Iron", 2, "Nickel", 1);
 

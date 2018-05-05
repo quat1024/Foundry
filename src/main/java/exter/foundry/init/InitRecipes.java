@@ -58,14 +58,14 @@ public class InitRecipes {
 			for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
 				String od_name = type.prefix + material.suffix;
 				if (OreDictionary.doesOreNameExist(od_name)) {
-					for (ItemStack item : OreDictionary.getOres(od_name)) {
+					for (ItemStack item : OreDictionary.getOres(od_name, false)) {
 						MaterialRegistry.instance.registerItem(item, material.suffix, type.name);
 					}
 				}
 				if (material.suffix_alias != null) {
 					od_name = type.prefix + material.suffix_alias;
 					if (OreDictionary.doesOreNameExist(od_name)) {
-						for (ItemStack item : OreDictionary.getOres(od_name)) {
+						for (ItemStack item : OreDictionary.getOres(od_name, false)) {
 							MaterialRegistry.instance.registerItem(item, material.suffix, type.name);
 						}
 					}
@@ -104,7 +104,7 @@ public class InitRecipes {
 			FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(name);
 			if (!fluid.special) {
 				FluidStack fluidstack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT);
-				List<ItemStack> ores = OreDictionary.doesOreNameExist("ingot" + name) ? OreDictionary.getOres("ingot" + name) : new ArrayList<>();
+				List<ItemStack> ores = OreDictionary.doesOreNameExist("ingot" + name) ? OreDictionary.getOres("ingot" + name, false) : new ArrayList<>();
 				if (ores != null && ores.size() > 0) {
 					if (CastingRecipeManager.INSTANCE.findRecipe(fluidstack, ingot_mold, null) == null) {
 						CastingRecipeManager.INSTANCE.addRecipe(new OreMatcher("ingot" + name), fluidstack, ingot_mold, null);
@@ -113,14 +113,14 @@ public class InitRecipes {
 						CastingTableRecipeManager.INSTANCE.addRecipe(new OreMatcher("ingot" + name), fluidstack, ICastingTableRecipe.TableType.INGOT);
 					}
 				}
-				ores = OreDictionary.doesOreNameExist("dust" + name) ? OreDictionary.getOres("dust" + name) : new ArrayList<>();
+				ores = OreDictionary.doesOreNameExist("dust" + name) ? OreDictionary.getOres("dust" + name, false) : new ArrayList<>();
 				if (ores != null && ores.size() > 0) {
 					if (AtomizerRecipeManager.INSTANCE.findRecipe(fluidstack) == null) {
 						AtomizerRecipeManager.INSTANCE.addRecipe(new OreMatcher("dust" + name), fluidstack);
 					}
 				}
 
-				ores = OreDictionary.doesOreNameExist("block" + name) ? OreDictionary.getOres("block" + name) : new ArrayList<>();
+				ores = OreDictionary.doesOreNameExist("block" + name) ? OreDictionary.getOres("block" + name, false) : new ArrayList<>();
 				fluidstack = new FluidStack(LiquidMetalRegistry.instance.getFluid(name), FoundryAPI.getAmountBlock());
 				if (ores != null && ores.size() > 0) {
 					if (CastingRecipeManager.INSTANCE.findRecipe(fluidstack, block_mold, null) == null) {
@@ -222,7 +222,7 @@ public class InitRecipes {
 
 		Foundry.HELPER.addForgeShaped(FoundryItems.component(ItemComponent.SubItem.HEATINGCOIL, 2), "CCC", "CRC", "CCC", 'C', "rodCupronickel", 'R', redstone_stack);
 
-		Foundry.HELPER.addForgeShaped(casing_basic_stack, "IBI", "B B", "IBI", 'I', "plateBronze", 'B', refbrick_stack);
+		Foundry.HELPER.addForgeShaped(casing_basic_stack, "IBI", "B B", "IBI", 'I', "ingotBronze", 'B', refbrick_stack);
 
 		Foundry.HELPER.addForgeShaped(casing_stack, "IBI", "B B", "IBI", 'I', "plateIron", 'B', refbrick_stack);
 
@@ -234,7 +234,7 @@ public class InitRecipes {
 
 		Foundry.HELPER.addForgeShaped(new ItemStack(FoundryBlocks.block_refractory_tank_advanced), "BPB", "G G", "BPB", 'G', refglass_stack, 'P', "plateSteel", 'B', infbrick_stack);
 
-		Foundry.HELPER.addForgeShaped(new ItemStack(FoundryBlocks.block_burner_heater), "I", "C", "F", 'F', furnace_stack, 'I', "plateCopper", 'C', casing_basic_stack);
+		Foundry.HELPER.addForgeShaped(new ItemStack(FoundryBlocks.block_burner_heater), "I", "C", "F", 'F', furnace_stack, 'I', "ingotCopper", 'C', casing_basic_stack);
 
 		Foundry.HELPER.addForgeShaped(FoundryBlocks.block_casting_table.asItemStack(EnumTable.INGOT), "BMB", " S ", 'S', new ItemStack(Blocks.STONE_SLAB), 'B', refbrick_stack, 'M', mold_ingot);
 
@@ -248,7 +248,7 @@ public class InitRecipes {
 
 		Foundry.HELPER.addForgeShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.INDUCTIONHEATER), "HIH", "RCR", "HRH", 'H', heatingcoil_stack, 'R', redstone_stack, 'I', "plateCopper", 'C', casing_stack);
 
-		Foundry.HELPER.addForgeShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.CRUCIBLE_BASIC), "BAB", "BCB", "BIB", 'B', refbrick_stack, 'I', "plateCopper", 'C', casing_basic_stack, 'A', bronze_cauldron_stack);
+		Foundry.HELPER.addForgeShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.CRUCIBLE_BASIC), "BAB", "BCB", "BIB", 'B', refbrick_stack, 'I', "ingotCopper", 'C', casing_basic_stack, 'A', bronze_cauldron_stack);
 
 		Foundry.HELPER.addForgeShaped(FoundryBlocks.block_machine.asItemStack(EnumMachine.CRUCIBLE_STANDARD), "BAB", "BCB", "BIB", 'B', refbrick_stack, 'I', "plateCopper", 'C', casing_stack, 'A', cauldron_stack);
 

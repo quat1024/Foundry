@@ -104,11 +104,6 @@ public class FoundryAPI {
 	static public final int CRUCIBLE_STANDARD_MAX_TEMP = 250000;
 	static public final int CRUCIBLE_ADVANCED_MAX_TEMP = 400000;
 
-	@Deprecated
-	static public final int CRUCIBLE_MAX_TEMP = 250000;
-	@Deprecated
-	static public final int CRUCIBLE_TEMP_LOSS_RATE = 750;
-
 	//These fields are set by Foundry during it's preInit phase.
 	static public IMeltingRecipeManager recipes_melting;
 	static public ICastingRecipeManager recipes_casting;

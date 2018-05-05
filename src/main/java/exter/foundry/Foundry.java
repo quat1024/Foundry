@@ -1,8 +1,13 @@
 package exter.foundry;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cofh.cofhworld.init.WorldProps;
+import cofh.cofhworld.util.Utils;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.block.FoundryBlocks;
 import exter.foundry.capability.CapabilityFirearmRound;
@@ -84,7 +89,7 @@ import shadows.placebo.util.RecipeHelper;
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.1.2.1";
+	public static final String MODVERSION = "3.1.3.0";
 
 	@SidedProxy(clientSide = "exter.foundry.proxy.ClientFoundryProxy", serverSide = "exter.foundry.proxy.CommonFoundryProxy")
 	public static CommonFoundryProxy proxy;
@@ -103,7 +108,7 @@ public class Foundry {
 	static {
 		FluidRegistry.enableUniversalBucket();
 	}
-	
+
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		ModIntegrationManager.init();
@@ -196,5 +201,13 @@ public class Foundry {
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 		proxy.preInit();
+
+		try {
+			File f = new File(WorldProps.worldGenDir, "04_foundry_aluminium.json");
+			if (f.createNewFile()) Utils.copyFileUsingStream("assets/foundry/world/04_foundry_aluminium.json", f);
+		} catch (IOException e) {
+			LOGGER.error("Failed to copy foundry aluminium generation file!");
+			e.printStackTrace();
+		}
 	}
 }

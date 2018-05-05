@@ -1,6 +1,5 @@
 package exter.foundry.proxy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -171,12 +170,12 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 	@Override
 	public void postInit() {
 		for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
-			List<ItemStack> ores = OreDictionary.doesOreNameExist(material.default_prefix + material.suffix) ? OreDictionary.getOres(material.default_prefix + material.suffix) : new ArrayList<>();
+			List<ItemStack> ores = OreDictionary.getOres(material.default_prefix + material.suffix, false);
 			if (ores.size() > 0) {
 				MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
 			} else {
 				for (OreDictType type : OreDictType.TYPES) {
-					ores = OreDictionary.doesOreNameExist(type.prefix + material.suffix) ? OreDictionary.getOres(type.prefix + material.suffix) : new ArrayList<>();
+					ores = OreDictionary.getOres(type.prefix + material.suffix, false);
 					if (ores.size() > 0) {
 						MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
 						break;
@@ -186,12 +185,12 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		}
 
 		for (OreDictType type : OreDictType.TYPES) {
-			List<ItemStack> ores = OreDictionary.doesOreNameExist(type.prefix + type.default_suffix) ? OreDictionary.getOres(type.prefix + type.default_suffix) : new ArrayList<>();
+			List<ItemStack> ores = OreDictionary.getOres(type.prefix + type.default_suffix, false);
 			if (ores.size() > 0) {
 				MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
 			} else {
 				for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
-					ores = OreDictionary.doesOreNameExist(type.prefix + material.suffix) ? OreDictionary.getOres(type.prefix + material.suffix) : new ArrayList<>();
+					ores = OreDictionary.getOres(type.prefix + material.suffix, false);
 					if (ores.size() > 0) {
 						MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
 						break;

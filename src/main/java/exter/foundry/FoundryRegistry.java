@@ -46,13 +46,4 @@ public class FoundryRegistry {
 	public void registerSounds(Register<SoundEvent> e) {
 		e.getRegistry().registerAll(SOUNDS.toArray(new SoundEvent[SOUNDS.size()]));
 	}
-
-	/*
-	@SubscribeEvent
-	public void tooltips(ItemTooltipEvent e) {
-		if(e.getItemStack().isEmpty()) return;
-		for(int i : OreDictionary.getOreIDs(e.getItemStack()))
-			e.getToolTip().add(OreDictionary.getOreName(i));
-	}
-	*/
 }

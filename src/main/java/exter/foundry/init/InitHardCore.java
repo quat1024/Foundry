@@ -80,7 +80,7 @@ public class InitHardCore {
 		}, 3, 3);
 		for (String ore_name : OreDictionary.getOreNames()) {
 			if (ore_name.startsWith(prefix)) {
-				for (ItemStack item : OreDictionary.getOres(ore_name)) {
+				for (ItemStack item : OreDictionary.getOres(ore_name, false)) {
 					if (MeltingRecipeManager.INSTANCE.findRecipe(item) != null) {
 						for (int i = 0; i < 9; i++) {
 							grid.setInventorySlotContents(i, item);

@@ -93,8 +93,7 @@ public class FoundryMiscUtils {
 	}
 
 	public static NonNullList<ItemStack> getOresSafe(String orename) {
-		if (OreDictionary.doesOreNameExist(orename)) return OreDictionary.getOres(orename);
-		return NonNullList.withSize(0, ItemStack.EMPTY);
+		return OreDictionary.getOres(orename, false);
 	}
 
 	public static ItemStack getStackFromDictWithPreference(String domain, String ore, int amount) {
@@ -151,10 +150,7 @@ public class FoundryMiscUtils {
 	 * @param stack Item to register.
 	 */
 	static public void registerInOreDictionary(String name, ItemStack stack) {
-		if (stack.isEmpty()) { return; }
-		if (!FoundryUtils.isItemInOreDictionary(name, stack)) {
-			OreDictionary.registerOre(name, stack);
-		}
+		if (!stack.isEmpty() && !FoundryUtils.isItemInOreDictionary(name, stack)) OreDictionary.registerOre(name, stack);
 	}
 
 }

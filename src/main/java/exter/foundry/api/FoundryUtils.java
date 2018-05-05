@@ -25,12 +25,8 @@ public class FoundryUtils {
 	 * @return true if the item is registered, false otherwise.
 	 */
 	static public boolean isItemInOreDictionary(String name, ItemStack stack) {
-		if (!stack.isEmpty() && OreDictionary.doesOreNameExist(name)) {
-			int[] ids = OreDictionary.getOreIDs(stack);
-			int idx = OreDictionary.getOreID(name);
-			for (int i : ids)
-				if (i == idx) return true;
-		}
+		for (ItemStack i : OreDictionary.getOres(name, false))
+			if (OreDictionary.itemMatches(i, stack, false)) return true;
 		return false;
 	}
 
