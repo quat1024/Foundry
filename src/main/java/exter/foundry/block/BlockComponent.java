@@ -8,32 +8,26 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class BlockComponent extends Block implements IBlockVariants {
 
 	static public enum EnumVariant implements IStringSerializable {
-		CASING_STANDARD(0, "casing_standard", "componentBlockCasingStandard"),
-		REFCLAYBLOCK(1, "block_refractoryclay", "componentBlockRefractoryClay"),
-		CASING_ADVANCED(2, "casing_advanced", "componentBlockCasingAdvanced"),
-		CASING_BASIC(3, "casing_basic", "componentBlockCasingBasic");
+		CASING_STANDARD("casing_standard", "componentBlockCasingStandard"),
+		REFRACTORY_CLAY("block_refractoryclay", "componentBlockRefractoryClay"),
+		CASING_ADVANCED("casing_advanced", "componentBlockCasingAdvanced"),
+		CASING_BASIC("casing_basic", "componentBlockCasingBasic");
 
-		static public EnumVariant fromID(int num) {
-			for (EnumVariant m : values()) {
-				if (m.id == num) { return m; }
-			}
-			return null;
-		}
-
-		public final int id;
 		public final String name;
 
 		public final String model;
 
-		private EnumVariant(int id, String name, String model) {
-			this.id = id;
+		private EnumVariant(String name, String model) {
 			this.name = name;
 			this.model = model;
 		}
@@ -62,7 +56,13 @@ public class BlockComponent extends Block implements IBlockVariants {
 	}
 
 	public ItemStack asItemStack(EnumVariant variant) {
-		return new ItemStack(this, 1, getMetaFromState(getDefaultState().withProperty(VARIANT, variant)));
+		return new ItemStack(this, 1, variant.ordinal());
+	}
+	
+	@Override
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
+		if(state.getValue(VARIANT) == EnumVariant.REFRACTORY_CLAY) return SoundType.GROUND;
+		return super.getSoundType(state, world, pos, entity);
 	}
 
 	@Override
@@ -77,18 +77,18 @@ public class BlockComponent extends Block implements IBlockVariants {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(VARIANT).id;
+		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, EnumVariant.fromID(meta));
+		return getDefaultState().withProperty(VARIANT, EnumVariant.values()[meta]);
 	}
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
 		for (EnumVariant m : EnumVariant.values()) {
-			list.add(new ItemStack(this, 1, m.id));
+			list.add(new ItemStack(this, 1, m.ordinal()));
 		}
 	}
 

@@ -34,7 +34,7 @@ public class ContainerMoldStation extends Container {
 		te_station.openInventory(player);
 		int i, j;
 
-		addSlotToContainer(new SlotFiltered(te_station, TileEntityMoldStation.SLOT_BLOCK, 8, 16, FoundryBlocks.block_component.asItemStack(BlockComponent.EnumVariant.REFCLAYBLOCK)));
+		addSlotToContainer(new SlotFiltered(te_station, TileEntityMoldStation.SLOT_BLOCK, 8, 16, FoundryBlocks.block_component.asItemStack(BlockComponent.EnumVariant.REFRACTORY_CLAY)));
 		addSlotToContainer(new SlotOutput(te_station, TileEntityMoldStation.SLOT_CLAY, 8, 76));
 		addSlotToContainer(new SlotOutput(te_station, TileEntityMoldStation.SLOT_OUTPUT, 147, 38));
 		addSlotToContainer(new SlotFurnaceFuel(te_station, TileEntityMoldStation.SLOT_FUEL, 119, 76));

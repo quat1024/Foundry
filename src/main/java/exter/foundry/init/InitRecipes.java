@@ -206,7 +206,7 @@ public class InitRecipes {
 
 		Foundry.HELPER.addForgeShaped(refractoryclay8_stack, "CCC", "CSC", "CCC", 'C', clay_stack, 'S', sand_stack);
 
-		Foundry.HELPER.addForgeShaped(FoundryBlocks.block_component.asItemStack(BlockComponent.EnumVariant.REFCLAYBLOCK), "CC", "CC", 'C', refclay_stack);
+		Foundry.HELPER.addForgeShaped(FoundryBlocks.block_component.asItemStack(BlockComponent.EnumVariant.REFRACTORY_CLAY), "CC", "CC", 'C', refclay_stack);
 
 		Foundry.HELPER.addForgeShaped(refclay_stack, "CC", "CC", 'C', refclay_small_stack);
 

@@ -117,7 +117,7 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		}
 
 		for (BlockComponent.EnumVariant v : BlockComponent.EnumVariant.values()) {
-			registerItemModel(FoundryBlocks.block_component, v.model, v.id);
+			registerItemModel(FoundryBlocks.block_component, v.model, v.ordinal());
 		}
 
 		for (ItemComponent.SubItem c : ItemComponent.SubItem.values()) {
