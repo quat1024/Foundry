@@ -22,7 +22,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModIntegrationMinetweaker implements IModIntegration {
 
-	private static final List<Runnable> CRT_QUEUE = new ArrayList<>();
+	private static List<Runnable> addQueue = new ArrayList<>();
+	private static List<Runnable> removeQueue = new ArrayList<>();
 
 	@Override
 	public String getName() {
@@ -31,9 +32,11 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 
 	@Override
 	public void onAfterPostInit() {
-		for (Runnable r : CRT_QUEUE)
+		for (Runnable r : removeQueue)
 			r.run();
-		CRT_QUEUE.clear();
+		for (Runnable r : addQueue)
+			r.run();
+		addQueue = removeQueue = null;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -78,7 +81,11 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 		CraftTweakerAPI.registerClass(MTBurnerFuelHandler.class);
 	}
 
-	public static void queue(Runnable action) {
-		CRT_QUEUE.add(action);
+	public static void queueAdd(Runnable action) {
+		addQueue.add(action);
+	}
+	
+	public static void queueRemove(Runnable action) {
+		removeQueue.add(action);
 	}
 }

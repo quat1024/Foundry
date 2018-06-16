@@ -44,7 +44,7 @@ public class MTAlloyFurnaceHandler {
 
 	@ZenMethod
 	static public void addRecipe(IItemStack output, IIngredient input_a, IIngredient input_b) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			IAlloyFurnaceRecipe recipe = null;
 			try {
 				recipe = new AlloyFurnaceRecipe(CraftTweakerMC.getItemStack(output), MTHelper.getIngredient(input_a), MTHelper.getIngredient(input_b));
@@ -58,8 +58,7 @@ public class MTAlloyFurnaceHandler {
 
 	@ZenMethod
 	static public void removeRecipe(IItemStack input_a, IItemStack input_b) {
-
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getItemStack(input_a), CraftTweakerMC.getItemStack(input_b));
 			if (recipe == null) {
 				CraftTweakerAPI.logWarning("Alloy furnace recipe not found.");

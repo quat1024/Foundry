@@ -45,7 +45,7 @@ public class MTInfuserHandler {
 
 	@ZenMethod
 	static public void addRecipe(ILiquidStack output, ILiquidStack input, IIngredient substance, int energy) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			IInfuserRecipe recipe = null;
 			try {
 				recipe = new InfuserRecipe(CraftTweakerMC.getLiquidStack(output), CraftTweakerMC.getLiquidStack(input), MTHelper.getIngredient(substance), energy);
@@ -59,7 +59,7 @@ public class MTInfuserHandler {
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input, IItemStack substance) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 			IInfuserRecipe recipe = InfuserRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(substance));
 			if (recipe == null) {
 				CraftTweakerAPI.logWarning("Infuser recipe not found.");

@@ -60,7 +60,7 @@ public class MTCastingTableHandler {
 	}
 
 	static private void addRecipe(IItemStack output, ILiquidStack input, ICastingTableRecipe.TableType table) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			ItemStackMatcher out = new ItemStackMatcher(CraftTweakerMC.getItemStack(output));
 			FluidStack in = CraftTweakerMC.getLiquidStack(input);
 			CastingTableRecipe recipe;
@@ -95,7 +95,7 @@ public class MTCastingTableHandler {
 	}
 
 	static public void removeRecipe(ILiquidStack input, ICastingTableRecipe.TableType table) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 			ICastingTableRecipe recipe = CastingTableRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), table);
 			if (recipe == null) {
 				CraftTweakerAPI.logWarning("Casting table recipe not found.");

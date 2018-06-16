@@ -56,7 +56,7 @@ public class MTAlloyMixerHandler {
 
 	@ZenMethod
 	static public void addRecipe(ILiquidStack output, ILiquidStack[] inputs) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			FluidStack out = (FluidStack) output.getInternal();
 			FluidStack[] in = new FluidStack[inputs.length];
 
@@ -78,7 +78,7 @@ public class MTAlloyMixerHandler {
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack[] inputs) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 
 			FluidStack[] in = new FluidStack[inputs.length];
 

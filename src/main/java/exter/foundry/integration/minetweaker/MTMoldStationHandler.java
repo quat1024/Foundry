@@ -54,7 +54,7 @@ public class MTMoldStationHandler {
 
 	@ZenMethod
 	static public void addRecipe(IItemStack output, int width, int height, int[] grid) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			IMoldRecipe recipe = null;
 			try {
 				recipe = new MoldRecipe(CraftTweakerMC.getItemStack(output), width, height, grid);
@@ -68,7 +68,7 @@ public class MTMoldStationHandler {
 
 	@ZenMethod
 	static public void removeRecipe(int[] grid) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 			if (grid.length != 36) {
 				CraftTweakerAPI.logWarning("Invalid mold station grid size: expected 36 instead of " + grid.length);
 				return;

@@ -46,7 +46,7 @@ public class MTMeltingHandler {
 
 	@ZenMethod
 	static public void addRecipe(ILiquidStack output, IIngredient input, @Optional int melting_point, @Optional int speed) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			IMeltingRecipe recipe = null;
 			try {
 				recipe = new MeltingRecipe(MTHelper.getIngredient(input), CraftTweakerMC.getLiquidStack(output), melting_point == 0 ? output.getTemperature() : melting_point, speed == 0 ? 100 : speed);
@@ -60,7 +60,7 @@ public class MTMeltingHandler {
 
 	@ZenMethod
 	static public void removeRecipe(IItemStack input) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 			IMeltingRecipe recipe = MeltingRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getItemStack(input));
 			if (recipe == null) {
 				CraftTweakerAPI.logWarning("Melting recipe not found.");

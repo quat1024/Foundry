@@ -22,10 +22,10 @@ public class CastingRecipe implements ICastingRecipe {
 	private final int speed;
 
 	public CastingRecipe(IItemMatcher result, FluidStack in_fluid, ItemStack in_mold, @Nullable IItemMatcher in_extra, int cast_speed) {
-
 		Preconditions.checkArgument(in_fluid != null);
 		Preconditions.checkArgument(!in_mold.isEmpty());
 		Preconditions.checkArgument(cast_speed > 0);
+		Preconditions.checkArgument(result != null);
 		output = result;
 		fluid = in_fluid.copy();
 		mold = in_mold.copy();
@@ -70,8 +70,7 @@ public class CastingRecipe implements ICastingRecipe {
 
 	@Override
 	public boolean matchesRecipe(ItemStack mold_stack, FluidStack fluid_stack, ItemStack in_extra) {
-		if (getOutput().isEmpty()) { return false; }
-		return fluid_stack != null && fluid_stack.containsFluid(fluid) && mold_stack != null && mold.isItemEqual(mold_stack) && ItemStack.areItemStackTagsEqual(mold, mold_stack) && (extra == null || extra.apply(in_extra));
+		return fluid_stack != null && fluid_stack.containsFluid(fluid) && ItemStack.areItemStacksEqual(mold, mold_stack) && (extra == null || extra.apply(in_extra));
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class MTAlloyingCrucibleHandler {
 
 	@ZenMethod
 	static public void addRecipe(ILiquidStack output, ILiquidStack input_a, ILiquidStack input_b) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			FluidStack out = CraftTweakerMC.getLiquidStack(output);
 			FluidStack in_a = CraftTweakerMC.getLiquidStack(input_a);
 			FluidStack in_b = CraftTweakerMC.getLiquidStack(input_b);
@@ -62,7 +62,7 @@ public class MTAlloyingCrucibleHandler {
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input_a, ILiquidStack input_b) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 			FluidStack in_a = CraftTweakerMC.getLiquidStack(input_a);
 			FluidStack in_b = CraftTweakerMC.getLiquidStack(input_b);
 

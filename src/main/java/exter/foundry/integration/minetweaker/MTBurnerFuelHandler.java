@@ -44,15 +44,14 @@ public class MTBurnerFuelHandler {
 
 	@ZenMethod
 	public static void addFuel(IIngredient fuel, int time, int heat) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			CraftTweakerAPI.apply(new BurnerFuelAction(new BurnerHeaterFuel(MTHelper.getIngredient(fuel), time, heat)).action_add);
 		});
 	}
 
 	@ZenMethod
 	public static void removeFuel(IItemStack stack) {
-
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 			IBurnerHeaterFuel fuel = null;
 			for (IBurnerHeaterFuel f : BurnerHeaterFuelManager.INSTANCE.getFuels()) {
 				if (f.getFuel().apply(CraftTweakerMC.getItemStack(stack))) {

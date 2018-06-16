@@ -44,7 +44,7 @@ public class MTAtomizerHandler {
 
 	@ZenMethod
 	static public void addRecipe(IItemStack output, ILiquidStack input) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueAdd(() -> {
 			IAtomizerRecipe recipe = null;
 			try {
 				recipe = new AtomizerRecipe(new ItemStackMatcher(CraftTweakerMC.getItemStack(output)), CraftTweakerMC.getLiquidStack(input));
@@ -58,7 +58,7 @@ public class MTAtomizerHandler {
 
 	@ZenMethod
 	static public void removeRecipe(ILiquidStack input) {
-		ModIntegrationMinetweaker.queue(() -> {
+		ModIntegrationMinetweaker.queueRemove(() -> {
 
 			IAtomizerRecipe recipe = AtomizerRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input));
 			if (recipe == null) {
