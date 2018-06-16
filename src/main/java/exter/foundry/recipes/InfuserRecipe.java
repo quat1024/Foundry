@@ -31,9 +31,10 @@ public class InfuserRecipe implements IInfuserRecipe {
 	public final FluidStack output;
 
 	public InfuserRecipe(FluidStack result, FluidStack in_fluid, IItemMatcher in_item, int energy) {
-		if (energy < 1) { throw new IllegalArgumentException("Infuser substance recipe energy nust be > 0."); }
-		if (in_fluid == null) { throw new IllegalArgumentException("Infuser recipe input cannot be null"); }
-		if (result == null) { throw new IllegalArgumentException("Infuser recipe output cannot be null"); }
+		if (energy < 1) throw new IllegalArgumentException("Infuser substance recipe energy nust be > 0.");
+		if (in_fluid == null) throw new IllegalArgumentException("Infuser recipe input fluid cannot be null!");
+		if (result == null) throw new IllegalArgumentException("Infuser recipe output cannot be null!");
+		if (in_item == null) throw new IllegalArgumentException("Infuser Recipe input item cannot be null!");
 
 		item = in_item;
 		fluid = in_fluid.copy();

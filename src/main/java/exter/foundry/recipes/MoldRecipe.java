@@ -20,7 +20,7 @@ public class MoldRecipe implements IMoldRecipe {
 		if (height < 1 || height > 6) throw new IllegalArgumentException("Mold recipe height must be between 1 and 6.");
 		if (recipe == null || recipe.length < width * height) throw new IllegalArgumentException("Mold recipe array cannot be null and the length must be at least width*height.");
 		for (int v : recipe)
-			if (v < 0 || v > 4) throw new IllegalArgumentException("Mold recipe grid values must be between 0 and 4.");
+			if (v < 0 || v > 4) throw new IllegalArgumentException("Mold recipe grid values must be between 0 and 4, inclusive.");
 
 		this.output = output.copy();
 		this.width = width;
