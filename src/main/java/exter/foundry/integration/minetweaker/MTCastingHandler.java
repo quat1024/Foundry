@@ -1,5 +1,7 @@
 package exter.foundry.integration.minetweaker;
 
+import javax.annotation.Nullable;
+
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -86,7 +88,7 @@ public class MTCastingHandler {
 	static public void addMold(IItemStack mold) {
 		ItemStack molditem = CraftTweakerMC.getItemStack(mold);
 		if (molditem.isEmpty()) {
-			MTHelper.printCrt("Invalid mold item");
+			MTHelper.printCrt("Invalid mold item: " + mold);
 			return;
 		}
 		CraftTweakerAPI.apply(new MoldAction(molditem).action_add);
@@ -113,7 +115,7 @@ public class MTCastingHandler {
 
 			ItemStack molditem = CraftTweakerMC.getItemStack(mold);
 			if (molditem.isEmpty()) {
-				CraftTweakerAPI.logWarning("Invalid mold item");
+				CraftTweakerAPI.logWarning("Invalid mold item: " + mold);
 				return;
 			}
 			for (ItemStack m : CastingRecipeManager.INSTANCE.getMolds()) {
@@ -122,7 +124,7 @@ public class MTCastingHandler {
 					return;
 				}
 			}
-			CraftTweakerAPI.logWarning("Mold not found.");
+			CraftTweakerAPI.logWarning("Mold not found: " + mold);
 		});
 	}
 
@@ -131,10 +133,15 @@ public class MTCastingHandler {
 		ModIntegrationMinetweaker.queue(() -> {
 			ICastingRecipe recipe = CastingRecipeManager.INSTANCE.findRecipe(CraftTweakerMC.getLiquidStack(input), CraftTweakerMC.getItemStack(mold), CraftTweakerMC.getItemStack(extra));
 			if (recipe == null) {
-				CraftTweakerAPI.logWarning("Casting recipe not found.");
+				CraftTweakerAPI.logWarning("Casting recipe not found: ");
 				return;
 			}
 			CraftTweakerAPI.apply(new CastingAction(recipe).action_remove);
 		});
+	}
+
+	public static String getDebugDescription(ILiquidStack input, IItemStack mold, @Nullable IItemStack extra) {
+		if (extra == null) return String.format("( %s, %s )", MTHelper.getFluidDescription(input), MTHelper.getItemDescription(mold));
+		return String.format("( %s, %s, %s )", MTHelper.getFluidDescription(input), MTHelper.getItemDescription(mold), MTHelper.getItemDescription(extra));
 	}
 }
