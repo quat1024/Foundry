@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IAlloyingCrucibleRecipe;
@@ -37,7 +36,7 @@ public class AlloyingCrucibleRecipeManager implements IAlloyingCrucibleRecipeMan
 
 	@Override
 	public List<IAlloyingCrucibleRecipe> getRecipes() {
-		return Collections.unmodifiableList(recipes);
+		return recipes;
 	}
 
 	@Override

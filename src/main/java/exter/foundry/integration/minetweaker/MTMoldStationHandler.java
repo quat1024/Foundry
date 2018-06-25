@@ -81,4 +81,9 @@ public class MTMoldStationHandler {
 			CraftTweakerAPI.apply(new MoldStationAction(recipe).action_remove);
 		});
 	}
+
+	@ZenMethod
+	public static void clear() {
+		ModIntegrationMinetweaker.queueClear(MoldRecipeManager.INSTANCE.getRecipes());
+	}
 }

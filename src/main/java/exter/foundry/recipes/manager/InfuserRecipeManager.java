@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IInfuserRecipe;
@@ -41,7 +40,7 @@ public class InfuserRecipeManager implements IInfuserRecipeManager {
 
 	@Override
 	public List<IInfuserRecipe> getRecipes() {
-		return Collections.unmodifiableList(recipes);
+		return recipes;
 	}
 
 	@Override

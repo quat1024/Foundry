@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IAlloyMixerRecipe;
@@ -52,7 +51,7 @@ public class AlloyMixerRecipeManager implements IAlloyMixerRecipeManager {
 
 	@Override
 	public List<IAlloyMixerRecipe> getRecipes() {
-		return Collections.unmodifiableList(recipes);
+		return recipes;
 	}
 
 	@Override

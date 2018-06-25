@@ -154,4 +154,14 @@ public class MTCastingHandler {
 		return null;
 	}
 
+	@ZenMethod
+	public static void clearRecipes() {
+		ModIntegrationMinetweaker.queueClear(CastingRecipeManager.INSTANCE.getRecipes());
+	}
+
+	@ZenMethod
+	public static void clearMolds() {
+		ModIntegrationMinetweaker.queueClear(CastingRecipeManager.INSTANCE.getMolds());
+	}
+
 }

@@ -69,4 +69,9 @@ public class MTMeltingHandler {
 			CraftTweakerAPI.apply(new MeltingAction(recipe).action_remove);
 		});
 	}
+
+	@ZenMethod
+	public static void clear() {
+		ModIntegrationMinetweaker.queueClear(MeltingRecipeManager.INSTANCE.getRecipes());
+	}
 }

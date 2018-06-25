@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IAtomizerRecipe;
@@ -41,7 +40,7 @@ public class AtomizerRecipeManager implements IAtomizerRecipeManager {
 
 	@Override
 	public List<IAtomizerRecipe> getRecipes() {
-		return Collections.unmodifiableList(recipes);
+		return recipes;
 	}
 
 	@Override

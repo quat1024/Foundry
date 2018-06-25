@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IBurnerHeaterFuel;
@@ -40,7 +39,7 @@ public class BurnerHeaterFuelManager implements IBurnerHeaterFuelManager {
 
 	@Override
 	public List<IBurnerHeaterFuel> getFuels() {
-		return Collections.unmodifiableList(fuels);
+		return fuels;
 	}
 
 	@Override

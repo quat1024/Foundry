@@ -58,10 +58,10 @@ public class BlockComponent extends Block implements IBlockVariants {
 	public ItemStack asItemStack(EnumVariant variant) {
 		return new ItemStack(this, 1, variant.ordinal());
 	}
-	
+
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
-		if(state.getValue(VARIANT) == EnumVariant.REFRACTORY_CLAY) return SoundType.GROUND;
+		if (state.getValue(VARIANT) == EnumVariant.REFRACTORY_CLAY) return SoundType.GROUND;
 		return super.getSoundType(state, world, pos, entity);
 	}
 

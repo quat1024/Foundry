@@ -68,4 +68,9 @@ public class MTAtomizerHandler {
 			CraftTweakerAPI.apply(new AtomizerAction(recipe).action_remove);
 		});
 	}
+
+	@ZenMethod
+	public static void clear() {
+		ModIntegrationMinetweaker.queueClear(AtomizerRecipeManager.INSTANCE.getRecipes());
+	}
 }

@@ -68,4 +68,9 @@ public class MTInfuserHandler {
 			CraftTweakerAPI.apply(new InfuserAction(recipe).action_remove);
 		});
 	}
+
+	@ZenMethod
+	public static void clear() {
+		ModIntegrationMinetweaker.queueClear(InfuserRecipeManager.INSTANCE.getRecipes());
+	}
 }

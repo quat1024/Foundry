@@ -64,4 +64,9 @@ public class MTBurnerFuelHandler {
 			else MTHelper.printCrt("No burner fuel found for " + stack);
 		});
 	}
+
+	@ZenMethod
+	public static void clear() {
+		ModIntegrationMinetweaker.queueClear(BurnerHeaterFuelManager.INSTANCE.getFuels());
+	}
 }

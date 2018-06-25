@@ -67,4 +67,9 @@ public class MTAlloyFurnaceHandler {
 			CraftTweakerAPI.apply(new AlloyFurnaceAction(recipe).action_remove);
 		});
 	}
+
+	@ZenMethod
+	public static void clear() {
+		ModIntegrationMinetweaker.queueClear(AlloyFurnaceRecipeManager.INSTANCE.getRecipes());
+	}
 }

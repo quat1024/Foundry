@@ -17,11 +17,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MTHelper {
-	
+
 	public static String getFluidDescription(ILiquidStack stack) {
 		return getFluidDescription(CraftTweakerMC.getLiquidStack(stack));
 	}
-	
+
 	public static String getFluidDescription(FluidStack stack) {
 		return String.format("<liquid:%s> * %d", stack.getFluid().getName(), stack.amount);
 	}
@@ -50,7 +50,7 @@ public class MTHelper {
 	public static String getItemDescription(IItemStack stack) {
 		return getItemDescription(CraftTweakerMC.getItemStack(stack));
 	}
-	
+
 	public static String getItemDescription(ItemStack stack) {
 		String desc = String.format("<%s:%d> * %d", stack.getItem().getRegistryName(), stack.getItemDamage(), stack.getCount());
 		if (stack.hasTagCompound()) desc += " with tag " + stack.getTagCompound().toString();

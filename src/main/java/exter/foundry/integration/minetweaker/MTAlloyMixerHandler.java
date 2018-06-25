@@ -95,4 +95,9 @@ public class MTAlloyMixerHandler {
 			CraftTweakerAPI.apply(new AlloyMixerAction(recipe).action_remove);
 		});
 	}
+	
+	@ZenMethod
+	public static void clear() {
+		ModIntegrationMinetweaker.queueClear(AlloyMixerRecipeManager.INSTANCE.getRecipes());
+	}
 }

@@ -1,6 +1,7 @@
 package exter.foundry.integration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import crafttweaker.CraftTweakerAPI;
@@ -24,6 +25,7 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 
 	private static List<Runnable> addQueue = new ArrayList<>();
 	private static List<Runnable> removeQueue = new ArrayList<>();
+	private static List<Runnable> clearQueue = new ArrayList<>();
 
 	@Override
 	public String getName() {
@@ -32,11 +34,13 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 
 	@Override
 	public void onAfterPostInit() {
+		for (Runnable r : clearQueue)
+			r.run();
 		for (Runnable r : removeQueue)
 			r.run();
 		for (Runnable r : addQueue)
 			r.run();
-		addQueue = removeQueue = null;
+		addQueue = removeQueue = clearQueue = null;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -84,8 +88,16 @@ public class ModIntegrationMinetweaker implements IModIntegration {
 	public static void queueAdd(Runnable action) {
 		addQueue.add(action);
 	}
-	
+
 	public static void queueRemove(Runnable action) {
 		removeQueue.add(action);
+	}
+
+	public static void queueClear(Collection<?> recipes) {
+		clearQueue.add(() -> recipes.clear());
+	}
+
+	public static void queueClear(Runnable run) {
+		clearQueue.add(run);
 	}
 }

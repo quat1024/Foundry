@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.ICastingRecipe;
@@ -60,12 +59,12 @@ public class CastingRecipeManager implements ICastingRecipeManager {
 
 	@Override
 	public List<ItemStack> getMolds() {
-		return Collections.unmodifiableList(molds);
+		return molds;
 	}
 
 	@Override
 	public List<ICastingRecipe> getRecipes() {
-		return Collections.unmodifiableList(recipes);
+		return recipes;
 	}
 
 	@Override

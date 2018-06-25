@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import exter.foundry.api.recipe.ICastingTableRecipe;
+import exter.foundry.api.recipe.ICastingTableRecipe.TableType;
 import exter.foundry.api.recipe.manager.ICastingTableRecipeManager;
 import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.recipes.CastingTableRecipe;
@@ -17,29 +18,29 @@ import net.minecraftforge.fluids.FluidStack;
 public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 	public static final CastingTableRecipeManager INSTANCE = new CastingTableRecipeManager();
 
-	private final Map<ICastingTableRecipe.TableType, Map<String, ICastingTableRecipe>> recipes;
+	private final Map<TableType, Map<String, ICastingTableRecipe>> recipes;
 
 	private CastingTableRecipeManager() {
-		recipes = new EnumMap<>(ICastingTableRecipe.TableType.class);
-		for (ICastingTableRecipe.TableType type : ICastingTableRecipe.TableType.values()) {
-			recipes.put(type, new HashMap<String, ICastingTableRecipe>());
+		recipes = new EnumMap<>(TableType.class);
+		for (TableType type : TableType.values()) {
+			recipes.put(type, new HashMap<>());
 		}
 	}
 
-	public void addRecipe(ICastingTableRecipe.TableType tableType, String name, ICastingTableRecipe recipe) {
+	public void addRecipe(TableType tableType, String name, ICastingTableRecipe recipe) {
 		recipes.get(tableType).put(name, recipe);
 
 	}
 
 	@Override
-	public void addRecipe(IItemMatcher result, FluidStack fluid, ICastingTableRecipe.TableType type) {
+	public void addRecipe(IItemMatcher result, FluidStack fluid, TableType type) {
 		if (FoundryMiscUtils.isInvalid(result)) return;
 		ICastingTableRecipe recipe = new CastingTableRecipe(result, fluid, type);
 		recipes.get(recipe.getTableType()).put(recipe.getInput().getFluid().getName(), recipe);
 	}
 
 	@Override
-	public ICastingTableRecipe findRecipe(FluidStack fluid, ICastingTableRecipe.TableType type) {
+	public ICastingTableRecipe findRecipe(FluidStack fluid, TableType type) {
 		if (type == null || fluid == null || fluid.amount == 0) { return null; }
 		ICastingTableRecipe recipe = recipes.get(type).get(fluid.getFluid().getName());
 		return recipe;
@@ -48,13 +49,17 @@ public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 	@Override
 	public List<ICastingTableRecipe> getRecipes() {
 		List<ICastingTableRecipe> result = new ArrayList<>();
-		for (ICastingTableRecipe.TableType type : ICastingTableRecipe.TableType.values()) {
+		for (TableType type : TableType.values()) {
 			result.addAll(recipes.get(type).values());
 		}
 		return result;
 	}
 
-	public Collection<ICastingTableRecipe> getRecipes(ICastingTableRecipe.TableType type) {
+	public Map<TableType, Map<String, ICastingTableRecipe>> getRecipesMap() {
+		return recipes;
+	}
+
+	public Collection<ICastingTableRecipe> getRecipes(TableType type) {
 		return recipes.get(type).values();
 	}
 
@@ -63,7 +68,7 @@ public class CastingTableRecipeManager implements ICastingTableRecipeManager {
 		recipes.get(recipe.getTableType()).remove(recipe.getInput().getFluid().getName());
 	}
 
-	public void removeRecipe(ICastingTableRecipe.TableType tableType, String name) {
+	public void removeRecipe(TableType tableType, String name) {
 		recipes.get(tableType).remove(name);
 	}
 }

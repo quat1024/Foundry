@@ -1,6 +1,5 @@
 package exter.foundry.recipes.manager;
 
-import java.util.Collections;
 import java.util.List;
 
 import exter.foundry.api.recipe.IMoldRecipe;
@@ -37,7 +36,7 @@ public class MoldRecipeManager implements IMoldRecipeManager {
 
 	@Override
 	public List<IMoldRecipe> getRecipes() {
-		return Collections.unmodifiableList(recipes);
+		return recipes;
 	}
 
 	@Override
