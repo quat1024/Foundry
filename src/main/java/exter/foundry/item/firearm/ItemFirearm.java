@@ -32,13 +32,13 @@ public abstract class ItemFirearm extends Item {
 
 	static public boolean roundMatches(ItemStack stack, String type) {
 		if (stack.isEmpty()) { return false; }
-		if (!stack.hasCapability(FoundryAPI.capability_firearmround, null)) { return false; }
-		return stack.getCapability(FoundryAPI.capability_firearmround, null).getRoundType().equals(type);
+		if (!stack.hasCapability(FoundryAPI.FIREARM_ROUND_CAP, null)) { return false; }
+		return stack.getCapability(FoundryAPI.FIREARM_ROUND_CAP, null).getRoundType().equals(type);
 	}
 
 	static public final void shoot(ItemStack round_item, World world, EntityLivingBase shooter, Entity target, int times, float spread, float damage_multiplier) {
 		Map<EntityLivingBase, MutablePair<Float, Integer>> entities_hit = new HashMap<>();
-		IFirearmRound round = round_item.getCapability(FoundryAPI.capability_firearmround, null);
+		IFirearmRound round = round_item.getCapability(FoundryAPI.FIREARM_ROUND_CAP, null);
 		int i;
 		for (i = 0; i < times; i++) {
 			RayTraceResult obj = trace(world, shooter, target, spread);

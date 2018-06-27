@@ -56,8 +56,8 @@ public class FirearmRoundBase implements IFirearmRound, ICapabilityProvider {
 
 	@Override
 	public final <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == FoundryAPI.capability_firearmround) {
-			return FoundryAPI.capability_firearmround.cast(this);
+		if (cap == FoundryAPI.FIREARM_ROUND_CAP) {
+			return FoundryAPI.FIREARM_ROUND_CAP.cast(this);
 		} else {
 			return null;
 		}
@@ -80,7 +80,7 @@ public class FirearmRoundBase implements IFirearmRound, ICapabilityProvider {
 
 	@Override
 	public final boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		return cap == FoundryAPI.capability_firearmround;
+		return cap == FoundryAPI.FIREARM_ROUND_CAP;
 	}
 
 	@Override

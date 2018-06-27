@@ -33,7 +33,7 @@ public class MeltingRecipeManager implements IMeltingRecipeManager {
 
 	@Override
 	public void addRecipe(IItemMatcher solid, FluidStack fluid_stack, int melting_point, int melting_speed) {
-		recipes.add(new MeltingRecipe(solid, fluid_stack, melting_point, melting_speed));
+		addRecipe(new MeltingRecipe(solid, fluid_stack, melting_point, melting_speed));
 	}
 
 	public void addRecipe(IMeltingRecipe recipe) {

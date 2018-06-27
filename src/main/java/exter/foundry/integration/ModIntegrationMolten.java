@@ -109,8 +109,8 @@ public class ModIntegrationMolten implements IModIntegration {
 	@Override
 	public void onAfterPostInit() {
 		liquid_map = new HashMap<>();
-		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
-			FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(name);
+		for (String name : LiquidMetalRegistry.INSTANCE.getFluidNames()) {
+			FluidLiquidMetal fluid = LiquidMetalRegistry.INSTANCE.getFluid(name);
 			if (name.equals("Glass")) {
 				if (FoundryConfig.recipe_glass) {
 					if (FluidRegistry.getFluid("glass") != null) {

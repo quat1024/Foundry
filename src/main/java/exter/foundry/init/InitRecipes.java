@@ -2,14 +2,12 @@ package exter.foundry.init;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cofh.thermalfoundation.init.TFFluids;
 import exter.foundry.Foundry;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.api.FoundryUtils;
 import exter.foundry.api.recipe.ICastingTableRecipe;
-import exter.foundry.api.recipe.IMeltingRecipe;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.api.recipe.matcher.OreMatcher;
 import exter.foundry.block.BlockCastingTable.EnumTable;
@@ -39,9 +37,7 @@ import exter.foundry.util.FoundryMiscUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -59,49 +55,51 @@ public class InitRecipes {
 				String od_name = type.prefix + material.suffix;
 				if (OreDictionary.doesOreNameExist(od_name)) {
 					for (ItemStack item : OreDictionary.getOres(od_name, false)) {
-						MaterialRegistry.instance.registerItem(item, material.suffix, type.name);
+						MaterialRegistry.INSTANCE.registerItem(item, material.suffix, type.name);
 					}
 				}
 				if (material.suffix_alias != null) {
 					od_name = type.prefix + material.suffix_alias;
 					if (OreDictionary.doesOreNameExist(od_name)) {
 						for (ItemStack item : OreDictionary.getOres(od_name, false)) {
-							MaterialRegistry.instance.registerItem(item, material.suffix, type.name);
+							MaterialRegistry.INSTANCE.registerItem(item, material.suffix, type.name);
 						}
 					}
 				}
 			}
 		}
 
+		/*  I Don't really know what this does.  It doesn't make much sense.
 		for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
-			ItemStack stack = entry.getKey();
+			ItemStack input = entry.getKey();
 			Item item = entry.getValue().getItem();
-
+		
 			if (item == Items.GOLD_NUGGET || item == Items.IRON_NUGGET) continue;
-
-			if (!stack.isEmpty() && MeltingRecipeManager.INSTANCE.findRecipe(stack) == null) {
+		
+			if (!input.isEmpty() && MeltingRecipeManager.INSTANCE.findRecipe(input) == null) {
 				ItemStack result = entry.getValue();
 				IMeltingRecipe recipe = MeltingRecipeManager.INSTANCE.findRecipe(result);
 				if (recipe != null) {
 					Fluid liquid_metal = recipe.getOutput().getFluid();
 					int base_amount = recipe.getOutput().amount;
-
-					int[] ids = OreDictionary.getOreIDs(stack);
+		
+					int[] ids = OreDictionary.getOreIDs(input);
 					for (int j : ids) {
 						if (OreDictionary.getOreName(j).startsWith("ore") && !OreDictionary.getOreName(j).startsWith("orePoor")) {
 							base_amount = FoundryAPI.getAmountOre();
 							break;
 						}
 					}
-					MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stack), new FluidStack(liquid_metal, base_amount * result.getCount()), recipe.getMeltingPoint(), recipe.getMeltingSpeed());
+					MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(input), new FluidStack(liquid_metal, base_amount * result.getCount()), recipe.getMeltingPoint(), recipe.getMeltingSpeed());
 				}
 			}
 		}
+		*/
 
 		ItemStack ingot_mold = FoundryItems.mold(ItemMold.SubItem.INGOT);
 		ItemStack block_mold = FoundryItems.mold(ItemMold.SubItem.BLOCK);
-		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
-			FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(name);
+		for (String name : LiquidMetalRegistry.INSTANCE.getFluidNames()) {
+			FluidLiquidMetal fluid = LiquidMetalRegistry.INSTANCE.getFluid(name);
 			if (!fluid.special) {
 				FluidStack fluidstack = new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT);
 				List<ItemStack> ores = OreDictionary.doesOreNameExist("ingot" + name) ? OreDictionary.getOres("ingot" + name, false) : new ArrayList<>();
@@ -121,7 +119,7 @@ public class InitRecipes {
 				}
 
 				ores = OreDictionary.doesOreNameExist("block" + name) ? OreDictionary.getOres("block" + name, false) : new ArrayList<>();
-				fluidstack = new FluidStack(LiquidMetalRegistry.instance.getFluid(name), FoundryAPI.getAmountBlock());
+				fluidstack = new FluidStack(LiquidMetalRegistry.INSTANCE.getFluid(name), FoundryAPI.getAmountBlock());
 				if (ores != null && ores.size() > 0) {
 					if (CastingRecipeManager.INSTANCE.findRecipe(fluidstack, block_mold, null) == null) {
 						CastingRecipeManager.INSTANCE.addRecipe(new OreMatcher("block" + name), fluidstack, block_mold, null);
@@ -283,15 +281,15 @@ public class InitRecipes {
 
 	static public void registerMachineRecipes() {
 
-		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
-			FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(name);
+		for (String name : LiquidMetalRegistry.INSTANCE.getFluidNames()) {
+			FluidLiquidMetal fluid = LiquidMetalRegistry.INSTANCE.getFluid(name);
 			if (!fluid.special) {
 				FoundryUtils.registerBasicMeltingRecipes(name, fluid);
 			}
 		}
 		//FoundryUtils.registerBasicMeltingRecipes("Chromium", LiquidMetalRegistry.instance.getFluid("Chrome"));
-		FoundryUtils.registerBasicMeltingRecipes("Aluminum", LiquidMetalRegistry.instance.getFluid("Aluminium"));
-		FoundryUtils.registerBasicMeltingRecipes("Constantan", LiquidMetalRegistry.instance.getFluid("Cupronickel"));
+		FoundryUtils.registerBasicMeltingRecipes("Aluminum", LiquidMetalRegistry.INSTANCE.getFluid("Aluminium"));
+		FoundryUtils.registerBasicMeltingRecipes("Constantan", LiquidMetalRegistry.INSTANCE.getFluid("Cupronickel"));
 
 		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("dustRedstone"), new FluidStack(TFFluids.fluidRedstone, 100));
 		MeltingRecipeManager.INSTANCE.addRecipe(new OreMatcher("blockRedstone"), new FluidStack(TFFluids.fluidRedstone, 900));
@@ -326,12 +324,12 @@ public class InitRecipes {
 		}
 
 		//Base casting recipes.
-		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
-			addDefaultCasting(LiquidMetalRegistry.instance.getFluid(name), name);
+		for (String name : LiquidMetalRegistry.INSTANCE.getFluidNames()) {
+			addDefaultCasting(LiquidMetalRegistry.INSTANCE.getFluid(name), name);
 		}
 
-		addDefaultCasting(LiquidMetalRegistry.instance.getFluid("Aluminium"), "Aluminum");
-		addDefaultCasting(LiquidMetalRegistry.instance.getFluid("Cupronickel"), "Constantan");
+		addDefaultCasting(LiquidMetalRegistry.INSTANCE.getFluid("Aluminium"), "Aluminum");
+		addDefaultCasting(LiquidMetalRegistry.INSTANCE.getFluid("Cupronickel"), "Constantan");
 
 		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_lumium, FoundryAPI.FLUID_AMOUNT_INGOT), new FluidStack(TFFluids.fluidGlowstone, 250), new FluidStack(FoundryFluids.liquid_tin, FoundryAPI.FLUID_AMOUNT_INGOT / 4 * 3), new FluidStack(FoundryFluids.liquid_silver, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 		AlloyMixerRecipeManager.INSTANCE.addRecipe(new FluidStack(FoundryFluids.liquid_signalum, FoundryAPI.FLUID_AMOUNT_INGOT), new FluidStack(TFFluids.fluidRedstone, 250), new FluidStack(FoundryFluids.liquid_copper, FoundryAPI.FLUID_AMOUNT_INGOT / 4 * 3), new FluidStack(FoundryFluids.liquid_silver, FoundryAPI.FLUID_AMOUNT_INGOT / 4));

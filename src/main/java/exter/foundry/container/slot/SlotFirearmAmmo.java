@@ -21,7 +21,7 @@ public class SlotFirearmAmmo extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return stack.hasCapability(FoundryAPI.capability_firearmround, null) && stack.getCapability(FoundryAPI.capability_firearmround, null).getRoundType().equals(type);
+		return stack.hasCapability(FoundryAPI.FIREARM_ROUND_CAP, null) && stack.getCapability(FoundryAPI.FIREARM_ROUND_CAP, null).getRoundType().equals(type);
 	}
 
 	@Override

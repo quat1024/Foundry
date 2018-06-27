@@ -20,7 +20,8 @@ import net.minecraftforge.fluids.FluidRegistry;
  * Utility class for registering a metal's corresponding block, items, fluid, and recipes.
  */
 public class LiquidMetalRegistry implements IFluidRegistry {
-	static public LiquidMetalRegistry instance = new LiquidMetalRegistry();
+
+	public static final LiquidMetalRegistry INSTANCE = new LiquidMetalRegistry();
 
 	private final Map<String, FluidLiquidMetal> registry;
 

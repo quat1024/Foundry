@@ -74,7 +74,7 @@ public class InitToolRecipes {
 		FoundryMiscUtils.registerCasting(new ItemStack(Items.IRON_BOOTS), FoundryFluids.liquid_iron, 4, ItemMold.SubItem.BOOTS);
 		FoundryMiscUtils.registerCasting(new ItemStack(Items.GOLDEN_BOOTS), FoundryFluids.liquid_gold, 4, ItemMold.SubItem.BOOTS);
 
-		for (Entry<String, FluidLiquidMetal> metal : LiquidMetalRegistry.instance.getFluids().entrySet()) {
+		for (Entry<String, FluidLiquidMetal> metal : LiquidMetalRegistry.INSTANCE.getFluids().entrySet()) {
 			FoundryUtils.tryAddToolArmorRecipes(metal.getKey(), metal.getValue());
 		}
 	}

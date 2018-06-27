@@ -15,7 +15,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public final class MaterialRegistry implements IMaterialRegistry {
 
-	public static MaterialRegistry instance = new MaterialRegistry();
+	public static final MaterialRegistry INSTANCE = new MaterialRegistry();
 	private final HashMap<HashableItem, String> materials;
 
 	private final HashMap<HashableItem, String> types;

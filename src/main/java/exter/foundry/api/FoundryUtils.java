@@ -36,26 +36,26 @@ public class FoundryUtils {
 	 * @param fluid The liquid created by the smelter.
 	 */
 	static public void registerBasicMeltingRecipes(String partial_name, Fluid fluid) {
-		if (FoundryAPI.recipes_melting != null) {
-			if (exists("ingot" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("ingot" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
+		if (FoundryAPI.MELTING_MANAGER != null) {
+			if (exists("ingot" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("ingot" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
 
-			if (exists("block" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("block" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountBlock()));
+			if (exists("block" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("block" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountBlock()));
 
-			if (exists("nugget" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("nugget" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountNugget()));
+			if (exists("nugget" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("nugget" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountNugget()));
 
-			if (exists("dust" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dust" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
+			if (exists("dust" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("dust" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT));
 
-			if (exists("ore" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("ore" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountOre()));
+			if (exists("ore" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("ore" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountOre()));
 
-			if (exists("orePoor" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("orePoor" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountNugget() * 2));
+			if (exists("orePoor" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("orePoor" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountNugget() * 2));
 
-			if (exists("dustSmall" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dustSmall" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
+			if (exists("dustSmall" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("dustSmall" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 
-			if (exists("dustTiny" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("dustTiny" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
+			if (exists("dustTiny" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("dustTiny" + partial_name), new FluidStack(fluid, FoundryAPI.FLUID_AMOUNT_INGOT / 4));
 
-			if (exists("plate" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("plate" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountPlate()));
+			if (exists("plate" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("plate" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountPlate()));
 
-			if (exists("gear" + partial_name)) FoundryAPI.recipes_melting.addRecipe(new OreMatcher("gear" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountGear()));
+			if (exists("gear" + partial_name)) FoundryAPI.MELTING_MANAGER.addRecipe(new OreMatcher("gear" + partial_name), new FluidStack(fluid, FoundryAPI.getAmountGear()));
 		}
 	}
 
@@ -66,23 +66,23 @@ public class FoundryUtils {
 		ItemStack boots = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ThermalFoundation.MOD_ID, "armor.boots_" + name)));
 
 		if (!helm.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(helm), new FluidStack(fluid, FoundryAPI.getAmountHelm()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(helm), new FluidStack(fluid, FoundryAPI.getAmountHelm()), FoundryItems.mold(SubItem.HELMET), null);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(helm), new FluidStack(fluid, FoundryAPI.getAmountHelm()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(helm), new FluidStack(fluid, FoundryAPI.getAmountHelm()), FoundryItems.mold(SubItem.HELMET), null);
 		}
 
 		if (!chest.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(chest), new FluidStack(fluid, FoundryAPI.getAmountChest()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(chest), new FluidStack(fluid, FoundryAPI.getAmountChest()), FoundryItems.mold(SubItem.CHESTPLATE), null);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(chest), new FluidStack(fluid, FoundryAPI.getAmountChest()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(chest), new FluidStack(fluid, FoundryAPI.getAmountChest()), FoundryItems.mold(SubItem.CHESTPLATE), null);
 		}
 
 		if (!legs.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(legs), new FluidStack(fluid, FoundryAPI.getAmountLegs()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(legs), new FluidStack(fluid, FoundryAPI.getAmountLegs()), FoundryItems.mold(SubItem.LEGGINGS), null);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(legs), new FluidStack(fluid, FoundryAPI.getAmountLegs()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(legs), new FluidStack(fluid, FoundryAPI.getAmountLegs()), FoundryItems.mold(SubItem.LEGGINGS), null);
 		}
 
 		if (!boots.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(boots), new FluidStack(fluid, FoundryAPI.getAmountHelm()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(boots), new FluidStack(fluid, FoundryAPI.getAmountHelm()), FoundryItems.mold(SubItem.BOOTS), null);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(boots), new FluidStack(fluid, FoundryAPI.getAmountHelm()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(boots), new FluidStack(fluid, FoundryAPI.getAmountHelm()), FoundryItems.mold(SubItem.BOOTS), null);
 		}
 
 		ItemStack pickaxe = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ThermalFoundation.MOD_ID, "tool.pickaxe_" + name)));
@@ -93,28 +93,28 @@ public class FoundryUtils {
 		OreMatcher stick = new OreMatcher("stickWood", 2);
 
 		if (!pickaxe.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(pickaxe), new FluidStack(fluid, FoundryAPI.getAmountPickaxe()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(pickaxe), new FluidStack(fluid, FoundryAPI.getAmountPickaxe()), FoundryItems.mold(SubItem.PICKAXE), stick);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(pickaxe), new FluidStack(fluid, FoundryAPI.getAmountPickaxe()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(pickaxe), new FluidStack(fluid, FoundryAPI.getAmountPickaxe()), FoundryItems.mold(SubItem.PICKAXE), stick);
 		}
 
 		if (!axe.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(axe), new FluidStack(fluid, FoundryAPI.getAmountAxe()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(axe), new FluidStack(fluid, FoundryAPI.getAmountAxe()), FoundryItems.mold(SubItem.AXE), stick);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(axe), new FluidStack(fluid, FoundryAPI.getAmountAxe()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(axe), new FluidStack(fluid, FoundryAPI.getAmountAxe()), FoundryItems.mold(SubItem.AXE), stick);
 		}
 
 		if (!shovel.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(shovel), new FluidStack(fluid, FoundryAPI.getAmountShovel()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(shovel), new FluidStack(fluid, FoundryAPI.getAmountShovel()), FoundryItems.mold(SubItem.SHOVEL), stick);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(shovel), new FluidStack(fluid, FoundryAPI.getAmountShovel()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(shovel), new FluidStack(fluid, FoundryAPI.getAmountShovel()), FoundryItems.mold(SubItem.SHOVEL), stick);
 		}
 
 		if (!hoe.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(hoe), new FluidStack(fluid, FoundryAPI.getAmountHoe()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(hoe), new FluidStack(fluid, FoundryAPI.getAmountHoe()), FoundryItems.mold(SubItem.HOE), stick);
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(hoe), new FluidStack(fluid, FoundryAPI.getAmountHoe()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(hoe), new FluidStack(fluid, FoundryAPI.getAmountHoe()), FoundryItems.mold(SubItem.HOE), stick);
 		}
 
 		if (!sword.isEmpty()) {
-			FoundryAPI.recipes_melting.addRecipe(new ItemStackMatcher(sword), new FluidStack(fluid, FoundryAPI.getAmountSword()));
-			FoundryAPI.recipes_casting.addRecipe(new ItemStackMatcher(sword), new FluidStack(fluid, FoundryAPI.getAmountSword()), FoundryItems.mold(SubItem.SWORD), new OreMatcher("stickWood"));
+			FoundryAPI.MELTING_MANAGER.addRecipe(new ItemStackMatcher(sword), new FluidStack(fluid, FoundryAPI.getAmountSword()));
+			FoundryAPI.CASTING_MANAGER.addRecipe(new ItemStackMatcher(sword), new FluidStack(fluid, FoundryAPI.getAmountSword()), FoundryItems.mold(SubItem.SWORD), new OreMatcher("stickWood"));
 		}
 	}
 }

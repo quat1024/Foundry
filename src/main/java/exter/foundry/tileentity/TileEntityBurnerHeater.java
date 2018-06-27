@@ -119,7 +119,7 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 
 	@Override
 	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) { return FoundryAPI.capability_heatprovider.cast(heat_provider); }
+		if (cap == FoundryAPI.HEAT_PROVIDER_CAP && facing == EnumFacing.UP) { return FoundryAPI.HEAT_PROVIDER_CAP.cast(heat_provider); }
 		return super.getCapability(cap, facing);
 	}
 
@@ -154,7 +154,7 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 
 	@Override
 	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		return super.hasCapability(cap, facing) || cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP;
+		return super.hasCapability(cap, facing) || cap == FoundryAPI.HEAT_PROVIDER_CAP && facing == EnumFacing.UP;
 	}
 
 	public boolean isBurning() {

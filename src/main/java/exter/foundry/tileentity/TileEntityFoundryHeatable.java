@@ -24,7 +24,7 @@ public abstract class TileEntityFoundryHeatable extends TileEntityFoundry {
 
 	private final IHeatProvider getHeatProvider() {
 		TileEntity te = world.getTileEntity(getPos().down());
-		if (te != null && te.hasCapability(FoundryAPI.capability_heatprovider, EnumFacing.UP)) { return te.getCapability(FoundryAPI.capability_heatprovider, EnumFacing.UP); }
+		if (te != null && te.hasCapability(FoundryAPI.HEAT_PROVIDER_CAP, EnumFacing.UP)) { return te.getCapability(FoundryAPI.HEAT_PROVIDER_CAP, EnumFacing.UP); }
 		return null;
 	}
 

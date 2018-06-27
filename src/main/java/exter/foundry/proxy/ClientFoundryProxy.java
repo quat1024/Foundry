@@ -172,12 +172,12 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
 			List<ItemStack> ores = OreDictionary.getOres(material.default_prefix + material.suffix, false);
 			if (ores.size() > 0) {
-				MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
+				MaterialRegistry.INSTANCE.registerMaterialIcon(material.suffix, ores.get(0));
 			} else {
 				for (OreDictType type : OreDictType.TYPES) {
 					ores = OreDictionary.getOres(type.prefix + material.suffix, false);
 					if (ores.size() > 0) {
-						MaterialRegistry.instance.registerMaterialIcon(material.suffix, ores.get(0));
+						MaterialRegistry.INSTANCE.registerMaterialIcon(material.suffix, ores.get(0));
 						break;
 					}
 				}
@@ -187,12 +187,12 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 		for (OreDictType type : OreDictType.TYPES) {
 			List<ItemStack> ores = OreDictionary.getOres(type.prefix + type.default_suffix, false);
 			if (ores.size() > 0) {
-				MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
+				MaterialRegistry.INSTANCE.registerTypeIcon(type.name, ores.get(0));
 			} else {
 				for (OreDictMaterial material : OreDictMaterial.MATERIALS) {
 					ores = OreDictionary.getOres(type.prefix + material.suffix, false);
 					if (ores.size() > 0) {
-						MaterialRegistry.instance.registerTypeIcon(type.name, ores.get(0));
+						MaterialRegistry.INSTANCE.registerTypeIcon(type.name, ores.get(0));
 						break;
 					}
 				}
@@ -204,8 +204,8 @@ public class ClientFoundryProxy extends CommonFoundryProxy {
 	@Override
 	public void preInit() {
 		ModelLoaderRegistry.registerLoader(RFCModel.Loader.instance);
-		MaterialRegistry.instance.initIcons();
-		for (Map.Entry<String, FluidLiquidMetal> e : LiquidMetalRegistry.instance.getFluids().entrySet()) {
+		MaterialRegistry.INSTANCE.initIcons();
+		for (Map.Entry<String, FluidLiquidMetal> e : LiquidMetalRegistry.INSTANCE.getFluids().entrySet()) {
 			Fluid fluid = e.getValue();
 			Block block = fluid.getBlock();
 			Item item = Item.getItemFromBlock(block);

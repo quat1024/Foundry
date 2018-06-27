@@ -163,7 +163,7 @@ public class ItemShotgun extends ItemFirearm {
 					player.motionY -= look_y * 0.1;
 					player.motionZ -= look_z * 0.1;
 				} else {
-					EntityItem casing = new EntityItem(world, player.posX, player.posY + player.getEyeHeight() - 0.1, player.posZ, round.getCapability(FoundryAPI.capability_firearmround, null).getCasing().copy());
+					EntityItem casing = new EntityItem(world, player.posX, player.posY + player.getEyeHeight() - 0.1, player.posZ, round.getCapability(FoundryAPI.FIREARM_ROUND_CAP, null).getCasing().copy());
 					casing.setPickupDelay(10);
 					casing.motionX = -look_z * 0.2;
 					casing.motionY = look_y * 0.2;

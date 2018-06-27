@@ -89,7 +89,7 @@ import shadows.placebo.util.RecipeHelper;
 public class Foundry {
 	public static final String MODID = "foundry";
 	public static final String MODNAME = "Foundry";
-	public static final String MODVERSION = "3.1.4.0";
+	public static final String MODVERSION = "3.1.4.1";
 
 	@SidedProxy(clientSide = "exter.foundry.proxy.ClientFoundryProxy", serverSide = "exter.foundry.proxy.CommonFoundryProxy")
 	public static CommonFoundryProxy proxy;
@@ -167,20 +167,20 @@ public class Foundry {
 		if (Loader.isModLoaded("botania")) ModIntegrationManager.registerIntegration(config, new ModIntegrationBotania());
 		if (Loader.isModLoaded("crafttweaker")) ModIntegrationManager.registerIntegration(config, new ModIntegrationMinetweaker());
 
-		FoundryAPI.fluids = LiquidMetalRegistry.instance;
+		FoundryAPI.FLUIDS = LiquidMetalRegistry.INSTANCE;
 
-		FoundryAPI.recipes_melting = MeltingRecipeManager.INSTANCE;
-		FoundryAPI.recipes_casting = CastingRecipeManager.INSTANCE;
-		FoundryAPI.recipes_casting_table = CastingTableRecipeManager.INSTANCE;
-		FoundryAPI.recipes_alloymixer = AlloyMixerRecipeManager.INSTANCE;
-		FoundryAPI.recipes_infuser = InfuserRecipeManager.INSTANCE;
-		FoundryAPI.recipes_alloyfurnace = AlloyFurnaceRecipeManager.INSTANCE;
-		FoundryAPI.recipes_atomizer = AtomizerRecipeManager.INSTANCE;
-		FoundryAPI.recipes_mold = MoldRecipeManager.INSTANCE;
-		FoundryAPI.recipes_alloyingcrucible = AlloyingCrucibleRecipeManager.INSTANCE;
+		FoundryAPI.MELTING_MANAGER = MeltingRecipeManager.INSTANCE;
+		FoundryAPI.CASTING_MANAGER = CastingRecipeManager.INSTANCE;
+		FoundryAPI.CASTING_TABLE_MANAGER = CastingTableRecipeManager.INSTANCE;
+		FoundryAPI.ALLOY_MIXER_MANAGER = AlloyMixerRecipeManager.INSTANCE;
+		FoundryAPI.INFUSER_MANAGER = InfuserRecipeManager.INSTANCE;
+		FoundryAPI.ALLOY_FURNACE_MANAGER = AlloyFurnaceRecipeManager.INSTANCE;
+		FoundryAPI.ATOMIZER_MANAGER = AtomizerRecipeManager.INSTANCE;
+		FoundryAPI.MOLD_MANAGER = MoldRecipeManager.INSTANCE;
+		FoundryAPI.ALLOYING_CRUCIBLE_MANAGER = AlloyingCrucibleRecipeManager.INSTANCE;
 
-		FoundryAPI.materials = MaterialRegistry.instance;
-		FoundryAPI.burnerheater_fuel = BurnerHeaterFuelManager.INSTANCE;
+		FoundryAPI.MATERIALS = MaterialRegistry.INSTANCE;
+		FoundryAPI.BURNER_HEATER_FUEL = BurnerHeaterFuelManager.INSTANCE;
 
 		CapabilityHeatProvider.init();
 		CapabilityFirearmRound.init();

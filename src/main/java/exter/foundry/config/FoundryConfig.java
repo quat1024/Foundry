@@ -54,12 +54,11 @@ public class FoundryConfig {
 		prefModID = config.getString("Preferred Mod ID", "recipes", ThermalFoundation.MOD_ID, "The priority MODID for Foundry recipes to try using.");
 
 		metalCasterPower = config.getBoolean("Metal Caster Power", "general", true, "If the Metal Caster requires power to operate.");
-		if (!metalCasterPower) {
-			BlockFoundryMachine.EnumMachine.CASTER.setTooltip("caster2");
-		}
+		if (!metalCasterPower) BlockFoundryMachine.EnumMachine.CASTER.setTooltip("caster2");
 
 		crtError = config.getBoolean("CrT Errors", "general", true, "If foundry's CraftTweaker integration logs errors instead of info");
 
-		FoundryAPI.FLUID_AMOUNT_INGOT = config.getInt("Fluid Ingot Value", "general", 108, 36, Integer.MAX_VALUE, "The value, in mB, of an ingot.");
+		FoundryAPI.FLUID_AMOUNT_INGOT = config.getInt("Fluid Ingot Value", "general", FoundryAPI.FLUID_AMOUNT_INGOT, 36, Integer.MAX_VALUE, "The value, in mB, of an ingot.");
+		FoundryAPI.FLUID_AMOUNT_ORE = config.getInt("Fluid Ore Value", "general", FoundryAPI.FLUID_AMOUNT_ORE, 1, Integer.MAX_VALUE, "The value, in mB, of an ore.  Set to 0 to use default values.");
 	}
 }

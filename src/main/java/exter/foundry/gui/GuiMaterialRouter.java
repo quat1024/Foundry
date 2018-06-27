@@ -118,7 +118,7 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 		material_slots = new ArrayList<>();
 		material_slots.add(new FilterSlotMaterial(0, "_Any"));
-		List<String> materials = new ArrayList<>(MaterialRegistry.instance.getMaterialNames());
+		List<String> materials = new ArrayList<>(MaterialRegistry.INSTANCE.getMaterialNames());
 		Collections.sort(materials, String.CASE_INSENSITIVE_ORDER);
 		int i = 1;
 		for (String name : materials) {
@@ -127,7 +127,7 @@ public class GuiMaterialRouter extends GuiFoundry {
 
 		type_slots = new ArrayList<>();
 		type_slots.add(new FilterSlotType(0, "_Any"));
-		List<String> types = new ArrayList<>(MaterialRegistry.instance.getTypeNames());
+		List<String> types = new ArrayList<>(MaterialRegistry.INSTANCE.getTypeNames());
 		Collections.sort(types, String.CASE_INSENSITIVE_ORDER);
 		i = 1;
 		for (String name : types) {
@@ -256,7 +256,7 @@ public class GuiMaterialRouter extends GuiFoundry {
 			GL11.glEnable(GL11.GL_BLEND);
 			drawTexturedModalRect(x, y, 216, 193, 16, 16);
 		} else {
-			drawItemStack(x, y, MaterialRegistry.instance.getMaterialIcon(name));
+			drawItemStack(x, y, MaterialRegistry.INSTANCE.getMaterialIcon(name));
 		}
 	}
 
@@ -320,7 +320,7 @@ public class GuiMaterialRouter extends GuiFoundry {
 			GL11.glEnable(GL11.GL_BLEND);
 			drawTexturedModalRect(x, y, 216, 193, 16, 16);
 		} else {
-			drawItemStack(x, y, MaterialRegistry.instance.getTypeIcon(name));
+			drawItemStack(x, y, MaterialRegistry.INSTANCE.getTypeIcon(name));
 		}
 	}
 

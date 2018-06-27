@@ -78,7 +78,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 		if (mapped != null) {
 			List<FluidStack> in = new ArrayList<>(inputs);
 			in.add(new FluidStack( // Convert TiCon Fluid Stack to Foundry Fluid Stack
-					LiquidMetalRegistry.instance.getFluid(mapped), ing.amount * FoundryAPI.FLUID_AMOUNT_INGOT / INGOT_GCD));
+					LiquidMetalRegistry.INSTANCE.getFluid(mapped), ing.amount * FoundryAPI.FLUID_AMOUNT_INGOT / INGOT_GCD));
 			createAlloyRecipe(mix, index + 1, in);
 		}
 		List<FluidStack> in = new ArrayList<>(inputs);
@@ -95,14 +95,14 @@ public class ModIntegrationTiCon implements IModIntegration {
 	@Override
 	public void onAfterPostInit() {
 		liquid_map = new HashMap<>();
-		for (String name : LiquidMetalRegistry.instance.getFluidNames()) {
+		for (String name : LiquidMetalRegistry.INSTANCE.getFluidNames()) {
 			if (name.equals("Glass")) {
 				if (FoundryConfig.recipe_glass) {
 					if (FluidRegistry.getFluid("glass") != null) {
 						liquid_map.put("glass", "Glass");
 					}
 				}
-			} else if (!name.startsWith("Glass") && !LiquidMetalRegistry.instance.getFluid(name).special) {
+			} else if (!name.startsWith("Glass") && !LiquidMetalRegistry.INSTANCE.getFluid(name).special) {
 				String tic_name = name.toLowerCase();
 				if (FluidRegistry.getFluid(tic_name) != null) {
 					liquid_map.put(tic_name, name);
@@ -113,7 +113,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 
 		reverse_liquid_map = new HashMap<>();
 		for (Map.Entry<String, String> e : liquid_map.entrySet()) {
-			reverse_liquid_map.put(LiquidMetalRegistry.instance.getFluid(e.getValue()).getName(), e.getKey());
+			reverse_liquid_map.put(LiquidMetalRegistry.INSTANCE.getFluid(e.getValue()).getName(), e.getKey());
 		}
 
 		//Convert TiCon Smeltery recipes to Foundry ICF melting recipes (except those that have an existing recipe).
@@ -127,9 +127,9 @@ public class ModIntegrationTiCon implements IModIntegration {
 						FluidStack mapped_liquid;
 
 						if (mapped.equals("Glass")) {
-							mapped_liquid = new FluidStack(LiquidMetalRegistry.instance.getFluid(mapped), result.amount);
+							mapped_liquid = new FluidStack(LiquidMetalRegistry.INSTANCE.getFluid(mapped), result.amount);
 						} else {
-							mapped_liquid = new FluidStack(LiquidMetalRegistry.instance.getFluid(mapped), FoundryMiscUtils.divCeil(result.amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
+							mapped_liquid = new FluidStack(LiquidMetalRegistry.INSTANCE.getFluid(mapped), FoundryMiscUtils.divCeil(result.amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
 						}
 						if (mapped_liquid.amount <= 6000) {
 							MeltingRecipeManager.INSTANCE.addRecipe(new ItemStackMatcher(stack), mapped_liquid);
@@ -164,7 +164,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 						String mapped = liquid_map.get(casting.getFluid().getFluid().getName());
 						FluidStack mapped_liquid = null;
 						if (mapped != null) {
-							mapped_liquid = new FluidStack(LiquidMetalRegistry.instance.getFluid(mapped), FoundryMiscUtils.divCeil(casting.getFluid().amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
+							mapped_liquid = new FluidStack(LiquidMetalRegistry.INSTANCE.getFluid(mapped), FoundryMiscUtils.divCeil(casting.getFluid().amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
 						}
 						for (ItemStack cast : casting.cast.getInputs()) {
 							if (!CastingRecipeManager.INSTANCE.isItemMold(cast)) {
@@ -212,7 +212,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 				if (mapped == null) {
 					continue;
 				}
-				FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(mapped);
+				FluidLiquidMetal fluid = LiquidMetalRegistry.INSTANCE.getFluid(mapped);
 				FluidStack mapped_liquid = new FluidStack(fluid, mapped.equals("Glass") ? casting.getFluid().amount : FoundryMiscUtils.divCeil(casting.getFluid().amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
 				CastingRecipe recipe = new CastingRecipe(casting.getResult(), casting.cast, mapped_liquid, casting.consumesCast(), casting.switchOutputs());
 				recipes.add(recipe);
@@ -236,7 +236,7 @@ public class ModIntegrationTiCon implements IModIntegration {
 				if (mapped == null) {
 					continue;
 				}
-				FluidLiquidMetal fluid = LiquidMetalRegistry.instance.getFluid(mapped);
+				FluidLiquidMetal fluid = LiquidMetalRegistry.INSTANCE.getFluid(mapped);
 				FluidStack mapped_liquid = new FluidStack(fluid, mapped.equals("Glass") ? casting.getFluid().amount : FoundryMiscUtils.divCeil(casting.getFluid().amount * FoundryAPI.FLUID_AMOUNT_INGOT, TICON_INGOT_AMOUNT));
 				CastingRecipe recipe = new CastingRecipe(casting.getResult(), null, mapped_liquid, casting.consumesCast(), casting.switchOutputs());
 				recipes.add(recipe);

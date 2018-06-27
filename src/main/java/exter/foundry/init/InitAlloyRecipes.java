@@ -28,9 +28,9 @@ public class InitAlloyRecipes {
 			checkAndAddRecipe(alloy_ingot, input_a, amount_a, input_b, amount_b);
 		}
 
-		Fluid fluid_out = LiquidMetalRegistry.instance.getFluid(output);
-		Fluid fluid_in_a = LiquidMetalRegistry.instance.getFluid(input_a);
-		Fluid fluid_in_b = LiquidMetalRegistry.instance.getFluid(input_b);
+		Fluid fluid_out = LiquidMetalRegistry.INSTANCE.getFluid(output);
+		Fluid fluid_in_a = LiquidMetalRegistry.INSTANCE.getFluid(input_a);
+		Fluid fluid_in_b = LiquidMetalRegistry.INSTANCE.getFluid(input_b);
 
 		AlloyingCrucibleRecipeManager.INSTANCE.addRecipe(new FluidStack(fluid_out, (amount_a + amount_b) * 3), new FluidStack(fluid_in_a, amount_a * 3), new FluidStack(fluid_in_b, amount_b * 3));
 

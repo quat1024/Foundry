@@ -151,7 +151,7 @@ public class ItemRevolver extends ItemFirearm {
 					world.playSound(null, player.posX, player.posY, player.posZ, FoundrySounds.REVOLVER_FIRE, SoundCategory.PLAYERS, 1, 1);
 				}
 				shoot(round, world, player, null, 1, 0.01f, 1.0f);
-				setAmmo(stack, position, round.getCapability(FoundryAPI.capability_firearmround, null).getCasing().copy());
+				setAmmo(stack, position, round.getCapability(FoundryAPI.FIREARM_ROUND_CAP, null).getCasing().copy());
 				if (world.isRemote) {
 					player.rotationPitch -= 3;
 					float pitch = -player.rotationPitch;

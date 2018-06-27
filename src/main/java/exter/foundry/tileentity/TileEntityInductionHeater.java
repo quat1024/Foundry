@@ -30,7 +30,7 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 
 	@Override
 	public <T> T getCapability(Capability<T> cap, EnumFacing facing) {
-		if (cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP) { return FoundryAPI.capability_heatprovider.cast(heat_provider); }
+		if (cap == FoundryAPI.HEAT_PROVIDER_CAP && facing == EnumFacing.UP) { return FoundryAPI.HEAT_PROVIDER_CAP.cast(heat_provider); }
 		return super.getCapability(cap, facing);
 	}
 
@@ -62,7 +62,7 @@ public class TileEntityInductionHeater extends TileEntityFoundryPowered {
 
 	@Override
 	public boolean hasCapability(Capability<?> cap, EnumFacing facing) {
-		return cap == FoundryAPI.capability_heatprovider && facing == EnumFacing.UP || super.hasCapability(cap, facing);
+		return cap == FoundryAPI.HEAT_PROVIDER_CAP && facing == EnumFacing.UP || super.hasCapability(cap, facing);
 	}
 
 	@Override

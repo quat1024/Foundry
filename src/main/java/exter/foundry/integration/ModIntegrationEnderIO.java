@@ -130,13 +130,13 @@ public class ModIntegrationEnderIO implements IModIntegration {
 
 	@Override
 	public void onPreInit(Configuration config) {
-		liquid_redstone_alloy = LiquidMetalRegistry.instance.registerLiquidMetal("RedstoneAlloy", 1000, 14);
-		liquid_energetic_alloy = LiquidMetalRegistry.instance.registerLiquidMetal("EnergeticAlloy", 2500, 15);
-		liquid_vibrant_alloy = LiquidMetalRegistry.instance.registerLiquidMetal("VibrantAlloy", 2500, 15);
-		liquid_dark_steel = LiquidMetalRegistry.instance.registerLiquidMetal("DarkSteel", 1850, 12);
-		liquid_electrical_steel = LiquidMetalRegistry.instance.registerLiquidMetal("ElectricalSteel", 1850, 15);
-		liquid_phased_iron = LiquidMetalRegistry.instance.registerLiquidMetal("PulsatingIron", 1850, 15);
-		liquid_soularium = LiquidMetalRegistry.instance.registerLiquidMetal("Soularium", 1350, 12);
+		liquid_redstone_alloy = LiquidMetalRegistry.INSTANCE.registerLiquidMetal("RedstoneAlloy", 1000, 14);
+		liquid_energetic_alloy = LiquidMetalRegistry.INSTANCE.registerLiquidMetal("EnergeticAlloy", 2500, 15);
+		liquid_vibrant_alloy = LiquidMetalRegistry.INSTANCE.registerLiquidMetal("VibrantAlloy", 2500, 15);
+		liquid_dark_steel = LiquidMetalRegistry.INSTANCE.registerLiquidMetal("DarkSteel", 1850, 12);
+		liquid_electrical_steel = LiquidMetalRegistry.INSTANCE.registerLiquidMetal("ElectricalSteel", 1850, 15);
+		liquid_phased_iron = LiquidMetalRegistry.INSTANCE.registerLiquidMetal("PulsatingIron", 1850, 15);
+		liquid_soularium = LiquidMetalRegistry.INSTANCE.registerLiquidMetal("Soularium", 1350, 12);
 
 		FoundryUtils.registerBasicMeltingRecipes("RedstoneAlloy", liquid_redstone_alloy);
 		FoundryUtils.registerBasicMeltingRecipes("EnergeticAlloy", liquid_energetic_alloy);
