@@ -101,18 +101,15 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 	public void carve(final NonNullList<Boolean> pattern, int depth) {
 		if (world.isRemote && has_block && pattern.size() == grid.length) {
 			NBTTagCompound tag = new NBTTagCompound();
-			for (int i = 0; i < grid.length; i++)
-            {
-                if (pattern.get(i) == Boolean.TRUE)
-                {
-                    int depthNew = MathHelper.clamp(depth + grid[i], MIN_DEPTH, MAX_DEPTH);
-                    if (depthNew != grid[i])
-                    {
-                        grid[i] = depthNew;
-                        tag.setInteger("RecipeGrid_" + i, grid[i]);
-                    }
-                }
-            }
+			for (int i = 0; i < grid.length; i++) {
+				if (pattern.get(i) == Boolean.TRUE) {
+					int depthNew = MathHelper.clamp(depth + grid[i], MIN_DEPTH, MAX_DEPTH);
+					if (depthNew != grid[i]) {
+						grid[i] = depthNew;
+						tag.setInteger("RecipeGrid_" + i, grid[i]);
+					}
+				}
+			}
 			sendToServer(tag);
 		}
 	}
@@ -323,7 +320,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 			--burn_time;
 		}
 		if (has_block && progress >= 0) {
-//			if (current_recipe == null) current_recipe = MoldRecipeManager.INSTANCE.findRecipe(this.grid);
+			//			if (current_recipe == null) current_recipe = MoldRecipeManager.INSTANCE.findRecipe(this.grid);
 			if (burn_time == 0 && current_recipe != null && canRecipeOutput()) {
 				item_burn_time = burn_time = TileEntityFurnace.getItemBurnTime(getStackInSlot(SLOT_FUEL));
 				if (burn_time > 0) {

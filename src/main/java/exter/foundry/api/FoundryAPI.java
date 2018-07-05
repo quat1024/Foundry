@@ -26,7 +26,7 @@ public class FoundryAPI {
 	 * The base value foundry uses for all liquid operations.  Set by foundry configs, defaulting to 108.
 	 */
 	public static int FLUID_AMOUNT_INGOT = 108;
-	
+
 	/**
 	 * The fluid value for an ore, or 0, if the config is not overriding it.
 	 */

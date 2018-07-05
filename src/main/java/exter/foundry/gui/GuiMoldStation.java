@@ -61,7 +61,7 @@ public class GuiMoldStation extends GuiFoundry {
 	private GuiButtonFoundry button_fire;
 	private final NonNullList<Boolean> pattern;
 	private int processingState;
-	
+
 	private final String STRING_MOLD_STATION;
 	private final String STRING_INVENTORY;
 	private final String STRING_FIRE;
@@ -111,15 +111,13 @@ public class GuiMoldStation extends GuiFoundry {
 				int gx = i % 6;
 				int gy = i / 6;
 				int sv = te_ms.getGridSlot(i);
-				if (processingState != -1 && pattern.get(i) == Boolean.TRUE)
-                {
-                    sv += (processingState == 0 ? 1 : -1) * (isShiftKeyDown() ? 4 : 1);
-                }
+				if (processingState != -1 && pattern.get(i) == Boolean.TRUE) {
+					sv += (processingState == 0 ? 1 : -1) * (isShiftKeyDown() ? 4 : 1);
+				}
 				sv = MathHelper.clamp(sv, TileEntityMoldStation.MIN_DEPTH, TileEntityMoldStation.MAX_DEPTH);
-				if (sv > 0)
-                {
-				    drawTexturedModalRect(window_x + GRID_X + gx * GRID_SLOT_SIZE, window_y + GRID_Y + gy * GRID_SLOT_SIZE, GRID_OVERLAY_X, GRID_OVERLAY_Y + (sv - 1) * GRID_SLOT_SIZE, GRID_SLOT_SIZE, GRID_SLOT_SIZE);
-                }
+				if (sv > 0) {
+					drawTexturedModalRect(window_x + GRID_X + gx * GRID_SLOT_SIZE, window_y + GRID_Y + gy * GRID_SLOT_SIZE, GRID_OVERLAY_X, GRID_OVERLAY_Y + (sv - 1) * GRID_SLOT_SIZE, GRID_SLOT_SIZE, GRID_SLOT_SIZE);
+				}
 			}
 		}
 	}
@@ -143,10 +141,9 @@ public class GuiMoldStation extends GuiFoundry {
 
 			List<String> currenttip = new ArrayList<>(1);
 			int depth = te_ms.getGridSlot(y * 6 + x);
-			if (processingState != -1 && pattern.get(y * 6 + x) == Boolean.TRUE)
-            {
-			    depth += (processingState == 0 ? 1 : -1) * (isShiftKeyDown() ? 4 : 1);
-            }
+			if (processingState != -1 && pattern.get(y * 6 + x) == Boolean.TRUE) {
+				depth += (processingState == 0 ? 1 : -1) * (isShiftKeyDown() ? 4 : 1);
+			}
 			depth = MathHelper.clamp(depth, TileEntityMoldStation.MIN_DEPTH, TileEntityMoldStation.MAX_DEPTH);
 			currenttip.add(I18n.format("gui.foundry.mold.depth", depth));
 			drawHoveringText(currenttip, mousex, mousey, fontRenderer);
@@ -176,49 +173,38 @@ public class GuiMoldStation extends GuiFoundry {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		if (processingState == -1 &&
-		        te_ms.hasBlock() &&
-		        isPointInRegion(GRID_X, GRID_Y, GRID_SIZE - 1, GRID_SIZE - 1, mouseX, mouseY) &&
-		        mouseButton >= 0 &&
-		        mouseButton <= 1) {
-		    processingState = mouseButton;
+		if (processingState == -1 && te_ms.hasBlock() && isPointInRegion(GRID_X, GRID_Y, GRID_SIZE - 1, GRID_SIZE - 1, mouseX, mouseY) && mouseButton >= 0 && mouseButton <= 1) {
+			processingState = mouseButton;
 			selectSlot(mouseX, mouseY);
 		}
 	}
 
 	@Override
-	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
-	{
-	    super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-	    if (processingState == clickedMouseButton)
-        {
-            selectSlot(mouseX, mouseY);
-        }
+	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+		if (processingState == clickedMouseButton) {
+			selectSlot(mouseX, mouseY);
+		}
 	}
 
 	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state)
-	{
-	    super.mouseReleased(mouseX, mouseY, state);
-	    if (processingState == state)
-        {
-	        if (pattern.contains(Boolean.TRUE))
-            {
-	            int depth = (processingState == 0 ? 1 : -1) * (isShiftKeyDown() ? 4 : 1);
-	            te_ms.carve(pattern, depth);
-	            Collections.fill(pattern, Boolean.FALSE);
-            }
-	        processingState = -1; // No state.
-        }
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		super.mouseReleased(mouseX, mouseY, state);
+		if (processingState == state) {
+			if (pattern.contains(Boolean.TRUE)) {
+				int depth = (processingState == 0 ? 1 : -1) * (isShiftKeyDown() ? 4 : 1);
+				te_ms.carve(pattern, depth);
+				Collections.fill(pattern, Boolean.FALSE);
+			}
+			processingState = -1; // No state.
+		}
 	}
 
-	private void selectSlot(int mouseX, int mouseY)
-    {
-        if (processingState != -1 && isPointInRegion(GRID_X, GRID_Y, GRID_SIZE - 1, GRID_SIZE - 1, mouseX, mouseY))
-        {
-            int x = (mouseX - GRID_X - guiLeft) / GRID_SLOT_SIZE;
-            int y = (mouseY - GRID_Y - guiTop) / GRID_SLOT_SIZE;
-            pattern.set(y * 6 + x, Boolean.TRUE);
-        }
-    }
+	private void selectSlot(int mouseX, int mouseY) {
+		if (processingState != -1 && isPointInRegion(GRID_X, GRID_Y, GRID_SIZE - 1, GRID_SIZE - 1, mouseX, mouseY)) {
+			int x = (mouseX - GRID_X - guiLeft) / GRID_SLOT_SIZE;
+			int y = (mouseY - GRID_Y - guiTop) / GRID_SLOT_SIZE;
+			pattern.set(y * 6 + x, Boolean.TRUE);
+		}
+	}
 }

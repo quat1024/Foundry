@@ -78,7 +78,7 @@ public class MTAlloyingCrucibleHandler {
 			CraftTweakerAPI.apply(new AlloyingCrucibleAction(recipe).action_remove);
 		});
 	}
-	
+
 	@ZenMethod
 	public static void clear() {
 		ModIntegrationMinetweaker.queueClear(AlloyingCrucibleRecipeManager.INSTANCE.getRecipes());
