@@ -29,7 +29,7 @@ public class ItemShellAP extends Item {
 
 	public ItemShellAP() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName(Foundry.MODID + ".shellAP");
+		setTranslationKey(Foundry.MODID + ".shellAP");
 		setRegistryName(Foundry.MODID, "shellAP");
 	}
 

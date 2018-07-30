@@ -35,7 +35,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 		setLightOpacity(0);
 		setLightLevel(1.0f);
 		solid = solid_block;
-		setUnlocalizedName(name);
+		setTranslationKey(name);
 		setCreativeTab(FoundryTabFluids.INSTANCE);
 		setRegistryName(name);
 	}
@@ -106,7 +106,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	}
 
 	@Override
-	public String getUnlocalizedName() {
+	public String getTranslationKey() {
 		return stack.getUnlocalizedName();
 	}
 
@@ -123,7 +123,7 @@ public class BlockLiquidMetal extends BlockFluidClassic {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World wWorld, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World wWorld, BlockPos pos, IBlockState state, Entity entity) {
 		if (entity instanceof EntityLivingBase) {
 			entity.motionX *= 0.5;
 			entity.motionZ *= 0.5;

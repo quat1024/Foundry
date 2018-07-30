@@ -3,6 +3,8 @@ package exter.foundry.block;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import exter.foundry.Foundry;
 import exter.foundry.creativetab.FoundryTabMachines;
 import exter.foundry.proxy.CommonFoundryProxy;
@@ -85,12 +87,14 @@ public class BlockRefractoryHopper extends BlockContainer implements ISpoutPourD
 		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setHardness(1.0F);
 		setResistance(8.0F);
-		setUnlocalizedName("foundry.refractoryHopper");
+		setTranslationKey("foundry.refractoryHopper");
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumHopperFacing.DOWN));
 		setRegistryName("refractoryHopper");
 	}
 
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
+	@Override
+	@Deprecated
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
 		for (AxisAlignedBB box : BOUNDS) {
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, box);
 		}

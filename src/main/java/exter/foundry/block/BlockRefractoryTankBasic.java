@@ -40,7 +40,7 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setHardness(1.0F);
 		setResistance(8.0F);
-		setUnlocalizedName("foundry.refractoryTankBasic");
+		setTranslationKey("foundry.refractoryTankBasic");
 		setRegistryName("refractoryTank");
 	}
 
@@ -82,7 +82,7 @@ public class BlockRefractoryTankBasic extends BlockContainer implements ISpoutPo
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

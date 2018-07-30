@@ -2,6 +2,8 @@ package exter.foundry.block;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import exter.foundry.creativetab.FoundryTabMachines;
 import exter.foundry.tileentity.TileEntityRefractorySpout;
 import exter.foundry.util.FoundryMiscUtils;
@@ -42,11 +44,13 @@ public class BlockRefractorySpout extends BlockFoundrySidedMachine {
 		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setHardness(1.0F);
 		setResistance(8.0F);
-		setUnlocalizedName("foundry.refractorySpout");
+		setTranslationKey("foundry.refractorySpout");
 		setRegistryName("refractorySpout");
 	}
 
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
+	@Override
+	@Deprecated
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
 		AxisAlignedBB[] bounds = new AxisAlignedBB[0];
 		switch (state.getValue(FACING)) {
 		case EAST:

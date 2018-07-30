@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockCokeOven extends BlockFoundrySidedMachine {
 	public BlockCokeOven() {
 		super(Material.ROCK);
-		setUnlocalizedName("foundry.cokeOven");
+		setTranslationKey("foundry.cokeOven");
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setSoundType(SoundType.STONE);

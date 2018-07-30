@@ -212,7 +212,7 @@ public abstract class TileEntityFoundryPowered extends TileEntityFoundry impleme
 
 	@Override
 	public void updateRedstone() {
-		redstone_signal = world.isBlockIndirectlyGettingPowered(getPos()) > 0;
+		redstone_signal = world.getRedstonePowerFromNeighbors(getPos()) > 0;
 	}
 
 	@Override

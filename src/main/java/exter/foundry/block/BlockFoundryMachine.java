@@ -100,7 +100,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setSoundType(SoundType.STONE);
-		setUnlocalizedName("foundry.machine");
+		setTranslationKey("foundry.machine");
 		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setRegistryName("machine");
 	}
@@ -201,7 +201,7 @@ public class BlockFoundryMachine extends Block implements ITileEntityProvider, I
 
 	@Override
 	public String getUnlocalizedName(int meta) {
-		return getUnlocalizedName() + "." + getStateFromMeta(meta).getValue(MACHINE).name;
+		return getTranslationKey() + "." + getStateFromMeta(meta).getValue(MACHINE).name;
 	}
 
 	@Override

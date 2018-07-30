@@ -14,7 +14,7 @@ public class FoundryTabMolds extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return FoundryItems.mold(ItemMold.SubItem.INGOT);
 	}
 

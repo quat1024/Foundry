@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class BlockCauldronBronze extends BlockCauldron {
 	public BlockCauldronBronze() {
 		setRegistryName("bronzeCauldron");
-		setUnlocalizedName("foundry.bronzeCauldron");
+		setTranslationKey("foundry.bronzeCauldron");
 		setHardness(1.8F);
 		setCreativeTab(CreativeTabs.BREWING);
 	}

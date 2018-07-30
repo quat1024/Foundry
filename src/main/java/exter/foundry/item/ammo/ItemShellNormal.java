@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemShellNormal extends Item {
 	public ItemShellNormal() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName(Foundry.MODID + ".shellNormal");
+		setTranslationKey(Foundry.MODID + ".shellNormal");
 		setRegistryName(Foundry.MODID, "shellNormal");
 	}
 

@@ -34,7 +34,7 @@ public class ItemShellLumium extends Item {
 
 	public ItemShellLumium() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName(Foundry.MODID + ".shellLumium");
+		setTranslationKey(Foundry.MODID + ".shellLumium");
 		setRegistryName(Foundry.MODID, "shellLumium");
 	}
 

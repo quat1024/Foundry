@@ -36,7 +36,7 @@ public class ItemRoundSnow extends Item {
 
 	public ItemRoundSnow() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName(Foundry.MODID + ".roundSnow");
+		setTranslationKey(Foundry.MODID + ".roundSnow");
 		setRegistryName(Foundry.MODID, "roundSnow");
 	}
 

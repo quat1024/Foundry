@@ -44,9 +44,12 @@ public class TileEntityMaterialRouter extends TileEntityFoundry {
 		}
 
 		public boolean matchesItem(ItemStack stack) {
-			Foundry.LOGGER.info("Item: " + stack.getUnlocalizedName());
+			/*
+			Foundry.LOGGER.info("Item: " + stack.getItem().getRegistryName());
+			Foundry.LOGGER.info("Meta: " + stack.getItemDamage());
 			Foundry.LOGGER.info("Material: " + MaterialRegistry.INSTANCE.getMaterial(stack));
 			Foundry.LOGGER.info("Type: " + MaterialRegistry.INSTANCE.getType(stack));
+			*/
 			if (!material.equals("_Any")) {
 				String stack_material = MaterialRegistry.INSTANCE.getMaterial(stack);
 				if (!material.equals(stack_material)) { return false; }

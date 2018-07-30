@@ -98,7 +98,7 @@ public class FoundryMiscUtils {
 
 	public static ItemStack getStackFromDictWithPreference(String domain, String ore, int amount) {
 		for (ItemStack is : FoundryMiscUtils.getOresSafe(ore)) {
-			if (is.getItem().getRegistryName().getResourceDomain().equals(domain)) {
+			if (is.getItem().getRegistryName().getNamespace().equals(domain)) {
 				is = is.copy();
 				is.setCount(amount);
 				return is;

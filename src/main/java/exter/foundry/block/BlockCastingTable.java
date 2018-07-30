@@ -89,7 +89,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setSoundType(SoundType.STONE);
-		setUnlocalizedName("foundry.castingTable");
+		setTranslationKey("foundry.castingTable");
 		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setRegistryName("castingTable");
 	}
@@ -216,7 +216,7 @@ public class BlockCastingTable extends Block implements ITileEntityProvider, IBl
 
 	@Override
 	public String getUnlocalizedName(int meta) {
-		return getUnlocalizedName() + "." + getStateFromMeta(meta).getValue(TABLE).name;
+		return getTranslationKey() + "." + getStateFromMeta(meta).getValue(TABLE).name;
 	}
 
 	@Override

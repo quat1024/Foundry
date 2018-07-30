@@ -34,7 +34,7 @@ public class ItemRoundPoison extends Item {
 
 	public ItemRoundPoison() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName(Foundry.MODID + ".roundPoison");
+		setTranslationKey(Foundry.MODID + ".roundPoison");
 		setRegistryName(Foundry.MODID, "roundPoison");
 	}
 

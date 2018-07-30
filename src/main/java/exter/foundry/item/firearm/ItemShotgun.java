@@ -31,7 +31,7 @@ public class ItemShotgun extends ItemFirearm {
 	static public final String AMMO_TYPE = "shotgun";
 
 	public ItemShotgun() {
-		setUnlocalizedName(Foundry.MODID + ".shotgun");
+		setTranslationKey(Foundry.MODID + ".shotgun");
 		setRegistryName(Foundry.MODID, "shotgun");
 	}
 

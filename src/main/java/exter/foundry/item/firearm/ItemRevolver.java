@@ -30,7 +30,7 @@ public class ItemRevolver extends ItemFirearm {
 	static public final String AMMO_TYPE = "revolver";
 
 	public ItemRevolver() {
-		setUnlocalizedName(Foundry.MODID + ".revolver");
+		setTranslationKey(Foundry.MODID + ".revolver");
 		setRegistryName(Foundry.MODID, "revolver");
 	}
 

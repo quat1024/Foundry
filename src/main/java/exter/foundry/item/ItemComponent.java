@@ -62,7 +62,7 @@ public class ItemComponent extends Item {
 		super();
 		setCreativeTab(FoundryTabMaterials.INSTANCE);
 		setHasSubtypes(true);
-		setUnlocalizedName("component");
+		setTranslationKey("component");
 		setRegistryName("component");
 	}
 
@@ -80,7 +80,7 @@ public class ItemComponent extends Item {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
+	public String getTranslationKey(ItemStack itemstack) {
 		return "item.foundry." + SubItem.fromId(itemstack.getItemDamage()).name;
 	}
 }

@@ -155,7 +155,7 @@ public class RFCModel implements IModel {
 
 		@Override
 		public boolean accepts(ResourceLocation modelLocation) {
-			return modelLocation.getResourceDomain().equals("foundry") && (modelLocation.getResourcePath().equals("container") || modelLocation.getResourcePath().endsWith("/container"));
+			return modelLocation.getNamespace().equals("foundry") && (modelLocation.getPath().equals("container") || modelLocation.getPath().endsWith("/container"));
 		}
 
 		@Override
@@ -445,7 +445,7 @@ public class RFCModel implements IModel {
 					break;
 				}
 			case NORMAL:
-				builder.put(e, side.getFrontOffsetX(), side.getFrontOffsetY(), side.getFrontOffsetZ(), 0f);
+				builder.put(e, side.getXOffset(), side.getYOffset(), side.getZOffset(), 0f);
 				break;
 			default:
 				builder.put(e);

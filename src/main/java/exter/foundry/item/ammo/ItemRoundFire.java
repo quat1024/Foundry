@@ -44,7 +44,7 @@ public class ItemRoundFire extends Item {
 
 	public ItemRoundFire() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName(Foundry.MODID + ".roundFire");
+		setTranslationKey(Foundry.MODID + ".roundFire");
 		setRegistryName(Foundry.MODID, "roundFire");
 	}
 

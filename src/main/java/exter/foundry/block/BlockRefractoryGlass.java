@@ -18,7 +18,7 @@ public class BlockRefractoryGlass extends BlockBreakable {
 		setCreativeTab(FoundryTabMaterials.INSTANCE);
 		setHardness(0.4F);
 		setSoundType(SoundType.GLASS);
-		setUnlocalizedName("foundry.refractoryGlass");
+		setTranslationKey("foundry.refractoryGlass");
 		setRegistryName("refractoryGlass");
 	}
 
@@ -29,7 +29,7 @@ public class BlockRefractoryGlass extends BlockBreakable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 

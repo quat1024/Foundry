@@ -40,7 +40,7 @@ public class BlockRefractoryTankAdvanced extends BlockContainer implements ISpou
 		setCreativeTab(FoundryTabMachines.INSTANCE);
 		setHardness(1.0F);
 		setResistance(8.0F);
-		setUnlocalizedName("foundry.refractoryTankAdvanced");
+		setTranslationKey("foundry.refractoryTankAdvanced");
 		setRegistryName("infernoTank");
 	}
 
@@ -82,7 +82,7 @@ public class BlockRefractoryTankAdvanced extends BlockContainer implements ISpou
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

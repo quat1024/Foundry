@@ -13,7 +13,7 @@ public class FoundryTabFirearms extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return FoundryItems.item_revolver.empty();
 	}
 }

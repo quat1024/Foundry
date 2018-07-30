@@ -19,7 +19,7 @@ public class ItemRoundNormal extends Item {
 	public ItemRoundNormal() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
 		setRegistryName(Foundry.MODID, "roundNormal");
-		setUnlocalizedName(Foundry.MODID + ".roundNormal");
+		setTranslationKey(Foundry.MODID + ".roundNormal");
 	}
 
 	@SideOnly(Side.CLIENT)

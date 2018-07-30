@@ -115,11 +115,11 @@ public abstract class ItemFirearm extends Item {
 		}
 		Vec3d vspread = new Vec3d(random.nextFloat() * 2 - 1, random.nextFloat() * 2 - 1, random.nextFloat() * 2 - 1).normalize();
 		spread = random.nextFloat() * spread;
-		dir = dir.addVector(vspread.x * spread, vspread.y * spread, vspread.z * spread).normalize();
+		dir = dir.add(vspread.x * spread, vspread.y * spread, vspread.z * spread).normalize();
 
 		double distance = 150.0D;
 
-		Vec3d end = start.addVector(dir.x * distance, dir.y * distance, dir.z * distance);
+		Vec3d end = start.add(dir.x * distance, dir.y * distance, dir.z * distance);
 
 		Vec3d tstart = new Vec3d(start.x, start.y, start.z);
 		Vec3d tend = new Vec3d(end.x, end.y, end.z);

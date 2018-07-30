@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockBurnerHeater extends BlockFoundrySidedMachine {
 	public BlockBurnerHeater() {
 		super(Material.ROCK);
-		setUnlocalizedName("foundry.burnerHeater");
+		setTranslationKey("foundry.burnerHeater");
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setSoundType(SoundType.STONE);

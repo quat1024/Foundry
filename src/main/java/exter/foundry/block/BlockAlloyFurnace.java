@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockAlloyFurnace extends BlockFoundrySidedMachine {
 	public BlockAlloyFurnace() {
 		super(Material.ROCK);
-		setUnlocalizedName("foundry.alloyFurnace");
+		setTranslationKey("foundry.alloyFurnace");
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setSoundType(SoundType.STONE);

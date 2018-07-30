@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockMoldStation extends BlockFoundrySidedMachine {
 	public BlockMoldStation() {
 		super(Material.ROCK);
-		setUnlocalizedName("foundry.moldStation");
+		setTranslationKey("foundry.moldStation");
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setSoundType(SoundType.STONE);

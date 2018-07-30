@@ -34,7 +34,7 @@ public class ItemRoundLumium extends Item {
 
 	public ItemRoundLumium() {
 		setCreativeTab(FoundryTabFirearms.INSTANCE);
-		setUnlocalizedName(Foundry.MODID + ".roundLumium");
+		setTranslationKey(Foundry.MODID + ".roundLumium");
 		setRegistryName(Foundry.MODID, "roundLumium");
 	}
 
