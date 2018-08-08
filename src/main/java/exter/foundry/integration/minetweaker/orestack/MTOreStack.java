@@ -8,6 +8,7 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemCondition;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.item.IItemTransformer;
+import crafttweaker.api.item.IItemTransformerNew;
 import crafttweaker.api.item.IngredientOr;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -115,5 +116,25 @@ public class MTOreStack implements IIngredient {
 	@Override
 	public IIngredient transform(IItemTransformer arg0) {
 		return this;
+	}
+
+	@Override
+	public IIngredient transformNew(IItemTransformerNew transformer) {
+		return new MTOreStack(stack);
+	}
+
+	@Override
+	public IItemStack applyNewTransform(IItemStack item) {
+		return item;
+	}
+
+	@Override
+	public boolean hasNewTransformers() {
+		return false;
+	}
+
+	@Override
+	public String toCommandString() {
+		return "";
 	}
 }
