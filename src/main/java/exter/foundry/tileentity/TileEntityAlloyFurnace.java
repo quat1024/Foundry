@@ -63,7 +63,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		item_handler_fuel = new ItemHandlerFuel(this, getSizeInventory(), IH_SLOTS_INPUT_FUEL, IH_SLOTS_OUTPUT_FUEL, IH_SLOTS_FUEL);
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public void boostBurnTime() {
 		if (!world.isRemote) {
@@ -74,7 +74,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		}
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public void boostCookTime() {
 
@@ -98,7 +98,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		return inv_output.isEmpty() || (inv_output.isItemEqual(output) && inv_output.getCount() - output.getCount() <= inv_output.getMaxStackSize());
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public boolean canSmelt() {
 		if (!getStackInSlot(SLOT_INPUT_A).isEmpty() && getStackInSlot(SLOT_INPUT_B).isEmpty()) {
@@ -146,7 +146,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 		}
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public int getBurnTime() {
 		return burn_time <= 1 ? 0 : burn_time - 1;

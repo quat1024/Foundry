@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.common.Optional;
 import vazkii.botania.api.item.IExoflameHeatable;
 
-@Optional.Interface(iface = "vazkii.botania.api.item.IExoflameHeatable", modid = "Botania")
+@Optional.Interface(iface = "vazkii.botania.api.item.IExoflameHeatable", modid = "botania")
 public class TileEntityMoldStation extends TileEntityFoundry implements IExoflameHeatable {
 
 	public static final int SLOT_BLOCK = 0;
@@ -53,7 +53,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 		current_recipe = null;
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public void boostBurnTime() {
 		if (!world.isRemote) {
@@ -64,7 +64,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 		}
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public void boostCookTime() {
 
@@ -92,7 +92,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 		return canOutput(output, SLOT_OUTPUT) && (slot_clay.isEmpty() || slot_clay.getCount() + clay_amount <= slot_clay.getMaxStackSize());
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public boolean canSmelt() {
 		return has_block && current_recipe != null && canRecipeOutput();
@@ -169,7 +169,7 @@ public class TileEntityMoldStation extends TileEntityFoundry implements IExoflam
 		return burn_time;
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public int getBurnTime() {
 		return burn_time <= 1 ? 0 : burn_time - 1;

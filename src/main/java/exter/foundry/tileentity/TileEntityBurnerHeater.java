@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.IItemHandler;
 import vazkii.botania.api.item.IExoflameHeatable;
 
-@Optional.Interface(iface = "vazkii.botania.api.item.IExoflameHeatable", modid = "Botania")
+@Optional.Interface(iface = "vazkii.botania.api.item.IExoflameHeatable", modid = "botania")
 public class TileEntityBurnerHeater extends TileEntityFoundry implements IExoflameHeatable {
 	private class HeatProvider implements IHeatProvider {
 		@Override
@@ -78,7 +78,7 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 		item_handler = new ItemHandlerFuel(this, getSizeInventory(), IH_SLOTS_INPUT, IH_SLOTS_OUTPUT, IH_SLOTS_FUEL);
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public void boostBurnTime() {
 		if (!world.isRemote) {
@@ -90,13 +90,13 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 		}
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public void boostCookTime() {
 
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public boolean canSmelt() {
 		return true;
@@ -111,7 +111,7 @@ public class TileEntityBurnerHeater extends TileEntityFoundry implements IExofla
 		return burn_time;
 	}
 
-	@Optional.Method(modid = "Botania")
+	@Optional.Method(modid = "botania")
 	@Override
 	public int getBurnTime() {
 		return burn_time <= 1 ? 0 : burn_time - 1;
