@@ -101,7 +101,7 @@ public class TileEntityAlloyFurnace extends TileEntityFoundry implements ISidedI
 	@Optional.Method(modid = "botania")
 	@Override
 	public boolean canSmelt() {
-		if (!getStackInSlot(SLOT_INPUT_A).isEmpty() && getStackInSlot(SLOT_INPUT_B).isEmpty()) {
+		if (!(getStackInSlot(SLOT_INPUT_A).isEmpty() || getStackInSlot(SLOT_INPUT_B).isEmpty())) {
 			IAlloyFurnaceRecipe recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_A), getStackInSlot(SLOT_INPUT_B));
 			if (recipe == null) {
 				recipe = AlloyFurnaceRecipeManager.INSTANCE.findRecipe(getStackInSlot(SLOT_INPUT_B), getStackInSlot(SLOT_INPUT_A));
